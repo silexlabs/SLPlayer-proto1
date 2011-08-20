@@ -1,0 +1,6 @@
+= Needed haXe libraries =
+
+== For unit tests ==
+utest: haxelib install utest
+
+== For Silex framework as3 ==

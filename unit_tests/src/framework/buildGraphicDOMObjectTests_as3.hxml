@@ -1,0 +1,4 @@
+-cp ../../../src/framework/
+-main org.silex_unit_tests.runtime.domobject.GraphicDOMObjectTests
+-lib utest
+-swf9 ../../bin/runtime/domobject/graphicDOMObjectTestAs3.swf

@@ -1,0 +1,58 @@
+remarques silex v2
+
+
+reste a faire
+- getPath pour les native DOM
+- finir getPublication (pas testée + manque ke cas des nativeClass)
+- faire getDOMObject pour les native dom & class
+- finir Image (recup son DOMObject et addChild)
+
+Général
+- renommer le package org.silex.blocks en org.silex.standardNativeClasses ou un truc dane le genre
+- renommer core.config.ConfigData en core.publication.PublicationData (et supprimer core.config.Config?) 
+- documenter le format XML de calque (faire un dtd)
+- idée pour récupérer l'objet publication lie à un block, une nativeClass, une skin …
+  . dans Publication.instances[] on stock toutes les publications existantes + le Block racine corresp
+  . dans runtime.DOMObject::getPath(nativeDOMObject or class) on calcule le chemin vers l'objet du dom (genre clip1.clip2.monClip ou div1.div2.maDiv)
+  . dans Publication.getInstance(nativeDOMObject or class or block) on regarde pour chaque Publication.instances[] si le chemin est dans le chemin du nativeDOMObject
+
+
+
+Manque dans runtime
+- alert, prompt, …
+- doLater (dans sequencer ??)
+
+A mettre dans Publication
+- root block ??
+- recuperer l'objet publication pour un block, une nativeClass, une skin …
+- récupérer le bloc pour une nativeClass ou skin
+- détection/conversion URL relative / absolue
+- preload files/fonts/plugins/libraries (all the same for the VM, the bootloader knows)
+- create/deletePublication
+
+Config
+- config  de la machine virtuelle => ne doit pas etre un singletton ou statique
+
+BlockBuilder
+- mélange de statique et non statique
+- on a blockData.as3URL alors que c'est as3Skin dans le XML, les noms doivent etre uniformes
+- ? dans le cas ou la classe controller est "Block" on ne dois pas instancier de controller class (ou bien "Group") ?
+
+Block
+- on ne peut pas acceder a block.children??
+- auto open ne foncitonne pas
+- BlockBuilder::setBlockAttributes, should handle domRoot and applyPropertiesOn (nativeClass / domObject)
+
+
+DOMObject
+- width et height devraient etre stockés au niveau du DOMObject, pas au niveau du DOM natif, et pareil pour toutes les propriétés (déja fait en php je crois)
+- org.silex.runtime.domobject.js.ContainerDOMObject est défini mais pas org.silex.runtime.domobject.ContainerDOMObject
+- dans RessourceLoaderManager.hx vérifier que les directives de compil conditionnelles (comme "#if flash9") sont nécessaires
+- RessourceLoaderManager::loadImage do not call the error callback on 404 error
+
+NativeClass
+- should also take haXe classes and for the setter and getter to work fine, setField should call setX(val) instead of x = val when setX exists
+
+org.silex.blocks.Image
+- should handle allowCacheControl
+- URL relative / absolute

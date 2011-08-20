@@ -1,0 +1,4 @@
+-cp ../../../src/framework/
+-main org.silex_unit_tests.core.config.ConfigTests
+-lib utest
+-swf9 ../../bin/core/config/configTestAs3.swf

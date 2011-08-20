@@ -1,0 +1,5 @@
+#build file
+-cp src
+-main Main
+-swf9 bin/override_proto1.swf
+#-debug
