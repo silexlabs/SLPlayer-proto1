@@ -113,7 +113,6 @@ class BlockBuilderTests
 					<blockData>
 						<descriptorUID>SkinnableBlockDescriptor</descriptorUID>
 						<!-- URLs of the skin, depending on the target runtime -->
-						<domRoot>maindiv.containerdiv</domRoot>
 						<jsSkinURL>
 							<url>plugins/mycompanyComponents/js/SkinnableBlock.js</url>
 						</jsSkinURL>
