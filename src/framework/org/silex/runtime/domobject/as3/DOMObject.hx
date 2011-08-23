@@ -58,6 +58,45 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden public and private methods to manage the visibility and opacity of the dom object
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Show or hide the native Sprite. 
+	 * @param	value true if the Sprite must be visible
+	 */
+	override public function setIsVisible(value:Bool):Void
+	{
+		this._referenceToNativeDOM.visible = value;
+	}
+	
+	/**
+	 * Return wether the native Sprite is visible.
+	 */
+	override public function getIsVisible():Bool
+	{
+		return this._referenceToNativeDOM.visible;
+	}
+	
+	/**
+	 * Set the opacity of the Sprite
+	 * @param	value from 0 (transparent) to 1 (opaque)
+	 */
+	override public function setAlpha(value:Float):Void
+	{
+		this._referenceToNativeDOM.alpha = value;
+	}
+	
+	/**
+	 * return the opacity of the Sprite, 
+	 * from 0 to 1
+	 */ 
+	override public function getAlpha():Float
+	{
+		return this._referenceToNativeDOM.alpha;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
 	// Overriden methods to transform the dom object and manipulate it's matrix
 	//////////////////////////////////////////////////////////////////////////////////////////
 	

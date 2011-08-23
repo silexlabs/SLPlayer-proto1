@@ -65,6 +65,61 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden public and private methods to manage the visibility and opacity of the dom object
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Show or hide the native HTML element. 
+	 * @param	value true if the element must be visible
+	 */
+	override public function setIsVisible(value:Bool):Void
+	{
+		//set the right visibility CSS property value
+		if (value == true)
+		{
+			this._referenceToNativeDOM.style.visibility = "visible";
+		}
+		else
+		{
+			this._referenceToNativeDOM.style.visibility = "hidden";
+		}
+	}
+	
+	/**
+	 * Return wether the native HTML element is visible.
+	 */
+	override public function getIsVisible():Bool
+	{
+		if (this._referenceToNativeDOM.style.visibility == "visible")
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Set the opacity of the HTML element
+	 * @param	value from 0 (transparent) to 1 (opaque)
+	 */
+	override public function setAlpha(value:Float):Void
+	{
+		super.setAlpha(value);
+		this._referenceToNativeDOM.style.opacity = value;
+	}
+	
+	/**
+	 * return the opacity of the HTML element, 
+	 * from 0 to 1
+	 */ 
+	override public function getAlpha():Float
+	{
+		return Std.parseFloat(this._referenceToNativeDOM.style.opacity);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
 	// Overriden methods to transform the dom object and manipulate it's matrix
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
