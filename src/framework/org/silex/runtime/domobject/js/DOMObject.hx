@@ -186,7 +186,6 @@ class DOMObject extends DOMObjectBase
 		return Std.parseInt(this._referenceToNativeDOM.style.height);
 	}
 	
-
 	
 	/**
 	 * When setting the z-order on an HTML element,
