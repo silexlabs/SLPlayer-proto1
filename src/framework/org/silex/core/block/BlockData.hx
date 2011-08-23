@@ -26,42 +26,17 @@ typedef BlockData =
 	 * example: If BlockData root node name is HGroup, className should be org.silex.blocks.HGroup
 	 */
 	var className:String;
-
-	/**
-	 * TO BE STORED IN THE XML AS ATTRIBUTES VALUES OF THE ROOT NODE
-	 */
 	
 	/**
+	 * TO BE STORED IN THE XML AS CHILDREN NODES OF THE BLOCKDATA NODE
+	 */
+
+	 /**
 	 * The UID of the descriptor which describes the block.
 	 * It is useful to add the block and to edit the block.
 	 */
 	var descriptorUID : String;
-	
-	/**
-	 * Indicates if the block has to be opened automatically
-	 */
-	var isAutoOpen : Bool;
-	
-	/**
-	 * Indicates if the block is transversal
-	 */
-	var isTransversal : Bool;
-	
-	/**
-	 * Indicates if the block is using a separate file for its content (properties, metadata & children...)
-	 */
-	var hasSeparateFile : Bool;
-	
-	/**
-	 * if hasSeparateFile is set to true, file Url to be used for this BlockData
-	 */
-	var fileUrl : String;
-
-	
-	/**
-	 * TO BE STORED IN THE XML AS CHILDREN NODES OF THE ROOT NODE
-	 */
-
+	 
 	 /**
 	 * The DOM Root
 	 */
@@ -71,9 +46,9 @@ typedef BlockData =
 	 * URLs of the skin, depending on the target.
 	 * May be set to null if there is no skin.
 	 */
-	var jsURL:String;
-	var as3URL:String;
-	var phpURL:String;
+	var jsSkinURL:String;
+	var as3SkinURL:String;
+	var phpSkinURL:String;
 	
 	/**
 	 * The properties of the block, which are pushed to the controller class or to the skin.
