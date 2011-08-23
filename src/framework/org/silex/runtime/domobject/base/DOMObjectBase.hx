@@ -25,6 +25,14 @@ import org.silex.runtime.domobject.DOMObjectData;
 class DOMObjectBase 
 {
 	
+	/**
+	 * root dom object of the publication
+	 * TO DO : remove it, it belongs to Publication and
+	 * must not be static as multiple publication may run 
+	 * at the same time. Only left for now to allow compilation
+	 */
+	public static var rootDOMObject:DOMObjectBase;
+	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Event callbacks, cross-platform callbacks for runtime specific events
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +128,7 @@ class DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// DOM
 	// Public method to manipulate the DOM
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -182,68 +191,51 @@ class DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Public and private methods to transform the dom object and manipulate it's matrix
+	// VISIBILITY/OPACITY
+	// Public and private methods to manage the visibility and opacity of the dom object
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Translate the domObject along the x and y axis, using x and y as offset
-	 * @param	x the x offset
-	 * @param	y the y offset
+	 * Show or hide the native DOM Object. Implemented
+	 * by runtime specific sub class
+	 * @param	value true if the DOM object must be visible
 	 */
-	public function translate(x:Float, y:Float):Void
+	public function setIsVisible(value:Bool):Void
 	{
-		//use the matrix API
-		_matrix.translate(x, y);
-		
-		//refresh the matrix to refresh the domObject display
-		setMatrix(this._matrix);
+		//abstract
 	}
 	
 	/**
-	 * Rotate the domObject with the given angle using the transformationOrigin as pivot point
-	 * @param	angle the ortation angle, in degree
-	 * @param	transformationOrigin the pivot point, represented as an enum value or as a point
+	 * Return wether the DOM object is visible. Implemented
+	 * by runtime specific sub class
 	 */
-	public function rotate(angle:Int, transformationOrigin:TransformationOriginValue):Void
+	public function getIsVisible():Bool
 	{
-		//use the matrix API, retrieve the pivot point
-		_matrix.rotate(angle, getTransformationOriginPoint(transformationOrigin));
-		//refresh the matrix to refresh the domObject display
-		setMatrix(this._matrix);
+		return false;
 	}
 	
 	/**
-	 * Scale the domObject with the scaleX and scaleY factor, using the transformationOrigin as scaling
-	 * center
-	 * @param	scaleX the horizontal scale factor
-	 * @param	scaleY the vertical scale factor
-	 * @param	transformationOrigin the scale center, represented as an enum value or as a point
+	 * Set the opacity of the DOM object
+	 * @param	value from 0 (transparent) to 1 (opaque)
 	 */
-	public function scale(scaleX:Float, scaleY:Float, transformationOrigin:TransformationOriginValue):Void
+	public function setAlpha(value:Float):Void
 	{
-		//use the matrix API, retrieve the scale center
-		_matrix.scale(scaleX, scaleY, getTransformationOriginPoint(transformationOrigin));
-		
-		//refresh the matrix to refresh the domObject display
-		setMatrix(this._matrix);
+		//abstract
 	}
-	
 	
 	/**
-	 * skew the domObject with the skewX and skewY factor, using the transformationOrigin as skewing
-	 * center
-	 * @param	skewX the horizontal skew factor
-	 * @param	skewY the vertical skew factor
-	 * @param	transformationOrigin the skew center, represented as an enum value or as a point
-	 */
-	public function skew(skewX:Float, skewY:Float, transformationOrigin:TransformationOriginValue):Void
+	 * return the opacity of the DOM Object, 
+	 * from 0 to 1
+	 */ 
+	public function getAlpha():Float
 	{
-		//use the matrix API, retrieve the skew center
-		_matrix.skew(skewX, skewY, getTransformationOriginPoint(transformationOrigin));
-		
-		//refresh the matrix to refresh the domObject display
-		setMatrix(this._matrix);
+		return 0;
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// TRANSFORMATIONS
+	// Public and private methods to transform the dom object and manipulate it's matrix
+	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * Set the transformation matrix of this domObject. Used
@@ -264,7 +256,7 @@ class DOMObjectBase
 	}
 	
 	/**
-	 * Reset the matrix to an identity matrix (no trnasformation)
+	 * Reset the matrix to an identity matrix (no transformations)
 	 */
 	public function resetTransformations():Void
 	{
@@ -323,7 +315,181 @@ class DOMObjectBase
 		return transformationOriginPoint;
 	}
 	
+	/////////////////
+	// TRANSLATION
+	/////////////////
+	
+	/**
+	 * Translate the domObject along the x and y axis, using x and y as offset
+	 * @param	x the x offset
+	 * @param	y the y offset
+	 */
+	public function translate(x:Float, y:Float):Void
+	{
+		//use the matrix API
+		_matrix.translate(x, y);
+		
+		//refresh the matrix to refresh the domObject display
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Set the absolut x translation instead of adding it to 
+	 * the current x translation
+	 * @param	translationX the target x translation
+	 */
+	public function setTranslationX(translationX:Float):Void
+	{
+		_matrix.setTranslationX(translationX);
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Return the current x translation
+	 * @return
+	 */
+	public function getTranslationX():Float
+	{
+		return this._matrix.getTranslationX();
+	}
+	
+	/**
+	 * Set the absolut y translation instead of adding it to 
+	 * the current y translation
+	 * @param	translationX the target y translation
+	 */
+	public function setTranslationY(translationY:Float):Void
+	{
+		_matrix.setTranslationY(translationY);
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Return the current y translation
+	 * @return
+	 */
+	public function getTranslationY():Float
+	{
+		return this._matrix.getTranslationY();
+	}
+	
+	/////////////////
+	// ROTATION
+	/////////////////
+	
+	/**
+	 * Rotate the domObject with the given angle using the transformationOrigin as pivot point
+	 * @param	angle the rotation angle, in degree
+	 * @param	transformationOrigin the pivot point, represented as an enum value or as a point
+	 */
+	public function rotate(angle:Int, transformationOrigin:TransformationOriginValue):Void
+	{
+		//use the matrix API, retrieve the pivot point
+		_matrix.rotate(angle, getTransformationOriginPoint(transformationOrigin));
+		//refresh the matrix to refresh the domObject display
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Set the rotation to an absolute angle instead of adding a rotation to the existing 
+	 * rotation
+	 * @param	angle the target angle
+	 * @param	transformationOrigin the rotation center
+	 */
+	public function setRotation(angle:Int, transformationOrigin:TransformationOriginValue):Void {
+		
+		_matrix.setRotation(angle, getTransformationOriginPoint(transformationOrigin));
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Return the current rotation angle in deg
+	 * @return an Int from 0 to 360
+	 */
+	public function getRotation():Int { 
+		return _matrix.getRotation();
+	}
+	
+	/////////////////
+	// SCALING
+	/////////////////
+	
+	/**
+	 * Scale the domObject with the scaleX and scaleY factor, using the transformationOrigin as scaling
+	 * center
+	 * @param	scaleX the horizontal scale factor
+	 * @param	scaleY the vertical scale factor
+	 * @param	transformationOrigin the scale center, represented as an enum value or as a point
+	 */
+	public function scale(scaleX:Float, scaleY:Float, transformationOrigin:TransformationOriginValue):Void
+	{
+		//use the matrix API, retrieve the scale center
+		_matrix.scale(scaleX, scaleY, getTransformationOriginPoint(transformationOrigin));
+		
+		//refresh the matrix to refresh the domObject display
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * set the absolut x scale of the domObject instead of adding it to the current scale
+	 * @param	scaleX the target x scale
+	 * @param	transformationOrigin the scale center
+	 */
+	public function setScaleX(scaleX:Float, transformationOrigin:TransformationOriginValue):Void
+	{
+		_matrix.setScaleX(scaleX, getTransformationOriginPoint(transformationOrigin));
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Return the current x scale
+	 * @return a float, 1 corresponds to no x scale
+	 */
+	public function getScaleX():Float { 
+		return _matrix.getScaleX();
+	}
+	
+	/**
+	 * set the absolut y scale of the domObject instead of adding it to the current scale
+	 * @param	scaleX the target y scale
+	 * @param	transformationOrigin the scale center
+	 */
+	public function setScaleY(scaleY:Float, transformationOrigin:TransformationOriginValue):Void
+	{
+		_matrix.setScaleY(scaleY, getTransformationOriginPoint(transformationOrigin));
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Return the current y scale
+	 * @return a float, 1 corresponds to no y scale
+	 */
+	public function getScaleY():Float { 
+		return _matrix.getScaleY();
+	}
+	
+	/////////////////
+	// SKEWING
+	/////////////////
+	
+	/**
+	 * skew the domObject with the skewX and skewY factor, using the transformationOrigin as skewing
+	 * center
+	 * @param	skewX the horizontal skew factor
+	 * @param	skewY the vertical skew factor
+	 * @param	transformationOrigin the skew center, represented as an enum value or as a point
+	 */
+	public function skew(skewX:Float, skewY:Float, transformationOrigin:TransformationOriginValue):Void
+	{
+		//use the matrix API, retrieve the skew center
+		_matrix.skew(skewX, skewY, getTransformationOriginPoint(transformationOrigin));
+		
+		//refresh the matrix to refresh the domObject display
+		setMatrix(this._matrix);
+	}
+	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// DOM SETTER/GETTER
 	// Generic Setters/Getters to manipulate any attribute of the DOMObject
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -348,6 +514,7 @@ class DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// EVENTS
 	// Private native event handler method
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -440,7 +607,8 @@ class DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Setters/Getters to manipulate a native DOMObject
+	// POSITIONING SETTERS/GETTERS
+	// Setters/Getters to manipulate a native DOMObject positioning in the publication
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	public function setX(value:Int):Void {}
@@ -458,10 +626,6 @@ class DOMObjectBase
 	public function setHeight(value:Int):Void {}
 	
 	public function getHeight():Int { return 0; }
-	
-	public function setRotation(value:Int):Void {}
-	
-	public function getRotation():Int { return 0; }
 	
 	public function setZOrder(value:Int) {}
 	

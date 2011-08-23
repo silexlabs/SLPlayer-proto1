@@ -1,3444 +1,986 @@
 $estr = function() { return js.Boot.__string_rec(this,''); }
+if(typeof org=='undefined') org = {}
+if(!org.silex) org.silex = {}
+if(!org.silex.runtime) org.silex.runtime = {}
+if(!org.silex.runtime.domobject) org.silex.runtime.domobject = {}
+if(!org.silex.runtime.domobject.base) org.silex.runtime.domobject.base = {}
+org.silex.runtime.domobject.base.DOMObjectBase = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	this._referenceToNativeDOM = referenceToNativeDOMObject;
+	this._children = new Array();
+	this._matrix = new org.silex.runtime.domobject.Matrix();
+	this.setNativeListeners();
+}}
+org.silex.runtime.domobject.base.DOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","DOMObjectBase"];
+org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onPress = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onDoubleClick = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onRelease = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onRollOver = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onRollOut = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onMouseMove = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onMouseWheel = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onFocusIn = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onFocusOut = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype._referenceToNativeDOM = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype._parent = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype._children = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype._matrix = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.addChild = function(domObject) {
+	domObject.setParent(this);
+	this._children.push(domObject);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.removeChild = function(domObject) {
+	domObject.setParent(null);
+	this._children.remove(domObject);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getParent = function() {
+	return this._parent;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setParent = function(domObject) {
+	this._parent = domObject;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getChildren = function() {
+	return this._children;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getReferenceToNativeDOM = function() {
+	return this._referenceToNativeDOM;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setIsVisible = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getIsVisible = function() {
+	return false;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setAlpha = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getAlpha = function() {
+	return 0;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setMatrix = function(matrix) {
+	this._matrix = matrix;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getMatrix = function() {
+	return this._matrix;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.resetTransformations = function() {
+	this._matrix.identity();
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getTransformationOriginPoint = function(transformationOrigin) {
+	var transformationOriginPoint = { x : 0.0, y : 0.0};
+	var $e = transformationOrigin;
+	switch( $e[1] ) {
+	case 1:
+	var point = $e[2];
+	{
+		transformationOriginPoint = point;
+	}break;
+	case 0:
+	var transformationOriginY = $e[3], transformationOriginX = $e[2];
+	{
+		var $e = transformationOriginX;
+		switch( $e[1] ) {
+		case 0:
+		{
+			transformationOriginPoint.x = 0;
+		}break;
+		case 1:
+		{
+			transformationOriginPoint.x = this.getWidth() / 2;
+		}break;
+		case 2:
+		{
+			transformationOriginPoint.x = this.getWidth();
+		}break;
+		}
+		var $e = transformationOriginY;
+		switch( $e[1] ) {
+		case 0:
+		{
+			transformationOriginPoint.y = 0;
+		}break;
+		case 1:
+		{
+			transformationOriginPoint.y = this.getHeight() / 2;
+		}break;
+		case 2:
+		{
+			transformationOriginPoint.y = this.getHeight();
+		}break;
+		}
+	}break;
+	}
+	return transformationOriginPoint;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.translate = function(x,y) {
+	this._matrix.translate(x,y);
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setTranslationX = function(translationX) {
+	this._matrix.setTranslationX(translationX);
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getTranslationX = function() {
+	return this._matrix.getTranslationX();
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setTranslationY = function(translationY) {
+	this._matrix.setTranslationY(translationY);
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getTranslationY = function() {
+	return this._matrix.getTranslationY();
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.rotate = function(angle,transformationOrigin) {
+	this._matrix.rotate(angle,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setRotation = function(angle,transformationOrigin) {
+	this._matrix.setRotation(angle,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getRotation = function() {
+	return this._matrix.getRotation();
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.scale = function(scaleX,scaleY,transformationOrigin) {
+	this._matrix.scale(scaleX,scaleY,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setScaleX = function(scaleX,transformationOrigin) {
+	this._matrix.setScaleX(scaleX,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getScaleX = function() {
+	return this._matrix.getScaleX();
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setScaleY = function(scaleY,transformationOrigin) {
+	this._matrix.setScaleY(scaleY,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getScaleY = function() {
+	return this._matrix.getScaleY();
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.skew = function(skewX,skewY,transformationOrigin) {
+	this._matrix.skew(skewX,skewY,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setAttribute = function(propertyName,propertyValue) {
+	this._referenceToNativeDOM[propertyName] = propertyValue;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getAttribute = function(propertyName) {
+	return Reflect.field(this._referenceToNativeDOM,propertyName);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setNativeListeners = function() {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.unsetNativeListeners = function() {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onNativePress = function(event) {
+	if(this.onPress != null) {
+		this.onPress();
+	}
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onNativeDoubleClick = function(event) {
+	if(this.onDoubleClick != null) {
+		this.onDoubleClick();
+	}
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onNativeRelease = function(event) {
+	if(this.onRelease != null) {
+		this.onRelease();
+	}
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onNativeRollOver = function(event) {
+	if(this.onRollOver != null) {
+		this.onRollOver();
+	}
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onNativeRollOut = function(event) {
+	if(this.onRollOut != null) {
+		this.onRollOut();
+	}
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.onNativeMouseMove = function(event) {
+	if(this.onMouseMove != null) {
+		this.onMouseMove();
+	}
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setX = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getX = function() {
+	return 0;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setY = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getY = function() {
+	return 0;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setWidth = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getWidth = function() {
+	return 0;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setHeight = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getHeight = function() {
+	return 0;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setZOrder = function(value) {
+	null;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getZOrder = function() {
+	return 0;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.__class__ = org.silex.runtime.domobject.base.DOMObjectBase;
+if(!org.silex.runtime.domobject.js) org.silex.runtime.domobject.js = {}
+org.silex.runtime.domobject.js.DOMObject = function(referenceToNativeDOM) { if( referenceToNativeDOM === $_ ) return; {
+	org.silex.runtime.domobject.base.DOMObjectBase.call(this,referenceToNativeDOM);
+	referenceToNativeDOM.style.position = "absolute";
+}}
+org.silex.runtime.domobject.js.DOMObject.__name__ = ["org","silex","runtime","domobject","js","DOMObject"];
+org.silex.runtime.domobject.js.DOMObject.__super__ = org.silex.runtime.domobject.base.DOMObjectBase;
+for(var k in org.silex.runtime.domobject.base.DOMObjectBase.prototype ) org.silex.runtime.domobject.js.DOMObject.prototype[k] = org.silex.runtime.domobject.base.DOMObjectBase.prototype[k];
+org.silex.runtime.domobject.js.DOMObject.prototype.addChild = function(domObject) {
+	org.silex.runtime.domobject.base.DOMObjectBase.prototype.addChild.call(this,domObject);
+	this._referenceToNativeDOM.appendChild(domObject.getReferenceToNativeDOM());
+	domObject.getReferenceToNativeDOM().style.zIndex = this._children.length - 1;
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.removeChild = function(domObject) {
+	org.silex.runtime.domobject.base.DOMObjectBase.prototype.removeChild.call(this,domObject);
+	this._referenceToNativeDOM.removeChild(domObject.getReferenceToNativeDOM());
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setIsVisible = function(value) {
+	if(value == true) {
+		this._referenceToNativeDOM.style.visibility = "visible";
+	}
+	else {
+		this._referenceToNativeDOM.style.visibility = "hidden";
+	}
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getIsVisible = function() {
+	if(this._referenceToNativeDOM.style.visibility == "visible") {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setAlpha = function(value) {
+	org.silex.runtime.domobject.base.DOMObjectBase.prototype.setAlpha.call(this,value);
+	this._referenceToNativeDOM.style.opacity = value;
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getAlpha = function() {
+	return Std.parseFloat(this._referenceToNativeDOM.style.opacity);
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setMatrix = function(matrix) {
+	org.silex.runtime.domobject.base.DOMObjectBase.prototype.setMatrix.call(this,matrix);
+	var nativeSprite = this._referenceToNativeDOM;
+	var matrixData = matrix.getMatrixData();
+	var cssMatrixProperty = "matrix(" + matrixData.a + "," + matrixData.b + "," + matrixData.c + "," + matrixData.d + "," + matrixData.e + "," + matrixData.f + ")";
+	if(this._referenceToNativeDOM.style.transform != null) {
+		this._referenceToNativeDOM.style.transform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.transformOrigin = "0 0";
+	}
+	if(this._referenceToNativeDOM.style.MozTransform != null) {
+		this._referenceToNativeDOM.style.MozTransform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.MozTransformOrigin = "0 0";
+	}
+	else if(this._referenceToNativeDOM.style.WebkitTransform != null) {
+		this._referenceToNativeDOM.style.WebkitTransform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.WebkitTransformOrigin = "0 0";
+	}
+	else if(this._referenceToNativeDOM.style.OTransform != null) {
+		this._referenceToNativeDOM.style.OTransform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.OTransform = "0 0";
+	}
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setNativeListeners = function() {
+	this._referenceToNativeDOM.onmousedown = $closure(this,"onNativePress");
+	this._referenceToNativeDOM.onmouseup = $closure(this,"onNativeRelease");
+	this._referenceToNativeDOM.onmouseover = $closure(this,"onNativeRollOver");
+	this._referenceToNativeDOM.onmouseout = $closure(this,"onNativeRollOut");
+	this._referenceToNativeDOM.onmousemove = $closure(this,"onNativeMouseMove");
+	this._referenceToNativeDOM.ondblclick = $closure(this,"onNativeDoubleClick");
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.unsetNativeListeners = function() {
+	this._referenceToNativeDOM.onmousedown = null;
+	this._referenceToNativeDOM.onmouseup = null;
+	this._referenceToNativeDOM.onmouseover = null;
+	this._referenceToNativeDOM.onmouseout = null;
+	this._referenceToNativeDOM.onmousemove = null;
+	this._referenceToNativeDOM.ondblclick = null;
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setX = function(value) {
+	this._referenceToNativeDOM.style.left = value + "px";
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getX = function() {
+	return Std.parseInt(this._referenceToNativeDOM.style.left);
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setY = function(value) {
+	this._referenceToNativeDOM.style.top = value + "px";
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getY = function() {
+	return Std.parseInt(this._referenceToNativeDOM.style.top);
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setWidth = function(value) {
+	this._referenceToNativeDOM.style.width = value + "px";
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getWidth = function() {
+	return Std.parseInt(this._referenceToNativeDOM.style.width);
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setHeight = function(value) {
+	this._referenceToNativeDOM.style.height = value + "px";
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getHeight = function() {
+	return Std.parseInt(this._referenceToNativeDOM.style.height);
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setZOrder = function(value) {
+	if(value > this._parent.getChildren().length - 1) {
+		value = this._parent.getChildren().length - 1;
+	}
+	var nativeParent = this._referenceToNativeDOM.parentNode;
+	var numChildren = nativeParent.childNodes.length;
+	var oldIndex = this.getZOrder();
+	var newIndex = value;
+	{
+		var _g = 0;
+		while(_g < numChildren) {
+			var i = _g++;
+			var currentChildren = nativeParent.childNodes[i];
+			if(currentChildren.style != null) {
+				var currentChildrenZIndex = currentChildren.style.zIndex;
+				if(currentChildrenZIndex > oldIndex) {
+					currentChildrenZIndex--;
+					currentChildren.style.zIndex = currentChildrenZIndex;
+				}
+			}
+		}
+	}
+	{
+		var _g = 0;
+		while(_g < numChildren) {
+			var i = _g++;
+			var currentChildren = nativeParent.childNodes[i];
+			if(currentChildren.style != null) {
+				var currentChildrenZIndex = currentChildren.style.zIndex;
+				if(currentChildrenZIndex >= newIndex) {
+					currentChildrenZIndex++;
+					currentChildren.style.zIndex = currentChildrenZIndex;
+				}
+			}
+		}
+	}
+	this._referenceToNativeDOM.style.zIndex = value;
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.getZOrder = function() {
+	return Std.parseInt(this._referenceToNativeDOM.style.zIndex);
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.__class__ = org.silex.runtime.domobject.js.DOMObject;
+org.silex.runtime.domobject.base.TextDOMObjectBase = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.js.DOMObject.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.base.TextDOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","TextDOMObjectBase"];
+org.silex.runtime.domobject.base.TextDOMObjectBase.__super__ = org.silex.runtime.domobject.js.DOMObject;
+for(var k in org.silex.runtime.domobject.js.DOMObject.prototype ) org.silex.runtime.domobject.base.TextDOMObjectBase.prototype[k] = org.silex.runtime.domobject.js.DOMObject.prototype[k];
+org.silex.runtime.domobject.base.TextDOMObjectBase.prototype._text = null;
+org.silex.runtime.domobject.base.TextDOMObjectBase.prototype.setText = function(text) {
+	this._text = text;
+}
+org.silex.runtime.domobject.base.TextDOMObjectBase.prototype.getText = function() {
+	return this._text;
+}
+org.silex.runtime.domobject.base.TextDOMObjectBase.prototype.__class__ = org.silex.runtime.domobject.base.TextDOMObjectBase;
 if(typeof utest=='undefined') utest = {}
 if(!utest.ui) utest.ui = {}
 if(!utest.ui.common) utest.ui.common = {}
-utest.ui.common.PackageResult = function(packageName) { if( packageName === $_ ) return; {
-	$s.push("utest.ui.common.PackageResult::new");
-	var $spos = $s.length;
-	this.packageName = packageName;
-	this.classes = new Hash();
-	this.packages = new Hash();
-	this.stats = new utest.ui.common.ResultStats();
-	$s.pop();
-}}
-utest.ui.common.PackageResult.__name__ = ["utest","ui","common","PackageResult"];
-utest.ui.common.PackageResult.prototype.addClass = function(result) {
-	$s.push("utest.ui.common.PackageResult::addClass");
-	var $spos = $s.length;
-	this.classes.set(result.className,result);
-	this.stats.wire(result.stats);
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.addPackage = function(result) {
-	$s.push("utest.ui.common.PackageResult::addPackage");
-	var $spos = $s.length;
-	this.packages.set(result.packageName,result);
-	this.stats.wire(result.stats);
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.addResult = function(result,flattenPackage) {
-	$s.push("utest.ui.common.PackageResult::addResult");
-	var $spos = $s.length;
-	var pack = this.getOrCreatePackage(result.pack,flattenPackage,this);
-	var cls = this.getOrCreateClass(pack,result.cls,result.setup,result.teardown);
-	var fix = this.createFixture(result.method,result.assertations);
-	cls.add(fix);
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.classNames = function(errorsHavePriority) {
-	$s.push("utest.ui.common.PackageResult::classNames");
-	var $spos = $s.length;
-	if(errorsHavePriority == null) errorsHavePriority = true;
-	var names = [];
-	{ var $it0 = this.classes.keys();
-	while( $it0.hasNext() ) { var name = $it0.next();
-	names.push(name);
-	}}
-	if(errorsHavePriority) {
-		var me = this;
-		names.sort(function(a,b) {
-			$s.push("utest.ui.common.PackageResult::classNames@64");
-			var $spos = $s.length;
-			var $as = me.getClass(a).stats;
-			var bs = me.getClass(b).stats;
-			if($as.hasErrors) {
-				{
-					var $tmp = ((!bs.hasErrors)?-1:(($as.errors == bs.errors?Reflect.compare(a,b):Reflect.compare($as.errors,bs.errors))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasErrors) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else if($as.hasFailures) {
-				{
-					var $tmp = ((!bs.hasFailures)?-1:(($as.failures == bs.failures?Reflect.compare(a,b):Reflect.compare($as.failures,bs.failures))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasFailures) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else if($as.hasWarnings) {
-				{
-					var $tmp = ((!bs.hasWarnings)?-1:(($as.warnings == bs.warnings?Reflect.compare(a,b):Reflect.compare($as.warnings,bs.warnings))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasWarnings) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else {
-				{
-					var $tmp = Reflect.compare(a,b);
-					$s.pop();
-					return $tmp;
-				}
-			}
-			$s.pop();
-		});
-	}
-	else {
-		names.sort(function(a,b) {
-			$s.push("utest.ui.common.PackageResult::classNames@84");
-			var $spos = $s.length;
-			{
-				var $tmp = Reflect.compare(a,b);
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		});
-	}
-	{
-		$s.pop();
-		return names;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.classes = null;
-utest.ui.common.PackageResult.prototype.createFixture = function(method,assertations) {
-	$s.push("utest.ui.common.PackageResult::createFixture");
-	var $spos = $s.length;
-	var f = new utest.ui.common.FixtureResult(method);
-	{ var $it0 = assertations.iterator();
-	while( $it0.hasNext() ) { var assertation = $it0.next();
-	f.add(assertation);
-	}}
-	{
-		$s.pop();
-		return f;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.existsClass = function(name) {
-	$s.push("utest.ui.common.PackageResult::existsClass");
-	var $spos = $s.length;
-	{
-		var $tmp = this.classes.exists(name);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.existsPackage = function(name) {
-	$s.push("utest.ui.common.PackageResult::existsPackage");
-	var $spos = $s.length;
-	{
-		var $tmp = this.packages.exists(name);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.getClass = function(name) {
-	$s.push("utest.ui.common.PackageResult::getClass");
-	var $spos = $s.length;
-	{
-		var $tmp = this.classes.get(name);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.getOrCreateClass = function(pack,cls,setup,teardown) {
-	$s.push("utest.ui.common.PackageResult::getOrCreateClass");
-	var $spos = $s.length;
-	if(pack.existsClass(cls)) {
-		var $tmp = pack.getClass(cls);
-		$s.pop();
-		return $tmp;
-	}
-	var c = new utest.ui.common.ClassResult(cls,setup,teardown);
-	pack.addClass(c);
-	{
-		$s.pop();
-		return c;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.getOrCreatePackage = function(pack,flat,ref) {
-	$s.push("utest.ui.common.PackageResult::getOrCreatePackage");
-	var $spos = $s.length;
-	if(pack == null || pack == "") {
-		$s.pop();
-		return ref;
-	}
-	if(flat) {
-		if(ref.existsPackage(pack)) {
-			var $tmp = ref.getPackage(pack);
-			$s.pop();
-			return $tmp;
-		}
-		var p = new utest.ui.common.PackageResult(pack);
-		ref.addPackage(p);
-		{
-			$s.pop();
-			return p;
-		}
-	}
-	else {
-		var parts = pack.split(".");
-		{
-			var _g = 0;
-			while(_g < parts.length) {
-				var part = parts[_g];
-				++_g;
-				ref = this.getOrCreatePackage(part,true,ref);
-			}
-		}
-		{
-			$s.pop();
-			return ref;
-		}
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.getPackage = function(name) {
-	$s.push("utest.ui.common.PackageResult::getPackage");
-	var $spos = $s.length;
-	if(this.packageName == null && name == "") {
-		$s.pop();
-		return this;
-	}
-	{
-		var $tmp = this.packages.get(name);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.packageName = null;
-utest.ui.common.PackageResult.prototype.packageNames = function(errorsHavePriority) {
-	$s.push("utest.ui.common.PackageResult::packageNames");
-	var $spos = $s.length;
-	if(errorsHavePriority == null) errorsHavePriority = true;
-	var names = [];
-	if(this.packageName == null) names.push("");
-	{ var $it0 = this.packages.keys();
-	while( $it0.hasNext() ) { var name = $it0.next();
-	names.push(name);
-	}}
-	if(errorsHavePriority) {
-		var me = this;
-		names.sort(function(a,b) {
-			$s.push("utest.ui.common.PackageResult::packageNames@98");
-			var $spos = $s.length;
-			var $as = me.getPackage(a).stats;
-			var bs = me.getPackage(b).stats;
-			if($as.hasErrors) {
-				{
-					var $tmp = ((!bs.hasErrors)?-1:(($as.errors == bs.errors?Reflect.compare(a,b):Reflect.compare($as.errors,bs.errors))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasErrors) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else if($as.hasFailures) {
-				{
-					var $tmp = ((!bs.hasFailures)?-1:(($as.failures == bs.failures?Reflect.compare(a,b):Reflect.compare($as.failures,bs.failures))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasFailures) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else if($as.hasWarnings) {
-				{
-					var $tmp = ((!bs.hasWarnings)?-1:(($as.warnings == bs.warnings?Reflect.compare(a,b):Reflect.compare($as.warnings,bs.warnings))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasWarnings) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else {
-				{
-					var $tmp = Reflect.compare(a,b);
-					$s.pop();
-					return $tmp;
-				}
-			}
-			$s.pop();
-		});
-	}
-	else {
-		names.sort(function(a,b) {
-			$s.push("utest.ui.common.PackageResult::packageNames@118");
-			var $spos = $s.length;
-			{
-				var $tmp = Reflect.compare(a,b);
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		});
-	}
-	{
-		$s.pop();
-		return names;
-	}
-	$s.pop();
-}
-utest.ui.common.PackageResult.prototype.packages = null;
-utest.ui.common.PackageResult.prototype.stats = null;
-utest.ui.common.PackageResult.prototype.__class__ = utest.ui.common.PackageResult;
-if(typeof haxe=='undefined') haxe = {}
-haxe.StackItem = { __ename__ : ["haxe","StackItem"], __constructs__ : ["CFunction","Module","FilePos","Method","Lambda"] }
-haxe.StackItem.CFunction = ["CFunction",0];
-haxe.StackItem.CFunction.toString = $estr;
-haxe.StackItem.CFunction.__enum__ = haxe.StackItem;
-haxe.StackItem.FilePos = function(s,file,line) { var $x = ["FilePos",2,s,file,line]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
-haxe.StackItem.Lambda = function(v) { var $x = ["Lambda",4,v]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
-haxe.StackItem.Method = function(classname,method) { var $x = ["Method",3,classname,method]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
-haxe.StackItem.Module = function(m) { var $x = ["Module",1,m]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
-haxe.Stack = function() { }
-haxe.Stack.__name__ = ["haxe","Stack"];
-haxe.Stack.callStack = function() {
-	$s.push("haxe.Stack::callStack");
-	var $spos = $s.length;
-	{
-		var $tmp = haxe.Stack.makeStack("$s");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.Stack.exceptionStack = function() {
-	$s.push("haxe.Stack::exceptionStack");
-	var $spos = $s.length;
-	{
-		var $tmp = haxe.Stack.makeStack("$e");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.Stack.toString = function(stack) {
-	$s.push("haxe.Stack::toString");
-	var $spos = $s.length;
-	var b = new StringBuf();
-	{
-		var _g = 0;
-		while(_g < stack.length) {
-			var s = stack[_g];
-			++_g;
-			b.b[b.b.length] = "\nCalled from ";
-			haxe.Stack.itemToString(b,s);
-		}
-	}
-	{
-		var $tmp = b.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.Stack.itemToString = function(b,s) {
-	$s.push("haxe.Stack::itemToString");
-	var $spos = $s.length;
-	var $e = (s);
-	switch( $e[1] ) {
-	case 0:
-	{
-		b.b[b.b.length] = "a C function";
-	}break;
-	case 1:
-	var m = $e[2];
-	{
-		b.b[b.b.length] = "module ";
-		b.b[b.b.length] = m;
-	}break;
-	case 2:
-	var line = $e[4], file = $e[3], s1 = $e[2];
-	{
-		if(s1 != null) {
-			haxe.Stack.itemToString(b,s1);
-			b.b[b.b.length] = " (";
-		}
-		b.b[b.b.length] = file;
-		b.b[b.b.length] = " line ";
-		b.b[b.b.length] = line;
-		if(s1 != null) b.b[b.b.length] = ")";
-	}break;
-	case 3:
-	var meth = $e[3], cname = $e[2];
-	{
-		b.b[b.b.length] = cname;
-		b.b[b.b.length] = ".";
-		b.b[b.b.length] = meth;
-	}break;
-	case 4:
-	var n = $e[2];
-	{
-		b.b[b.b.length] = "local function #";
-		b.b[b.b.length] = n;
-	}break;
-	}
-	$s.pop();
-}
-haxe.Stack.makeStack = function(s) {
-	$s.push("haxe.Stack::makeStack");
-	var $spos = $s.length;
-	var a = (function($this) {
-		var $r;
-		try {
-			$r = eval(s);
-		}
-		catch( $e0 ) {
-			{
-				var e = $e0;
-				$r = (function($this) {
-					var $r;
-					$e = [];
-					while($s.length >= $spos) $e.unshift($s.pop());
-					$s.push($e[0]);
-					$r = [];
-					return $r;
-				}($this));
-			}
-		}
-		return $r;
-	}(this));
-	var m = new Array();
-	{
-		var _g1 = 0, _g = a.length - (s == "$s"?2:0);
-		while(_g1 < _g) {
-			var i = _g1++;
-			var d = a[i].split("::");
-			m.unshift(haxe.StackItem.Method(d[0],d[1]));
-		}
-	}
-	{
-		$s.pop();
-		return m;
-	}
-	$s.pop();
-}
-haxe.Stack.prototype.__class__ = haxe.Stack;
-StringTools = function() { }
-StringTools.__name__ = ["StringTools"];
-StringTools.urlEncode = function(s) {
-	$s.push("StringTools::urlEncode");
-	var $spos = $s.length;
-	{
-		var $tmp = encodeURIComponent(s);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.urlDecode = function(s) {
-	$s.push("StringTools::urlDecode");
-	var $spos = $s.length;
-	{
-		var $tmp = decodeURIComponent(s.split("+").join(" "));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.htmlEscape = function(s) {
-	$s.push("StringTools::htmlEscape");
-	var $spos = $s.length;
-	{
-		var $tmp = s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.htmlUnescape = function(s) {
-	$s.push("StringTools::htmlUnescape");
-	var $spos = $s.length;
-	{
-		var $tmp = s.split("&gt;").join(">").split("&lt;").join("<").split("&amp;").join("&");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.startsWith = function(s,start) {
-	$s.push("StringTools::startsWith");
-	var $spos = $s.length;
-	{
-		var $tmp = (s.length >= start.length && s.substr(0,start.length) == start);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.endsWith = function(s,end) {
-	$s.push("StringTools::endsWith");
-	var $spos = $s.length;
-	var elen = end.length;
-	var slen = s.length;
-	{
-		var $tmp = (slen >= elen && s.substr(slen - elen,elen) == end);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.isSpace = function(s,pos) {
-	$s.push("StringTools::isSpace");
-	var $spos = $s.length;
-	var c = s.charCodeAt(pos);
-	{
-		var $tmp = (c >= 9 && c <= 13) || c == 32;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.ltrim = function(s) {
-	$s.push("StringTools::ltrim");
-	var $spos = $s.length;
-	var l = s.length;
-	var r = 0;
-	while(r < l && StringTools.isSpace(s,r)) {
-		r++;
-	}
-	if(r > 0) {
-		var $tmp = s.substr(r,l - r);
-		$s.pop();
-		return $tmp;
-	}
-	else {
-		$s.pop();
-		return s;
-	}
-	$s.pop();
-}
-StringTools.rtrim = function(s) {
-	$s.push("StringTools::rtrim");
-	var $spos = $s.length;
-	var l = s.length;
-	var r = 0;
-	while(r < l && StringTools.isSpace(s,(l - r) - 1)) {
-		r++;
-	}
-	if(r > 0) {
-		{
-			var $tmp = s.substr(0,l - r);
-			$s.pop();
-			return $tmp;
-		}
-	}
-	else {
-		{
-			$s.pop();
-			return s;
-		}
-	}
-	$s.pop();
-}
-StringTools.trim = function(s) {
-	$s.push("StringTools::trim");
-	var $spos = $s.length;
-	{
-		var $tmp = StringTools.ltrim(StringTools.rtrim(s));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.rpad = function(s,c,l) {
-	$s.push("StringTools::rpad");
-	var $spos = $s.length;
-	var sl = s.length;
-	var cl = c.length;
-	while(sl < l) {
-		if(l - sl < cl) {
-			s += c.substr(0,l - sl);
-			sl = l;
-		}
-		else {
-			s += c;
-			sl += cl;
-		}
-	}
-	{
-		$s.pop();
-		return s;
-	}
-	$s.pop();
-}
-StringTools.lpad = function(s,c,l) {
-	$s.push("StringTools::lpad");
-	var $spos = $s.length;
-	var ns = "";
-	var sl = s.length;
-	if(sl >= l) {
-		$s.pop();
-		return s;
-	}
-	var cl = c.length;
-	while(sl < l) {
-		if(l - sl < cl) {
-			ns += c.substr(0,l - sl);
-			sl = l;
-		}
-		else {
-			ns += c;
-			sl += cl;
-		}
-	}
-	{
-		var $tmp = ns + s;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.replace = function(s,sub,by) {
-	$s.push("StringTools::replace");
-	var $spos = $s.length;
-	{
-		var $tmp = s.split(sub).join(by);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.hex = function(n,digits) {
-	$s.push("StringTools::hex");
-	var $spos = $s.length;
-	var s = "";
-	var hexChars = "0123456789ABCDEF";
-	do {
-		s = hexChars.charAt(n & 15) + s;
-		n >>>= 4;
-	} while(n > 0);
-	if(digits != null) while(s.length < digits) s = "0" + s;
-	{
-		$s.pop();
-		return s;
-	}
-	$s.pop();
-}
-StringTools.fastCodeAt = function(s,index) {
-	$s.push("StringTools::fastCodeAt");
-	var $spos = $s.length;
-	{
-		var $tmp = s.cca(index);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.isEOF = function(c) {
-	$s.push("StringTools::isEOF");
-	var $spos = $s.length;
-	{
-		var $tmp = c != c;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringTools.prototype.__class__ = StringTools;
 utest.ui.common.IReport = function() { }
 utest.ui.common.IReport.__name__ = ["utest","ui","common","IReport"];
-utest.ui.common.IReport.prototype.displayHeader = null;
 utest.ui.common.IReport.prototype.displaySuccessResults = null;
+utest.ui.common.IReport.prototype.displayHeader = null;
 utest.ui.common.IReport.prototype.setHandler = null;
 utest.ui.common.IReport.prototype.__class__ = utest.ui.common.IReport;
-if(!utest.ui.text) utest.ui.text = {}
-utest.ui.text.PlainTextReport = function(runner,outputHandler) { if( runner === $_ ) return; {
-	$s.push("utest.ui.text.PlainTextReport::new");
-	var $spos = $s.length;
-	this.aggregator = new utest.ui.common.ResultAggregator(runner,true);
-	runner.onStart.add($closure(this,"start"));
-	this.aggregator.onComplete.add($closure(this,"complete"));
-	if(null != outputHandler) this.setHandler(outputHandler);
-	this.displaySuccessResults = utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults;
-	this.displayHeader = utest.ui.common.HeaderDisplayMode.AlwaysShowHeader;
-	$s.pop();
+if(typeof haxe=='undefined') haxe = {}
+haxe.Http = function(url) { if( url === $_ ) return; {
+	this.url = url;
+	this.headers = new Hash();
+	this.params = new Hash();
+	this.async = true;
 }}
-utest.ui.text.PlainTextReport.__name__ = ["utest","ui","text","PlainTextReport"];
-utest.ui.text.PlainTextReport.prototype.addHeader = function(buf,result) {
-	$s.push("utest.ui.text.PlainTextReport::addHeader");
-	var $spos = $s.length;
-	if(!utest.ui.common.ReportTools.hasHeader(this,result.stats)) {
-		$s.pop();
-		return;
+haxe.Http.__name__ = ["haxe","Http"];
+haxe.Http.requestUrl = function(url) {
+	var h = new haxe.Http(url);
+	h.async = false;
+	var r = null;
+	h.onData = function(d) {
+		r = d;
 	}
-	var end = haxe.Timer.stamp();
-	var time = Std["int"]((end - this.startTime) * 1000) / 1000;
-	buf.b[buf.b.length] = ((("results: " + ((result.stats.isOk?"ALL TESTS OK":"SOME TESTS FAILURES"))) + this.newline) + " ") + this.newline;
-	buf.b[buf.b.length] = ("assertations: " + result.stats.assertations) + this.newline;
-	buf.b[buf.b.length] = ("successes: " + result.stats.successes) + this.newline;
-	buf.b[buf.b.length] = ("errors: " + result.stats.errors) + this.newline;
-	buf.b[buf.b.length] = ("failures: " + result.stats.failures) + this.newline;
-	buf.b[buf.b.length] = ("warnings: " + result.stats.warnings) + this.newline;
-	buf.b[buf.b.length] = ("execution time: " + time) + this.newline;
-	buf.b[buf.b.length] = this.newline;
-	$s.pop();
+	h.onError = function(e) {
+		throw e;
+	}
+	h.request(false);
+	return r;
 }
-utest.ui.text.PlainTextReport.prototype.aggregator = null;
-utest.ui.text.PlainTextReport.prototype.complete = function(result) {
-	$s.push("utest.ui.text.PlainTextReport::complete");
-	var $spos = $s.length;
-	this.result = result;
-	this.handler(this);
-	$s.pop();
+haxe.Http.prototype.url = null;
+haxe.Http.prototype.async = null;
+haxe.Http.prototype.postData = null;
+haxe.Http.prototype.headers = null;
+haxe.Http.prototype.params = null;
+haxe.Http.prototype.setHeader = function(header,value) {
+	this.headers.set(header,value);
 }
-utest.ui.text.PlainTextReport.prototype.displayHeader = null;
-utest.ui.text.PlainTextReport.prototype.displaySuccessResults = null;
-utest.ui.text.PlainTextReport.prototype.dumpStack = function(stack) {
-	$s.push("utest.ui.text.PlainTextReport::dumpStack");
-	var $spos = $s.length;
-	if(stack.length == 0) {
-		$s.pop();
-		return "";
-	}
-	var parts = haxe.Stack.toString(stack).split("\n");
-	var r = [];
-	{
-		var _g = 0;
-		while(_g < parts.length) {
-			var part = parts[_g];
-			++_g;
-			if(part.indexOf(" utest.") >= 0) continue;
-			r.push(part);
-		}
-	}
-	{
-		var $tmp = r.join(this.newline);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+haxe.Http.prototype.setParameter = function(param,value) {
+	this.params.set(param,value);
 }
-utest.ui.text.PlainTextReport.prototype.getResults = function() {
-	$s.push("utest.ui.text.PlainTextReport::getResults");
-	var $spos = $s.length;
-	var buf = new StringBuf();
-	this.addHeader(buf,this.result);
-	{
-		var _g = 0, _g1 = this.result.packageNames();
-		while(_g < _g1.length) {
-			var pname = _g1[_g];
-			++_g;
-			var pack = this.result.getPackage(pname);
-			if(utest.ui.common.ReportTools.skipResult(this,pack.stats,this.result.stats.isOk)) continue;
-			{
-				var _g2 = 0, _g3 = pack.classNames();
-				while(_g2 < _g3.length) {
-					var cname = _g3[_g2];
-					++_g2;
-					var cls = pack.getClass(cname);
-					if(utest.ui.common.ReportTools.skipResult(this,cls.stats,this.result.stats.isOk)) continue;
-					buf.b[buf.b.length] = (((pname == ""?"":pname + ".")) + cname) + this.newline;
-					{
-						var _g4 = 0, _g5 = cls.methodNames();
-						while(_g4 < _g5.length) {
-							var mname = _g5[_g4];
-							++_g4;
-							var fix = cls.get(mname);
-							if(utest.ui.common.ReportTools.skipResult(this,fix.stats,this.result.stats.isOk)) continue;
-							buf.b[buf.b.length] = (this.indents(1) + mname) + ": ";
-							if(fix.stats.isOk) {
-								buf.b[buf.b.length] = "OK ";
-							}
-							else if(fix.stats.hasErrors) {
-								buf.b[buf.b.length] = "ERROR ";
-							}
-							else if(fix.stats.hasFailures) {
-								buf.b[buf.b.length] = "FAILURE ";
-							}
-							else if(fix.stats.hasWarnings) {
-								buf.b[buf.b.length] = "WARNING ";
-							}
-							var messages = "";
-							{ var $it0 = fix.iterator();
-							while( $it0.hasNext() ) { var assertation = $it0.next();
-							{
-								var $e = (assertation);
-								switch( $e[1] ) {
-								case 0:
-								var pos = $e[2];
-								{
-									buf.b[buf.b.length] = ".";
-								}break;
-								case 1:
-								var pos = $e[3], msg = $e[2];
-								{
-									buf.b[buf.b.length] = "F";
-									messages += ((((this.indents(2) + "line: ") + pos.lineNumber) + ", ") + msg) + this.newline;
-								}break;
-								case 2:
-								var s = $e[3], e = $e[2];
-								{
-									buf.b[buf.b.length] = "E";
-									messages += ((this.indents(2) + Std.string(e)) + this.dumpStack(s)) + this.newline;
-								}break;
-								case 3:
-								var s = $e[3], e = $e[2];
-								{
-									buf.b[buf.b.length] = "S";
-									messages += ((this.indents(2) + Std.string(e)) + this.dumpStack(s)) + this.newline;
-								}break;
-								case 4:
-								var s = $e[3], e = $e[2];
-								{
-									buf.b[buf.b.length] = "T";
-									messages += ((this.indents(2) + Std.string(e)) + this.dumpStack(s)) + this.newline;
-								}break;
-								case 5:
-								var s = $e[3], missedAsyncs = $e[2];
-								{
-									buf.b[buf.b.length] = "O";
-									messages += (((this.indents(2) + "missed async calls: ") + missedAsyncs) + this.dumpStack(s)) + this.newline;
-								}break;
-								case 6:
-								var s = $e[3], e = $e[2];
-								{
-									buf.b[buf.b.length] = "A";
-									messages += ((this.indents(2) + Std.string(e)) + this.dumpStack(s)) + this.newline;
-								}break;
-								case 7:
-								var msg = $e[2];
-								{
-									buf.b[buf.b.length] = "W";
-									messages += (this.indents(2) + msg) + this.newline;
-								}break;
-								}
-							}
-							}}
-							buf.b[buf.b.length] = this.newline;
-							buf.b[buf.b.length] = messages;
-						}
-					}
-				}
-			}
-		}
-	}
-	{
-		var $tmp = buf.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+haxe.Http.prototype.setPostData = function(data) {
+	this.postData = data;
 }
-utest.ui.text.PlainTextReport.prototype.handler = null;
-utest.ui.text.PlainTextReport.prototype.indent = null;
-utest.ui.text.PlainTextReport.prototype.indents = function(c) {
-	$s.push("utest.ui.text.PlainTextReport::indents");
-	var $spos = $s.length;
-	var s = "";
-	{
-		var _g = 0;
-		while(_g < c) {
-			var _ = _g++;
-			s += this.indent;
-		}
-	}
-	{
-		$s.pop();
-		return s;
-	}
-	$s.pop();
-}
-utest.ui.text.PlainTextReport.prototype.newline = null;
-utest.ui.text.PlainTextReport.prototype.result = null;
-utest.ui.text.PlainTextReport.prototype.setHandler = function(handler) {
-	$s.push("utest.ui.text.PlainTextReport::setHandler");
-	var $spos = $s.length;
-	this.handler = handler;
-	$s.pop();
-}
-utest.ui.text.PlainTextReport.prototype.start = function(e) {
-	$s.push("utest.ui.text.PlainTextReport::start");
-	var $spos = $s.length;
-	this.startTime = haxe.Timer.stamp();
-	$s.pop();
-}
-utest.ui.text.PlainTextReport.prototype.startTime = null;
-utest.ui.text.PlainTextReport.prototype.__class__ = utest.ui.text.PlainTextReport;
-utest.ui.text.PlainTextReport.__interfaces__ = [utest.ui.common.IReport];
-Reflect = function() { }
-Reflect.__name__ = ["Reflect"];
-Reflect.hasField = function(o,field) {
-	$s.push("Reflect::hasField");
-	var $spos = $s.length;
-	if(o.hasOwnProperty != null) {
-		var $tmp = o.hasOwnProperty(field);
-		$s.pop();
-		return $tmp;
-	}
-	var arr = Reflect.fields(o);
-	{ var $it0 = arr.iterator();
-	while( $it0.hasNext() ) { var t = $it0.next();
-	if(t == field) {
-		$s.pop();
-		return true;
-	}
-	}}
-	{
-		$s.pop();
-		return false;
-	}
-	$s.pop();
-}
-Reflect.field = function(o,field) {
-	$s.push("Reflect::field");
-	var $spos = $s.length;
-	var v = null;
-	try {
-		v = o[field];
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
-			}
-		}
-	}
-	{
-		$s.pop();
-		return v;
-	}
-	$s.pop();
-}
-Reflect.setField = function(o,field,value) {
-	$s.push("Reflect::setField");
-	var $spos = $s.length;
-	o[field] = value;
-	$s.pop();
-}
-Reflect.callMethod = function(o,func,args) {
-	$s.push("Reflect::callMethod");
-	var $spos = $s.length;
-	{
-		var $tmp = func.apply(o,args);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Reflect.fields = function(o) {
-	$s.push("Reflect::fields");
-	var $spos = $s.length;
-	if(o == null) {
-		var $tmp = new Array();
-		$s.pop();
-		return $tmp;
-	}
-	var a = new Array();
-	if(o.hasOwnProperty) {
-		
-				for(var i in o)
-					if( o.hasOwnProperty(i) )
-						a.push(i);
-			;
-	}
-	else {
-		var t;
-		try {
-			t = o.__proto__;
-		}
-		catch( $e0 ) {
-			{
-				var e = $e0;
-				{
-					$e = [];
-					while($s.length >= $spos) $e.unshift($s.pop());
-					$s.push($e[0]);
-					t = null;
-				}
-			}
-		}
-		if(t != null) o.__proto__ = null;
-		
-				for(var i in o)
-					if( i != "__proto__" )
-						a.push(i);
-			;
-		if(t != null) o.__proto__ = t;
-	}
-	{
-		$s.pop();
-		return a;
-	}
-	$s.pop();
-}
-Reflect.isFunction = function(f) {
-	$s.push("Reflect::isFunction");
-	var $spos = $s.length;
-	{
-		var $tmp = typeof(f) == "function" && f.__name__ == null;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Reflect.compare = function(a,b) {
-	$s.push("Reflect::compare");
-	var $spos = $s.length;
-	{
-		var $tmp = ((a == b)?0:((((a) > (b))?1:-1)));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Reflect.compareMethods = function(f1,f2) {
-	$s.push("Reflect::compareMethods");
-	var $spos = $s.length;
-	if(f1 == f2) {
-		$s.pop();
-		return true;
-	}
-	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) {
-		$s.pop();
-		return false;
-	}
-	{
-		var $tmp = f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Reflect.isObject = function(v) {
-	$s.push("Reflect::isObject");
-	var $spos = $s.length;
-	if(v == null) {
-		$s.pop();
-		return false;
-	}
-	var t = typeof(v);
-	{
-		var $tmp = (t == "string" || (t == "object" && !v.__enum__) || (t == "function" && v.__name__ != null));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Reflect.deleteField = function(o,f) {
-	$s.push("Reflect::deleteField");
-	var $spos = $s.length;
-	if(!Reflect.hasField(o,f)) {
-		$s.pop();
-		return false;
-	}
-	delete(o[f]);
-	{
-		$s.pop();
-		return true;
-	}
-	$s.pop();
-}
-Reflect.copy = function(o) {
-	$s.push("Reflect::copy");
-	var $spos = $s.length;
-	var o2 = { }
-	{
-		var _g = 0, _g1 = Reflect.fields(o);
-		while(_g < _g1.length) {
-			var f = _g1[_g];
-			++_g;
-			o2[f] = Reflect.field(o,f);
-		}
-	}
-	{
-		$s.pop();
-		return o2;
-	}
-	$s.pop();
-}
-Reflect.makeVarArgs = function(f) {
-	$s.push("Reflect::makeVarArgs");
-	var $spos = $s.length;
-	{
-		var $tmp = function() {
-			$s.push("Reflect::makeVarArgs@116");
-			var $spos = $s.length;
-			var a = new Array();
-			{
-				var _g1 = 0, _g = arguments.length;
-				while(_g1 < _g) {
-					var i = _g1++;
-					a.push(arguments[i]);
-				}
-			}
-			{
-				var $tmp = f(a);
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Reflect.prototype.__class__ = Reflect;
-utest.Assert = function() { }
-utest.Assert.__name__ = ["utest","Assert"];
-utest.Assert.results = null;
-utest.Assert.isTrue = function(cond,msg,pos) {
-	$s.push("utest.Assert::isTrue");
-	var $spos = $s.length;
-	if(utest.Assert.results == null) throw "Assert.results is not currently bound to any assert context";
-	if(null == msg) msg = "expected true";
-	if(cond) utest.Assert.results.add(utest.Assertation.Success(pos));
-	else utest.Assert.results.add(utest.Assertation.Failure(msg,pos));
-	$s.pop();
-}
-utest.Assert.isFalse = function(value,msg,pos) {
-	$s.push("utest.Assert::isFalse");
-	var $spos = $s.length;
-	if(null == msg) msg = "expected false";
-	utest.Assert.isTrue(value == false,msg,pos);
-	$s.pop();
-}
-utest.Assert.isNull = function(value,msg,pos) {
-	$s.push("utest.Assert::isNull");
-	var $spos = $s.length;
-	if(msg == null) msg = "expected null but was " + utest.Assert.q(value);
-	utest.Assert.isTrue(value == null,msg,pos);
-	$s.pop();
-}
-utest.Assert.notNull = function(value,msg,pos) {
-	$s.push("utest.Assert::notNull");
-	var $spos = $s.length;
-	if(null == msg) msg = "expected false";
-	utest.Assert.isTrue(value != null,msg,pos);
-	$s.pop();
-}
-utest.Assert["is"] = function(value,type,msg,pos) {
-	$s.push("utest.Assert::is");
-	var $spos = $s.length;
-	if(msg == null) msg = (("expected type " + utest.Assert.typeToString(type)) + " but was ") + utest.Assert.typeToString(value);
-	utest.Assert.isTrue(Std["is"](value,type),msg,pos);
-	$s.pop();
-}
-utest.Assert.notEquals = function(expected,value,msg,pos) {
-	$s.push("utest.Assert::notEquals");
-	var $spos = $s.length;
-	if(msg == null) msg = ((("expected " + utest.Assert.q(expected)) + " and testa value ") + utest.Assert.q(value)) + " should be different";
-	utest.Assert.isFalse(expected == value,msg,pos);
-	$s.pop();
-}
-utest.Assert.equals = function(expected,value,msg,pos) {
-	$s.push("utest.Assert::equals");
-	var $spos = $s.length;
-	if(msg == null) msg = (("expected " + utest.Assert.q(expected)) + " but was ") + utest.Assert.q(value);
-	utest.Assert.isTrue(expected == value,msg,pos);
-	$s.pop();
-}
-utest.Assert.match = function(pattern,value,msg,pos) {
-	$s.push("utest.Assert::match");
-	var $spos = $s.length;
-	if(msg == null) msg = ("the value " + utest.Assert.q(value)) + "does not match the provided pattern";
-	utest.Assert.isTrue(pattern.match(value),msg,pos);
-	$s.pop();
-}
-utest.Assert.floatEquals = function(expected,value,approx,msg,pos) {
-	$s.push("utest.Assert::floatEquals");
-	var $spos = $s.length;
-	if(msg == null) msg = (("expected " + utest.Assert.q(expected)) + " but was ") + utest.Assert.q(value);
-	{
-		var $tmp = utest.Assert.isTrue(utest.Assert._floatEquals(expected,value,approx),msg,pos);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert._floatEquals = function(expected,value,approx) {
-	$s.push("utest.Assert::_floatEquals");
-	var $spos = $s.length;
-	if(Math.isNaN(expected)) {
-		var $tmp = Math.isNaN(value);
-		$s.pop();
-		return $tmp;
-	}
-	else if(Math.isNaN(value)) {
-		$s.pop();
-		return false;
-	}
-	else if(!Math.isFinite(expected) && !Math.isFinite(value)) {
-		var $tmp = (expected > 0) == (value > 0);
-		$s.pop();
-		return $tmp;
-	}
-	if(null == approx) approx = 1e-5;
-	{
-		var $tmp = Math.abs(value - expected) < approx;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.getTypeName = function(v) {
-	$s.push("utest.Assert::getTypeName");
-	var $spos = $s.length;
-	var $e = (Type["typeof"](v));
-	switch( $e[1] ) {
-	case 0:
-	{
-		{
-			$s.pop();
-			return "[null]";
-		}
-	}break;
-	case 1:
-	{
-		{
-			$s.pop();
-			return "Int";
-		}
-	}break;
-	case 2:
-	{
-		{
-			$s.pop();
-			return "Float";
-		}
-	}break;
-	case 3:
-	{
-		{
-			$s.pop();
-			return "Bool";
-		}
-	}break;
-	case 5:
-	{
-		{
-			$s.pop();
-			return "function";
-		}
-	}break;
-	case 6:
-	var c = $e[2];
-	{
-		{
-			var $tmp = Type.getClassName(c);
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case 7:
-	var e = $e[2];
-	{
-		{
-			var $tmp = Type.getEnumName(e);
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case 4:
-	{
-		{
-			$s.pop();
-			return "Object";
-		}
-	}break;
-	case 8:
-	{
-		{
-			$s.pop();
-			return "Unknown";
-		}
-	}break;
-	}
-	$s.pop();
-}
-utest.Assert.isIterable = function(v,isAnonym) {
-	$s.push("utest.Assert::isIterable");
-	var $spos = $s.length;
-	var fields = (isAnonym?Reflect.fields(v):Type.getInstanceFields(Type.getClass(v)));
-	if(!Lambda.has(fields,"iterator")) {
-		$s.pop();
-		return false;
-	}
-	{
-		var $tmp = Reflect.isFunction(Reflect.field(v,"iterator"));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.isIterator = function(v,isAnonym) {
-	$s.push("utest.Assert::isIterator");
-	var $spos = $s.length;
-	var fields = (isAnonym?Reflect.fields(v):Type.getInstanceFields(Type.getClass(v)));
-	if(!Lambda.has(fields,"next") || !Lambda.has(fields,"hasNext")) {
-		$s.pop();
-		return false;
-	}
-	{
-		var $tmp = Reflect.isFunction(Reflect.field(v,"next")) && Reflect.isFunction(Reflect.field(v,"hasNext"));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.sameAs = function(expected,value,status) {
-	$s.push("utest.Assert::sameAs");
-	var $spos = $s.length;
-	var texpected = utest.Assert.getTypeName(expected);
-	var tvalue = utest.Assert.getTypeName(value);
-	var isanonym = texpected == "Object";
-	if(texpected != tvalue) {
-		status.error = ((("expected type " + texpected) + " but it is ") + tvalue) + ((status.path == ""?"":" for field " + status.path));
-		{
-			$s.pop();
-			return false;
-		}
-	}
-	var $e = (Type["typeof"](expected));
-	switch( $e[1] ) {
-	case 2:
-	{
-		{
-			var $tmp = utest.Assert._floatEquals(expected,value);
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case 0:
-	case 1:
-	case 3:
-	{
-		if(expected != value) {
-			status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-			{
-				$s.pop();
-				return false;
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	case 5:
-	{
-		if(!Reflect.compareMethods(expected,value)) {
-			status.error = "expected same function reference" + ((status.path == ""?"":" for field " + status.path));
-			{
-				$s.pop();
-				return false;
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	case 6:
-	var c = $e[2];
-	{
-		var cexpected = Type.getClassName(c);
-		var cvalue = Type.getClassName(Type.getClass(value));
-		if(cexpected != cvalue) {
-			status.error = ((("expected instance of " + utest.Assert.q(cexpected)) + " but it is ") + utest.Assert.q(cvalue)) + ((status.path == ""?"":" for field " + status.path));
-			{
-				$s.pop();
-				return false;
-			}
-		}
-		if(Std["is"](expected,String) && expected != value) {
-			status.error = ((("expected '" + expected) + "' but it is '") + value) + "'";
-			{
-				$s.pop();
-				return false;
-			}
-		}
-		if(Std["is"](expected,Array)) {
-			if(status.recursive || status.path == "") {
-				if(expected.length != value.length) {
-					status.error = ((("expected " + expected.length) + " elements but they were ") + value.length) + ((status.path == ""?"":" for field " + status.path));
-					{
-						$s.pop();
-						return false;
-					}
-				}
-				var path = status.path;
-				{
-					var _g1 = 0, _g = expected.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						status.path = (path == ""?("array[" + i) + "]":((path + "[") + i) + "]");
-						if(!utest.Assert.sameAs(expected[i],value[i],status)) {
-							status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-							{
-								$s.pop();
-								return false;
-							}
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(Std["is"](expected,Date)) {
-			if(expected.getTime() != value.getTime()) {
-				status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-				{
-					$s.pop();
-					return false;
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(Std["is"](expected,haxe.io.Bytes)) {
-			if(status.recursive || status.path == "") {
-				var ebytes = expected;
-				var vbytes = value;
-				if(ebytes.length != vbytes.length) {
-					$s.pop();
-					return false;
-				}
-				{
-					var _g1 = 0, _g = ebytes.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						if(ebytes.b[i] != vbytes.b[i]) {
-							status.error = ((("expected byte " + ebytes.b[i]) + " but wss ") + ebytes.b[i]) + ((status.path == ""?"":" for field " + status.path));
-							{
-								$s.pop();
-								return false;
-							}
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(Std["is"](expected,Hash) || Std["is"](expected,IntHash)) {
-			if(status.recursive || status.path == "") {
-				var keys = Lambda.array({ iterator : function() {
-					$s.push("utest.Assert::sameAs@285");
-					var $spos = $s.length;
-					{
-						var $tmp = expected.keys();
-						$s.pop();
-						return $tmp;
-					}
-					$s.pop();
-				}});
-				var vkeys = Lambda.array({ iterator : function() {
-					$s.push("utest.Assert::sameAs@286");
-					var $spos = $s.length;
-					{
-						var $tmp = value.keys();
-						$s.pop();
-						return $tmp;
-					}
-					$s.pop();
-				}});
-				if(keys.length != vkeys.length) {
-					status.error = ((("expected " + keys.length) + " keys but they were ") + vkeys.length) + ((status.path == ""?"":" for field " + status.path));
-					{
-						$s.pop();
-						return false;
-					}
-				}
-				var path = status.path;
-				{
-					var _g = 0;
-					while(_g < keys.length) {
-						var key = keys[_g];
-						++_g;
-						status.path = (path == ""?("hash[" + key) + "]":((path + "[") + key) + "]");
-						if(!utest.Assert.sameAs(expected.get(key),value.get(key),status)) {
-							status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-							{
-								$s.pop();
-								return false;
-							}
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(utest.Assert.isIterator(expected,false)) {
-			if(status.recursive || status.path == "") {
-				var evalues = Lambda.array({ iterator : function() {
-					$s.push("utest.Assert::sameAs@307");
-					var $spos = $s.length;
-					{
-						$s.pop();
-						return expected;
-					}
-					$s.pop();
-				}});
-				var vvalues = Lambda.array({ iterator : function() {
-					$s.push("utest.Assert::sameAs@308");
-					var $spos = $s.length;
-					{
-						$s.pop();
-						return value;
-					}
-					$s.pop();
-				}});
-				if(evalues.length != vvalues.length) {
-					status.error = ((("expected " + evalues.length) + " values in Iterator but they were ") + vvalues.length) + ((status.path == ""?"":" for field " + status.path));
-					{
-						$s.pop();
-						return false;
-					}
-				}
-				var path = status.path;
-				{
-					var _g1 = 0, _g = evalues.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						status.path = (path == ""?("iterator[" + i) + "]":((path + "[") + i) + "]");
-						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) {
-							status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-							{
-								$s.pop();
-								return false;
-							}
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(utest.Assert.isIterable(expected,false)) {
-			if(status.recursive || status.path == "") {
-				var evalues = Lambda.array(expected);
-				var vvalues = Lambda.array(value);
-				if(evalues.length != vvalues.length) {
-					status.error = ((("expected " + evalues.length) + " values in Iterable but they were ") + vvalues.length) + ((status.path == ""?"":" for field " + status.path));
-					{
-						$s.pop();
-						return false;
-					}
-				}
-				var path = status.path;
-				{
-					var _g1 = 0, _g = evalues.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						status.path = (path == ""?("iterable[" + i) + "]":((path + "[") + i) + "]");
-						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) {
-							$s.pop();
-							return false;
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(status.recursive || status.path == "") {
-			var fields = Type.getInstanceFields(Type.getClass(expected));
-			var path = status.path;
-			{
-				var _g = 0;
-				while(_g < fields.length) {
-					var field = fields[_g];
-					++_g;
-					status.path = (path == ""?field:(path + ".") + field);
-					var e = Reflect.field(expected,field);
-					if(Reflect.isFunction(e)) continue;
-					var v = Reflect.field(value,field);
-					if(!utest.Assert.sameAs(e,v,status)) {
-						$s.pop();
-						return false;
-					}
-				}
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	case 7:
-	var e = $e[2];
-	{
-		var eexpected = Type.getEnumName(e);
-		var evalue = Type.getEnumName(Type.getEnum(value));
-		if(eexpected != evalue) {
-			status.error = ((("expected enumeration of " + utest.Assert.q(eexpected)) + " but it is ") + utest.Assert.q(evalue)) + ((status.path == ""?"":" for field " + status.path));
-			{
-				$s.pop();
-				return false;
-			}
-		}
-		if(status.recursive || status.path == "") {
-			if(expected[1] != value[1]) {
-				status.error = ((("expected " + utest.Assert.q(expected[0])) + " but is ") + utest.Assert.q(value[0])) + ((status.path == ""?"":" for field " + status.path));
-				{
-					$s.pop();
-					return false;
-				}
-			}
-			var eparams = expected.slice(2);
-			var vparams = value.slice(2);
-			var path = status.path;
-			{
-				var _g1 = 0, _g = eparams.length;
-				while(_g1 < _g) {
-					var i = _g1++;
-					status.path = (path == ""?("enum[" + i) + "]":((path + "[") + i) + "]");
-					if(!utest.Assert.sameAs(eparams[i],vparams[i],status)) {
-						status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-						{
-							$s.pop();
-							return false;
-						}
-					}
-				}
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	case 4:
-	{
-		if(status.recursive || status.path == "") {
-			var tfields = Reflect.fields(value);
-			var fields = Reflect.fields(expected);
-			var path = status.path;
-			{
-				var _g = 0;
-				while(_g < fields.length) {
-					var field = fields[_g];
-					++_g;
-					tfields.remove(field);
-					status.path = (path == ""?field:(path + ".") + field);
-					if(!Reflect.hasField(value,field)) {
-						status.error = (("expected field " + status.path) + " does not exist in ") + utest.Assert.q(value);
-						{
-							$s.pop();
-							return false;
-						}
-					}
-					var e = Reflect.field(expected,field);
-					if(Reflect.isFunction(e)) continue;
-					var v = Reflect.field(value,field);
-					if(!utest.Assert.sameAs(e,v,status)) {
-						$s.pop();
-						return false;
-					}
-				}
-			}
-			if(tfields.length > 0) {
-				status.error = ("the tested object has extra field(s) (" + tfields.join(", ")) + ") not included in the expected ones";
-				{
-					$s.pop();
-					return false;
-				}
-			}
-		}
-		if(utest.Assert.isIterator(expected,true)) {
-			if(!(utest.Assert.isIterator(value,true))) {
-				status.error = "expected Iterable but it is not " + ((status.path == ""?"":" for field " + status.path));
-				{
-					$s.pop();
-					return false;
-				}
-			}
-			if(status.recursive || status.path == "") {
-				var evalues = Lambda.array({ iterator : function() {
-					$s.push("utest.Assert::sameAs@423");
-					var $spos = $s.length;
-					{
-						$s.pop();
-						return expected;
-					}
-					$s.pop();
-				}});
-				var vvalues = Lambda.array({ iterator : function() {
-					$s.push("utest.Assert::sameAs@424");
-					var $spos = $s.length;
-					{
-						$s.pop();
-						return value;
-					}
-					$s.pop();
-				}});
-				if(evalues.length != vvalues.length) {
-					status.error = ((("expected " + evalues.length) + " values in Iterator but they were ") + vvalues.length) + ((status.path == ""?"":" for field " + status.path));
-					{
-						$s.pop();
-						return false;
-					}
-				}
-				var path = status.path;
-				{
-					var _g1 = 0, _g = evalues.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						status.path = (path == ""?("iterator[" + i) + "]":((path + "[") + i) + "]");
-						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) {
-							status.error = ((("expected " + utest.Assert.q(expected)) + " but it is ") + utest.Assert.q(value)) + ((status.path == ""?"":" for field " + status.path));
-							{
-								$s.pop();
-								return false;
-							}
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(utest.Assert.isIterable(expected,true)) {
-			if(!(utest.Assert.isIterable(value,true))) {
-				status.error = "expected Iterator but it is not " + ((status.path == ""?"":" for field " + status.path));
-				{
-					$s.pop();
-					return false;
-				}
-			}
-			if(status.recursive || status.path == "") {
-				var evalues = Lambda.array(expected);
-				var vvalues = Lambda.array(value);
-				if(evalues.length != vvalues.length) {
-					status.error = ((("expected " + evalues.length) + " values in Iterable but they were ") + vvalues.length) + ((status.path == ""?"":" for field " + status.path));
-					{
-						$s.pop();
-						return false;
-					}
-				}
-				var path = status.path;
-				{
-					var _g1 = 0, _g = evalues.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						status.path = (path == ""?("iterable[" + i) + "]":((path + "[") + i) + "]");
-						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) {
-							$s.pop();
-							return false;
-						}
-					}
-				}
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	case 8:
-	{
-		{
-			var $tmp = (function($this) {
-				var $r;
-				throw "Unable to compare two unknown types";
-				return $r;
-			}(this));
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	}
-	{
-		var $tmp = (function($this) {
+haxe.Http.prototype.request = function(post) {
+	var me = this;
+	var r = new js.XMLHttpRequest();
+	var onreadystatechange = function() {
+		if(r.readyState != 4) return;
+		var s = (function($this) {
 			var $r;
-			throw (("Unable to compare values: " + utest.Assert.q(expected)) + " and ") + utest.Assert.q(value);
+			try {
+				$r = r.status;
+			}
+			catch( $e0 ) {
+				{
+					var e = $e0;
+					$r = null;
+				}
+			}
 			return $r;
 		}(this));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.q = function(v) {
-	$s.push("utest.Assert::q");
-	var $spos = $s.length;
-	if(Std["is"](v,String)) {
-		var $tmp = ("\"" + StringTools.replace(v,"\"","\\\"")) + "\"";
-		$s.pop();
-		return $tmp;
-	}
-	else {
-		var $tmp = Std.string(v);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.same = function(expected,value,recursive,msg,pos) {
-	$s.push("utest.Assert::same");
-	var $spos = $s.length;
-	if(null == recursive) recursive = true;
-	var status = { recursive : recursive, path : "", error : null}
-	if(utest.Assert.sameAs(expected,value,status)) {
-		utest.Assert.isTrue(true,msg,pos);
-	}
-	else {
-		utest.Assert.fail((msg == null?status.error:msg),pos);
-	}
-	$s.pop();
-}
-utest.Assert.raises = function(method,type,msgNotThrown,msgWrongType,pos) {
-	$s.push("utest.Assert::raises");
-	var $spos = $s.length;
-	if(type == null) type = String;
-	try {
-		method();
-		var name = Type.getClassName(type);
-		if(name == null) name = "" + type;
-		if(null == msgNotThrown) msgNotThrown = ("exception of type " + name) + " not raised";
-		utest.Assert.fail(msgNotThrown,pos);
-	}
-	catch( $e0 ) {
-		{
-			var ex = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				var name = Type.getClassName(type);
-				if(name == null) name = "" + type;
-				if(null == msgWrongType) msgWrongType = (("expected throw of type " + name) + " but was ") + ex;
-				utest.Assert.isTrue(Std["is"](ex,type),msgWrongType,pos);
-			}
+		if(s == undefined) s = null;
+		if(s != null) me.onStatus(s);
+		if(s != null && s >= 200 && s < 400) me.onData(r.responseText);
+		else switch(s) {
+		case null: case undefined:{
+			me.onError("Failed to connect or resolve host");
+		}break;
+		case 12029:{
+			me.onError("Failed to connect to host");
+		}break;
+		case 12007:{
+			me.onError("Unknown host");
+		}break;
+		default:{
+			me.onError("Http Error #" + r.status);
+		}break;
 		}
 	}
-	$s.pop();
-}
-utest.Assert.allows = function(possibilities,value,msg,pos) {
-	$s.push("utest.Assert::allows");
-	var $spos = $s.length;
-	if(Lambda.has(possibilities,value)) {
-		utest.Assert.isTrue(true,msg,pos);
-	}
-	else {
-		utest.Assert.fail((msg == null?(("value " + utest.Assert.q(value)) + " not found in the expected possibilities ") + possibilities:msg),pos);
-	}
-	$s.pop();
-}
-utest.Assert.contains = function(match,values,msg,pos) {
-	$s.push("utest.Assert::contains");
-	var $spos = $s.length;
-	if(Lambda.has(values,match)) {
-		utest.Assert.isTrue(true,msg,pos);
-	}
-	else {
-		utest.Assert.fail((msg == null?(("values " + utest.Assert.q(values)) + " do not contain ") + match:msg),pos);
-	}
-	$s.pop();
-}
-utest.Assert.notContains = function(match,values,msg,pos) {
-	$s.push("utest.Assert::notContains");
-	var $spos = $s.length;
-	if(!Lambda.has(values,match)) {
-		utest.Assert.isTrue(true,msg,pos);
-	}
-	else {
-		utest.Assert.fail((msg == null?(("values " + utest.Assert.q(values)) + " do contain ") + match:msg),pos);
-	}
-	$s.pop();
-}
-utest.Assert.stringContains = function(match,value,msg,pos) {
-	$s.push("utest.Assert::stringContains");
-	var $spos = $s.length;
-	if(value != null && value.indexOf(match) >= 0) {
-		utest.Assert.isTrue(true,msg,pos);
-	}
-	else {
-		utest.Assert.fail((msg == null?(("value " + utest.Assert.q(value)) + " does not contain ") + utest.Assert.q(match):msg),pos);
-	}
-	$s.pop();
-}
-utest.Assert.stringSequence = function(sequence,value,msg,pos) {
-	$s.push("utest.Assert::stringSequence");
-	var $spos = $s.length;
-	if(null == value) {
-		utest.Assert.fail((msg == null?"null argument value":msg),pos);
-		{
-			$s.pop();
-			return;
-		}
-	}
-	var p = 0;
+	if(this.async) r.onreadystatechange = onreadystatechange;
+	var uri = this.postData;
+	if(uri != null) post = true;
+	else { var $it1 = this.params.keys();
+	while( $it1.hasNext() ) { var p = $it1.next();
 	{
-		var _g = 0;
-		while(_g < sequence.length) {
-			var s = sequence[_g];
-			++_g;
-			var p2 = value.indexOf(s,p);
-			if(p2 < 0) {
-				if(msg == null) {
-					msg = ("expected '" + s) + "' after ";
-					if(p > 0) {
-						var cut = value.substr(0,p);
-						if(cut.length > 30) cut = "..." + cut.substr(-27);
-						msg += (" '" + cut) + "'";
-					}
-					else msg += " begin";
-				}
-				utest.Assert.fail(msg,pos);
-				{
-					$s.pop();
-					return;
-				}
-			}
-			p = p2 + s.length;
-		}
+		if(uri == null) uri = "";
+		else uri += "&";
+		uri += StringTools.urlDecode(p) + "=" + StringTools.urlEncode(this.params.get(p));
 	}
-	utest.Assert.isTrue(true,msg,pos);
-	$s.pop();
-}
-utest.Assert.fail = function(msg,pos) {
-	$s.push("utest.Assert::fail");
-	var $spos = $s.length;
-	if(msg == null) msg = "failure expected";
-	utest.Assert.isTrue(false,msg,pos);
-	$s.pop();
-}
-utest.Assert.warn = function(msg) {
-	$s.push("utest.Assert::warn");
-	var $spos = $s.length;
-	utest.Assert.results.add(utest.Assertation.Warning(msg));
-	$s.pop();
-}
-utest.Assert.createAsync = function(f,timeout) {
-	$s.push("utest.Assert::createAsync");
-	var $spos = $s.length;
-	{
-		var $tmp = function() {
-			$s.push("utest.Assert::createAsync@664");
-			var $spos = $s.length;
-			null;
-			$s.pop();
-		}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.createEvent = function(f,timeout) {
-	$s.push("utest.Assert::createEvent");
-	var $spos = $s.length;
-	{
-		var $tmp = function(e) {
-			$s.push("utest.Assert::createEvent@675");
-			var $spos = $s.length;
-			null;
-			$s.pop();
-		}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Assert.typeToString = function(t) {
-	$s.push("utest.Assert::typeToString");
-	var $spos = $s.length;
+	}}
 	try {
-		var _t = Type.getClass(t);
-		if(_t != null) t = _t;
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
-			}
+		if(post) r.open("POST",this.url,this.async);
+		else if(uri != null) {
+			var question = this.url.split("?").length <= 1;
+			r.open("GET",this.url + (question?"?":"&") + uri,this.async);
+			uri = null;
 		}
-	}
-	try {
-		var $tmp = Type.getClassName(t);
-		$s.pop();
-		return $tmp;
-	}
-	catch( $e1 ) {
-		{
-			var e = $e1;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
-			}
-		}
-	}
-	try {
-		var _t = Type.getEnum(t);
-		if(_t != null) t = _t;
+		else r.open("GET",this.url,this.async);
 	}
 	catch( $e2 ) {
 		{
 			var e = $e2;
 			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
+				this.onError(e.toString());
+				return;
 			}
 		}
 	}
-	try {
-		var $tmp = Type.getEnumName(t);
-		$s.pop();
-		return $tmp;
-	}
-	catch( $e3 ) {
-		{
-			var e = $e3;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
-			}
-		}
-	}
-	try {
-		var $tmp = Std.string(Type["typeof"](t));
-		$s.pop();
-		return $tmp;
-	}
-	catch( $e4 ) {
-		{
-			var e = $e4;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
-			}
-		}
-	}
-	try {
-		var $tmp = Std.string(t);
-		$s.pop();
-		return $tmp;
-	}
-	catch( $e5 ) {
-		{
-			var e = $e5;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				null;
-			}
-		}
-	}
-	{
-		$s.pop();
-		return "<unable to retrieve type name>";
-	}
-	$s.pop();
-}
-utest.Assert.prototype.__class__ = utest.Assert;
-haxe.Log = function() { }
-haxe.Log.__name__ = ["haxe","Log"];
-haxe.Log.trace = function(v,infos) {
-	$s.push("haxe.Log::trace");
-	var $spos = $s.length;
-	js.Boot.__trace(v,infos);
-	$s.pop();
-}
-haxe.Log.clear = function() {
-	$s.push("haxe.Log::clear");
-	var $spos = $s.length;
-	js.Boot.__clear_trace();
-	$s.pop();
-}
-haxe.Log.prototype.__class__ = haxe.Log;
-utest.ui.Report = function() { }
-utest.ui.Report.__name__ = ["utest","ui","Report"];
-utest.ui.Report.create = function(runner,displaySuccessResults,headerDisplayMode) {
-	$s.push("utest.ui.Report::create");
-	var $spos = $s.length;
-	var report;
-	report = new utest.ui.text.HtmlReport(runner,null,true);
-	if(null == displaySuccessResults) report.displaySuccessResults = utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors;
-	else report.displaySuccessResults = displaySuccessResults;
-	if(null == headerDisplayMode) report.displayHeader = utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults;
-	else report.displayHeader = headerDisplayMode;
-	{
-		$s.pop();
-		return report;
-	}
-	$s.pop();
-}
-utest.ui.Report.prototype.__class__ = utest.ui.Report;
-utest.ui.text.PrintReport = function(runner) { if( runner === $_ ) return; {
-	$s.push("utest.ui.text.PrintReport::new");
-	var $spos = $s.length;
-	utest.ui.text.PlainTextReport.call(this,runner,$closure(this,"_handler"));
-	this.newline = "\n";
-	this.indent = "  ";
-	$s.pop();
-}}
-utest.ui.text.PrintReport.__name__ = ["utest","ui","text","PrintReport"];
-utest.ui.text.PrintReport.__super__ = utest.ui.text.PlainTextReport;
-for(var k in utest.ui.text.PlainTextReport.prototype ) utest.ui.text.PrintReport.prototype[k] = utest.ui.text.PlainTextReport.prototype[k];
-utest.ui.text.PrintReport.prototype._handler = function(report) {
-	$s.push("utest.ui.text.PrintReport::_handler");
-	var $spos = $s.length;
-	this._trace(report.getResults());
-	$s.pop();
-}
-utest.ui.text.PrintReport.prototype._trace = function(s) {
-	$s.push("utest.ui.text.PrintReport::_trace");
-	var $spos = $s.length;
-	s = StringTools.replace(s,"  ",this.indent);
-	s = StringTools.replace(s,"\n",this.newline);
-	haxe.Log.trace(s,{ fileName : "PrintReport.hx", lineNumber : 66, className : "utest.ui.text.PrintReport", methodName : "_trace"});
-	$s.pop();
-}
-utest.ui.text.PrintReport.prototype.useTrace = null;
-utest.ui.text.PrintReport.prototype.__class__ = utest.ui.text.PrintReport;
-utest.ui.text.HtmlReport = function(runner,outputHandler,traceRedirected) { if( runner === $_ ) return; {
-	$s.push("utest.ui.text.HtmlReport::new");
-	var $spos = $s.length;
-	if(traceRedirected == null) traceRedirected = true;
-	this.aggregator = new utest.ui.common.ResultAggregator(runner,true);
-	runner.onStart.add($closure(this,"start"));
-	this.aggregator.onComplete.add($closure(this,"complete"));
-	if(null == outputHandler) this.setHandler($closure(this,"_handler"));
-	else this.setHandler(outputHandler);
-	if(traceRedirected) this.redirectTrace();
-	this.displaySuccessResults = utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults;
-	this.displayHeader = utest.ui.common.HeaderDisplayMode.AlwaysShowHeader;
-	$s.pop();
-}}
-utest.ui.text.HtmlReport.__name__ = ["utest","ui","text","HtmlReport"];
-utest.ui.text.HtmlReport.prototype._handler = function(report) {
-	$s.push("utest.ui.text.HtmlReport::_handler");
-	var $spos = $s.length;
-	var isDef = function(v) {
-		$s.push("utest.ui.text.HtmlReport::_handler@660");
-		var $spos = $s.length;
-		{
-			var $tmp = typeof v != 'undefined';
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-	var head = js.Lib.document.getElementsByTagName("head")[0];
-	var script = js.Lib.document.createElement("script");
-	script.type = "text/javascript";
-	var sjs = report.jsScript();
-	if(isDef(script.text)) {
-		script.text = sjs;
-	}
-	else {
-		script.innerHTML = sjs;
-	}
-	head.appendChild(script);
-	var style = js.Lib.document.createElement("style");
-	style.type = "text/css";
-	var scss = report.cssStyle();
-	if(isDef(style.styleSheet)) {
-		style.styleSheet.cssText = scss;
-	}
-	else if(isDef(style.cssText)) {
-		style.cssText = scss;
-	}
-	else if(isDef(style.innerText)) {
-		style.innerText = scss;
-	}
-	else {
-		style.innerHTML = scss;
-	}
-	head.appendChild(style);
-	var el = js.Lib.document.getElementById("utest-results");
-	if(null == el) {
-		el = js.Lib.document.createElement("div");
-		el.id = "utest-results";
-		js.Lib.document.body.appendChild(el);
-	}
-	el.innerHTML = report.getAll();
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype._trace = function(v,infos) {
-	$s.push("utest.ui.text.HtmlReport::_trace");
-	var $spos = $s.length;
-	var time = haxe.Timer.stamp();
-	var delta = (this._traceTime == null?0:time - this._traceTime);
-	this._traces.push({ msg : StringTools.htmlEscape(Std.string(v)), infos : infos, time : time - this.startTime, delta : delta, stack : haxe.Stack.callStack()});
-	this._traceTime = haxe.Timer.stamp();
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype._traceTime = null;
-utest.ui.text.HtmlReport.prototype._traces = null;
-utest.ui.text.HtmlReport.prototype.addClass = function(buf,result,name,isOk) {
-	$s.push("utest.ui.text.HtmlReport::addClass");
-	var $spos = $s.length;
-	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) {
-		$s.pop();
-		return;
-	}
-	buf.b[buf.b.length] = "<li>";
-	buf.b[buf.b.length] = ("<h2 class=\"classname\">" + name) + "</h2>";
-	this.blockNumbers(buf,result.stats);
-	buf.b[buf.b.length] = "<ul>\n";
-	{
-		var _g = 0, _g1 = result.methodNames();
-		while(_g < _g1.length) {
-			var mname = _g1[_g];
-			++_g;
-			this.addFixture(buf,result.get(mname),mname,isOk);
-		}
-	}
-	buf.b[buf.b.length] = "</ul>\n";
-	buf.b[buf.b.length] = "</li>\n";
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.addFixture = function(buf,result,name,isOk) {
-	$s.push("utest.ui.text.HtmlReport::addFixture");
-	var $spos = $s.length;
-	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) {
-		$s.pop();
-		return;
-	}
-	buf.b[buf.b.length] = "<li class=\"fixture\"><div class=\"li\">";
-	buf.b[buf.b.length] = ("<span class=\"" + this.cls(result.stats)) + "bg fixtureresult\">";
-	if(result.stats.isOk) {
-		buf.b[buf.b.length] = "OK ";
-	}
-	else if(result.stats.hasErrors) {
-		buf.b[buf.b.length] = "ERROR ";
-	}
-	else if(result.stats.hasFailures) {
-		buf.b[buf.b.length] = "FAILURE ";
-	}
-	else if(result.stats.hasWarnings) {
-		buf.b[buf.b.length] = "WARNING ";
-	}
-	buf.b[buf.b.length] = "</span>";
-	buf.b[buf.b.length] = "<div class=\"fixturedetails\">";
-	buf.b[buf.b.length] = ("<strong>" + name) + "</strong>";
-	buf.b[buf.b.length] = ": ";
-	this.resultNumbers(buf,result.stats);
-	var messages = [];
-	{ var $it0 = result.iterator();
-	while( $it0.hasNext() ) { var assertation = $it0.next();
-	{
-		var $e = (assertation);
-		switch( $e[1] ) {
-		case 0:
-		var pos = $e[2];
-		{
-			null;
-		}break;
-		case 1:
-		var pos = $e[3], msg = $e[2];
-		{
-			messages.push(((("<strong>line " + pos.lineNumber) + "</strong>: <em>") + StringTools.htmlEscape(msg)) + "</em>");
-		}break;
-		case 2:
-		var s = $e[3], e = $e[2];
-		{
-			messages.push((("<strong>error</strong>: <em>" + this.getErrorDescription(e)) + "</em>\n<br/><strong>stack</strong>:") + this.getErrorStack(s,e));
-		}break;
-		case 3:
-		var s = $e[3], e = $e[2];
-		{
-			messages.push((("<strong>setup error</strong>: " + this.getErrorDescription(e)) + "\n<br/><strong>stack</strong>:") + this.getErrorStack(s,e));
-		}break;
-		case 4:
-		var s = $e[3], e = $e[2];
-		{
-			messages.push((("<strong>tear-down error</strong>: " + this.getErrorDescription(e)) + "\n<br/><strong>stack</strong>:") + this.getErrorStack(s,e));
-		}break;
-		case 5:
-		var s = $e[3], missedAsyncs = $e[2];
-		{
-			messages.push("<strong>missed async call(s)</strong>: " + missedAsyncs);
-		}break;
-		case 6:
-		var s = $e[3], e = $e[2];
-		{
-			messages.push((("<strong>async error</strong>: " + this.getErrorDescription(e)) + "\n<br/><strong>stack</strong>:") + this.getErrorStack(s,e));
-		}break;
-		case 7:
-		var msg = $e[2];
-		{
-			messages.push(StringTools.htmlEscape(msg));
-		}break;
-		}
-	}
+	if(this.headers.get("Content-Type") == null && post && this.postData == null) r.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	{ var $it3 = this.headers.keys();
+	while( $it3.hasNext() ) { var h = $it3.next();
+	r.setRequestHeader(h,this.headers.get(h));
 	}}
-	if(messages.length > 0) {
-		buf.b[buf.b.length] = "<div class=\"testoutput\">";
-		buf.b[buf.b.length] = messages.join("<br/>");
-		buf.b[buf.b.length] = "</div>\n";
-	}
-	buf.b[buf.b.length] = "</div>\n";
-	buf.b[buf.b.length] = "</div></li>\n";
-	$s.pop();
+	r.send(uri);
+	if(!this.async) onreadystatechange();
 }
-utest.ui.text.HtmlReport.prototype.addPackage = function(buf,result,name,isOk) {
-	$s.push("utest.ui.text.HtmlReport::addPackage");
-	var $spos = $s.length;
-	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) {
-		$s.pop();
-		return;
-	}
-	if(name == "" && result.classNames().length == 0) {
-		$s.pop();
-		return;
-	}
-	buf.b[buf.b.length] = "<li>";
-	buf.b[buf.b.length] = ("<h2>" + name) + "</h2>";
-	this.blockNumbers(buf,result.stats);
-	buf.b[buf.b.length] = "<ul>\n";
-	{
-		var _g = 0, _g1 = result.classNames();
-		while(_g < _g1.length) {
-			var cname = _g1[_g];
-			++_g;
-			this.addClass(buf,result.getClass(cname),cname,isOk);
+haxe.Http.prototype.onData = function(data) {
+	null;
+}
+haxe.Http.prototype.onError = function(msg) {
+	null;
+}
+haxe.Http.prototype.onStatus = function(status) {
+	null;
+}
+haxe.Http.prototype.__class__ = haxe.Http;
+List = function(p) { if( p === $_ ) return; {
+	this.length = 0;
+}}
+List.__name__ = ["List"];
+List.prototype.h = null;
+List.prototype.q = null;
+List.prototype.length = null;
+List.prototype.add = function(item) {
+	var x = [item];
+	if(this.h == null) this.h = x;
+	else this.q[1] = x;
+	this.q = x;
+	this.length++;
+}
+List.prototype.push = function(item) {
+	var x = [item,this.h];
+	this.h = x;
+	if(this.q == null) this.q = x;
+	this.length++;
+}
+List.prototype.first = function() {
+	return this.h == null?null:this.h[0];
+}
+List.prototype.last = function() {
+	return this.q == null?null:this.q[0];
+}
+List.prototype.pop = function() {
+	if(this.h == null) return null;
+	var x = this.h[0];
+	this.h = this.h[1];
+	if(this.h == null) this.q = null;
+	this.length--;
+	return x;
+}
+List.prototype.isEmpty = function() {
+	return this.h == null;
+}
+List.prototype.clear = function() {
+	this.h = null;
+	this.q = null;
+	this.length = 0;
+}
+List.prototype.remove = function(v) {
+	var prev = null;
+	var l = this.h;
+	while(l != null) {
+		if(l[0] == v) {
+			if(prev == null) this.h = l[1];
+			else prev[1] = l[1];
+			if(this.q == l) this.q = prev;
+			this.length--;
+			return true;
 		}
+		prev = l;
+		l = l[1];
 	}
-	buf.b[buf.b.length] = "</ul>\n";
-	buf.b[buf.b.length] = "</li>\n";
-	$s.pop();
+	return false;
 }
-utest.ui.text.HtmlReport.prototype.addPackages = function(buf,result,isOk) {
-	$s.push("utest.ui.text.HtmlReport::addPackages");
-	var $spos = $s.length;
-	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) {
-		$s.pop();
-		return;
-	}
-	buf.b[buf.b.length] = "<ul id=\"utest-results-packages\">\n";
-	{
-		var _g = 0, _g1 = result.packageNames(false);
-		while(_g < _g1.length) {
-			var name = _g1[_g];
-			++_g;
-			this.addPackage(buf,result.getPackage(name),name,isOk);
-		}
-	}
-	buf.b[buf.b.length] = "</ul>\n";
-	$s.pop();
+List.prototype.iterator = function() {
+	return { h : this.h, hasNext : function() {
+		return this.h != null;
+	}, next : function() {
+		if(this.h == null) return null;
+		var x = this.h[0];
+		this.h = this.h[1];
+		return x;
+	}};
 }
-utest.ui.text.HtmlReport.prototype.aggregator = null;
-utest.ui.text.HtmlReport.prototype.blockNumbers = function(buf,stats) {
-	$s.push("utest.ui.text.HtmlReport::blockNumbers");
-	var $spos = $s.length;
-	buf.b[buf.b.length] = ("<div class=\"" + this.cls(stats)) + "bg statnumbers\">";
-	this.resultNumbers(buf,stats);
-	buf.b[buf.b.length] = "</div>";
-	$s.pop();
+List.prototype.toString = function() {
+	var s = new StringBuf();
+	var first = true;
+	var l = this.h;
+	s.b[s.b.length] = "{";
+	while(l != null) {
+		if(first) first = false;
+		else s.b[s.b.length] = ", ";
+		s.b[s.b.length] = Std.string(l[0]);
+		l = l[1];
+	}
+	s.b[s.b.length] = "}";
+	return s.b.join("");
 }
-utest.ui.text.HtmlReport.prototype.cls = function(stats) {
-	$s.push("utest.ui.text.HtmlReport::cls");
-	var $spos = $s.length;
-	if(stats.hasErrors) {
-		$s.pop();
-		return "error";
+List.prototype.join = function(sep) {
+	var s = new StringBuf();
+	var first = true;
+	var l = this.h;
+	while(l != null) {
+		if(first) first = false;
+		else s.b[s.b.length] = sep;
+		s.b[s.b.length] = l[0];
+		l = l[1];
 	}
-	else if(stats.hasFailures) {
-		$s.pop();
-		return "failure";
+	return s.b.join("");
+}
+List.prototype.filter = function(f) {
+	var l2 = new List();
+	var l = this.h;
+	while(l != null) {
+		var v = l[0];
+		l = l[1];
+		if(f(v)) l2.add(v);
 	}
-	else if(stats.hasWarnings) {
-		$s.pop();
-		return "warn";
+	return l2;
+}
+List.prototype.map = function(f) {
+	var b = new List();
+	var l = this.h;
+	while(l != null) {
+		var v = l[0];
+		l = l[1];
+		b.add(f(v));
+	}
+	return b;
+}
+List.prototype.__class__ = List;
+org.silex.runtime.domobject.Matrix = function(matrixData) { if( matrixData === $_ ) return; {
+	this.setMatrixData(matrixData);
+}}
+org.silex.runtime.domobject.Matrix.__name__ = ["org","silex","runtime","domobject","Matrix"];
+org.silex.runtime.domobject.Matrix.prototype._matrixData = null;
+org.silex.runtime.domobject.Matrix.prototype.identity = function() {
+	this._matrixData = { a : 1.0, b : 0.0, c : 0.0, d : 1.0, e : 0.0, f : 0.0};
+}
+org.silex.runtime.domobject.Matrix.prototype.setMatrixData = function(matrixData) {
+	this._matrixData = matrixData;
+	if(this._matrixData == null) {
+		this.identity();
+	}
+}
+org.silex.runtime.domobject.Matrix.prototype.getMatrixData = function() {
+	return this._matrixData;
+}
+org.silex.runtime.domobject.Matrix.prototype.concatenate = function(matrix) {
+	var currentMatrixData = this._matrixData;
+	var targetMatrixData = matrix.getMatrixData();
+	var a = currentMatrixData.a * targetMatrixData.a + currentMatrixData.c * targetMatrixData.b;
+	var b = currentMatrixData.b * targetMatrixData.a + currentMatrixData.d * targetMatrixData.b;
+	var c = currentMatrixData.a * targetMatrixData.c + currentMatrixData.c * targetMatrixData.d;
+	var d = currentMatrixData.b * targetMatrixData.c + currentMatrixData.d * targetMatrixData.d;
+	var e = currentMatrixData.a * targetMatrixData.e + currentMatrixData.c * targetMatrixData.f + currentMatrixData.e;
+	var f = currentMatrixData.b * targetMatrixData.e + currentMatrixData.d * targetMatrixData.f + currentMatrixData.f;
+	var concatenatedMatrixData = { a : a, b : b, c : c, d : d, e : e, f : f};
+	this.setMatrixData(concatenatedMatrixData);
+}
+org.silex.runtime.domobject.Matrix.prototype.translate = function(x,y) {
+	var translationMatrixData = { a : 1.0, b : 0.0, c : 0.0, d : 1.0, e : x, f : y};
+	var translationMatrix = new org.silex.runtime.domobject.Matrix(translationMatrixData);
+	this.concatenate(translationMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.rotate = function(angle,transformationOrigin) {
+	var angleInRad = angle / 180 * Math.PI;
+	var rotatedMatrix = new org.silex.runtime.domobject.Matrix();
+	rotatedMatrix.translate(transformationOrigin.x,transformationOrigin.y);
+	var rotationMatrixData = { a : Math.cos(angleInRad), b : Math.sin(angleInRad), c : Math.sin(angleInRad) * -1, d : Math.cos(angleInRad), e : 0.0, f : 0.0};
+	var rotationMatrix = new org.silex.runtime.domobject.Matrix(rotationMatrixData);
+	rotatedMatrix.concatenate(rotationMatrix);
+	rotatedMatrix.translate(transformationOrigin.x * -1,transformationOrigin.y * -1);
+	this.concatenate(rotatedMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.scale = function(scaleX,scaleY,transformationOrigin) {
+	var scaledMatrix = new org.silex.runtime.domobject.Matrix();
+	scaledMatrix.translate(transformationOrigin.x,transformationOrigin.y);
+	var scalingMatrixData = { a : scaleX, b : 0.0, c : 0.0, d : scaleY, e : 0.0, f : 0.0};
+	var scalingMatrix = new org.silex.runtime.domobject.Matrix(scalingMatrixData);
+	scaledMatrix.concatenate(scalingMatrix);
+	scaledMatrix.translate(transformationOrigin.x * -1,transformationOrigin.y * -1);
+	this.concatenate(scaledMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.skew = function(skewX,skewY,transformationOrigin) {
+	var skewedMatrix = new org.silex.runtime.domobject.Matrix();
+	skewedMatrix.translate(transformationOrigin.x,transformationOrigin.y);
+	var skewingMatrixData = { a : 1.0, b : Math.tan(skewY), c : Math.tan(skewX), d : 1.0, e : 0.0, f : 0.0};
+	var skewingMatrix = new org.silex.runtime.domobject.Matrix(skewingMatrixData);
+	skewedMatrix.concatenate(skewingMatrix);
+	skewedMatrix.translate(transformationOrigin.x * -1,transformationOrigin.y * -1);
+	this.concatenate(skewedMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.setRotation = function(angle,transformationOrigin) {
+	var currentRotation = this.getRotation();
+	var resetAngle = 360 - currentRotation;
+	this.rotate(resetAngle,transformationOrigin);
+	this.rotate(angle,transformationOrigin);
+}
+org.silex.runtime.domobject.Matrix.prototype.getRotation = function() {
+	var rotation = Math.atan(this._matrixData.c * -1 / this._matrixData.a);
+	var scaleX = Math.sqrt(this._matrixData.a * this._matrixData.a + this._matrixData.c * this._matrixData.c);
+	var sign = Math.atan(this._matrixData.c * -1 / this._matrixData.a);
+	var radian = Math.acos(this._matrixData.a / scaleX);
+	var rotationInDegree = Math.round(radian * 180 / Math.PI);
+	if(rotationInDegree > 90 && sign > 0) {
+		rotation = (360 - rotationInDegree) / 180 * Math.PI;
+	}
+	else if(rotationInDegree < 90 && sign < 0) {
+		rotation = (360 - rotationInDegree) / 180 * Math.PI;
 	}
 	else {
-		$s.pop();
-		return "ok";
+		rotation = radian;
 	}
-	$s.pop();
+	return Math.round(rotation / Math.PI * 180);
 }
-utest.ui.text.HtmlReport.prototype.complete = function(result) {
-	$s.push("utest.ui.text.HtmlReport::complete");
-	var $spos = $s.length;
-	this.result = result;
-	this.handler(this);
-	this.restoreTrace();
-	$s.pop();
+org.silex.runtime.domobject.Matrix.prototype.setScaleX = function(scaleXFactor,transformationOrigin) {
+	var currentScaleX = this.getScaleX();
+	var resetScaleX = 1 / currentScaleX;
+	this.scale(resetScaleX,1,transformationOrigin);
+	this.scale(scaleXFactor,1,transformationOrigin);
 }
-utest.ui.text.HtmlReport.prototype.cssStyle = function() {
-	$s.push("utest.ui.text.HtmlReport::cssStyle");
-	var $spos = $s.length;
-	{
-		$s.pop();
-		return "body, dd, dt {\r\n\tfont-family: Verdana, Arial, Sans-serif;\r\n\tfont-size: 12px;\r\n}\r\ndl {\r\n\twidth: 180px;\r\n}\r\ndd, dt {\r\n\tmargin : 0;\r\n\tpadding : 2px 5px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n}\r\ndd.value {\r\n\ttext-align: center;\r\n\tbackground-color: #eeeeee;\r\n}\r\ndt {\r\n\ttext-align: left;\r\n\tbackground-color: #e6e6e6;\r\n\tfloat: left;\r\n\twidth: 100px;\r\n}\r\n\r\nh1, h2, h3, h4, h5, h6 {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n}\r\n\r\nh1 {\r\n\ttext-align: center;\r\n\tfont-weight: bold;\r\n\tpadding: 5px 0 4px 0;\r\n\tfont-family: Arial, Sans-serif;\r\n\tfont-size: 18px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tmargin: 0 2px 0px 2px;\r\n}\r\n\r\nh2 {\r\n\tfont-weight: bold;\r\n\tpadding: 2px 0 2px 8px;\r\n\tfont-family: Arial, Sans-serif;\r\n\tfont-size: 13px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tmargin: 0 0 0px 0;\r\n\tbackground-color: #FFFFFF;\r\n\tcolor: #777777;\r\n}\r\n\r\nh2.classname {\r\n\tcolor: #000000;\r\n}\r\n\r\n.okbg {\r\n\tbackground-color: #66FF55;\r\n}\r\n.errorbg {\r\n\tbackground-color: #CC1100;\r\n}\r\n.failurebg {\r\n\tbackground-color: #EE3322;\r\n}\r\n.warnbg {\r\n\tbackground-color: #FFCC99;\r\n}\r\n.headerinfo {\r\n\ttext-align: right;\r\n\tfont-size: 11px;\r\n\tfont - color: 0xCCCCCC;\r\n\tmargin: 0 2px 5px 2px;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tpadding: 2px;\r\n}\r\n\r\nli {\r\n\tpadding: 4px;\r\n\tmargin: 2px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tbackground-color: #e6e6e6;\r\n}\r\n\r\nli.fixture {\r\n\tbackground-color: #f6f6f6;\r\n\tpadding-bottom: 6px;\r\n}\r\n\r\ndiv.fixturedetails {\r\n\tpadding-left: 108px;\r\n}\r\n\r\nul {\r\n\tpadding: 0;\r\n\tmargin: 6px 0 0 0;\r\n\tlist-style-type: none;\r\n}\r\n\r\nol {\r\n\tpadding: 0 0 0 28px;\r\n\tmargin: 0px 0 0 0;\r\n}\r\n\r\n.statnumbers {\r\n\tpadding: 2px 8px;\r\n}\r\n\r\n.fixtureresult {\r\n\twidth: 100px;\r\n\ttext-align: center;\r\n\tdisplay: block;\r\n\tfloat: left;\r\n\tfont-weight: bold;\r\n\tpadding: 1px;\r\n\tmargin: 0 0 0 0;\r\n}\r\n\r\n.testoutput {\r\n\tborder: 1px dashed #CCCCCC;\r\n\tmargin: 4px 0 0 0;\r\n\tpadding: 4px 8px;\r\n\tbackground-color: #eeeeee;\r\n}\r\n\r\nspan.tracepos, span.traceposempty {\r\n\tdisplay: block;\r\n\tfloat: left;\r\n\tfont-weight: bold;\r\n\tfont-size: 9px;\r\n\twidth: 170px;\r\n\tmargin: 2px 0 0 2px;\r\n}\r\n\r\nspan.tracepos:hover {\r\n\tcursor : pointer;\r\n\tbackground-color: #ffff99;\r\n}\r\n\r\nspan.tracemsg {\r\n\tdisplay: block;\r\n\tmargin-left: 180px;\r\n\tbackground-color: #eeeeee;\r\n\tpadding: 7px;\r\n}\r\n\r\nspan.tracetime {\r\n\tdisplay: block;\r\n\tfloat: right;\r\n\tmargin: 2px;\r\n\tfont-size: 9px;\r\n\tcolor: #777777;\r\n}\r\n\r\n\r\ndiv.trace ol {\r\n\tpadding: 0 0 0 40px;\r\n\tcolor: #777777;\r\n}\r\n\r\ndiv.trace li {\r\n\tpadding: 0;\r\n}\r\n\r\ndiv.trace li div.li {\r\n\tcolor: #000000;\r\n}\r\n\r\ndiv.trace h2 {\r\n\tmargin: 0 2px 0px 2px;\r\n\tpadding-left: 4px;\r\n}\r\n\r\n.tracepackage {\r\n\tcolor: #777777;\r\n\tfont-weight: normal;\r\n}\r\n\r\n.clr {\r\n\tclear: both;\r\n}\r\n\r\n#utesttip {\r\n\tmargin-top: -3px;\r\n\tmargin-left: 170px;\r\n\tfont-size: 9px;\r\n}\r\n\r\n#utesttip li {\r\n\tmargin: 0;\r\n\tbackground-color: #ffff99;\r\n\tpadding: 2px 4px;\r\n\tborder: 0;\r\n\tborder-bottom: 1px dashed #ffff33;\r\n}";
-	}
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.displayHeader = null;
-utest.ui.text.HtmlReport.prototype.displaySuccessResults = null;
-utest.ui.text.HtmlReport.prototype.formatStack = function(stack,addNL) {
-	$s.push("utest.ui.text.HtmlReport::formatStack");
-	var $spos = $s.length;
-	if(addNL == null) addNL = true;
-	var parts = [];
-	var nl = (addNL?"\n":"");
-	var last = null;
-	var count = 1;
-	{
-		var _g = 0, _g1 = haxe.Stack.toString(stack).split("\n");
-		while(_g < _g1.length) {
-			var part = _g1[_g];
-			++_g;
-			if(StringTools.trim(part) == "") continue;
-			if(-1 < part.indexOf("Called from utest.")) continue;
-			if(part == last) {
-				parts[parts.length - 1] = ((part + " (#") + (++count)) + ")";
-			}
-			else {
-				count = 1;
-				parts.push(last = part);
-			}
-		}
-	}
-	var s = (("<ul><li>" + parts.join(("</li>" + nl) + "<li>")) + "</li></ul>") + nl;
-	{
-		var $tmp = (("<div>" + s) + "</div>") + nl;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.formatTime = function(t) {
-	$s.push("utest.ui.text.HtmlReport::formatTime");
-	var $spos = $s.length;
-	{
-		var $tmp = Math.round(t * 1000) + " ms";
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.getAll = function() {
-	$s.push("utest.ui.text.HtmlReport::getAll");
-	var $spos = $s.length;
-	if(!utest.ui.common.ReportTools.hasOutput(this,this.result.stats)) {
-		$s.pop();
-		return "";
+org.silex.runtime.domobject.Matrix.prototype.getScaleX = function() {
+	var scaleSign = 0;
+	if(this._matrixData.a > 0) {
+		scaleSign = 1;
 	}
 	else {
-		var $tmp = (this.getHeader() + this.getTrace()) + this.getResults();
-		$s.pop();
-		return $tmp;
+		scaleSign = -1;
 	}
-	$s.pop();
+	return scaleSign * Math.sqrt(this._matrixData.a * this._matrixData.a + this._matrixData.c * this._matrixData.c);
 }
-utest.ui.text.HtmlReport.prototype.getErrorDescription = function(e) {
-	$s.push("utest.ui.text.HtmlReport::getErrorDescription");
-	var $spos = $s.length;
-	{
-		var $tmp = Std.string(e);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.domobject.Matrix.prototype.setScaleY = function(scaleYFactor,transformationOrigin) {
+	var currentScaleY = this.getScaleY();
+	var resetScaleY = 1 / currentScaleY;
+	this.scale(1,resetScaleY,transformationOrigin);
+	this.scale(1,scaleYFactor,transformationOrigin);
 }
-utest.ui.text.HtmlReport.prototype.getErrorStack = function(s,e) {
-	$s.push("utest.ui.text.HtmlReport::getErrorStack");
-	var $spos = $s.length;
-	{
-		var $tmp = this.formatStack(s);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.getHeader = function() {
-	$s.push("utest.ui.text.HtmlReport::getHeader");
-	var $spos = $s.length;
-	var buf = new StringBuf();
-	if(!utest.ui.common.ReportTools.hasHeader(this,this.result.stats)) {
-		$s.pop();
-		return "";
-	}
-	var end = haxe.Timer.stamp();
-	var time = Std["int"]((end - this.startTime) * 1000) / 1000;
-	var msg = "TEST OK";
-	if(this.result.stats.hasErrors) msg = "TEST ERRORS";
-	else if(this.result.stats.hasFailures) msg = "TEST FAILED";
-	else if(this.result.stats.hasWarnings) msg = "WARNING REPORTED";
-	buf.b[buf.b.length] = ((("<h1 class=\"" + this.cls(this.result.stats)) + "bg header\">") + msg) + "</h1>\n";
-	buf.b[buf.b.length] = "<div class=\"headerinfo\">";
-	this.resultNumbers(buf,this.result.stats);
-	buf.b[buf.b.length] = (((" performed on <strong>" + utest.ui.text.HtmlReport.platform) + "</strong>, executed in <strong> ") + time) + " sec. </strong></div >\n ";
-	{
-		var $tmp = buf.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.getHtml = function(title) {
-	$s.push("utest.ui.text.HtmlReport::getHtml");
-	var $spos = $s.length;
-	if(null == title) title = "utest: " + utest.ui.text.HtmlReport.platform;
-	var s = this.getAll();
-	if("" == s) {
-		$s.pop();
-		return "";
+org.silex.runtime.domobject.Matrix.prototype.getScaleY = function() {
+	var scaleSign = 0;
+	if(this._matrixData.d > 0) {
+		scaleSign = 1;
 	}
 	else {
-		var $tmp = this.wrapHtml(title,s);
-		$s.pop();
-		return $tmp;
+		scaleSign = -1;
 	}
-	$s.pop();
+	return scaleSign * Math.sqrt(this._matrixData.b * this._matrixData.b + this._matrixData.d * this._matrixData.d);
 }
-utest.ui.text.HtmlReport.prototype.getResults = function() {
-	$s.push("utest.ui.text.HtmlReport::getResults");
-	var $spos = $s.length;
-	var buf = new StringBuf();
-	this.addPackages(buf,this.result,this.result.stats.isOk);
-	{
-		var $tmp = buf.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.domobject.Matrix.prototype.setTranslationX = function(translationX) {
+	var currentTranslationX = this.getTranslationX();
+	var resetTranslationX = currentTranslationX * -1;
+	this.translate(resetTranslationX,0);
+	this.translate(translationX,0);
 }
-utest.ui.text.HtmlReport.prototype.getTrace = function() {
-	$s.push("utest.ui.text.HtmlReport::getTrace");
-	var $spos = $s.length;
-	var buf = new StringBuf();
-	if(this._traces == null || this._traces.length == 0) {
-		$s.pop();
-		return "";
-	}
-	buf.b[buf.b.length] = "<div class=\"trace\"><h2>traces</h2><ol>";
-	{
-		var _g = 0, _g1 = this._traces;
-		while(_g < _g1.length) {
-			var t = _g1[_g];
-			++_g;
-			buf.b[buf.b.length] = "<li><div class=\"li\">";
-			var stack = StringTools.replace(this.formatStack(t.stack,false),"'","\\'");
-			var method = ((((("<span class=\"tracepackage\">" + t.infos.className) + "</span><br/>") + t.infos.methodName) + "(") + t.infos.lineNumber) + ")";
-			buf.b[buf.b.length] = ("<span class=\"tracepos\" onmouseover=\"utestTooltip(this.parentNode, '" + stack) + "')\" onmouseout=\"utestRemoveTooltip()\">";
-			buf.b[buf.b.length] = method;
-			buf.b[buf.b.length] = "</span><span class=\"tracetime\">";
-			buf.b[buf.b.length] = "@ " + this.formatTime(t.time);
-			if(Math.round(t.delta * 1000) > 0) buf.b[buf.b.length] = ", ~" + this.formatTime(t.delta);
-			buf.b[buf.b.length] = "</span><span class=\"tracemsg\">";
-			buf.b[buf.b.length] = StringTools.replace(StringTools.trim(t.msg),"\n","<br/>\n");
-			buf.b[buf.b.length] = "</span><div class=\"clr\"></div></div></li>";
-		}
-	}
-	buf.b[buf.b.length] = "</ol></div>";
-	{
-		var $tmp = buf.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.domobject.Matrix.prototype.getTranslationX = function() {
+	return this._matrixData.e;
 }
-utest.ui.text.HtmlReport.prototype.handler = null;
-utest.ui.text.HtmlReport.prototype.jsScript = function() {
-	$s.push("utest.ui.text.HtmlReport::jsScript");
-	var $spos = $s.length;
-	{
-		$s.pop();
-		return "function utestTooltip(ref, text) {\r\n\tvar el = document.getElementById(\"utesttip\");\r\n\tif(!el) {\r\n\t\tvar el = document.createElement(\"div\")\r\n\t\tel.id = \"utesttip\";\r\n\t\tel.style.position = \"absolute\";\r\n\t\tdocument.body.appendChild(el)\r\n\t}\r\n\tvar p = utestFindPos(ref);\r\n\tel.style.left = (4 + p[0]) + \"px\";\r\n\tel.style.top = (p[1] - 1) + \"px\";\r\n\tel.innerHTML =  text;\r\n}\r\n\r\nfunction utestFindPos(el) {\r\n\tvar left = 0;\r\n\tvar top = 0;\r\n\tdo {\r\n\t\tleft += el.offsetLeft;\r\n\t\ttop += el.offsetTop;\r\n\t} while(el = el.offsetParent)\r\n\treturn [left, top];\r\n}\r\n\r\nfunction utestRemoveTooltip() {\r\n\tvar el = document.getElementById(\"utesttip\")\r\n\tif(el)\r\n\t\tdocument.body.removeChild(el)\r\n}";
-	}
-	$s.pop();
+org.silex.runtime.domobject.Matrix.prototype.setTranslationY = function(translationY) {
+	var currentTranslationY = this.getTranslationY();
+	var resetTranslationY = currentTranslationY * -1;
+	this.translate(0,resetTranslationY);
+	this.translate(0,translationY);
 }
-utest.ui.text.HtmlReport.prototype.oldTrace = null;
-utest.ui.text.HtmlReport.prototype.redirectTrace = function() {
-	$s.push("utest.ui.text.HtmlReport::redirectTrace");
-	var $spos = $s.length;
-	if(this.traceRedirected) {
-		$s.pop();
-		return;
-	}
-	this._traces = [];
-	this.oldTrace = $closure(haxe.Log,"trace");
-	haxe.Log.trace = $closure(this,"_trace");
-	$s.pop();
+org.silex.runtime.domobject.Matrix.prototype.getTranslationY = function() {
+	return this._matrixData.f;
 }
-utest.ui.text.HtmlReport.prototype.restoreTrace = function() {
-	$s.push("utest.ui.text.HtmlReport::restoreTrace");
-	var $spos = $s.length;
-	if(!this.traceRedirected) {
-		$s.pop();
-		return;
-	}
-	haxe.Log.trace = this.oldTrace;
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.result = null;
-utest.ui.text.HtmlReport.prototype.resultNumbers = function(buf,stats) {
-	$s.push("utest.ui.text.HtmlReport::resultNumbers");
-	var $spos = $s.length;
-	var numbers = [];
-	if(stats.assertations == 1) numbers.push("<strong>1</strong> test");
-	else numbers.push(("<strong>" + stats.assertations) + "</strong> tests");
-	if(stats.successes != stats.assertations) {
-		if(stats.successes == 1) numbers.push("<strong>1</strong> pass");
-		else if(stats.successes > 0) numbers.push(("<strong>" + stats.successes) + "</strong> passes");
-	}
-	if(stats.errors == 1) numbers.push("<strong>1</strong> error");
-	else if(stats.errors > 0) numbers.push(("<strong>" + stats.errors) + "</strong> errors");
-	if(stats.failures == 1) numbers.push("<strong>1</strong> failure");
-	else if(stats.failures > 0) numbers.push(("<strong>" + stats.failures) + "</strong> failures");
-	if(stats.warnings == 1) numbers.push("<strong>1</strong> warning");
-	else if(stats.warnings > 0) numbers.push(("<strong>" + stats.warnings) + "</strong> warnings");
-	buf.b[buf.b.length] = numbers.join(", ");
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.setHandler = function(handler) {
-	$s.push("utest.ui.text.HtmlReport::setHandler");
-	var $spos = $s.length;
-	this.handler = handler;
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.start = function(e) {
-	$s.push("utest.ui.text.HtmlReport::start");
-	var $spos = $s.length;
-	this.startTime = haxe.Timer.stamp();
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.startTime = null;
-utest.ui.text.HtmlReport.prototype.traceRedirected = null;
-utest.ui.text.HtmlReport.prototype.wrapHtml = function(title,s) {
-	$s.push("utest.ui.text.HtmlReport::wrapHtml");
-	var $spos = $s.length;
-	{
-		var $tmp = ((((((("<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n<title>" + title) + "</title>\r\n\t\t\t<style type=\"text/css\">") + this.cssStyle()) + "</style>\r\n\t\t\t<script type=\"text/javascript\">\n") + this.jsScript()) + "\n</script>\n</head>\r\n\t\t\t<body>\n") + s) + "\n</body>\n</html>";
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.text.HtmlReport.prototype.__class__ = utest.ui.text.HtmlReport;
-utest.ui.text.HtmlReport.__interfaces__ = [utest.ui.common.IReport];
-if(typeof org=='undefined') org = {}
+org.silex.runtime.domobject.Matrix.prototype.__class__ = org.silex.runtime.domobject.Matrix;
 if(!org.silex_unit_tests) org.silex_unit_tests = {}
 if(!org.silex_unit_tests.runtime) org.silex_unit_tests.runtime = {}
-if(!org.silex_unit_tests.runtime.nativeClass) org.silex_unit_tests.runtime.nativeClass = {}
-org.silex_unit_tests.runtime.nativeClass.NativeClassTests = function(p) { if( p === $_ ) return; {
-	$s.push("org.silex_unit_tests.runtime.nativeClass.NativeClassTests::new");
-	var $spos = $s.length;
+if(!org.silex_unit_tests.runtime.domobject) org.silex_unit_tests.runtime.domobject = {}
+org.silex_unit_tests.runtime.domobject.DOMObjectTests = function(p) { if( p === $_ ) return; {
 	null;
-	$s.pop();
 }}
-org.silex_unit_tests.runtime.nativeClass.NativeClassTests.__name__ = ["org","silex_unit_tests","runtime","nativeClass","NativeClassTests"];
-org.silex_unit_tests.runtime.nativeClass.NativeClassTests.main = function() {
-	$s.push("org.silex_unit_tests.runtime.nativeClass.NativeClassTests::main");
-	var $spos = $s.length;
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.__name__ = ["org","silex_unit_tests","runtime","domobject","DOMObjectTests"];
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.main = function() {
+	var rootDiv = js.Lib.document.createElement("div");
+	js.Lib.document.body.appendChild(rootDiv);
+	org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject = new org.silex.runtime.domobject.js.DOMObject(rootDiv);
 	var runner = new utest.Runner();
-	runner.addCase(new org.silex_unit_tests.runtime.nativeClass.NativeClassTests());
+	runner.addCase(new org.silex_unit_tests.runtime.domobject.DOMObjectTests());
 	utest.ui.Report.create(runner);
 	runner.run();
-	$s.pop();
 }
-org.silex_unit_tests.runtime.nativeClass.NativeClassTests.prototype.testNativeClassInstance = function() {
-	$s.push("org.silex_unit_tests.runtime.nativeClass.NativeClassTests::testNativeClassInstance");
-	var $spos = $s.length;
-	var nativeClass = org.silex.runtime.nativeClass.NativeClass.getNativeInstanceByClassName("org.silex_unit_tests.runtime.nativeClass.TestClass");
-	utest.Assert.equals(nativeClass.getField("_testAttribute"),"bim",null,{ fileName : "NativeClassTests.hx", lineNumber : 45, className : "org.silex_unit_tests.runtime.nativeClass.NativeClassTests", methodName : "testNativeClassInstance"});
-	utest.Assert.equals(nativeClass.callMethod("testMethod",[]),"test OK",null,{ fileName : "NativeClassTests.hx", lineNumber : 47, className : "org.silex_unit_tests.runtime.nativeClass.NativeClassTests", methodName : "testNativeClassInstance"});
-	nativeClass.setField("_testAttribute","new value");
-	utest.Assert.equals(nativeClass.getField("_testAttribute"),"new value",null,{ fileName : "NativeClassTests.hx", lineNumber : 50, className : "org.silex_unit_tests.runtime.nativeClass.NativeClassTests", methodName : "testNativeClassInstance"});
-	utest.Assert.isNull(nativeClass.getField("fakeField"),null,{ fileName : "NativeClassTests.hx", lineNumber : 53, className : "org.silex_unit_tests.runtime.nativeClass.NativeClassTests", methodName : "testNativeClassInstance"});
-	nativeClass.setField("fakeField","fakeValue");
-	utest.Assert.isNull(nativeClass.callMethod("fakeMethod",[]),null,{ fileName : "NativeClassTests.hx", lineNumber : 57, className : "org.silex_unit_tests.runtime.nativeClass.NativeClassTests", methodName : "testNativeClassInstance"});
-	$s.pop();
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.prototype.testAddRemoveChild = function() {
+	var divParentDOMObject = js.Lib.document.createElement("div");
+	divParentDOMObject.setAttribute("id","parentDiv");
+	divParentDOMObject.innerHTML = "parent div";
+	var parentDOMObject = new org.silex.runtime.domobject.js.DOMObject(divParentDOMObject);
+	org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+	var divChildDOMObject = js.Lib.document.createElement("div");
+	divChildDOMObject.setAttribute("id","childDiv");
+	divChildDOMObject.innerHTML = "child div";
+	var childDOMObject = new org.silex.runtime.domobject.js.DOMObject(divChildDOMObject);
+	childDOMObject.setWidth(300);
+	childDOMObject.setHeight(200);
+	childDOMObject.setX(100);
+	childDOMObject.setY(50);
+	parentDOMObject.addChild(childDOMObject);
+	utest.Assert.equals(childDOMObject.getWidth(),300,null,{ fileName : "DOMObjectTests.hx", lineNumber : 162, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testAddRemoveChild"});
+	utest.Assert.equals(childDOMObject.getHeight(),200,null,{ fileName : "DOMObjectTests.hx", lineNumber : 163, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testAddRemoveChild"});
+	utest.Assert.equals(childDOMObject.getX(),100,null,{ fileName : "DOMObjectTests.hx", lineNumber : 164, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testAddRemoveChild"});
+	utest.Assert.equals(childDOMObject.getY(),50,null,{ fileName : "DOMObjectTests.hx", lineNumber : 165, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testAddRemoveChild"});
+	utest.Assert.equals(childDOMObject.getZOrder(),0,null,{ fileName : "DOMObjectTests.hx", lineNumber : 166, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testAddRemoveChild"});
+	parentDOMObject.removeChild(childDOMObject);
+	utest.Assert.same(childDOMObject.getParent(),null,null,null,{ fileName : "DOMObjectTests.hx", lineNumber : 176, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testAddRemoveChild"});
 }
-org.silex_unit_tests.runtime.nativeClass.NativeClassTests.prototype.__class__ = org.silex_unit_tests.runtime.nativeClass.NativeClassTests;
-org.silex_unit_tests.runtime.nativeClass.TestClass = function(p) { if( p === $_ ) return; {
-	$s.push("org.silex_unit_tests.runtime.nativeClass.TestClass::new");
-	var $spos = $s.length;
-	this._testAttribute = "bim";
-	$s.pop();
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.prototype.testVisibilityOpacity = function() {
+	var nativeDOMObject = js.Lib.document.createElement("canvas");
+	var graphicDOMObject = new org.silex.runtime.domobject.js.GraphicDOMObject(nativeDOMObject);
+	graphicDOMObject.setWidth(200);
+	graphicDOMObject.setHeight(200);
+	graphicDOMObject.setX(0);
+	graphicDOMObject.setY(100);
+	var colorStop = { color : Std.parseInt("0xFF0000"), alpha : 100};
+	var fillStyle = org.silex.runtime.domobject.FillStyleValue.monochrome(colorStop);
+	var lineStyle = org.silex.runtime.domobject.LineStyleValue.none;
+	graphicDOMObject.beginFill(fillStyle,lineStyle);
+	var cornerRadiuses = { tlCornerRadius : 10, trCornerRadius : 0, blCornerRadius : 20, brCornerRadius : 0};
+	graphicDOMObject.drawRect(0,0,100,100,cornerRadiuses);
+	graphicDOMObject.endFill();
+	org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+	graphicDOMObject.setIsVisible(false);
+	utest.Assert.equals(graphicDOMObject.getIsVisible(),false,null,{ fileName : "DOMObjectTests.hx", lineNumber : 272, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testVisibilityOpacity"});
+	graphicDOMObject.setIsVisible(true);
+	utest.Assert.equals(graphicDOMObject.getIsVisible(),true,null,{ fileName : "DOMObjectTests.hx", lineNumber : 275, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testVisibilityOpacity"});
+	graphicDOMObject.setAlpha(0.5);
+	utest.Assert.equals(graphicDOMObject.getAlpha(),0.5,null,{ fileName : "DOMObjectTests.hx", lineNumber : 278, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testVisibilityOpacity"});
+}
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.prototype.testZIndex = function() {
+	var divParentDOMObject = js.Lib.document.createElement("div");
+	divParentDOMObject.setAttribute("id","parentDiv");
+	var parentDOMObject = new org.silex.runtime.domobject.js.DOMObject(divParentDOMObject);
+	org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+	var divChildDOMObject1 = js.Lib.document.createElement("div");
+	divChildDOMObject1.setAttribute("id","childDiv1");
+	divChildDOMObject1.style.backgroundColor = "#FF0000";
+	var childDOMObject1 = new org.silex.runtime.domobject.js.DOMObject(divChildDOMObject1);
+	var divChildDOMObject2 = js.Lib.document.createElement("div");
+	divChildDOMObject2.setAttribute("id","childDiv2");
+	divChildDOMObject2.style.backgroundColor = "#00FF00";
+	var childDOMObject2 = new org.silex.runtime.domobject.js.DOMObject(divChildDOMObject2);
+	var divChildDOMObject3 = js.Lib.document.createElement("div");
+	divChildDOMObject3.setAttribute("id","childDiv3");
+	divChildDOMObject3.style.backgroundColor = "#0000FF";
+	var childDOMObject3 = new org.silex.runtime.domobject.js.DOMObject(divChildDOMObject3);
+	childDOMObject1.setWidth(100);
+	childDOMObject1.setHeight(100);
+	childDOMObject2.setWidth(100);
+	childDOMObject2.setHeight(100);
+	childDOMObject3.setWidth(100);
+	childDOMObject3.setHeight(100);
+	childDOMObject2.setX(50);
+	childDOMObject3.setX(80);
+	parentDOMObject.addChild(childDOMObject1);
+	parentDOMObject.addChild(childDOMObject2);
+	parentDOMObject.addChild(childDOMObject3);
+	utest.Assert.equals(1,childDOMObject2.getZOrder(),null,{ fileName : "DOMObjectTests.hx", lineNumber : 416, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testZIndex"});
+	childDOMObject2.setZOrder(0);
+	utest.Assert.equals(1,childDOMObject1.getZOrder(),null,{ fileName : "DOMObjectTests.hx", lineNumber : 421, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testZIndex"});
+	childDOMObject1.setZOrder(999);
+	utest.Assert.equals(2,childDOMObject1.getZOrder(),null,{ fileName : "DOMObjectTests.hx", lineNumber : 425, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testZIndex"});
+}
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.prototype.testContainerDOMObject = function() {
+	var domObject = new org.silex.runtime.domobject.js.ContainerDOMObject(js.Lib.document.createElement("div"));
+	org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject.addChild(domObject);
+	domObject.setSemantic("nav");
+	utest.Assert.same(domObject.getSemantic(),"nav",null,null,{ fileName : "DOMObjectTests.hx", lineNumber : 446, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testContainerDOMObject"});
+}
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.prototype.testTextDOMObject = function() {
+	var domObject = new org.silex.runtime.domobject.js.TextDOMObject(js.Lib.document.createElement("div"));
+	org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject.addChild(domObject);
+	domObject.setText("<h1>test html text</h1>");
+	domObject.setWidth(500);
+	utest.Assert.same(domObject.getText(),"<h1>test html text</h1>",null,null,{ fileName : "DOMObjectTests.hx", lineNumber : 468, className : "org.silex_unit_tests.runtime.domobject.DOMObjectTests", methodName : "testTextDOMObject"});
+}
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.prototype.__class__ = org.silex_unit_tests.runtime.domobject.DOMObjectTests;
+org.silex.runtime.domobject.base.GraphicDOMObjectBase = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.js.DOMObject.call(this,referenceToNativeDOMObject);
 }}
-org.silex_unit_tests.runtime.nativeClass.TestClass.__name__ = ["org","silex_unit_tests","runtime","nativeClass","TestClass"];
-org.silex_unit_tests.runtime.nativeClass.TestClass.prototype._testAttribute = null;
-org.silex_unit_tests.runtime.nativeClass.TestClass.prototype.testMethod = function() {
-	$s.push("org.silex_unit_tests.runtime.nativeClass.TestClass::testMethod");
-	var $spos = $s.length;
-	{
-		$s.pop();
-		return "test OK";
-	}
-	$s.pop();
-}
-org.silex_unit_tests.runtime.nativeClass.TestClass.prototype.__class__ = org.silex_unit_tests.runtime.nativeClass.TestClass;
-StringBuf = function(p) { if( p === $_ ) return; {
-	$s.push("StringBuf::new");
-	var $spos = $s.length;
-	this.b = new Array();
-	$s.pop();
-}}
-StringBuf.__name__ = ["StringBuf"];
-StringBuf.prototype.add = function(x) {
-	$s.push("StringBuf::add");
-	var $spos = $s.length;
-	this.b[this.b.length] = x;
-	$s.pop();
-}
-StringBuf.prototype.addChar = function(c) {
-	$s.push("StringBuf::addChar");
-	var $spos = $s.length;
-	this.b[this.b.length] = String.fromCharCode(c);
-	$s.pop();
-}
-StringBuf.prototype.addSub = function(s,pos,len) {
-	$s.push("StringBuf::addSub");
-	var $spos = $s.length;
-	this.b[this.b.length] = s.substr(pos,len);
-	$s.pop();
-}
-StringBuf.prototype.b = null;
-StringBuf.prototype.toString = function() {
-	$s.push("StringBuf::toString");
-	var $spos = $s.length;
-	{
-		var $tmp = this.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-StringBuf.prototype.__class__ = StringBuf;
-utest.ui.common.ResultStats = function(p) { if( p === $_ ) return; {
-	$s.push("utest.ui.common.ResultStats::new");
-	var $spos = $s.length;
-	this.assertations = 0;
-	this.successes = 0;
-	this.failures = 0;
-	this.errors = 0;
-	this.warnings = 0;
-	this.isOk = true;
-	this.hasFailures = false;
-	this.hasErrors = false;
-	this.hasWarnings = false;
-	this.onAddSuccesses = new utest.Dispatcher();
-	this.onAddFailures = new utest.Dispatcher();
-	this.onAddErrors = new utest.Dispatcher();
-	this.onAddWarnings = new utest.Dispatcher();
-	$s.pop();
-}}
-utest.ui.common.ResultStats.__name__ = ["utest","ui","common","ResultStats"];
-utest.ui.common.ResultStats.prototype.addErrors = function(v) {
-	$s.push("utest.ui.common.ResultStats::addErrors");
-	var $spos = $s.length;
-	if(v == 0) {
-		$s.pop();
-		return;
-	}
-	this.assertations += v;
-	this.errors += v;
-	this.hasErrors = this.errors > 0;
-	this.isOk = !(this.hasFailures || this.hasErrors || this.hasWarnings);
-	this.onAddErrors.dispatch(v);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.addFailures = function(v) {
-	$s.push("utest.ui.common.ResultStats::addFailures");
-	var $spos = $s.length;
-	if(v == 0) {
-		$s.pop();
-		return;
-	}
-	this.assertations += v;
-	this.failures += v;
-	this.hasFailures = this.failures > 0;
-	this.isOk = !(this.hasFailures || this.hasErrors || this.hasWarnings);
-	this.onAddFailures.dispatch(v);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.addSuccesses = function(v) {
-	$s.push("utest.ui.common.ResultStats::addSuccesses");
-	var $spos = $s.length;
-	if(v == 0) {
-		$s.pop();
-		return;
-	}
-	this.assertations += v;
-	this.successes += v;
-	this.onAddSuccesses.dispatch(v);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.addWarnings = function(v) {
-	$s.push("utest.ui.common.ResultStats::addWarnings");
-	var $spos = $s.length;
-	if(v == 0) {
-		$s.pop();
-		return;
-	}
-	this.assertations += v;
-	this.warnings += v;
-	this.hasWarnings = this.warnings > 0;
-	this.isOk = !(this.hasFailures || this.hasErrors || this.hasWarnings);
-	this.onAddWarnings.dispatch(v);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.assertations = null;
-utest.ui.common.ResultStats.prototype.errors = null;
-utest.ui.common.ResultStats.prototype.failures = null;
-utest.ui.common.ResultStats.prototype.hasErrors = null;
-utest.ui.common.ResultStats.prototype.hasFailures = null;
-utest.ui.common.ResultStats.prototype.hasWarnings = null;
-utest.ui.common.ResultStats.prototype.isOk = null;
-utest.ui.common.ResultStats.prototype.onAddErrors = null;
-utest.ui.common.ResultStats.prototype.onAddFailures = null;
-utest.ui.common.ResultStats.prototype.onAddSuccesses = null;
-utest.ui.common.ResultStats.prototype.onAddWarnings = null;
-utest.ui.common.ResultStats.prototype.subtract = function(other) {
-	$s.push("utest.ui.common.ResultStats::subtract");
-	var $spos = $s.length;
-	this.addSuccesses(-other.successes);
-	this.addFailures(-other.failures);
-	this.addErrors(-other.errors);
-	this.addWarnings(-other.warnings);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.successes = null;
-utest.ui.common.ResultStats.prototype.sum = function(other) {
-	$s.push("utest.ui.common.ResultStats::sum");
-	var $spos = $s.length;
-	this.addSuccesses(other.successes);
-	this.addFailures(other.failures);
-	this.addErrors(other.errors);
-	this.addWarnings(other.warnings);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.unwire = function(dependant) {
-	$s.push("utest.ui.common.ResultStats::unwire");
-	var $spos = $s.length;
-	dependant.onAddSuccesses.remove($closure(this,"addSuccesses"));
-	dependant.onAddFailures.remove($closure(this,"addFailures"));
-	dependant.onAddErrors.remove($closure(this,"addErrors"));
-	dependant.onAddWarnings.remove($closure(this,"addWarnings"));
-	this.subtract(dependant);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.warnings = null;
-utest.ui.common.ResultStats.prototype.wire = function(dependant) {
-	$s.push("utest.ui.common.ResultStats::wire");
-	var $spos = $s.length;
-	dependant.onAddSuccesses.add($closure(this,"addSuccesses"));
-	dependant.onAddFailures.add($closure(this,"addFailures"));
-	dependant.onAddErrors.add($closure(this,"addErrors"));
-	dependant.onAddWarnings.add($closure(this,"addWarnings"));
-	this.sum(dependant);
-	$s.pop();
-}
-utest.ui.common.ResultStats.prototype.__class__ = utest.ui.common.ResultStats;
-utest.ui.common.HeaderDisplayMode = { __ename__ : ["utest","ui","common","HeaderDisplayMode"], __constructs__ : ["AlwaysShowHeader","NeverShowHeader","ShowHeaderWithResults"] }
-utest.ui.common.HeaderDisplayMode.AlwaysShowHeader = ["AlwaysShowHeader",0];
-utest.ui.common.HeaderDisplayMode.AlwaysShowHeader.toString = $estr;
-utest.ui.common.HeaderDisplayMode.AlwaysShowHeader.__enum__ = utest.ui.common.HeaderDisplayMode;
-utest.ui.common.HeaderDisplayMode.NeverShowHeader = ["NeverShowHeader",1];
-utest.ui.common.HeaderDisplayMode.NeverShowHeader.toString = $estr;
-utest.ui.common.HeaderDisplayMode.NeverShowHeader.__enum__ = utest.ui.common.HeaderDisplayMode;
-utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults = ["ShowHeaderWithResults",2];
-utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults.toString = $estr;
-utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults.__enum__ = utest.ui.common.HeaderDisplayMode;
-utest.ui.common.SuccessResultsDisplayMode = { __ename__ : ["utest","ui","common","SuccessResultsDisplayMode"], __constructs__ : ["AlwaysShowSuccessResults","NeverShowSuccessResults","ShowSuccessResultsWithNoErrors"] }
-utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults = ["AlwaysShowSuccessResults",0];
-utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults.toString = $estr;
-utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults.__enum__ = utest.ui.common.SuccessResultsDisplayMode;
-utest.ui.common.SuccessResultsDisplayMode.NeverShowSuccessResults = ["NeverShowSuccessResults",1];
-utest.ui.common.SuccessResultsDisplayMode.NeverShowSuccessResults.toString = $estr;
-utest.ui.common.SuccessResultsDisplayMode.NeverShowSuccessResults.__enum__ = utest.ui.common.SuccessResultsDisplayMode;
-utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors = ["ShowSuccessResultsWithNoErrors",2];
-utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors.toString = $estr;
-utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors.__enum__ = utest.ui.common.SuccessResultsDisplayMode;
-utest.TestResult = function(p) { if( p === $_ ) return; {
-	$s.push("utest.TestResult::new");
-	var $spos = $s.length;
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","GraphicDOMObjectBase"];
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.__super__ = org.silex.runtime.domobject.js.DOMObject;
+for(var k in org.silex.runtime.domobject.js.DOMObject.prototype ) org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype[k] = org.silex.runtime.domobject.js.DOMObject.prototype[k];
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.addChild = function(domObject) {
 	null;
-	$s.pop();
-}}
-utest.TestResult.__name__ = ["utest","TestResult"];
-utest.TestResult.ofHandler = function(handler) {
-	$s.push("utest.TestResult::ofHandler");
-	var $spos = $s.length;
-	var r = new utest.TestResult();
-	var path = Type.getClassName(Type.getClass(handler.fixture.target)).split(".");
-	r.cls = path.pop();
-	r.pack = path.join(".");
-	r.method = handler.fixture.method;
-	r.setup = handler.fixture.setup;
-	r.teardown = handler.fixture.teardown;
-	r.assertations = handler.results;
-	{
-		$s.pop();
-		return r;
-	}
-	$s.pop();
 }
-utest.TestResult.prototype.allOk = function() {
-	$s.push("utest.TestResult::allOk");
-	var $spos = $s.length;
-	try {
-		{ var $it0 = this.assertations.iterator();
-		while( $it0.hasNext() ) { var l = $it0.next();
-		{
-			var $e = (l);
-			switch( $e[1] ) {
-			case 0:
-			var pos = $e[2];
-			{
-				throw "__break__";
-			}break;
-			default:{
-				{
-					$s.pop();
-					return false;
-				}
-			}break;
-			}
-		}
-		}}
-	} catch( e ) { if( e != "__break__" ) throw e; }
-	{
-		$s.pop();
-		return true;
-	}
-	$s.pop();
-}
-utest.TestResult.prototype.assertations = null;
-utest.TestResult.prototype.cls = null;
-utest.TestResult.prototype.method = null;
-utest.TestResult.prototype.pack = null;
-utest.TestResult.prototype.setup = null;
-utest.TestResult.prototype.teardown = null;
-utest.TestResult.prototype.__class__ = utest.TestResult;
-utest.ui.common.ResultAggregator = function(runner,flattenPackage) { if( runner === $_ ) return; {
-	$s.push("utest.ui.common.ResultAggregator::new");
-	var $spos = $s.length;
-	if(flattenPackage == null) flattenPackage = false;
-	if(runner == null) throw "runner argument is null";
-	this.flattenPackage = flattenPackage;
-	this.runner = runner;
-	runner.onStart.add($closure(this,"start"));
-	runner.onProgress.add($closure(this,"progress"));
-	runner.onComplete.add($closure(this,"complete"));
-	this.onStart = new utest.Notifier();
-	this.onComplete = new utest.Dispatcher();
-	this.onProgress = new utest.Dispatcher();
-	$s.pop();
-}}
-utest.ui.common.ResultAggregator.__name__ = ["utest","ui","common","ResultAggregator"];
-utest.ui.common.ResultAggregator.prototype.complete = function(runner) {
-	$s.push("utest.ui.common.ResultAggregator::complete");
-	var $spos = $s.length;
-	this.onComplete.dispatch(this.root);
-	$s.pop();
-}
-utest.ui.common.ResultAggregator.prototype.createFixture = function(result) {
-	$s.push("utest.ui.common.ResultAggregator::createFixture");
-	var $spos = $s.length;
-	var f = new utest.ui.common.FixtureResult(result.method);
-	{ var $it0 = result.assertations.iterator();
-	while( $it0.hasNext() ) { var assertation = $it0.next();
-	f.add(assertation);
-	}}
-	{
-		$s.pop();
-		return f;
-	}
-	$s.pop();
-}
-utest.ui.common.ResultAggregator.prototype.flattenPackage = null;
-utest.ui.common.ResultAggregator.prototype.getOrCreateClass = function(pack,cls,setup,teardown) {
-	$s.push("utest.ui.common.ResultAggregator::getOrCreateClass");
-	var $spos = $s.length;
-	if(pack.existsClass(cls)) {
-		var $tmp = pack.getClass(cls);
-		$s.pop();
-		return $tmp;
-	}
-	var c = new utest.ui.common.ClassResult(cls,setup,teardown);
-	pack.addClass(c);
-	{
-		$s.pop();
-		return c;
-	}
-	$s.pop();
-}
-utest.ui.common.ResultAggregator.prototype.getOrCreatePackage = function(pack,flat,ref) {
-	$s.push("utest.ui.common.ResultAggregator::getOrCreatePackage");
-	var $spos = $s.length;
-	if(ref == null) ref = this.root;
-	if(pack == null || pack == "") {
-		$s.pop();
-		return ref;
-	}
-	if(flat) {
-		if(ref.existsPackage(pack)) {
-			var $tmp = ref.getPackage(pack);
-			$s.pop();
-			return $tmp;
-		}
-		var p = new utest.ui.common.PackageResult(pack);
-		ref.addPackage(p);
-		{
-			$s.pop();
-			return p;
-		}
-	}
-	else {
-		var parts = pack.split(".");
-		{
-			var _g = 0;
-			while(_g < parts.length) {
-				var part = parts[_g];
-				++_g;
-				ref = this.getOrCreatePackage(part,true,ref);
-			}
-		}
-		{
-			$s.pop();
-			return ref;
-		}
-	}
-	$s.pop();
-}
-utest.ui.common.ResultAggregator.prototype.onComplete = null;
-utest.ui.common.ResultAggregator.prototype.onProgress = null;
-utest.ui.common.ResultAggregator.prototype.onStart = null;
-utest.ui.common.ResultAggregator.prototype.progress = function(e) {
-	$s.push("utest.ui.common.ResultAggregator::progress");
-	var $spos = $s.length;
-	this.root.addResult(e.result,this.flattenPackage);
-	this.onProgress.dispatch(e);
-	$s.pop();
-}
-utest.ui.common.ResultAggregator.prototype.root = null;
-utest.ui.common.ResultAggregator.prototype.runner = null;
-utest.ui.common.ResultAggregator.prototype.start = function(runner) {
-	$s.push("utest.ui.common.ResultAggregator::start");
-	var $spos = $s.length;
-	this.root = new utest.ui.common.PackageResult(null);
-	this.onStart.dispatch();
-	$s.pop();
-}
-utest.ui.common.ResultAggregator.prototype.__class__ = utest.ui.common.ResultAggregator;
-if(!org.silex) org.silex = {}
-if(!org.silex.runtime) org.silex.runtime = {}
-if(!org.silex.runtime.nativeClass) org.silex.runtime.nativeClass = {}
-org.silex.runtime.nativeClass.NativeClass = function(p) { if( p === $_ ) return; {
-	$s.push("org.silex.runtime.nativeClass.NativeClass::new");
-	var $spos = $s.length;
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.removeChild = function(domObject) {
 	null;
-	$s.pop();
-}}
-org.silex.runtime.nativeClass.NativeClass.__name__ = ["org","silex","runtime","nativeClass","NativeClass"];
-org.silex.runtime.nativeClass.NativeClass.getNativeInstanceByClassName = function(className) {
-	$s.push("org.silex.runtime.nativeClass.NativeClass::getNativeInstanceByClassName");
-	var $spos = $s.length;
-	{
-		var $tmp = new org.silex.runtime.nativeClass.js.NativeInstance(className);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
 }
-org.silex.runtime.nativeClass.NativeClass.createInstanceOf = function(classReference) {
-	$s.push("org.silex.runtime.nativeClass.NativeClass::createInstanceOf");
-	var $spos = $s.length;
-	{
-		var $tmp = org.silex.runtime.nativeClass.NativeClass.getNativeInstanceByClassName(Type.getClassName(classReference));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.beginFill = function(fillStyle,lineStyle) {
+	this.clear();
 }
-org.silex.runtime.nativeClass.NativeClass.prototype.__class__ = org.silex.runtime.nativeClass.NativeClass;
-if(!haxe.io) haxe.io = {}
-haxe.io.Bytes = function(length,b) { if( length === $_ ) return; {
-	$s.push("haxe.io.Bytes::new");
-	var $spos = $s.length;
-	this.length = length;
-	this.b = b;
-	$s.pop();
-}}
-haxe.io.Bytes.__name__ = ["haxe","io","Bytes"];
-haxe.io.Bytes.alloc = function(length) {
-	$s.push("haxe.io.Bytes::alloc");
-	var $spos = $s.length;
-	var a = new Array();
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.endFill = function() {
+	null;
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.clear = function() {
+	null;
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.drawRect = function(x,y,width,height,cornerRadiuses) {
+	this.moveTo(cornerRadiuses.tlCornerRadius,0);
+	this.lineTo(width - cornerRadiuses.trCornerRadius,0);
+	this.curveTo(width,0,width,cornerRadiuses.trCornerRadius);
+	this.lineTo(width,cornerRadiuses.trCornerRadius);
+	this.lineTo(width,height - cornerRadiuses.brCornerRadius);
+	this.curveTo(width,height,width - cornerRadiuses.brCornerRadius,height);
+	this.lineTo(width - cornerRadiuses.brCornerRadius,height);
+	this.lineTo(cornerRadiuses.blCornerRadius,height);
+	this.curveTo(0,height,0,height - cornerRadiuses.blCornerRadius);
+	this.lineTo(0,height - cornerRadiuses.blCornerRadius);
+	this.lineTo(0,cornerRadiuses.tlCornerRadius);
+	this.curveTo(0,0,cornerRadiuses.tlCornerRadius,0);
+	this.lineTo(cornerRadiuses.tlCornerRadius,0);
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.drawEllipse = function(x,y,width,height) {
+	var xRadius = width / 2;
+	var yRadius = height / 2;
+	var xCenter = width / 2 + x;
+	var yCenter = height / 2 + y;
+	var angleDelta = Math.PI / 4;
+	var xCtrlDist = xRadius / Math.cos(angleDelta / 2);
+	var yCtrlDist = yRadius / Math.cos(angleDelta / 2);
+	this.moveTo(xCenter + xRadius,yCenter);
+	var angle = 0;
+	var rx, ry, ax, ay;
 	{
 		var _g = 0;
-		while(_g < length) {
+		while(_g < 8) {
 			var i = _g++;
-			a.push(0);
+			angle += angleDelta;
+			rx = xCenter + Math.cos(angle - angleDelta / 2) * xCtrlDist;
+			ry = yCenter + Math.sin(angle - angleDelta / 2) * yCtrlDist;
+			ax = xCenter + Math.cos(angle) * xRadius;
+			ay = yCenter + Math.sin(angle) * yRadius;
+			this.curveTo(rx,ry,ax,ay);
 		}
 	}
-	{
-		var $tmp = new haxe.io.Bytes(length,a);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
 }
-haxe.io.Bytes.ofString = function(s) {
-	$s.push("haxe.io.Bytes::ofString");
-	var $spos = $s.length;
-	var a = new Array();
-	{
-		var _g1 = 0, _g = s.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var c = s.cca(i);
-			if(c <= 127) a.push(c);
-			else if(c <= 2047) {
-				a.push(192 | (c >> 6));
-				a.push(128 | (c & 63));
-			}
-			else if(c <= 65535) {
-				a.push(224 | (c >> 12));
-				a.push(128 | ((c >> 6) & 63));
-				a.push(128 | (c & 63));
-			}
-			else {
-				a.push(240 | (c >> 18));
-				a.push(128 | ((c >> 12) & 63));
-				a.push(128 | ((c >> 6) & 63));
-				a.push(128 | (c & 63));
-			}
-		}
-	}
-	{
-		var $tmp = new haxe.io.Bytes(a.length,a);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.ofData = function(b) {
-	$s.push("haxe.io.Bytes::ofData");
-	var $spos = $s.length;
-	{
-		var $tmp = new haxe.io.Bytes(b.length,b);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.b = null;
-haxe.io.Bytes.prototype.blit = function(pos,src,srcpos,len) {
-	$s.push("haxe.io.Bytes::blit");
-	var $spos = $s.length;
-	if(pos < 0 || srcpos < 0 || len < 0 || pos + len > this.length || srcpos + len > src.length) throw haxe.io.Error.OutsideBounds;
-	var b1 = this.b;
-	var b2 = src.b;
-	if(b1 == b2 && pos > srcpos) {
-		var i = len;
-		while(i > 0) {
-			i--;
-			b1[i + pos] = b2[i + srcpos];
-		}
-		{
-			$s.pop();
-			return;
-		}
-	}
-	{
-		var _g = 0;
-		while(_g < len) {
-			var i = _g++;
-			b1[i + pos] = b2[i + srcpos];
-		}
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.compare = function(other) {
-	$s.push("haxe.io.Bytes::compare");
-	var $spos = $s.length;
-	var b1 = this.b;
-	var b2 = other.b;
-	var len = ((this.length < other.length)?this.length:other.length);
-	{
-		var _g = 0;
-		while(_g < len) {
-			var i = _g++;
-			if(b1[i] != b2[i]) {
-				var $tmp = b1[i] - b2[i];
-				$s.pop();
-				return $tmp;
-			}
-		}
-	}
-	{
-		var $tmp = this.length - other.length;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.get = function(pos) {
-	$s.push("haxe.io.Bytes::get");
-	var $spos = $s.length;
-	{
-		var $tmp = this.b[pos];
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.getData = function() {
-	$s.push("haxe.io.Bytes::getData");
-	var $spos = $s.length;
-	{
-		var $tmp = this.b;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.length = null;
-haxe.io.Bytes.prototype.readString = function(pos,len) {
-	$s.push("haxe.io.Bytes::readString");
-	var $spos = $s.length;
-	if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
-	var s = "";
-	var b = this.b;
-	var fcc = $closure(String,"fromCharCode");
-	var i = pos;
-	var max = pos + len;
-	while(i < max) {
-		var c = b[i++];
-		if(c < 128) {
-			if(c == 0) break;
-			s += fcc(c);
-		}
-		else if(c < 224) s += fcc(((c & 63) << 6) | (b[i++] & 127));
-		else if(c < 240) {
-			var c2 = b[i++];
-			s += fcc((((c & 31) << 12) | ((c2 & 127) << 6)) | (b[i++] & 127));
-		}
-		else {
-			var c2 = b[i++];
-			var c3 = b[i++];
-			s += fcc(((((c & 15) << 18) | ((c2 & 127) << 12)) | ((c3 << 6) & 127)) | (b[i++] & 127));
-		}
-	}
-	{
-		$s.pop();
-		return s;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.set = function(pos,v) {
-	$s.push("haxe.io.Bytes::set");
-	var $spos = $s.length;
-	this.b[pos] = (v & 255);
-	$s.pop();
-}
-haxe.io.Bytes.prototype.sub = function(pos,len) {
-	$s.push("haxe.io.Bytes::sub");
-	var $spos = $s.length;
-	if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
-	{
-		var $tmp = new haxe.io.Bytes(len,this.b.slice(pos,pos + len));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.toString = function() {
-	$s.push("haxe.io.Bytes::toString");
-	var $spos = $s.length;
-	{
-		var $tmp = this.readString(0,this.length);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.io.Bytes.prototype.__class__ = haxe.io.Bytes;
-IntIter = function(min,max) { if( min === $_ ) return; {
-	$s.push("IntIter::new");
-	var $spos = $s.length;
-	this.min = min;
-	this.max = max;
-	$s.pop();
-}}
-IntIter.__name__ = ["IntIter"];
-IntIter.prototype.hasNext = function() {
-	$s.push("IntIter::hasNext");
-	var $spos = $s.length;
-	{
-		var $tmp = this.min < this.max;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntIter.prototype.max = null;
-IntIter.prototype.min = null;
-IntIter.prototype.next = function() {
-	$s.push("IntIter::next");
-	var $spos = $s.length;
-	{
-		var $tmp = this.min++;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntIter.prototype.__class__ = IntIter;
-org.silex.runtime.nativeClass.NativeInstanceBase = function(nativeInstanceClassName) { if( nativeInstanceClassName === $_ ) return; {
-	$s.push("org.silex.runtime.nativeClass.NativeInstanceBase::new");
-	var $spos = $s.length;
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.lineTo = function(x,y) {
 	null;
-	$s.pop();
-}}
-org.silex.runtime.nativeClass.NativeInstanceBase.__name__ = ["org","silex","runtime","nativeClass","NativeInstanceBase"];
-org.silex.runtime.nativeClass.NativeInstanceBase.prototype._refToNativeClassInstance = null;
-org.silex.runtime.nativeClass.NativeInstanceBase.prototype.callMethod = function(methodName,args) {
-	$s.push("org.silex.runtime.nativeClass.NativeInstanceBase::callMethod");
-	var $spos = $s.length;
-	if(Reflect.isFunction(Reflect.field(this._refToNativeClassInstance,methodName))) {
-		var method = Reflect.field(this._refToNativeClassInstance,methodName);
-		{
-			var $tmp = method.apply(this._refToNativeClassInstance,args);
-			$s.pop();
-			return $tmp;
-		}
-	}
-	{
-		$s.pop();
-		return null;
-	}
-	$s.pop();
 }
-org.silex.runtime.nativeClass.NativeInstanceBase.prototype.getField = function(fieldName) {
-	$s.push("org.silex.runtime.nativeClass.NativeInstanceBase::getField");
-	var $spos = $s.length;
-	if(Reflect.hasField(this._refToNativeClassInstance,fieldName)) {
-		{
-			var $tmp = Reflect.field(this._refToNativeClassInstance,fieldName);
-			$s.pop();
-			return $tmp;
-		}
-	}
-	else {
-		{
-			$s.pop();
-			return null;
-		}
-	}
-	$s.pop();
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.moveTo = function(x,y) {
+	null;
 }
-org.silex.runtime.nativeClass.NativeInstanceBase.prototype.getReferenceToNativeClassInstance = function() {
-	$s.push("org.silex.runtime.nativeClass.NativeInstanceBase::getReferenceToNativeClassInstance");
-	var $spos = $s.length;
-	{
-		var $tmp = this._refToNativeClassInstance;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.curveTo = function(controlX,controlY,x,y) {
+	null;
 }
-org.silex.runtime.nativeClass.NativeInstanceBase.prototype.setField = function(fieldName,fieldValue) {
-	$s.push("org.silex.runtime.nativeClass.NativeInstanceBase::setField");
-	var $spos = $s.length;
-	this._refToNativeClassInstance[fieldName] = fieldValue;
-	$s.pop();
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.toNativeAlpha = function(genericAlpa) {
+	null;
 }
-org.silex.runtime.nativeClass.NativeInstanceBase.prototype.__class__ = org.silex.runtime.nativeClass.NativeInstanceBase;
-if(!org.silex.runtime.nativeClass.js) org.silex.runtime.nativeClass.js = {}
-org.silex.runtime.nativeClass.js.NativeInstance = function(nativeInstanceClassName) { if( nativeInstanceClassName === $_ ) return; {
-	$s.push("org.silex.runtime.nativeClass.js.NativeInstance::new");
-	var $spos = $s.length;
-	org.silex.runtime.nativeClass.NativeInstanceBase.call(this,nativeInstanceClassName);
-	if(Type.resolveClass(nativeInstanceClassName) != null) {
-		this._refToNativeClassInstance = Type.createInstance(Type.resolveClass(nativeInstanceClassName),[]);
-	}
-	else {
-		this._refToNativeClassInstance = js.Lib.eval(("new " + nativeInstanceClassName) + "()");
-	}
-	$s.pop();
-}}
-org.silex.runtime.nativeClass.js.NativeInstance.__name__ = ["org","silex","runtime","nativeClass","js","NativeInstance"];
-org.silex.runtime.nativeClass.js.NativeInstance.__super__ = org.silex.runtime.nativeClass.NativeInstanceBase;
-for(var k in org.silex.runtime.nativeClass.NativeInstanceBase.prototype ) org.silex.runtime.nativeClass.js.NativeInstance.prototype[k] = org.silex.runtime.nativeClass.NativeInstanceBase.prototype[k];
-org.silex.runtime.nativeClass.js.NativeInstance.prototype.__class__ = org.silex.runtime.nativeClass.js.NativeInstance;
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.toNativeColor = function(genericColor) {
+	null;
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.toNativeRatio = function(genericRatio) {
+	null;
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.toNativeCapStyle = function(genericCapStyle) {
+	null;
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.toNativeJointStyle = function(genericJointStyle) {
+	null;
+}
+org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.__class__ = org.silex.runtime.domobject.base.GraphicDOMObjectBase;
 utest.Runner = function(p) { if( p === $_ ) return; {
-	$s.push("utest.Runner::new");
-	var $spos = $s.length;
 	this.fixtures = new Array();
 	this.onProgress = new utest.Dispatcher();
 	this.onStart = new utest.Dispatcher();
 	this.onComplete = new utest.Dispatcher();
 	this.length = 0;
-	$s.pop();
 }}
 utest.Runner.__name__ = ["utest","Runner"];
+utest.Runner.prototype.fixtures = null;
+utest.Runner.prototype.onProgress = null;
+utest.Runner.prototype.onStart = null;
+utest.Runner.prototype.onComplete = null;
+utest.Runner.prototype.length = null;
 utest.Runner.prototype.addCase = function(test,setup,teardown,prefix,pattern) {
-	$s.push("utest.Runner::addCase");
-	var $spos = $s.length;
 	if(prefix == null) prefix = "test";
 	if(teardown == null) teardown = "teardown";
 	if(setup == null) setup = "setup";
@@ -3470,1883 +1012,120 @@ utest.Runner.prototype.addCase = function(test,setup,teardown,prefix,pattern) {
 			}
 		}
 	}
-	$s.pop();
 }
 utest.Runner.prototype.addFixture = function(fixture) {
-	$s.push("utest.Runner::addFixture");
-	var $spos = $s.length;
 	this.fixtures.push(fixture);
 	this.length++;
-	$s.pop();
 }
-utest.Runner.prototype.fixtures = null;
 utest.Runner.prototype.getFixture = function(index) {
-	$s.push("utest.Runner::getFixture");
-	var $spos = $s.length;
-	{
-		var $tmp = this.fixtures[index];
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+	return this.fixtures[index];
 }
 utest.Runner.prototype.isMethod = function(test,name) {
-	$s.push("utest.Runner::isMethod");
-	var $spos = $s.length;
 	try {
-		{
-			var $tmp = Reflect.isFunction(Reflect.field(test,name));
-			$s.pop();
-			return $tmp;
-		}
+		return Reflect.isFunction(Reflect.field(test,name));
 	}
 	catch( $e0 ) {
 		{
 			var e = $e0;
 			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				{
-					$s.pop();
-					return false;
-				}
+				return false;
 			}
 		}
 	}
-	$s.pop();
 }
-utest.Runner.prototype.length = null;
-utest.Runner.prototype.onComplete = null;
-utest.Runner.prototype.onProgress = null;
-utest.Runner.prototype.onStart = null;
 utest.Runner.prototype.pos = null;
 utest.Runner.prototype.run = function() {
-	$s.push("utest.Runner::run");
-	var $spos = $s.length;
 	this.pos = 0;
 	this.onStart.dispatch(this);
 	this.runNext();
-	$s.pop();
+}
+utest.Runner.prototype.runNext = function() {
+	if(this.fixtures.length > this.pos) this.runFixture(this.fixtures[this.pos++]);
+	else this.onComplete.dispatch(this);
 }
 utest.Runner.prototype.runFixture = function(fixture) {
-	$s.push("utest.Runner::runFixture");
-	var $spos = $s.length;
 	var handler = new utest.TestHandler(fixture);
 	handler.onComplete.add($closure(this,"testComplete"));
 	handler.execute();
-	$s.pop();
-}
-utest.Runner.prototype.runNext = function() {
-	$s.push("utest.Runner::runNext");
-	var $spos = $s.length;
-	if(this.fixtures.length > this.pos) this.runFixture(this.fixtures[this.pos++]);
-	else this.onComplete.dispatch(this);
-	$s.pop();
 }
 utest.Runner.prototype.testComplete = function(h) {
-	$s.push("utest.Runner::testComplete");
-	var $spos = $s.length;
 	this.onProgress.dispatch({ result : utest.TestResult.ofHandler(h), done : this.pos, totals : this.length});
 	this.runNext();
-	$s.pop();
 }
 utest.Runner.prototype.__class__ = utest.Runner;
-haxe.Timer = function(time_ms) { if( time_ms === $_ ) return; {
-	$s.push("haxe.Timer::new");
-	var $spos = $s.length;
-	this.id = haxe.Timer.arr.length;
-	haxe.Timer.arr[this.id] = this;
-	this.timerId = window.setInterval(("haxe.Timer.arr[" + this.id) + "].run();",time_ms);
-	$s.pop();
-}}
-haxe.Timer.__name__ = ["haxe","Timer"];
-haxe.Timer.delay = function(f,time_ms) {
-	$s.push("haxe.Timer::delay");
-	var $spos = $s.length;
-	var t = new haxe.Timer(time_ms);
-	t.run = function() {
-		$s.push("haxe.Timer::delay@78");
-		var $spos = $s.length;
-		t.stop();
-		f();
-		$s.pop();
-	}
-	{
-		$s.pop();
-		return t;
-	}
-	$s.pop();
-}
-haxe.Timer.measure = function(f,pos) {
-	$s.push("haxe.Timer::measure");
-	var $spos = $s.length;
-	var t0 = haxe.Timer.stamp();
-	var r = f();
-	haxe.Log.trace((haxe.Timer.stamp() - t0) + "s",pos);
-	{
-		$s.pop();
-		return r;
-	}
-	$s.pop();
-}
-haxe.Timer.stamp = function() {
-	$s.push("haxe.Timer::stamp");
-	var $spos = $s.length;
-	{
-		var $tmp = Date.now().getTime() / 1000;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-haxe.Timer.prototype.id = null;
-haxe.Timer.prototype.run = function() {
-	$s.push("haxe.Timer::run");
-	var $spos = $s.length;
-	null;
-	$s.pop();
-}
-haxe.Timer.prototype.stop = function() {
-	$s.push("haxe.Timer::stop");
-	var $spos = $s.length;
-	if(this.id == null) {
-		$s.pop();
-		return;
-	}
-	window.clearInterval(this.timerId);
-	haxe.Timer.arr[this.id] = null;
-	if(this.id > 100 && this.id == haxe.Timer.arr.length - 1) {
-		var p = this.id - 1;
-		while(p >= 0 && haxe.Timer.arr[p] == null) p--;
-		haxe.Timer.arr = haxe.Timer.arr.slice(0,p + 1);
-	}
-	this.id = null;
-	$s.pop();
-}
-haxe.Timer.prototype.timerId = null;
-haxe.Timer.prototype.__class__ = haxe.Timer;
-haxe.io.Error = { __ename__ : ["haxe","io","Error"], __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] }
-haxe.io.Error.Blocked = ["Blocked",0];
-haxe.io.Error.Blocked.toString = $estr;
-haxe.io.Error.Blocked.__enum__ = haxe.io.Error;
-haxe.io.Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe.io.Error; $x.toString = $estr; return $x; }
-haxe.io.Error.OutsideBounds = ["OutsideBounds",2];
-haxe.io.Error.OutsideBounds.toString = $estr;
-haxe.io.Error.OutsideBounds.__enum__ = haxe.io.Error;
-haxe.io.Error.Overflow = ["Overflow",1];
-haxe.io.Error.Overflow.toString = $estr;
-haxe.io.Error.Overflow.__enum__ = haxe.io.Error;
-Std = function() { }
-Std.__name__ = ["Std"];
-Std["is"] = function(v,t) {
-	$s.push("Std::is");
-	var $spos = $s.length;
-	{
-		var $tmp = js.Boot.__instanceof(v,t);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Std.string = function(s) {
-	$s.push("Std::string");
-	var $spos = $s.length;
-	{
-		var $tmp = js.Boot.__string_rec(s,"");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Std["int"] = function(x) {
-	$s.push("Std::int");
-	var $spos = $s.length;
-	if(x < 0) {
-		var $tmp = Math.ceil(x);
-		$s.pop();
-		return $tmp;
-	}
-	{
-		var $tmp = Math.floor(x);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Std.parseInt = function(x) {
-	$s.push("Std::parseInt");
-	var $spos = $s.length;
-	var v = parseInt(x,10);
-	if(v == 0 && x.charCodeAt(1) == 120) v = parseInt(x);
-	if(isNaN(v)) {
-		$s.pop();
-		return null;
-	}
-	{
-		var $tmp = v;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Std.parseFloat = function(x) {
-	$s.push("Std::parseFloat");
-	var $spos = $s.length;
-	{
-		var $tmp = parseFloat(x);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Std.random = function(x) {
-	$s.push("Std::random");
-	var $spos = $s.length;
-	{
-		var $tmp = Math.floor(Math.random() * x);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Std.prototype.__class__ = Std;
-Lambda = function() { }
-Lambda.__name__ = ["Lambda"];
-Lambda.array = function(it) {
-	$s.push("Lambda::array");
-	var $spos = $s.length;
-	var a = new Array();
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var i = $it0.next();
-	a.push(i);
-	}}
-	{
-		$s.pop();
-		return a;
-	}
-	$s.pop();
-}
-Lambda.list = function(it) {
-	$s.push("Lambda::list");
-	var $spos = $s.length;
-	var l = new List();
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var i = $it0.next();
-	l.add(i);
-	}}
-	{
-		$s.pop();
-		return l;
-	}
-	$s.pop();
-}
-Lambda.map = function(it,f) {
-	$s.push("Lambda::map");
-	var $spos = $s.length;
-	var l = new List();
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	l.add(f(x));
-	}}
-	{
-		$s.pop();
-		return l;
-	}
-	$s.pop();
-}
-Lambda.mapi = function(it,f) {
-	$s.push("Lambda::mapi");
-	var $spos = $s.length;
-	var l = new List();
-	var i = 0;
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	l.add(f(i++,x));
-	}}
-	{
-		$s.pop();
-		return l;
-	}
-	$s.pop();
-}
-Lambda.has = function(it,elt,cmp) {
-	$s.push("Lambda::has");
-	var $spos = $s.length;
-	if(cmp == null) {
-		{ var $it0 = it.iterator();
-		while( $it0.hasNext() ) { var x = $it0.next();
-		if(x == elt) {
-			$s.pop();
-			return true;
-		}
-		}}
-	}
-	else {
-		{ var $it1 = it.iterator();
-		while( $it1.hasNext() ) { var x = $it1.next();
-		if(cmp(x,elt)) {
-			$s.pop();
-			return true;
-		}
-		}}
-	}
-	{
-		$s.pop();
-		return false;
-	}
-	$s.pop();
-}
-Lambda.exists = function(it,f) {
-	$s.push("Lambda::exists");
-	var $spos = $s.length;
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	if(f(x)) {
-		$s.pop();
-		return true;
-	}
-	}}
-	{
-		$s.pop();
-		return false;
-	}
-	$s.pop();
-}
-Lambda.foreach = function(it,f) {
-	$s.push("Lambda::foreach");
-	var $spos = $s.length;
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	if(!f(x)) {
-		$s.pop();
-		return false;
-	}
-	}}
-	{
-		$s.pop();
-		return true;
-	}
-	$s.pop();
-}
-Lambda.iter = function(it,f) {
-	$s.push("Lambda::iter");
-	var $spos = $s.length;
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	f(x);
-	}}
-	$s.pop();
-}
-Lambda.filter = function(it,f) {
-	$s.push("Lambda::filter");
-	var $spos = $s.length;
-	var l = new List();
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	if(f(x)) l.add(x);
-	}}
-	{
-		$s.pop();
-		return l;
-	}
-	$s.pop();
-}
-Lambda.fold = function(it,f,first) {
-	$s.push("Lambda::fold");
-	var $spos = $s.length;
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	first = f(x,first);
-	}}
-	{
-		$s.pop();
-		return first;
-	}
-	$s.pop();
-}
-Lambda.count = function(it,pred) {
-	$s.push("Lambda::count");
-	var $spos = $s.length;
-	var n = 0;
-	if(pred == null) { var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var _ = $it0.next();
-	n++;
-	}}
-	else { var $it1 = it.iterator();
-	while( $it1.hasNext() ) { var x = $it1.next();
-	if(pred(x)) n++;
-	}}
-	{
-		$s.pop();
-		return n;
-	}
-	$s.pop();
-}
-Lambda.empty = function(it) {
-	$s.push("Lambda::empty");
-	var $spos = $s.length;
-	{
-		var $tmp = !it.iterator().hasNext();
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Lambda.indexOf = function(it,v) {
-	$s.push("Lambda::indexOf");
-	var $spos = $s.length;
-	var i = 0;
-	{ var $it0 = it.iterator();
-	while( $it0.hasNext() ) { var v2 = $it0.next();
-	{
-		if(v == v2) {
-			$s.pop();
-			return i;
-		}
-		i++;
-	}
-	}}
-	{
-		$s.pop();
-		return -1;
-	}
-	$s.pop();
-}
-Lambda.concat = function(a,b) {
-	$s.push("Lambda::concat");
-	var $spos = $s.length;
-	var l = new List();
-	{ var $it0 = a.iterator();
-	while( $it0.hasNext() ) { var x = $it0.next();
-	l.add(x);
-	}}
-	{ var $it1 = b.iterator();
-	while( $it1.hasNext() ) { var x = $it1.next();
-	l.add(x);
-	}}
-	{
-		$s.pop();
-		return l;
-	}
-	$s.pop();
-}
-Lambda.prototype.__class__ = Lambda;
-utest.ui.common.ClassResult = function(className,setupName,teardownName) { if( className === $_ ) return; {
-	$s.push("utest.ui.common.ClassResult::new");
-	var $spos = $s.length;
-	this.fixtures = new Hash();
-	this.className = className;
-	this.setupName = setupName;
-	this.hasSetup = setupName != null;
-	this.teardownName = teardownName;
-	this.hasTeardown = teardownName != null;
-	this.methods = 0;
-	this.stats = new utest.ui.common.ResultStats();
-	$s.pop();
-}}
-utest.ui.common.ClassResult.__name__ = ["utest","ui","common","ClassResult"];
-utest.ui.common.ClassResult.prototype.add = function(result) {
-	$s.push("utest.ui.common.ClassResult::add");
-	var $spos = $s.length;
-	if(this.fixtures.exists(result.methodName)) throw "invalid duplicated fixture result";
-	this.stats.wire(result.stats);
-	this.methods++;
-	this.fixtures.set(result.methodName,result);
-	$s.pop();
-}
-utest.ui.common.ClassResult.prototype.className = null;
-utest.ui.common.ClassResult.prototype.exists = function(method) {
-	$s.push("utest.ui.common.ClassResult::exists");
-	var $spos = $s.length;
-	{
-		var $tmp = this.fixtures.exists(method);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.ClassResult.prototype.fixtures = null;
-utest.ui.common.ClassResult.prototype.get = function(method) {
-	$s.push("utest.ui.common.ClassResult::get");
-	var $spos = $s.length;
-	{
-		var $tmp = this.fixtures.get(method);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.ClassResult.prototype.hasSetup = null;
-utest.ui.common.ClassResult.prototype.hasTeardown = null;
-utest.ui.common.ClassResult.prototype.methodNames = function(errorsHavePriority) {
-	$s.push("utest.ui.common.ClassResult::methodNames");
-	var $spos = $s.length;
-	if(errorsHavePriority == null) errorsHavePriority = true;
-	var names = [];
-	{ var $it0 = this.fixtures.keys();
-	while( $it0.hasNext() ) { var name = $it0.next();
-	names.push(name);
-	}}
-	if(errorsHavePriority) {
-		var me = this;
-		names.sort(function(a,b) {
-			$s.push("utest.ui.common.ClassResult::methodNames@54");
-			var $spos = $s.length;
-			var $as = me.get(a).stats;
-			var bs = me.get(b).stats;
-			if($as.hasErrors) {
-				{
-					var $tmp = ((!bs.hasErrors)?-1:(($as.errors == bs.errors?Reflect.compare(a,b):Reflect.compare($as.errors,bs.errors))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasErrors) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else if($as.hasFailures) {
-				{
-					var $tmp = ((!bs.hasFailures)?-1:(($as.failures == bs.failures?Reflect.compare(a,b):Reflect.compare($as.failures,bs.failures))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasFailures) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else if($as.hasWarnings) {
-				{
-					var $tmp = ((!bs.hasWarnings)?-1:(($as.warnings == bs.warnings?Reflect.compare(a,b):Reflect.compare($as.warnings,bs.warnings))));
-					$s.pop();
-					return $tmp;
-				}
-			}
-			else if(bs.hasWarnings) {
-				{
-					$s.pop();
-					return 1;
-				}
-			}
-			else {
-				{
-					var $tmp = Reflect.compare(a,b);
-					$s.pop();
-					return $tmp;
-				}
-			}
-			$s.pop();
-		});
-	}
-	else {
-		names.sort(function(a,b) {
-			$s.push("utest.ui.common.ClassResult::methodNames@74");
-			var $spos = $s.length;
-			{
-				var $tmp = Reflect.compare(a,b);
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		});
-	}
-	{
-		$s.pop();
-		return names;
-	}
-	$s.pop();
-}
-utest.ui.common.ClassResult.prototype.methods = null;
-utest.ui.common.ClassResult.prototype.setupName = null;
-utest.ui.common.ClassResult.prototype.stats = null;
-utest.ui.common.ClassResult.prototype.teardownName = null;
-utest.ui.common.ClassResult.prototype.__class__ = utest.ui.common.ClassResult;
-List = function(p) { if( p === $_ ) return; {
-	$s.push("List::new");
-	var $spos = $s.length;
-	this.length = 0;
-	$s.pop();
-}}
-List.__name__ = ["List"];
-List.prototype.add = function(item) {
-	$s.push("List::add");
-	var $spos = $s.length;
-	var x = [item];
-	if(this.h == null) this.h = x;
-	else this.q[1] = x;
-	this.q = x;
-	this.length++;
-	$s.pop();
-}
-List.prototype.clear = function() {
-	$s.push("List::clear");
-	var $spos = $s.length;
-	this.h = null;
-	this.q = null;
-	this.length = 0;
-	$s.pop();
-}
-List.prototype.filter = function(f) {
-	$s.push("List::filter");
-	var $spos = $s.length;
-	var l2 = new List();
-	var l = this.h;
-	while(l != null) {
-		var v = l[0];
-		l = l[1];
-		if(f(v)) l2.add(v);
-	}
-	{
-		$s.pop();
-		return l2;
-	}
-	$s.pop();
-}
-List.prototype.first = function() {
-	$s.push("List::first");
-	var $spos = $s.length;
-	{
-		var $tmp = (this.h == null?null:this.h[0]);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-List.prototype.h = null;
-List.prototype.isEmpty = function() {
-	$s.push("List::isEmpty");
-	var $spos = $s.length;
-	{
-		var $tmp = (this.h == null);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-List.prototype.iterator = function() {
-	$s.push("List::iterator");
-	var $spos = $s.length;
-	{
-		var $tmp = { h : this.h, hasNext : function() {
-			$s.push("List::iterator@155");
-			var $spos = $s.length;
-			{
-				var $tmp = (this.h != null);
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		}, next : function() {
-			$s.push("List::iterator@158");
-			var $spos = $s.length;
-			if(this.h == null) {
-				$s.pop();
-				return null;
-			}
-			var x = this.h[0];
-			this.h = this.h[1];
-			{
-				$s.pop();
-				return x;
-			}
-			$s.pop();
-		}}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-List.prototype.join = function(sep) {
-	$s.push("List::join");
-	var $spos = $s.length;
-	var s = new StringBuf();
-	var first = true;
-	var l = this.h;
-	while(l != null) {
-		if(first) first = false;
-		else s.b[s.b.length] = sep;
-		s.b[s.b.length] = l[0];
-		l = l[1];
-	}
-	{
-		var $tmp = s.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-List.prototype.last = function() {
-	$s.push("List::last");
-	var $spos = $s.length;
-	{
-		var $tmp = (this.q == null?null:this.q[0]);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-List.prototype.length = null;
-List.prototype.map = function(f) {
-	$s.push("List::map");
-	var $spos = $s.length;
-	var b = new List();
-	var l = this.h;
-	while(l != null) {
-		var v = l[0];
-		l = l[1];
-		b.add(f(v));
-	}
-	{
-		$s.pop();
-		return b;
-	}
-	$s.pop();
-}
-List.prototype.pop = function() {
-	$s.push("List::pop");
-	var $spos = $s.length;
-	if(this.h == null) {
-		$s.pop();
-		return null;
-	}
-	var x = this.h[0];
-	this.h = this.h[1];
-	if(this.h == null) this.q = null;
-	this.length--;
-	{
-		$s.pop();
-		return x;
-	}
-	$s.pop();
-}
-List.prototype.push = function(item) {
-	$s.push("List::push");
-	var $spos = $s.length;
-	var x = [item,this.h];
-	this.h = x;
-	if(this.q == null) this.q = x;
-	this.length++;
-	$s.pop();
-}
-List.prototype.q = null;
-List.prototype.remove = function(v) {
-	$s.push("List::remove");
-	var $spos = $s.length;
-	var prev = null;
-	var l = this.h;
-	while(l != null) {
-		if(l[0] == v) {
-			if(prev == null) this.h = l[1];
-			else prev[1] = l[1];
-			if(this.q == l) this.q = prev;
-			this.length--;
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		prev = l;
-		l = l[1];
-	}
-	{
-		$s.pop();
-		return false;
-	}
-	$s.pop();
-}
-List.prototype.toString = function() {
-	$s.push("List::toString");
-	var $spos = $s.length;
-	var s = new StringBuf();
-	var first = true;
-	var l = this.h;
-	s.b[s.b.length] = "{";
-	while(l != null) {
-		if(first) first = false;
-		else s.b[s.b.length] = ", ";
-		s.b[s.b.length] = Std.string(l[0]);
-		l = l[1];
-	}
-	s.b[s.b.length] = "}";
-	{
-		var $tmp = s.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-List.prototype.__class__ = List;
-ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
-ValueType.TBool = ["TBool",3];
-ValueType.TBool.toString = $estr;
-ValueType.TBool.__enum__ = ValueType;
-ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
-ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
-ValueType.TFloat = ["TFloat",2];
-ValueType.TFloat.toString = $estr;
-ValueType.TFloat.__enum__ = ValueType;
-ValueType.TFunction = ["TFunction",5];
-ValueType.TFunction.toString = $estr;
-ValueType.TFunction.__enum__ = ValueType;
-ValueType.TInt = ["TInt",1];
-ValueType.TInt.toString = $estr;
-ValueType.TInt.__enum__ = ValueType;
-ValueType.TNull = ["TNull",0];
-ValueType.TNull.toString = $estr;
-ValueType.TNull.__enum__ = ValueType;
-ValueType.TObject = ["TObject",4];
-ValueType.TObject.toString = $estr;
-ValueType.TObject.__enum__ = ValueType;
-ValueType.TUnknown = ["TUnknown",8];
-ValueType.TUnknown.toString = $estr;
-ValueType.TUnknown.__enum__ = ValueType;
-Type = function() { }
-Type.__name__ = ["Type"];
-Type.getClass = function(o) {
-	$s.push("Type::getClass");
-	var $spos = $s.length;
-	if(o == null) {
-		$s.pop();
-		return null;
-	}
-	if(o.__enum__ != null) {
-		$s.pop();
-		return null;
-	}
-	{
-		var $tmp = o.__class__;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.getEnum = function(o) {
-	$s.push("Type::getEnum");
-	var $spos = $s.length;
-	if(o == null) {
-		$s.pop();
-		return null;
-	}
-	{
-		var $tmp = o.__enum__;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.getSuperClass = function(c) {
-	$s.push("Type::getSuperClass");
-	var $spos = $s.length;
-	{
-		var $tmp = c.__super__;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.getClassName = function(c) {
-	$s.push("Type::getClassName");
-	var $spos = $s.length;
-	var a = c.__name__;
-	{
-		var $tmp = a.join(".");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.getEnumName = function(e) {
-	$s.push("Type::getEnumName");
-	var $spos = $s.length;
-	var a = e.__ename__;
-	{
-		var $tmp = a.join(".");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.resolveClass = function(name) {
-	$s.push("Type::resolveClass");
-	var $spos = $s.length;
-	var cl;
-	try {
-		cl = eval(name);
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				cl = null;
-			}
-		}
-	}
-	if(cl == null || cl.__name__ == null) {
-		$s.pop();
-		return null;
-	}
-	{
-		$s.pop();
-		return cl;
-	}
-	$s.pop();
-}
-Type.resolveEnum = function(name) {
-	$s.push("Type::resolveEnum");
-	var $spos = $s.length;
-	var e;
-	try {
-		e = eval(name);
-	}
-	catch( $e0 ) {
-		{
-			var err = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				e = null;
-			}
-		}
-	}
-	if(e == null || e.__ename__ == null) {
-		$s.pop();
-		return null;
-	}
-	{
-		$s.pop();
-		return e;
-	}
-	$s.pop();
-}
-Type.createInstance = function(cl,args) {
-	$s.push("Type::createInstance");
-	var $spos = $s.length;
-	if(args.length <= 3) {
-		var $tmp = new cl(args[0],args[1],args[2]);
-		$s.pop();
-		return $tmp;
-	}
-	if(args.length > 8) throw "Too many arguments";
-	{
-		var $tmp = new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.createEmptyInstance = function(cl) {
-	$s.push("Type::createEmptyInstance");
-	var $spos = $s.length;
-	{
-		var $tmp = new cl($_);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.createEnum = function(e,constr,params) {
-	$s.push("Type::createEnum");
-	var $spos = $s.length;
-	var f = Reflect.field(e,constr);
-	if(f == null) throw "No such constructor " + constr;
-	if(Reflect.isFunction(f)) {
-		if(params == null) throw ("Constructor " + constr) + " need parameters";
-		{
-			var $tmp = f.apply(e,params);
-			$s.pop();
-			return $tmp;
-		}
-	}
-	if(params != null && params.length != 0) throw ("Constructor " + constr) + " does not need parameters";
-	{
-		$s.pop();
-		return f;
-	}
-	$s.pop();
-}
-Type.createEnumIndex = function(e,index,params) {
-	$s.push("Type::createEnumIndex");
-	var $spos = $s.length;
-	var c = Type.getEnumConstructs(e)[index];
-	if(c == null) throw index + " is not a valid enum constructor index";
-	{
-		var $tmp = Type.createEnum(e,c,params);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.getInstanceFields = function(c) {
-	$s.push("Type::getInstanceFields");
-	var $spos = $s.length;
-	var a = Reflect.fields(c.prototype);
-	a.remove("__class__");
-	{
-		$s.pop();
-		return a;
-	}
-	$s.pop();
-}
-Type.getClassFields = function(c) {
-	$s.push("Type::getClassFields");
-	var $spos = $s.length;
-	var a = Reflect.fields(c);
-	a.remove("__name__");
-	a.remove("__interfaces__");
-	a.remove("__super__");
-	a.remove("prototype");
-	{
-		$s.pop();
-		return a;
-	}
-	$s.pop();
-}
-Type.getEnumConstructs = function(e) {
-	$s.push("Type::getEnumConstructs");
-	var $spos = $s.length;
-	{
-		var $tmp = e.__constructs__;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type["typeof"] = function(v) {
-	$s.push("Type::typeof");
-	var $spos = $s.length;
-	switch(typeof(v)) {
-	case "boolean":{
-		{
-			var $tmp = ValueType.TBool;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case "string":{
-		{
-			var $tmp = ValueType.TClass(String);
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case "number":{
-		if(Math.ceil(v) == v % 2147483648.0) {
-			var $tmp = ValueType.TInt;
-			$s.pop();
-			return $tmp;
-		}
-		{
-			var $tmp = ValueType.TFloat;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case "object":{
-		if(v == null) {
-			var $tmp = ValueType.TNull;
-			$s.pop();
-			return $tmp;
-		}
-		var e = v.__enum__;
-		if(e != null) {
-			var $tmp = ValueType.TEnum(e);
-			$s.pop();
-			return $tmp;
-		}
-		var c = v.__class__;
-		if(c != null) {
-			var $tmp = ValueType.TClass(c);
-			$s.pop();
-			return $tmp;
-		}
-		{
-			var $tmp = ValueType.TObject;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case "function":{
-		if(v.__name__ != null) {
-			var $tmp = ValueType.TObject;
-			$s.pop();
-			return $tmp;
-		}
-		{
-			var $tmp = ValueType.TFunction;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case "undefined":{
-		{
-			var $tmp = ValueType.TNull;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	default:{
-		{
-			var $tmp = ValueType.TUnknown;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	}
-	$s.pop();
-}
-Type.enumEq = function(a,b) {
-	$s.push("Type::enumEq");
-	var $spos = $s.length;
-	if(a == b) {
-		$s.pop();
-		return true;
-	}
-	try {
-		if(a[0] != b[0]) {
-			$s.pop();
-			return false;
-		}
-		{
-			var _g1 = 2, _g = a.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				if(!Type.enumEq(a[i],b[i])) {
-					$s.pop();
-					return false;
-				}
-			}
-		}
-		var e = a.__enum__;
-		if(e != b.__enum__ || e == null) {
-			$s.pop();
-			return false;
-		}
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				{
-					$s.pop();
-					return false;
-				}
-			}
-		}
-	}
-	{
-		$s.pop();
-		return true;
-	}
-	$s.pop();
-}
-Type.enumConstructor = function(e) {
-	$s.push("Type::enumConstructor");
-	var $spos = $s.length;
-	{
-		var $tmp = e[0];
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.enumParameters = function(e) {
-	$s.push("Type::enumParameters");
-	var $spos = $s.length;
-	{
-		var $tmp = e.slice(2);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.enumIndex = function(e) {
-	$s.push("Type::enumIndex");
-	var $spos = $s.length;
-	{
-		var $tmp = e[1];
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-Type.prototype.__class__ = Type;
-if(typeof js=='undefined') js = {}
-js.Lib = function() { }
-js.Lib.__name__ = ["js","Lib"];
-js.Lib.isIE = null;
-js.Lib.isOpera = null;
-js.Lib.document = null;
-js.Lib.window = null;
-js.Lib.alert = function(v) {
-	$s.push("js.Lib::alert");
-	var $spos = $s.length;
-	alert(js.Boot.__string_rec(v,""));
-	$s.pop();
-}
-js.Lib.eval = function(code) {
-	$s.push("js.Lib::eval");
-	var $spos = $s.length;
-	{
-		var $tmp = eval(code);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-js.Lib.setErrorHandler = function(f) {
-	$s.push("js.Lib::setErrorHandler");
-	var $spos = $s.length;
-	js.Lib.onerror = f;
-	$s.pop();
-}
-js.Lib.prototype.__class__ = js.Lib;
-js.Boot = function() { }
-js.Boot.__name__ = ["js","Boot"];
-js.Boot.__unhtml = function(s) {
-	$s.push("js.Boot::__unhtml");
-	var $spos = $s.length;
-	{
-		var $tmp = s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-js.Boot.__trace = function(v,i) {
-	$s.push("js.Boot::__trace");
-	var $spos = $s.length;
-	var msg = (i != null?((i.fileName + ":") + i.lineNumber) + ": ":"");
-	msg += js.Boot.__unhtml(js.Boot.__string_rec(v,"")) + "<br/>";
-	var d = document.getElementById("haxe:trace");
-	if(d == null) alert("No haxe:trace element defined\n" + msg);
-	else d.innerHTML += msg;
-	$s.pop();
-}
-js.Boot.__clear_trace = function() {
-	$s.push("js.Boot::__clear_trace");
-	var $spos = $s.length;
-	var d = document.getElementById("haxe:trace");
-	if(d != null) d.innerHTML = "";
-	else null;
-	$s.pop();
-}
-js.Boot.__closure = function(o,f) {
-	$s.push("js.Boot::__closure");
-	var $spos = $s.length;
-	var m = o[f];
-	if(m == null) {
-		$s.pop();
-		return null;
-	}
-	var f1 = function() {
-		$s.push("js.Boot::__closure@67");
-		var $spos = $s.length;
-		{
-			var $tmp = m.apply(o,arguments);
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-	f1.scope = o;
-	f1.method = m;
-	{
-		$s.pop();
-		return f1;
-	}
-	$s.pop();
-}
-js.Boot.__string_rec = function(o,s) {
-	$s.push("js.Boot::__string_rec");
-	var $spos = $s.length;
-	if(o == null) {
-		$s.pop();
-		return "null";
-	}
-	if(s.length >= 5) {
-		$s.pop();
-		return "<...>";
-	}
-	var t = typeof(o);
-	if(t == "function" && (o.__name__ != null || o.__ename__ != null)) t = "object";
-	switch(t) {
-	case "object":{
-		if(o instanceof Array) {
-			if(o.__enum__ != null) {
-				if(o.length == 2) {
-					var $tmp = o[0];
-					$s.pop();
-					return $tmp;
-				}
-				var str = o[0] + "(";
-				s += "\t";
-				{
-					var _g1 = 2, _g = o.length;
-					while(_g1 < _g) {
-						var i = _g1++;
-						if(i != 2) str += "," + js.Boot.__string_rec(o[i],s);
-						else str += js.Boot.__string_rec(o[i],s);
-					}
-				}
-				{
-					var $tmp = str + ")";
-					$s.pop();
-					return $tmp;
-				}
-			}
-			var l = o.length;
-			var i;
-			var str = "[";
-			s += "\t";
-			{
-				var _g = 0;
-				while(_g < l) {
-					var i1 = _g++;
-					str += ((i1 > 0?",":"")) + js.Boot.__string_rec(o[i1],s);
-				}
-			}
-			str += "]";
-			{
-				$s.pop();
-				return str;
-			}
-		}
-		var tostr;
-		try {
-			tostr = o.toString;
-		}
-		catch( $e0 ) {
-			{
-				var e = $e0;
-				{
-					$e = [];
-					while($s.length >= $spos) $e.unshift($s.pop());
-					$s.push($e[0]);
-					{
-						$s.pop();
-						return "???";
-					}
-				}
-			}
-		}
-		if(tostr != null && tostr != Object.toString) {
-			var s2 = o.toString();
-			if(s2 != "[object Object]") {
-				$s.pop();
-				return s2;
-			}
-		}
-		var k = null;
-		var str = "{\n";
-		s += "\t";
-		var hasp = (o.hasOwnProperty != null);
-		for( var k in o ) { ;
-		if(hasp && !o.hasOwnProperty(k)) continue;
-		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__") continue;
-		if(str.length != 2) str += ", \n";
-		str += ((s + k) + " : ") + js.Boot.__string_rec(o[k],s);
-		}
-		s = s.substring(1);
-		str += ("\n" + s) + "}";
-		{
-			$s.pop();
-			return str;
-		}
-	}break;
-	case "function":{
-		{
-			$s.pop();
-			return "<function>";
-		}
-	}break;
-	case "string":{
-		{
-			$s.pop();
-			return o;
-		}
-	}break;
-	default:{
-		{
-			var $tmp = String(o);
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	}
-	$s.pop();
-}
-js.Boot.__interfLoop = function(cc,cl) {
-	$s.push("js.Boot::__interfLoop");
-	var $spos = $s.length;
-	if(cc == null) {
-		$s.pop();
-		return false;
-	}
-	if(cc == cl) {
-		$s.pop();
-		return true;
-	}
-	var intf = cc.__interfaces__;
-	if(intf != null) {
-		var _g1 = 0, _g = intf.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var i1 = intf[i];
-			if(i1 == cl || js.Boot.__interfLoop(i1,cl)) {
-				$s.pop();
-				return true;
-			}
-		}
-	}
-	{
-		var $tmp = js.Boot.__interfLoop(cc.__super__,cl);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-js.Boot.__instanceof = function(o,cl) {
-	$s.push("js.Boot::__instanceof");
-	var $spos = $s.length;
-	try {
-		if(o instanceof cl) {
-			if(cl == Array) {
-				var $tmp = (o.__enum__ == null);
-				$s.pop();
-				return $tmp;
-			}
-			{
-				$s.pop();
-				return true;
-			}
-		}
-		if(js.Boot.__interfLoop(o.__class__,cl)) {
-			$s.pop();
-			return true;
-		}
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				if(cl == null) {
-					$s.pop();
-					return false;
-				}
-			}
-		}
-	}
-	switch(cl) {
-	case Int:{
-		{
-			var $tmp = Math.ceil(o%2147483648.0) === o;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case Float:{
-		{
-			var $tmp = typeof(o) == "number";
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case Bool:{
-		{
-			var $tmp = o === true || o === false;
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case String:{
-		{
-			var $tmp = typeof(o) == "string";
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	case Dynamic:{
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	default:{
-		if(o == null) {
-			$s.pop();
-			return false;
-		}
-		{
-			var $tmp = o.__enum__ == cl || (cl == Class && o.__name__ != null) || (cl == Enum && o.__ename__ != null);
-			$s.pop();
-			return $tmp;
-		}
-	}break;
-	}
-	$s.pop();
-}
-js.Boot.__init = function() {
-	$s.push("js.Boot::__init");
-	var $spos = $s.length;
-	js.Lib.isIE = (typeof document!='undefined' && document.all != null && typeof window!='undefined' && window.opera == null);
-	js.Lib.isOpera = (typeof window!='undefined' && window.opera != null);
-	Array.prototype.copy = Array.prototype.slice;
-	Array.prototype.insert = function(i,x) {
-		$s.push("js.Boot::__init@205");
-		var $spos = $s.length;
-		this.splice(i,0,x);
-		$s.pop();
-	}
-	Array.prototype.remove = (Array.prototype.indexOf?function(obj) {
-		$s.push("js.Boot::__init@208");
-		var $spos = $s.length;
-		var idx = this.indexOf(obj);
-		if(idx == -1) {
-			$s.pop();
-			return false;
-		}
-		this.splice(idx,1);
-		{
-			$s.pop();
-			return true;
-		}
-		$s.pop();
-	}:function(obj) {
-		$s.push("js.Boot::__init@213");
-		var $spos = $s.length;
-		var i = 0;
-		var l = this.length;
-		while(i < l) {
-			if(this[i] == obj) {
-				this.splice(i,1);
-				{
-					$s.pop();
-					return true;
-				}
-			}
-			i++;
-		}
-		{
-			$s.pop();
-			return false;
-		}
-		$s.pop();
-	});
-	Array.prototype.iterator = function() {
-		$s.push("js.Boot::__init@225");
-		var $spos = $s.length;
-		{
-			var $tmp = { cur : 0, arr : this, hasNext : function() {
-				$s.push("js.Boot::__init@225@229");
-				var $spos = $s.length;
-				{
-					var $tmp = this.cur < this.arr.length;
-					$s.pop();
-					return $tmp;
-				}
-				$s.pop();
-			}, next : function() {
-				$s.push("js.Boot::__init@225@232");
-				var $spos = $s.length;
-				{
-					var $tmp = this.arr[this.cur++];
-					$s.pop();
-					return $tmp;
-				}
-				$s.pop();
-			}}
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-	if(String.prototype.cca == null) String.prototype.cca = String.prototype.charCodeAt;
-	String.prototype.charCodeAt = function(i) {
-		$s.push("js.Boot::__init@239");
-		var $spos = $s.length;
-		var x = this.cca(i);
-		if(x != x) {
-			$s.pop();
-			return null;
-		}
-		{
-			$s.pop();
-			return x;
-		}
-		$s.pop();
-	}
-	var oldsub = String.prototype.substr;
-	String.prototype.substr = function(pos,len) {
-		$s.push("js.Boot::__init@246");
-		var $spos = $s.length;
-		if(pos != null && pos != 0 && len != null && len < 0) {
-			$s.pop();
-			return "";
-		}
-		if(len == null) len = this.length;
-		if(pos < 0) {
-			pos = this.length + pos;
-			if(pos < 0) pos = 0;
-		}
-		else if(len < 0) {
-			len = (this.length + len) - pos;
-		}
-		{
-			var $tmp = oldsub.apply(this,[pos,len]);
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-	$closure = js.Boot.__closure;
-	$s.pop();
-}
-js.Boot.prototype.__class__ = js.Boot;
-IntHash = function(p) { if( p === $_ ) return; {
-	$s.push("IntHash::new");
-	var $spos = $s.length;
-	this.h = {}
-	if(this.h.__proto__ != null) {
-		this.h.__proto__ = null;
-		delete(this.h.__proto__);
-	}
-	else null;
-	$s.pop();
-}}
-IntHash.__name__ = ["IntHash"];
-IntHash.prototype.exists = function(key) {
-	$s.push("IntHash::exists");
-	var $spos = $s.length;
-	{
-		var $tmp = this.h[key] != null;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntHash.prototype.get = function(key) {
-	$s.push("IntHash::get");
-	var $spos = $s.length;
-	{
-		var $tmp = this.h[key];
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntHash.prototype.h = null;
-IntHash.prototype.iterator = function() {
-	$s.push("IntHash::iterator");
-	var $spos = $s.length;
-	{
-		var $tmp = { ref : this.h, it : this.keys(), hasNext : function() {
-			$s.push("IntHash::iterator@69");
-			var $spos = $s.length;
-			{
-				var $tmp = this.it.hasNext();
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		}, next : function() {
-			$s.push("IntHash::iterator@70");
-			var $spos = $s.length;
-			var i = this.it.next();
-			{
-				var $tmp = this.ref[i];
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		}}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntHash.prototype.keys = function() {
-	$s.push("IntHash::keys");
-	var $spos = $s.length;
-	var a = new Array();
-	
-			for( x in this.h )
-				a.push(x);
-		;
-	{
-		var $tmp = a.iterator();
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntHash.prototype.remove = function(key) {
-	$s.push("IntHash::remove");
-	var $spos = $s.length;
-	if(this.h[key] == null) {
-		$s.pop();
-		return false;
-	}
-	delete(this.h[key]);
-	{
-		$s.pop();
-		return true;
-	}
-	$s.pop();
-}
-IntHash.prototype.set = function(key,value) {
-	$s.push("IntHash::set");
-	var $spos = $s.length;
-	this.h[key] = value;
-	$s.pop();
-}
-IntHash.prototype.toString = function() {
-	$s.push("IntHash::toString");
-	var $spos = $s.length;
-	var s = new StringBuf();
-	s.b[s.b.length] = "{";
-	var it = this.keys();
-	{ var $it0 = it;
-	while( $it0.hasNext() ) { var i = $it0.next();
-	{
-		s.b[s.b.length] = i;
-		s.b[s.b.length] = " => ";
-		s.b[s.b.length] = Std.string(this.get(i));
-		if(it.hasNext()) s.b[s.b.length] = ", ";
-	}
-	}}
-	s.b[s.b.length] = "}";
-	{
-		var $tmp = s.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-IntHash.prototype.__class__ = IntHash;
-utest.ui.common.ReportTools = function() { }
-utest.ui.common.ReportTools.__name__ = ["utest","ui","common","ReportTools"];
-utest.ui.common.ReportTools.hasHeader = function(report,stats) {
-	$s.push("utest.ui.common.ReportTools::hasHeader");
-	var $spos = $s.length;
-	var $e = (report.displayHeader);
-	switch( $e[1] ) {
-	case 1:
-	{
-		{
-			$s.pop();
-			return false;
-		}
-	}break;
-	case 2:
-	{
-		if(!stats.isOk) {
-			$s.pop();
-			return true;
-		}
-		var $e = (report.displaySuccessResults);
-		switch( $e[1] ) {
-		case 1:
-		{
-			{
-				$s.pop();
-				return false;
-			}
-		}break;
-		case 0:
-		case 2:
-		{
-			{
-				$s.pop();
-				return true;
-			}
-		}break;
-		}
-	}break;
-	case 0:
-	{
-		{
-			$s.pop();
-			return true;
-		}
-	}break;
-	}
-	$s.pop();
-}
-utest.ui.common.ReportTools.skipResult = function(report,stats,isOk) {
-	$s.push("utest.ui.common.ReportTools::skipResult");
-	var $spos = $s.length;
-	if(!stats.isOk) {
-		$s.pop();
-		return false;
-	}
-	{
-		var $tmp = (function($this) {
-			var $r;
-			var $e = (report.displaySuccessResults);
-			switch( $e[1] ) {
-			case 1:
-			{
-				$r = true;
-			}break;
-			case 0:
-			{
-				$r = false;
-			}break;
-			case 2:
-			{
-				$r = !isOk;
-			}break;
-			}
-			return $r;
-		}(this));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.ReportTools.hasOutput = function(report,stats) {
-	$s.push("utest.ui.common.ReportTools::hasOutput");
-	var $spos = $s.length;
-	if(!stats.isOk) {
-		$s.pop();
-		return true;
-	}
-	{
-		var $tmp = utest.ui.common.ReportTools.hasHeader(report,stats);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.ReportTools.prototype.__class__ = utest.ui.common.ReportTools;
 utest.Assertation = { __ename__ : ["utest","Assertation"], __constructs__ : ["Success","Failure","Error","SetupError","TeardownError","TimeoutError","AsyncError","Warning"] }
-utest.Assertation.AsyncError = function(e,stack) { var $x = ["AsyncError",6,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
-utest.Assertation.Error = function(e,stack) { var $x = ["Error",2,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
-utest.Assertation.Failure = function(msg,pos) { var $x = ["Failure",1,msg,pos]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
-utest.Assertation.SetupError = function(e,stack) { var $x = ["SetupError",3,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
 utest.Assertation.Success = function(pos) { var $x = ["Success",0,pos]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
+utest.Assertation.Failure = function(msg,pos) { var $x = ["Failure",1,msg,pos]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
+utest.Assertation.Error = function(e,stack) { var $x = ["Error",2,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
+utest.Assertation.SetupError = function(e,stack) { var $x = ["SetupError",3,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
 utest.Assertation.TeardownError = function(e,stack) { var $x = ["TeardownError",4,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
 utest.Assertation.TimeoutError = function(missedAsyncs,stack) { var $x = ["TimeoutError",5,missedAsyncs,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
+utest.Assertation.AsyncError = function(e,stack) { var $x = ["AsyncError",6,e,stack]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
 utest.Assertation.Warning = function(msg) { var $x = ["Warning",7,msg]; $x.__enum__ = utest.Assertation; $x.toString = $estr; return $x; }
+utest.TestResult = function(p) { if( p === $_ ) return; {
+	null;
+}}
+utest.TestResult.__name__ = ["utest","TestResult"];
+utest.TestResult.ofHandler = function(handler) {
+	var r = new utest.TestResult();
+	var path = Type.getClassName(Type.getClass(handler.fixture.target)).split(".");
+	r.cls = path.pop();
+	r.pack = path.join(".");
+	r.method = handler.fixture.method;
+	r.setup = handler.fixture.setup;
+	r.teardown = handler.fixture.teardown;
+	r.assertations = handler.results;
+	return r;
+}
+utest.TestResult.prototype.pack = null;
+utest.TestResult.prototype.cls = null;
+utest.TestResult.prototype.method = null;
+utest.TestResult.prototype.setup = null;
+utest.TestResult.prototype.teardown = null;
+utest.TestResult.prototype.assertations = null;
+utest.TestResult.prototype.allOk = function() {
+	try {
+		{ var $it0 = this.assertations.iterator();
+		while( $it0.hasNext() ) { var l = $it0.next();
+		{
+			var $e = l;
+			switch( $e[1] ) {
+			case 0:
+			var pos = $e[2];
+			{
+				throw "__break__";
+			}break;
+			default:{
+				return false;
+			}break;
+			}
+		}
+		}}
+	} catch( e ) { if( e != "__break__" ) throw e; }
+	return true;
+}
+utest.TestResult.prototype.__class__ = utest.TestResult;
+org.silex.runtime.domobject.base.ImageDOMObjectBase = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.js.DOMObject.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.base.ImageDOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","ImageDOMObjectBase"];
+org.silex.runtime.domobject.base.ImageDOMObjectBase.__super__ = org.silex.runtime.domobject.js.DOMObject;
+for(var k in org.silex.runtime.domobject.js.DOMObject.prototype ) org.silex.runtime.domobject.base.ImageDOMObjectBase.prototype[k] = org.silex.runtime.domobject.js.DOMObject.prototype[k];
+org.silex.runtime.domobject.base.ImageDOMObjectBase.prototype.addChild = function(domObject) {
+	null;
+}
+org.silex.runtime.domobject.base.ImageDOMObjectBase.prototype.removeChild = function(domObject) {
+	null;
+}
+org.silex.runtime.domobject.base.ImageDOMObjectBase.prototype.__class__ = org.silex.runtime.domobject.base.ImageDOMObjectBase;
+org.silex.runtime.domobject.js.ImageDOMObject = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.base.ImageDOMObjectBase.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.js.ImageDOMObject.__name__ = ["org","silex","runtime","domobject","js","ImageDOMObject"];
+org.silex.runtime.domobject.js.ImageDOMObject.__super__ = org.silex.runtime.domobject.base.ImageDOMObjectBase;
+for(var k in org.silex.runtime.domobject.base.ImageDOMObjectBase.prototype ) org.silex.runtime.domobject.js.ImageDOMObject.prototype[k] = org.silex.runtime.domobject.base.ImageDOMObjectBase.prototype[k];
+org.silex.runtime.domobject.js.ImageDOMObject.prototype.__class__ = org.silex.runtime.domobject.js.ImageDOMObject;
 utest.ui.common.FixtureResult = function(methodName) { if( methodName === $_ ) return; {
-	$s.push("utest.ui.common.FixtureResult::new");
-	var $spos = $s.length;
 	this.methodName = methodName;
 	this.list = new List();
 	this.hasTestError = false;
@@ -5355,14 +1134,22 @@ utest.ui.common.FixtureResult = function(methodName) { if( methodName === $_ ) r
 	this.hasTimeoutError = false;
 	this.hasAsyncError = false;
 	this.stats = new utest.ui.common.ResultStats();
-	$s.pop();
 }}
 utest.ui.common.FixtureResult.__name__ = ["utest","ui","common","FixtureResult"];
+utest.ui.common.FixtureResult.prototype.methodName = null;
+utest.ui.common.FixtureResult.prototype.hasTestError = null;
+utest.ui.common.FixtureResult.prototype.hasSetupError = null;
+utest.ui.common.FixtureResult.prototype.hasTeardownError = null;
+utest.ui.common.FixtureResult.prototype.hasTimeoutError = null;
+utest.ui.common.FixtureResult.prototype.hasAsyncError = null;
+utest.ui.common.FixtureResult.prototype.stats = null;
+utest.ui.common.FixtureResult.prototype.list = null;
+utest.ui.common.FixtureResult.prototype.iterator = function() {
+	return this.list.iterator();
+}
 utest.ui.common.FixtureResult.prototype.add = function(assertation) {
-	$s.push("utest.ui.common.FixtureResult::add");
-	var $spos = $s.length;
 	this.list.add(assertation);
-	var $e = (assertation);
+	var $e = assertation;
 	switch( $e[1] ) {
 	case 0:
 	{
@@ -5401,734 +1188,1532 @@ utest.ui.common.FixtureResult.prototype.add = function(assertation) {
 		this.stats.addWarnings(1);
 	}break;
 	}
-	$s.pop();
 }
-utest.ui.common.FixtureResult.prototype.hasAsyncError = null;
-utest.ui.common.FixtureResult.prototype.hasSetupError = null;
-utest.ui.common.FixtureResult.prototype.hasTeardownError = null;
-utest.ui.common.FixtureResult.prototype.hasTestError = null;
-utest.ui.common.FixtureResult.prototype.hasTimeoutError = null;
-utest.ui.common.FixtureResult.prototype.iterator = function() {
-	$s.push("utest.ui.common.FixtureResult::iterator");
-	var $spos = $s.length;
-	{
-		var $tmp = this.list.iterator();
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.ui.common.FixtureResult.prototype.list = null;
-utest.ui.common.FixtureResult.prototype.methodName = null;
-utest.ui.common.FixtureResult.prototype.stats = null;
 utest.ui.common.FixtureResult.prototype.__class__ = utest.ui.common.FixtureResult;
-EReg = function(r,opt) { if( r === $_ ) return; {
-	$s.push("EReg::new");
-	var $spos = $s.length;
-	opt = opt.split("u").join("");
-	this.r = new RegExp(r,opt);
-	$s.pop();
+if(!org.silex.runtime.ressource) org.silex.runtime.ressource = {}
+org.silex.runtime.ressource.RessourceLoader = function(p) { if( p === $_ ) return; {
+	null;
 }}
-EReg.__name__ = ["EReg"];
-EReg.prototype.customReplace = function(s,f) {
-	$s.push("EReg::customReplace");
-	var $spos = $s.length;
-	var buf = new StringBuf();
-	while(true) {
-		if(!this.match(s)) break;
-		buf.b[buf.b.length] = this.matchedLeft();
-		buf.b[buf.b.length] = f(this);
-		s = this.matchedRight();
+org.silex.runtime.ressource.RessourceLoader.__name__ = ["org","silex","runtime","ressource","RessourceLoader"];
+org.silex.runtime.ressource.RessourceLoader.prototype._onLoadCompleteCallback = null;
+org.silex.runtime.ressource.RessourceLoader.prototype._onLoadErrorCallback = null;
+org.silex.runtime.ressource.RessourceLoader.prototype.load = function(url,onLoadComplete,onLoadError,allowCache) {
+	this._onLoadCompleteCallback = onLoadComplete;
+	this._onLoadErrorCallback = onLoadError;
+	if(allowCache == false) {
+		url = this.disableUrlCaching(url);
 	}
-	buf.b[buf.b.length] = s;
-	{
-		var $tmp = buf.b.join("");
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+	this.doLoad(url);
 }
-EReg.prototype.match = function(s) {
-	$s.push("EReg::match");
-	var $spos = $s.length;
-	this.r.m = this.r.exec(s);
-	this.r.s = s;
-	this.r.l = RegExp.leftContext;
-	this.r.r = RegExp.rightContext;
-	{
-		var $tmp = (this.r.m != null);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.ressource.RessourceLoader.prototype.doLoad = function(url) {
+	var fileRequest = new haxe.Http(url);
+	fileRequest.onData = $closure(this,"onLoadComplete");
+	fileRequest.onError = $closure(this,"onLoadError");
+	fileRequest.request(false);
 }
-EReg.prototype.matched = function(n) {
-	$s.push("EReg::matched");
-	var $spos = $s.length;
-	{
-		var $tmp = (this.r.m != null && n >= 0 && n < this.r.m.length?this.r.m[n]:(function($this) {
-			var $r;
-			throw "EReg::matched";
-			return $r;
-		}(this)));
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.ressource.RessourceLoader.prototype.onLoadComplete = function(data) {
+	this._onLoadCompleteCallback(data);
 }
-EReg.prototype.matchedLeft = function() {
-	$s.push("EReg::matchedLeft");
-	var $spos = $s.length;
-	if(this.r.m == null) throw "No string matched";
-	if(this.r.l == null) {
-		var $tmp = this.r.s.substr(0,this.r.m.index);
-		$s.pop();
-		return $tmp;
-	}
-	{
-		var $tmp = this.r.l;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+org.silex.runtime.ressource.RessourceLoader.prototype.onLoadError = function(msg) {
+	this._onLoadErrorCallback(msg);
 }
-EReg.prototype.matchedPos = function() {
-	$s.push("EReg::matchedPos");
-	var $spos = $s.length;
-	if(this.r.m == null) throw "No string matched";
-	{
-		var $tmp = { pos : this.r.m.index, len : this.r.m[0].length}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-EReg.prototype.matchedRight = function() {
-	$s.push("EReg::matchedRight");
-	var $spos = $s.length;
-	if(this.r.m == null) throw "No string matched";
-	if(this.r.r == null) {
-		var sz = this.r.m.index + this.r.m[0].length;
-		{
-			var $tmp = this.r.s.substr(sz,this.r.s.length - sz);
-			$s.pop();
-			return $tmp;
-		}
-	}
-	{
-		var $tmp = this.r.r;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-EReg.prototype.r = null;
-EReg.prototype.replace = function(s,by) {
-	$s.push("EReg::replace");
-	var $spos = $s.length;
-	{
-		var $tmp = s.replace(this.r,by);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-EReg.prototype.split = function(s) {
-	$s.push("EReg::split");
-	var $spos = $s.length;
-	var d = "#__delim__#";
-	{
-		var $tmp = s.replace(this.r,d).split(d);
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-EReg.prototype.__class__ = EReg;
-if(!utest._Dispatcher) utest._Dispatcher = {}
-utest._Dispatcher.EventException = { __ename__ : ["utest","_Dispatcher","EventException"], __constructs__ : ["StopPropagation"] }
-utest._Dispatcher.EventException.StopPropagation = ["StopPropagation",0];
-utest._Dispatcher.EventException.StopPropagation.toString = $estr;
-utest._Dispatcher.EventException.StopPropagation.__enum__ = utest._Dispatcher.EventException;
-utest.Dispatcher = function(p) { if( p === $_ ) return; {
-	$s.push("utest.Dispatcher::new");
-	var $spos = $s.length;
-	this.handlers = new Array();
-	$s.pop();
-}}
-utest.Dispatcher.__name__ = ["utest","Dispatcher"];
-utest.Dispatcher.stop = function() {
-	$s.push("utest.Dispatcher::stop");
-	var $spos = $s.length;
-	throw utest._Dispatcher.EventException.StopPropagation;
-	$s.pop();
-}
-utest.Dispatcher.prototype.add = function(h) {
-	$s.push("utest.Dispatcher::add");
-	var $spos = $s.length;
-	this.handlers.push(h);
-	{
-		$s.pop();
-		return h;
-	}
-	$s.pop();
-}
-utest.Dispatcher.prototype.clear = function() {
-	$s.push("utest.Dispatcher::clear");
-	var $spos = $s.length;
-	this.handlers = new Array();
-	$s.pop();
-}
-utest.Dispatcher.prototype.dispatch = function(e) {
-	$s.push("utest.Dispatcher::dispatch");
-	var $spos = $s.length;
-	try {
-		var list = this.handlers.copy();
-		{
-			var _g = 0;
-			while(_g < list.length) {
-				var l = list[_g];
-				++_g;
-				l(e);
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}
-	catch( $e0 ) {
-		if( js.Boot.__instanceof($e0,utest._Dispatcher.EventException) ) {
-			var exc = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				{
-					$s.pop();
-					return false;
-				}
-			}
-		} else throw($e0);
-	}
-	$s.pop();
-}
-utest.Dispatcher.prototype.handlers = null;
-utest.Dispatcher.prototype.has = function() {
-	$s.push("utest.Dispatcher::has");
-	var $spos = $s.length;
-	{
-		var $tmp = this.handlers.length > 0;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Dispatcher.prototype.remove = function(h) {
-	$s.push("utest.Dispatcher::remove");
-	var $spos = $s.length;
-	{
-		var _g1 = 0, _g = this.handlers.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(Reflect.compareMethods(this.handlers[i],h)) {
-				var $tmp = this.handlers.splice(i,1)[0];
-				$s.pop();
-				return $tmp;
-			}
-		}
-	}
-	{
-		$s.pop();
-		return null;
-	}
-	$s.pop();
-}
-utest.Dispatcher.prototype.__class__ = utest.Dispatcher;
-utest.Notifier = function(p) { if( p === $_ ) return; {
-	$s.push("utest.Notifier::new");
-	var $spos = $s.length;
-	this.handlers = new Array();
-	$s.pop();
-}}
-utest.Notifier.__name__ = ["utest","Notifier"];
-utest.Notifier.stop = function() {
-	$s.push("utest.Notifier::stop");
-	var $spos = $s.length;
-	throw utest._Dispatcher.EventException.StopPropagation;
-	$s.pop();
-}
-utest.Notifier.prototype.add = function(h) {
-	$s.push("utest.Notifier::add");
-	var $spos = $s.length;
-	this.handlers.push(h);
-	{
-		$s.pop();
-		return h;
-	}
-	$s.pop();
-}
-utest.Notifier.prototype.clear = function() {
-	$s.push("utest.Notifier::clear");
-	var $spos = $s.length;
-	this.handlers = new Array();
-	$s.pop();
-}
-utest.Notifier.prototype.dispatch = function() {
-	$s.push("utest.Notifier::dispatch");
-	var $spos = $s.length;
-	try {
-		var list = this.handlers.copy();
-		{
-			var _g = 0;
-			while(_g < list.length) {
-				var l = list[_g];
-				++_g;
-				l();
-			}
-		}
-		{
-			$s.pop();
-			return true;
-		}
-	}
-	catch( $e0 ) {
-		if( js.Boot.__instanceof($e0,utest._Dispatcher.EventException) ) {
-			var exc = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				{
-					$s.pop();
-					return false;
-				}
-			}
-		} else throw($e0);
-	}
-	$s.pop();
-}
-utest.Notifier.prototype.handlers = null;
-utest.Notifier.prototype.has = function() {
-	$s.push("utest.Notifier::has");
-	var $spos = $s.length;
-	{
-		var $tmp = this.handlers.length > 0;
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.Notifier.prototype.remove = function(h) {
-	$s.push("utest.Notifier::remove");
-	var $spos = $s.length;
-	{
-		var _g1 = 0, _g = this.handlers.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(Reflect.compareMethods(this.handlers[i],h)) {
-				var $tmp = this.handlers.splice(i,1)[0];
-				$s.pop();
-				return $tmp;
-			}
-		}
-	}
-	{
-		$s.pop();
-		return null;
-	}
-	$s.pop();
-}
-utest.Notifier.prototype.__class__ = utest.Notifier;
-utest.TestHandler = function(fixture) { if( fixture === $_ ) return; {
-	$s.push("utest.TestHandler::new");
-	var $spos = $s.length;
-	if(fixture == null) throw "fixture argument is null";
-	this.fixture = fixture;
-	this.results = new List();
-	this.asyncStack = new List();
-	this.onTested = new utest.Dispatcher();
-	this.onTimeout = new utest.Dispatcher();
-	this.onComplete = new utest.Dispatcher();
-	$s.pop();
-}}
-utest.TestHandler.__name__ = ["utest","TestHandler"];
-utest.TestHandler.exceptionStack = function(pops) {
-	$s.push("utest.TestHandler::exceptionStack");
-	var $spos = $s.length;
-	if(pops == null) pops = 2;
-	var stack = haxe.Stack.exceptionStack();
-	while(pops-- > 0) {
-		stack.pop();
-	}
-	{
-		$s.pop();
-		return stack;
-	}
-	$s.pop();
-}
-utest.TestHandler.prototype.addAsync = function(f,timeout) {
-	$s.push("utest.TestHandler::addAsync");
-	var $spos = $s.length;
-	if(timeout == null) timeout = 250;
-	if(null == f) f = function() {
-		$s.push("utest.TestHandler::addAsync@113");
-		var $spos = $s.length;
-		null;
-		$s.pop();
-	}
-	this.asyncStack.add(f);
-	var handler = this;
-	this.setTimeout(timeout);
-	{
-		var $tmp = function() {
-			$s.push("utest.TestHandler::addAsync@117");
-			var $spos = $s.length;
-			if(!handler.asyncStack.remove(f)) {
-				handler.results.add(utest.Assertation.AsyncError("method already executed",[]));
-				{
-					$s.pop();
-					return;
-				}
-			}
-			try {
-				handler.bindHandler();
-				f();
-			}
-			catch( $e0 ) {
-				{
-					var e = $e0;
-					{
-						$e = [];
-						while($s.length >= $spos) $e.unshift($s.pop());
-						$s.push($e[0]);
-						handler.results.add(utest.Assertation.AsyncError(e,utest.TestHandler.exceptionStack(0)));
-					}
-				}
-			}
-			$s.pop();
-		}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.TestHandler.prototype.addEvent = function(f,timeout) {
-	$s.push("utest.TestHandler::addEvent");
-	var $spos = $s.length;
-	if(timeout == null) timeout = 250;
-	this.asyncStack.add(f);
-	var handler = this;
-	this.setTimeout(timeout);
-	{
-		var $tmp = function(e) {
-			$s.push("utest.TestHandler::addEvent@135");
-			var $spos = $s.length;
-			if(!handler.asyncStack.remove(f)) {
-				handler.results.add(utest.Assertation.AsyncError("event already executed",[]));
-				{
-					$s.pop();
-					return;
-				}
-			}
-			try {
-				handler.bindHandler();
-				f(e);
-			}
-			catch( $e0 ) {
-				{
-					var e1 = $e0;
-					{
-						$e = [];
-						while($s.length >= $spos) $e.unshift($s.pop());
-						$s.push($e[0]);
-						handler.results.add(utest.Assertation.AsyncError(e1,utest.TestHandler.exceptionStack(0)));
-					}
-				}
-			}
-			$s.pop();
-		}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
-}
-utest.TestHandler.prototype.asyncStack = null;
-utest.TestHandler.prototype.bindHandler = function() {
-	$s.push("utest.TestHandler::bindHandler");
-	var $spos = $s.length;
-	utest.Assert.results = this.results;
-	utest.Assert.createAsync = $closure(this,"addAsync");
-	utest.Assert.createEvent = $closure(this,"addEvent");
-	$s.pop();
-}
-utest.TestHandler.prototype.checkTested = function() {
-	$s.push("utest.TestHandler::checkTested");
-	var $spos = $s.length;
-	if(this.expireson == null || this.asyncStack.length == 0) {
-		this.tested();
-	}
-	else if(haxe.Timer.stamp() > this.expireson) {
-		this.timeout();
+org.silex.runtime.ressource.RessourceLoader.prototype.disableUrlCaching = function(url) {
+	var getId = "";
+	if(url.indexOf("?") == -1) {
+		getId = "?";
 	}
 	else {
-		haxe.Timer.delay($closure(this,"checkTested"),10);
+		getId = "&";
 	}
-	$s.pop();
+	url += getId + "rand=" + Math.round(Math.random() * 10000);
+	return url;
 }
-utest.TestHandler.prototype.completed = function() {
-	$s.push("utest.TestHandler::completed");
-	var $spos = $s.length;
+org.silex.runtime.ressource.RessourceLoader.prototype.__class__ = org.silex.runtime.ressource.RessourceLoader;
+if(!org.silex.runtime.ressource.js) org.silex.runtime.ressource.js = {}
+org.silex.runtime.ressource.js.StringLoader = function(p) { if( p === $_ ) return; {
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}}
+org.silex.runtime.ressource.js.StringLoader.__name__ = ["org","silex","runtime","ressource","js","StringLoader"];
+org.silex.runtime.ressource.js.StringLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.StringLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.StringLoader.prototype.__class__ = org.silex.runtime.ressource.js.StringLoader;
+Reflect = function() { }
+Reflect.__name__ = ["Reflect"];
+Reflect.hasField = function(o,field) {
+	if(o.hasOwnProperty != null) return o.hasOwnProperty(field);
+	var arr = Reflect.fields(o);
+	{ var $it0 = arr.iterator();
+	while( $it0.hasNext() ) { var t = $it0.next();
+	if(t == field) return true;
+	}}
+	return false;
+}
+Reflect.field = function(o,field) {
+	var v = null;
 	try {
-		this.executeMethod(this.fixture.teardown);
+		v = o[field];
 	}
 	catch( $e0 ) {
 		{
 			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				this.results.add(utest.Assertation.TeardownError(e,utest.TestHandler.exceptionStack(2)));
-			}
+			null;
 		}
 	}
-	this.unbindHandler();
-	this.onComplete.dispatch(this);
-	$s.pop();
+	return v;
 }
-utest.TestHandler.prototype.execute = function() {
-	$s.push("utest.TestHandler::execute");
-	var $spos = $s.length;
-	try {
-		this.executeMethod(this.fixture.setup);
+Reflect.setField = function(o,field,value) {
+	o[field] = value;
+}
+Reflect.callMethod = function(o,func,args) {
+	return func.apply(o,args);
+}
+Reflect.fields = function(o) {
+	if(o == null) return new Array();
+	var a = new Array();
+	if(o.hasOwnProperty) {
+		
+				for(var i in o)
+					if( o.hasOwnProperty(i) )
+						a.push(i);
+			;
+	}
+	else {
+		var t;
 		try {
-			this.executeMethod(this.fixture.method);
+			t = o.__proto__;
 		}
 		catch( $e0 ) {
 			{
 				var e = $e0;
 				{
-					$e = [];
-					while($s.length >= $spos) $e.unshift($s.pop());
-					$s.push($e[0]);
-					this.results.add(utest.Assertation.Error(e,utest.TestHandler.exceptionStack()));
+					t = null;
 				}
 			}
 		}
+		if(t != null) o.__proto__ = null;
+		
+				for(var i in o)
+					if( i != "__proto__" )
+						a.push(i);
+			;
+		if(t != null) o.__proto__ = t;
+	}
+	return a;
+}
+Reflect.isFunction = function(f) {
+	return typeof(f) == "function" && f.__name__ == null;
+}
+Reflect.compare = function(a,b) {
+	return a == b?0:a > b?1:-1;
+}
+Reflect.compareMethods = function(f1,f2) {
+	if(f1 == f2) return true;
+	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) return false;
+	return f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
+}
+Reflect.isObject = function(v) {
+	if(v == null) return false;
+	var t = typeof(v);
+	return t == "string" || t == "object" && !v.__enum__ || t == "function" && v.__name__ != null;
+}
+Reflect.deleteField = function(o,f) {
+	if(!Reflect.hasField(o,f)) return false;
+	delete(o[f]);
+	return true;
+}
+Reflect.copy = function(o) {
+	var o2 = { };
+	{
+		var _g = 0, _g1 = Reflect.fields(o);
+		while(_g < _g1.length) {
+			var f = _g1[_g];
+			++_g;
+			o2[f] = Reflect.field(o,f);
+		}
+	}
+	return o2;
+}
+Reflect.makeVarArgs = function(f) {
+	return function() {
+		var a = new Array();
+		{
+			var _g1 = 0, _g = arguments.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				a.push(arguments[i]);
+			}
+		}
+		return f(a);
+	}
+}
+Reflect.prototype.__class__ = Reflect;
+utest.ui.common.ResultStats = function(p) { if( p === $_ ) return; {
+	this.assertations = 0;
+	this.successes = 0;
+	this.failures = 0;
+	this.errors = 0;
+	this.warnings = 0;
+	this.isOk = true;
+	this.hasFailures = false;
+	this.hasErrors = false;
+	this.hasWarnings = false;
+	this.onAddSuccesses = new utest.Dispatcher();
+	this.onAddFailures = new utest.Dispatcher();
+	this.onAddErrors = new utest.Dispatcher();
+	this.onAddWarnings = new utest.Dispatcher();
+}}
+utest.ui.common.ResultStats.__name__ = ["utest","ui","common","ResultStats"];
+utest.ui.common.ResultStats.prototype.assertations = null;
+utest.ui.common.ResultStats.prototype.successes = null;
+utest.ui.common.ResultStats.prototype.failures = null;
+utest.ui.common.ResultStats.prototype.errors = null;
+utest.ui.common.ResultStats.prototype.warnings = null;
+utest.ui.common.ResultStats.prototype.onAddSuccesses = null;
+utest.ui.common.ResultStats.prototype.onAddFailures = null;
+utest.ui.common.ResultStats.prototype.onAddErrors = null;
+utest.ui.common.ResultStats.prototype.onAddWarnings = null;
+utest.ui.common.ResultStats.prototype.isOk = null;
+utest.ui.common.ResultStats.prototype.hasFailures = null;
+utest.ui.common.ResultStats.prototype.hasErrors = null;
+utest.ui.common.ResultStats.prototype.hasWarnings = null;
+utest.ui.common.ResultStats.prototype.addSuccesses = function(v) {
+	if(v == 0) return;
+	this.assertations += v;
+	this.successes += v;
+	this.onAddSuccesses.dispatch(v);
+}
+utest.ui.common.ResultStats.prototype.addFailures = function(v) {
+	if(v == 0) return;
+	this.assertations += v;
+	this.failures += v;
+	this.hasFailures = this.failures > 0;
+	this.isOk = !(this.hasFailures || this.hasErrors || this.hasWarnings);
+	this.onAddFailures.dispatch(v);
+}
+utest.ui.common.ResultStats.prototype.addErrors = function(v) {
+	if(v == 0) return;
+	this.assertations += v;
+	this.errors += v;
+	this.hasErrors = this.errors > 0;
+	this.isOk = !(this.hasFailures || this.hasErrors || this.hasWarnings);
+	this.onAddErrors.dispatch(v);
+}
+utest.ui.common.ResultStats.prototype.addWarnings = function(v) {
+	if(v == 0) return;
+	this.assertations += v;
+	this.warnings += v;
+	this.hasWarnings = this.warnings > 0;
+	this.isOk = !(this.hasFailures || this.hasErrors || this.hasWarnings);
+	this.onAddWarnings.dispatch(v);
+}
+utest.ui.common.ResultStats.prototype.sum = function(other) {
+	this.addSuccesses(other.successes);
+	this.addFailures(other.failures);
+	this.addErrors(other.errors);
+	this.addWarnings(other.warnings);
+}
+utest.ui.common.ResultStats.prototype.subtract = function(other) {
+	this.addSuccesses(-other.successes);
+	this.addFailures(-other.failures);
+	this.addErrors(-other.errors);
+	this.addWarnings(-other.warnings);
+}
+utest.ui.common.ResultStats.prototype.wire = function(dependant) {
+	dependant.onAddSuccesses.add($closure(this,"addSuccesses"));
+	dependant.onAddFailures.add($closure(this,"addFailures"));
+	dependant.onAddErrors.add($closure(this,"addErrors"));
+	dependant.onAddWarnings.add($closure(this,"addWarnings"));
+	this.sum(dependant);
+}
+utest.ui.common.ResultStats.prototype.unwire = function(dependant) {
+	dependant.onAddSuccesses.remove($closure(this,"addSuccesses"));
+	dependant.onAddFailures.remove($closure(this,"addFailures"));
+	dependant.onAddErrors.remove($closure(this,"addErrors"));
+	dependant.onAddWarnings.remove($closure(this,"addWarnings"));
+	this.subtract(dependant);
+}
+utest.ui.common.ResultStats.prototype.__class__ = utest.ui.common.ResultStats;
+utest.Assert = function() { }
+utest.Assert.__name__ = ["utest","Assert"];
+utest.Assert.results = null;
+utest.Assert.isTrue = function(cond,msg,pos) {
+	if(utest.Assert.results == null) throw "Assert.results is not currently bound to any assert context";
+	if(null == msg) msg = "expected true";
+	if(cond) utest.Assert.results.add(utest.Assertation.Success(pos));
+	else utest.Assert.results.add(utest.Assertation.Failure(msg,pos));
+}
+utest.Assert.isFalse = function(value,msg,pos) {
+	if(null == msg) msg = "expected false";
+	utest.Assert.isTrue(value == false,msg,pos);
+}
+utest.Assert.isNull = function(value,msg,pos) {
+	if(msg == null) msg = "expected null but was " + utest.Assert.q(value);
+	utest.Assert.isTrue(value == null,msg,pos);
+}
+utest.Assert.notNull = function(value,msg,pos) {
+	if(null == msg) msg = "expected false";
+	utest.Assert.isTrue(value != null,msg,pos);
+}
+utest.Assert["is"] = function(value,type,msg,pos) {
+	if(msg == null) msg = "expected type " + utest.Assert.typeToString(type) + " but was " + utest.Assert.typeToString(value);
+	utest.Assert.isTrue(Std["is"](value,type),msg,pos);
+}
+utest.Assert.notEquals = function(expected,value,msg,pos) {
+	if(msg == null) msg = "expected " + utest.Assert.q(expected) + " and testa value " + utest.Assert.q(value) + " should be different";
+	utest.Assert.isFalse(expected == value,msg,pos);
+}
+utest.Assert.equals = function(expected,value,msg,pos) {
+	if(msg == null) msg = "expected " + utest.Assert.q(expected) + " but was " + utest.Assert.q(value);
+	utest.Assert.isTrue(expected == value,msg,pos);
+}
+utest.Assert.match = function(pattern,value,msg,pos) {
+	if(msg == null) msg = "the value " + utest.Assert.q(value) + "does not match the provided pattern";
+	utest.Assert.isTrue(pattern.match(value),msg,pos);
+}
+utest.Assert.floatEquals = function(expected,value,approx,msg,pos) {
+	if(msg == null) msg = "expected " + utest.Assert.q(expected) + " but was " + utest.Assert.q(value);
+	return utest.Assert.isTrue(utest.Assert._floatEquals(expected,value,approx),msg,pos);
+}
+utest.Assert._floatEquals = function(expected,value,approx) {
+	if(Math.isNaN(expected)) return Math.isNaN(value);
+	else if(Math.isNaN(value)) return false;
+	else if(!Math.isFinite(expected) && !Math.isFinite(value)) return expected > 0 == value > 0;
+	if(null == approx) approx = 1e-5;
+	return Math.abs(value - expected) < approx;
+}
+utest.Assert.getTypeName = function(v) {
+	var $e = Type["typeof"](v);
+	switch( $e[1] ) {
+	case 0:
+	{
+		return "[null]";
+	}break;
+	case 1:
+	{
+		return "Int";
+	}break;
+	case 2:
+	{
+		return "Float";
+	}break;
+	case 3:
+	{
+		return "Bool";
+	}break;
+	case 5:
+	{
+		return "function";
+	}break;
+	case 6:
+	var c = $e[2];
+	{
+		return Type.getClassName(c);
+	}break;
+	case 7:
+	var e = $e[2];
+	{
+		return Type.getEnumName(e);
+	}break;
+	case 4:
+	{
+		return "Object";
+	}break;
+	case 8:
+	{
+		return "Unknown";
+	}break;
+	}
+}
+utest.Assert.isIterable = function(v,isAnonym) {
+	var fields = isAnonym?Reflect.fields(v):Type.getInstanceFields(Type.getClass(v));
+	if(!Lambda.has(fields,"iterator")) return false;
+	return Reflect.isFunction(Reflect.field(v,"iterator"));
+}
+utest.Assert.isIterator = function(v,isAnonym) {
+	var fields = isAnonym?Reflect.fields(v):Type.getInstanceFields(Type.getClass(v));
+	if(!Lambda.has(fields,"next") || !Lambda.has(fields,"hasNext")) return false;
+	return Reflect.isFunction(Reflect.field(v,"next")) && Reflect.isFunction(Reflect.field(v,"hasNext"));
+}
+utest.Assert.sameAs = function(expected,value,status) {
+	var texpected = utest.Assert.getTypeName(expected);
+	var tvalue = utest.Assert.getTypeName(value);
+	var isanonym = texpected == "Object";
+	if(texpected != tvalue) {
+		status.error = "expected type " + texpected + " but it is " + tvalue + (status.path == ""?"":" for field " + status.path);
+		return false;
+	}
+	var $e = Type["typeof"](expected);
+	switch( $e[1] ) {
+	case 2:
+	{
+		return utest.Assert._floatEquals(expected,value);
+	}break;
+	case 0:
+	case 1:
+	case 3:
+	{
+		if(expected != value) {
+			status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+			return false;
+		}
+		return true;
+	}break;
+	case 5:
+	{
+		if(!Reflect.compareMethods(expected,value)) {
+			status.error = "expected same function reference" + (status.path == ""?"":" for field " + status.path);
+			return false;
+		}
+		return true;
+	}break;
+	case 6:
+	var c = $e[2];
+	{
+		var cexpected = Type.getClassName(c);
+		var cvalue = Type.getClassName(Type.getClass(value));
+		if(cexpected != cvalue) {
+			status.error = "expected instance of " + utest.Assert.q(cexpected) + " but it is " + utest.Assert.q(cvalue) + (status.path == ""?"":" for field " + status.path);
+			return false;
+		}
+		if(Std["is"](expected,String) && expected != value) {
+			status.error = "expected '" + expected + "' but it is '" + value + "'";
+			return false;
+		}
+		if(Std["is"](expected,Array)) {
+			if(status.recursive || status.path == "") {
+				if(expected.length != value.length) {
+					status.error = "expected " + expected.length + " elements but they were " + value.length + (status.path == ""?"":" for field " + status.path);
+					return false;
+				}
+				var path = status.path;
+				{
+					var _g1 = 0, _g = expected.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						status.path = path == ""?"array[" + i + "]":path + "[" + i + "]";
+						if(!utest.Assert.sameAs(expected[i],value[i],status)) {
+							status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+		if(Std["is"](expected,Date)) {
+			if(expected.getTime() != value.getTime()) {
+				status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+				return false;
+			}
+			return true;
+		}
+		if(Std["is"](expected,haxe.io.Bytes)) {
+			if(status.recursive || status.path == "") {
+				var ebytes = expected;
+				var vbytes = value;
+				if(ebytes.length != vbytes.length) return false;
+				{
+					var _g1 = 0, _g = ebytes.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						if(ebytes.b[i] != vbytes.b[i]) {
+							status.error = "expected byte " + ebytes.b[i] + " but wss " + ebytes.b[i] + (status.path == ""?"":" for field " + status.path);
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+		if(Std["is"](expected,Hash) || Std["is"](expected,IntHash)) {
+			if(status.recursive || status.path == "") {
+				var keys = Lambda.array({ iterator : function() {
+					return expected.keys();
+				}});
+				var vkeys = Lambda.array({ iterator : function() {
+					return value.keys();
+				}});
+				if(keys.length != vkeys.length) {
+					status.error = "expected " + keys.length + " keys but they were " + vkeys.length + (status.path == ""?"":" for field " + status.path);
+					return false;
+				}
+				var path = status.path;
+				{
+					var _g = 0;
+					while(_g < keys.length) {
+						var key = keys[_g];
+						++_g;
+						status.path = path == ""?"hash[" + key + "]":path + "[" + key + "]";
+						if(!utest.Assert.sameAs(expected.get(key),value.get(key),status)) {
+							status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+		if(utest.Assert.isIterator(expected,false)) {
+			if(status.recursive || status.path == "") {
+				var evalues = Lambda.array({ iterator : function() {
+					return expected;
+				}});
+				var vvalues = Lambda.array({ iterator : function() {
+					return value;
+				}});
+				if(evalues.length != vvalues.length) {
+					status.error = "expected " + evalues.length + " values in Iterator but they were " + vvalues.length + (status.path == ""?"":" for field " + status.path);
+					return false;
+				}
+				var path = status.path;
+				{
+					var _g1 = 0, _g = evalues.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						status.path = path == ""?"iterator[" + i + "]":path + "[" + i + "]";
+						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) {
+							status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+		if(utest.Assert.isIterable(expected,false)) {
+			if(status.recursive || status.path == "") {
+				var evalues = Lambda.array(expected);
+				var vvalues = Lambda.array(value);
+				if(evalues.length != vvalues.length) {
+					status.error = "expected " + evalues.length + " values in Iterable but they were " + vvalues.length + (status.path == ""?"":" for field " + status.path);
+					return false;
+				}
+				var path = status.path;
+				{
+					var _g1 = 0, _g = evalues.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						status.path = path == ""?"iterable[" + i + "]":path + "[" + i + "]";
+						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) return false;
+					}
+				}
+			}
+			return true;
+		}
+		if(status.recursive || status.path == "") {
+			var fields = Type.getInstanceFields(Type.getClass(expected));
+			var path = status.path;
+			{
+				var _g = 0;
+				while(_g < fields.length) {
+					var field = fields[_g];
+					++_g;
+					status.path = path == ""?field:path + "." + field;
+					var e = Reflect.field(expected,field);
+					if(Reflect.isFunction(e)) continue;
+					var v = Reflect.field(value,field);
+					if(!utest.Assert.sameAs(e,v,status)) return false;
+				}
+			}
+		}
+		return true;
+	}break;
+	case 7:
+	var e = $e[2];
+	{
+		var eexpected = Type.getEnumName(e);
+		var evalue = Type.getEnumName(Type.getEnum(value));
+		if(eexpected != evalue) {
+			status.error = "expected enumeration of " + utest.Assert.q(eexpected) + " but it is " + utest.Assert.q(evalue) + (status.path == ""?"":" for field " + status.path);
+			return false;
+		}
+		if(status.recursive || status.path == "") {
+			if(expected[1] != value[1]) {
+				status.error = "expected " + utest.Assert.q(expected[0]) + " but is " + utest.Assert.q(value[0]) + (status.path == ""?"":" for field " + status.path);
+				return false;
+			}
+			var eparams = expected.slice(2);
+			var vparams = value.slice(2);
+			var path = status.path;
+			{
+				var _g1 = 0, _g = eparams.length;
+				while(_g1 < _g) {
+					var i = _g1++;
+					status.path = path == ""?"enum[" + i + "]":path + "[" + i + "]";
+					if(!utest.Assert.sameAs(eparams[i],vparams[i],status)) {
+						status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}break;
+	case 4:
+	{
+		if(status.recursive || status.path == "") {
+			var tfields = Reflect.fields(value);
+			var fields = Reflect.fields(expected);
+			var path = status.path;
+			{
+				var _g = 0;
+				while(_g < fields.length) {
+					var field = fields[_g];
+					++_g;
+					tfields.remove(field);
+					status.path = path == ""?field:path + "." + field;
+					if(!Reflect.hasField(value,field)) {
+						status.error = "expected field " + status.path + " does not exist in " + utest.Assert.q(value);
+						return false;
+					}
+					var e = Reflect.field(expected,field);
+					if(Reflect.isFunction(e)) continue;
+					var v = Reflect.field(value,field);
+					if(!utest.Assert.sameAs(e,v,status)) return false;
+				}
+			}
+			if(tfields.length > 0) {
+				status.error = "the tested object has extra field(s) (" + tfields.join(", ") + ") not included in the expected ones";
+				return false;
+			}
+		}
+		if(utest.Assert.isIterator(expected,true)) {
+			if(!utest.Assert.isIterator(value,true)) {
+				status.error = "expected Iterable but it is not " + (status.path == ""?"":" for field " + status.path);
+				return false;
+			}
+			if(status.recursive || status.path == "") {
+				var evalues = Lambda.array({ iterator : function() {
+					return expected;
+				}});
+				var vvalues = Lambda.array({ iterator : function() {
+					return value;
+				}});
+				if(evalues.length != vvalues.length) {
+					status.error = "expected " + evalues.length + " values in Iterator but they were " + vvalues.length + (status.path == ""?"":" for field " + status.path);
+					return false;
+				}
+				var path = status.path;
+				{
+					var _g1 = 0, _g = evalues.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						status.path = path == ""?"iterator[" + i + "]":path + "[" + i + "]";
+						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) {
+							status.error = "expected " + utest.Assert.q(expected) + " but it is " + utest.Assert.q(value) + (status.path == ""?"":" for field " + status.path);
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+		if(utest.Assert.isIterable(expected,true)) {
+			if(!utest.Assert.isIterable(value,true)) {
+				status.error = "expected Iterator but it is not " + (status.path == ""?"":" for field " + status.path);
+				return false;
+			}
+			if(status.recursive || status.path == "") {
+				var evalues = Lambda.array(expected);
+				var vvalues = Lambda.array(value);
+				if(evalues.length != vvalues.length) {
+					status.error = "expected " + evalues.length + " values in Iterable but they were " + vvalues.length + (status.path == ""?"":" for field " + status.path);
+					return false;
+				}
+				var path = status.path;
+				{
+					var _g1 = 0, _g = evalues.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						status.path = path == ""?"iterable[" + i + "]":path + "[" + i + "]";
+						if(!utest.Assert.sameAs(evalues[i],vvalues[i],status)) return false;
+					}
+				}
+			}
+			return true;
+		}
+		return true;
+	}break;
+	case 8:
+	{
+		return (function($this) {
+			var $r;
+			throw "Unable to compare two unknown types";
+			return $r;
+		}(this));
+	}break;
+	}
+	return (function($this) {
+		var $r;
+		throw "Unable to compare values: " + utest.Assert.q(expected) + " and " + utest.Assert.q(value);
+		return $r;
+	}(this));
+}
+utest.Assert.q = function(v) {
+	if(Std["is"](v,String)) return "\"" + StringTools.replace(v,"\"","\\\"") + "\"";
+	else return Std.string(v);
+}
+utest.Assert.same = function(expected,value,recursive,msg,pos) {
+	if(null == recursive) recursive = true;
+	var status = { recursive : recursive, path : "", error : null};
+	if(utest.Assert.sameAs(expected,value,status)) {
+		utest.Assert.isTrue(true,msg,pos);
+	}
+	else {
+		utest.Assert.fail(msg == null?status.error:msg,pos);
+	}
+}
+utest.Assert.raises = function(method,type,msgNotThrown,msgWrongType,pos) {
+	if(type == null) type = String;
+	try {
+		method();
+		var name = Type.getClassName(type);
+		if(name == null) name = "" + type;
+		if(null == msgNotThrown) msgNotThrown = "exception of type " + name + " not raised";
+		utest.Assert.fail(msgNotThrown,pos);
+	}
+	catch( $e0 ) {
+		{
+			var ex = $e0;
+			{
+				var name = Type.getClassName(type);
+				if(name == null) name = "" + type;
+				if(null == msgWrongType) msgWrongType = "expected throw of type " + name + " but was " + ex;
+				utest.Assert.isTrue(Std["is"](ex,type),msgWrongType,pos);
+			}
+		}
+	}
+}
+utest.Assert.allows = function(possibilities,value,msg,pos) {
+	if(Lambda.has(possibilities,value)) {
+		utest.Assert.isTrue(true,msg,pos);
+	}
+	else {
+		utest.Assert.fail(msg == null?"value " + utest.Assert.q(value) + " not found in the expected possibilities " + possibilities:msg,pos);
+	}
+}
+utest.Assert.contains = function(match,values,msg,pos) {
+	if(Lambda.has(values,match)) {
+		utest.Assert.isTrue(true,msg,pos);
+	}
+	else {
+		utest.Assert.fail(msg == null?"values " + utest.Assert.q(values) + " do not contain " + match:msg,pos);
+	}
+}
+utest.Assert.notContains = function(match,values,msg,pos) {
+	if(!Lambda.has(values,match)) {
+		utest.Assert.isTrue(true,msg,pos);
+	}
+	else {
+		utest.Assert.fail(msg == null?"values " + utest.Assert.q(values) + " do contain " + match:msg,pos);
+	}
+}
+utest.Assert.stringContains = function(match,value,msg,pos) {
+	if(value != null && value.indexOf(match) >= 0) {
+		utest.Assert.isTrue(true,msg,pos);
+	}
+	else {
+		utest.Assert.fail(msg == null?"value " + utest.Assert.q(value) + " does not contain " + utest.Assert.q(match):msg,pos);
+	}
+}
+utest.Assert.stringSequence = function(sequence,value,msg,pos) {
+	if(null == value) {
+		utest.Assert.fail(msg == null?"null argument value":msg,pos);
+		return;
+	}
+	var p = 0;
+	{
+		var _g = 0;
+		while(_g < sequence.length) {
+			var s = sequence[_g];
+			++_g;
+			var p2 = value.indexOf(s,p);
+			if(p2 < 0) {
+				if(msg == null) {
+					msg = "expected '" + s + "' after ";
+					if(p > 0) {
+						var cut = value.substr(0,p);
+						if(cut.length > 30) cut = "..." + cut.substr(-27);
+						msg += " '" + cut + "'";
+					}
+					else msg += " begin";
+				}
+				utest.Assert.fail(msg,pos);
+				return;
+			}
+			p = p2 + s.length;
+		}
+	}
+	utest.Assert.isTrue(true,msg,pos);
+}
+utest.Assert.fail = function(msg,pos) {
+	if(msg == null) msg = "failure expected";
+	utest.Assert.isTrue(false,msg,pos);
+}
+utest.Assert.warn = function(msg) {
+	utest.Assert.results.add(utest.Assertation.Warning(msg));
+}
+utest.Assert.createAsync = function(f,timeout) {
+	return function() {
+		null;
+	}
+}
+utest.Assert.createEvent = function(f,timeout) {
+	return function(e) {
+		null;
+	}
+}
+utest.Assert.typeToString = function(t) {
+	try {
+		var _t = Type.getClass(t);
+		if(_t != null) t = _t;
+	}
+	catch( $e0 ) {
+		{
+			var e = $e0;
+			null;
+		}
+	}
+	try {
+		return Type.getClassName(t);
 	}
 	catch( $e1 ) {
 		{
 			var e = $e1;
+			null;
+		}
+	}
+	try {
+		var _t = Type.getEnum(t);
+		if(_t != null) t = _t;
+	}
+	catch( $e2 ) {
+		{
+			var e = $e2;
+			null;
+		}
+	}
+	try {
+		return Type.getEnumName(t);
+	}
+	catch( $e3 ) {
+		{
+			var e = $e3;
+			null;
+		}
+	}
+	try {
+		return Std.string(Type["typeof"](t));
+	}
+	catch( $e4 ) {
+		{
+			var e = $e4;
+			null;
+		}
+	}
+	try {
+		return Std.string(t);
+	}
+	catch( $e5 ) {
+		{
+			var e = $e5;
+			null;
+		}
+	}
+	return "<unable to retrieve type name>";
+}
+utest.Assert.prototype.__class__ = utest.Assert;
+haxe.StackItem = { __ename__ : ["haxe","StackItem"], __constructs__ : ["CFunction","Module","FilePos","Method","Lambda"] }
+haxe.StackItem.CFunction = ["CFunction",0];
+haxe.StackItem.CFunction.toString = $estr;
+haxe.StackItem.CFunction.__enum__ = haxe.StackItem;
+haxe.StackItem.Module = function(m) { var $x = ["Module",1,m]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
+haxe.StackItem.FilePos = function(s,file,line) { var $x = ["FilePos",2,s,file,line]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
+haxe.StackItem.Method = function(classname,method) { var $x = ["Method",3,classname,method]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
+haxe.StackItem.Lambda = function(v) { var $x = ["Lambda",4,v]; $x.__enum__ = haxe.StackItem; $x.toString = $estr; return $x; }
+haxe.Stack = function() { }
+haxe.Stack.__name__ = ["haxe","Stack"];
+haxe.Stack.callStack = function() {
+	return haxe.Stack.makeStack("$s");
+}
+haxe.Stack.exceptionStack = function() {
+	return haxe.Stack.makeStack("$e");
+}
+haxe.Stack.toString = function(stack) {
+	var b = new StringBuf();
+	{
+		var _g = 0;
+		while(_g < stack.length) {
+			var s = stack[_g];
+			++_g;
+			b.b[b.b.length] = "\nCalled from ";
+			haxe.Stack.itemToString(b,s);
+		}
+	}
+	return b.b.join("");
+}
+haxe.Stack.itemToString = function(b,s) {
+	var $e = s;
+	switch( $e[1] ) {
+	case 0:
+	{
+		b.b[b.b.length] = "a C function";
+	}break;
+	case 1:
+	var m = $e[2];
+	{
+		b.b[b.b.length] = "module ";
+		b.b[b.b.length] = m;
+	}break;
+	case 2:
+	var line = $e[4], file = $e[3], s1 = $e[2];
+	{
+		if(s1 != null) {
+			haxe.Stack.itemToString(b,s1);
+			b.b[b.b.length] = " (";
+		}
+		b.b[b.b.length] = file;
+		b.b[b.b.length] = " line ";
+		b.b[b.b.length] = line;
+		if(s1 != null) b.b[b.b.length] = ")";
+	}break;
+	case 3:
+	var meth = $e[3], cname = $e[2];
+	{
+		b.b[b.b.length] = cname;
+		b.b[b.b.length] = ".";
+		b.b[b.b.length] = meth;
+	}break;
+	case 4:
+	var n = $e[2];
+	{
+		b.b[b.b.length] = "local function #";
+		b.b[b.b.length] = n;
+	}break;
+	}
+}
+haxe.Stack.makeStack = function(s) {
+	var a = (function($this) {
+		var $r;
+		try {
+			$r = eval(s);
+		}
+		catch( $e0 ) {
 			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				this.results.add(utest.Assertation.SetupError(e,utest.TestHandler.exceptionStack()));
+				var e = $e0;
+				$r = [];
 			}
 		}
+		return $r;
+	}(this));
+	var m = new Array();
+	{
+		var _g1 = 0, _g = a.length - (s == "$s"?2:0);
+		while(_g1 < _g) {
+			var i = _g1++;
+			var d = a[i].split("::");
+			m.unshift(haxe.StackItem.Method(d[0],d[1]));
+		}
 	}
-	this.checkTested();
-	$s.pop();
+	return m;
 }
-utest.TestHandler.prototype.executeMethod = function(name) {
-	$s.push("utest.TestHandler::executeMethod");
-	var $spos = $s.length;
-	if(name == null) {
-		$s.pop();
-		return;
+haxe.Stack.prototype.__class__ = haxe.Stack;
+IntIter = function(min,max) { if( min === $_ ) return; {
+	this.min = min;
+	this.max = max;
+}}
+IntIter.__name__ = ["IntIter"];
+IntIter.prototype.min = null;
+IntIter.prototype.max = null;
+IntIter.prototype.hasNext = function() {
+	return this.min < this.max;
+}
+IntIter.prototype.next = function() {
+	return this.min++;
+}
+IntIter.prototype.__class__ = IntIter;
+org.silex.runtime.ressource.js.ImageLoader = function(p) { if( p === $_ ) return; {
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}}
+org.silex.runtime.ressource.js.ImageLoader.__name__ = ["org","silex","runtime","ressource","js","ImageLoader"];
+org.silex.runtime.ressource.js.ImageLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.ImageLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.ImageLoader.prototype.doLoad = function(url) {
+	var domObject = new org.silex.runtime.domobject.js.ImageDOMObject(js.Lib.document.createElement("img"));
+	var onLoadCompleteDelegate = $closure(this,"onLoadComplete");
+	domObject.getReferenceToNativeDOM().onload = function() {
+		onLoadCompleteDelegate(domObject);
 	}
-	this.bindHandler();
-	Reflect.field(this.fixture.target,name).apply(this.fixture.target,[]);
-	$s.pop();
+	domObject.getReferenceToNativeDOM().setAttribute("src",url);
 }
-utest.TestHandler.prototype.expireson = null;
-utest.TestHandler.prototype.fixture = null;
-utest.TestHandler.prototype.onComplete = null;
-utest.TestHandler.prototype.onTested = null;
-utest.TestHandler.prototype.onTimeout = null;
-utest.TestHandler.prototype.results = null;
-utest.TestHandler.prototype.setTimeout = function(timeout) {
-	$s.push("utest.TestHandler::setTimeout");
-	var $spos = $s.length;
-	var newexpire = haxe.Timer.stamp() + timeout / 1000;
-	this.expireson = ((this.expireson == null)?newexpire:((newexpire > this.expireson?newexpire:this.expireson)));
-	$s.pop();
+org.silex.runtime.ressource.js.ImageLoader.prototype.__class__ = org.silex.runtime.ressource.js.ImageLoader;
+org.silex.runtime.ressource.RessourceLoaderManager = function(p) { if( p === $_ ) return; {
+	null;
+}}
+org.silex.runtime.ressource.RessourceLoaderManager.__name__ = ["org","silex","runtime","ressource","RessourceLoaderManager"];
+org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray = null;
+org.silex.runtime.ressource.RessourceLoaderManager.loadImage = function(url,successCallback,errorCallback,allowCache) {
+	if(allowCache == null) allowCache = true;
+	var ressourceDataToAdd = { url : url, onLoadComplete : successCallback, onLoadError : errorCallback, allowCache : allowCache, loadingType : org.silex.runtime.ressource.LoadingTypeValue.image};
+	org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData(ressourceDataToAdd);
 }
-utest.TestHandler.prototype.tested = function() {
-	$s.push("utest.TestHandler::tested");
-	var $spos = $s.length;
-	if(this.results.length == 0) this.results.add(utest.Assertation.Warning("no assertions"));
-	this.onTested.dispatch(this);
-	this.completed();
-	$s.pop();
+org.silex.runtime.ressource.RessourceLoaderManager.loadText = function(url,successCallback,errorCallback,allowCache) {
+	if(allowCache == null) allowCache = true;
+	var ressourceDataToAdd = { url : url, onLoadComplete : successCallback, onLoadError : errorCallback, allowCache : allowCache, loadingType : org.silex.runtime.ressource.LoadingTypeValue.text};
+	org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData(ressourceDataToAdd);
 }
-utest.TestHandler.prototype.timeout = function() {
-	$s.push("utest.TestHandler::timeout");
-	var $spos = $s.length;
-	this.results.add(utest.Assertation.TimeoutError(this.asyncStack.length,[]));
-	this.onTimeout.dispatch(this);
-	this.completed();
-	$s.pop();
+org.silex.runtime.ressource.RessourceLoaderManager.loadAnimation = function(url,successCallback,errorCallback,allowCache) {
+	if(allowCache == null) allowCache = true;
+	var ressourceDataToAdd = { url : url, onLoadComplete : successCallback, onLoadError : errorCallback, allowCache : allowCache, loadingType : org.silex.runtime.ressource.LoadingTypeValue.animation};
+	org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData(ressourceDataToAdd);
 }
-utest.TestHandler.prototype.unbindHandler = function() {
-	$s.push("utest.TestHandler::unbindHandler");
-	var $spos = $s.length;
-	utest.Assert.results = null;
-	utest.Assert.createAsync = function(f,t) {
-		$s.push("utest.TestHandler::unbindHandler@83");
-		var $spos = $s.length;
+org.silex.runtime.ressource.RessourceLoaderManager.loadContainer = function(url,successCallback,errorCallback,allowCache) {
+	if(allowCache == null) allowCache = true;
+	var ressourceDataToAdd = { url : url, onLoadComplete : successCallback, onLoadError : errorCallback, allowCache : allowCache, loadingType : org.silex.runtime.ressource.LoadingTypeValue.container};
+	org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData(ressourceDataToAdd);
+}
+org.silex.runtime.ressource.RessourceLoaderManager.loadString = function(url,successCallback,errorCallback,allowCache) {
+	if(allowCache == null) allowCache = true;
+	var ressourceDataToAdd = { url : url, onLoadComplete : successCallback, onLoadError : errorCallback, allowCache : allowCache, loadingType : org.silex.runtime.ressource.LoadingTypeValue.data};
+	org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData(ressourceDataToAdd);
+}
+org.silex.runtime.ressource.RessourceLoaderManager.loadLibrary = function(url,successCallback,errorCallback,allowCache) {
+	if(allowCache == null) allowCache = true;
+	var ressourceDataToAdd = { url : url, onLoadComplete : successCallback, onLoadError : errorCallback, allowCache : allowCache, loadingType : org.silex.runtime.ressource.LoadingTypeValue.library};
+	org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData(ressourceDataToAdd);
+}
+org.silex.runtime.ressource.RessourceLoaderManager.addRessourceData = function(ressourceData) {
+	if(org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray == null) {
+		org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray = new Array();
+	}
+	org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray.push(ressourceData);
+	if(org.silex.runtime.ressource.RessourceLoaderManager._isLoading == false) {
+		org.silex.runtime.ressource.RessourceLoaderManager.loadNextRessource();
+	}
+}
+org.silex.runtime.ressource.RessourceLoaderManager.loadNextRessource = function() {
+	if(org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray.length == 0) {
+		org.silex.runtime.ressource.RessourceLoaderManager._isLoading = false;
+	}
+	else {
+		org.silex.runtime.ressource.RessourceLoaderManager._isLoading = true;
+		var ressourceDataToLoad = org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray[0];
+		var ressourceLoader;
+		var $e = ressourceDataToLoad.loadingType;
+		switch( $e[1] ) {
+		case 0:
 		{
-			var $tmp = function() {
-				$s.push("utest.TestHandler::unbindHandler@83@83");
-				var $spos = $s.length;
-				null;
-				$s.pop();
-			}
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-	utest.Assert.createEvent = function(f,t) {
-		$s.push("utest.TestHandler::unbindHandler@84");
-		var $spos = $s.length;
+			ressourceLoader = new org.silex.runtime.ressource.js.StringLoader();
+		}break;
+		case 1:
 		{
-			var $tmp = function(e) {
-				$s.push("utest.TestHandler::unbindHandler@84@84");
-				var $spos = $s.length;
-				null;
-				$s.pop();
-			}
-			$s.pop();
-			return $tmp;
+			ressourceLoader = new org.silex.runtime.ressource.js.ImageLoader();
+		}break;
+		case 2:
+		{
+			ressourceLoader = new org.silex.runtime.ressource.js.TextLoader();
+		}break;
+		case 3:
+		{
+			ressourceLoader = new org.silex.runtime.ressource.js.AnimationLoader();
+		}break;
+		case 4:
+		{
+			ressourceLoader = new org.silex.runtime.ressource.js.ContainerLoader();
+		}break;
+		case 5:
+		{
+			ressourceLoader = new org.silex.runtime.ressource.js.LibraryLoader();
+		}break;
 		}
-		$s.pop();
+		ressourceLoader.load(ressourceDataToLoad.url,$closure(org.silex.runtime.ressource.RessourceLoaderManager,"onLoadComplete"),$closure(org.silex.runtime.ressource.RessourceLoaderManager,"onLoadError"),ressourceDataToLoad.allowCache);
 	}
-	$s.pop();
 }
-utest.TestHandler.prototype.__class__ = utest.TestHandler;
-Hash = function(p) { if( p === $_ ) return; {
-	$s.push("Hash::new");
-	var $spos = $s.length;
+org.silex.runtime.ressource.RessourceLoaderManager.onLoadComplete = function(data) {
+	var loadedRessourceData = org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray.shift();
+	loadedRessourceData.onLoadComplete(data);
+	org.silex.runtime.ressource.RessourceLoaderManager.loadNextRessource();
+}
+org.silex.runtime.ressource.RessourceLoaderManager.onLoadError = function(data) {
+	var errorRessourceData = org.silex.runtime.ressource.RessourceLoaderManager._ressourceDataArray.shift();
+	errorRessourceData.onLoadError(data);
+	org.silex.runtime.ressource.RessourceLoaderManager.loadNextRessource();
+}
+org.silex.runtime.ressource.RessourceLoaderManager.prototype.__class__ = org.silex.runtime.ressource.RessourceLoaderManager;
+ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
+ValueType.TNull = ["TNull",0];
+ValueType.TNull.toString = $estr;
+ValueType.TNull.__enum__ = ValueType;
+ValueType.TInt = ["TInt",1];
+ValueType.TInt.toString = $estr;
+ValueType.TInt.__enum__ = ValueType;
+ValueType.TFloat = ["TFloat",2];
+ValueType.TFloat.toString = $estr;
+ValueType.TFloat.__enum__ = ValueType;
+ValueType.TBool = ["TBool",3];
+ValueType.TBool.toString = $estr;
+ValueType.TBool.__enum__ = ValueType;
+ValueType.TObject = ["TObject",4];
+ValueType.TObject.toString = $estr;
+ValueType.TObject.__enum__ = ValueType;
+ValueType.TFunction = ["TFunction",5];
+ValueType.TFunction.toString = $estr;
+ValueType.TFunction.__enum__ = ValueType;
+ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
+ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
+ValueType.TUnknown = ["TUnknown",8];
+ValueType.TUnknown.toString = $estr;
+ValueType.TUnknown.__enum__ = ValueType;
+Type = function() { }
+Type.__name__ = ["Type"];
+Type.getClass = function(o) {
+	if(o == null) return null;
+	if(o.__enum__ != null) return null;
+	return o.__class__;
+}
+Type.getEnum = function(o) {
+	if(o == null) return null;
+	return o.__enum__;
+}
+Type.getSuperClass = function(c) {
+	return c.__super__;
+}
+Type.getClassName = function(c) {
+	var a = c.__name__;
+	return a.join(".");
+}
+Type.getEnumName = function(e) {
+	var a = e.__ename__;
+	return a.join(".");
+}
+Type.resolveClass = function(name) {
+	var cl;
+	try {
+		cl = eval(name);
+	}
+	catch( $e0 ) {
+		{
+			var e = $e0;
+			{
+				cl = null;
+			}
+		}
+	}
+	if(cl == null || cl.__name__ == null) return null;
+	return cl;
+}
+Type.resolveEnum = function(name) {
+	var e;
+	try {
+		e = eval(name);
+	}
+	catch( $e0 ) {
+		{
+			var err = $e0;
+			{
+				e = null;
+			}
+		}
+	}
+	if(e == null || e.__ename__ == null) return null;
+	return e;
+}
+Type.createInstance = function(cl,args) {
+	if(args.length <= 3) return new cl(args[0],args[1],args[2]);
+	if(args.length > 8) throw "Too many arguments";
+	return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
+}
+Type.createEmptyInstance = function(cl) {
+	return new cl($_);
+}
+Type.createEnum = function(e,constr,params) {
+	var f = Reflect.field(e,constr);
+	if(f == null) throw "No such constructor " + constr;
+	if(Reflect.isFunction(f)) {
+		if(params == null) throw "Constructor " + constr + " need parameters";
+		return f.apply(e,params);
+	}
+	if(params != null && params.length != 0) throw "Constructor " + constr + " does not need parameters";
+	return f;
+}
+Type.createEnumIndex = function(e,index,params) {
+	var c = Type.getEnumConstructs(e)[index];
+	if(c == null) throw index + " is not a valid enum constructor index";
+	return Type.createEnum(e,c,params);
+}
+Type.getInstanceFields = function(c) {
+	var a = Reflect.fields(c.prototype);
+	a.remove("__class__");
+	return a;
+}
+Type.getClassFields = function(c) {
+	var a = Reflect.fields(c);
+	a.remove("__name__");
+	a.remove("__interfaces__");
+	a.remove("__super__");
+	a.remove("prototype");
+	return a;
+}
+Type.getEnumConstructs = function(e) {
+	return e.__constructs__;
+}
+Type["typeof"] = function(v) {
+	switch(typeof(v)) {
+	case "boolean":{
+		return ValueType.TBool;
+	}break;
+	case "string":{
+		return ValueType.TClass(String);
+	}break;
+	case "number":{
+		if(Math.ceil(v) == v % 2147483648.0) return ValueType.TInt;
+		return ValueType.TFloat;
+	}break;
+	case "object":{
+		if(v == null) return ValueType.TNull;
+		var e = v.__enum__;
+		if(e != null) return ValueType.TEnum(e);
+		var c = v.__class__;
+		if(c != null) return ValueType.TClass(c);
+		return ValueType.TObject;
+	}break;
+	case "function":{
+		if(v.__name__ != null) return ValueType.TObject;
+		return ValueType.TFunction;
+	}break;
+	case "undefined":{
+		return ValueType.TNull;
+	}break;
+	default:{
+		return ValueType.TUnknown;
+	}break;
+	}
+}
+Type.enumEq = function(a,b) {
+	if(a == b) return true;
+	try {
+		if(a[0] != b[0]) return false;
+		{
+			var _g1 = 2, _g = a.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				if(!Type.enumEq(a[i],b[i])) return false;
+			}
+		}
+		var e = a.__enum__;
+		if(e != b.__enum__ || e == null) return false;
+	}
+	catch( $e0 ) {
+		{
+			var e = $e0;
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+Type.enumConstructor = function(e) {
+	return e[0];
+}
+Type.enumParameters = function(e) {
+	return e.slice(2);
+}
+Type.enumIndex = function(e) {
+	return e[1];
+}
+Type.prototype.__class__ = Type;
+if(typeof js=='undefined') js = {}
+js.Boot = function() { }
+js.Boot.__name__ = ["js","Boot"];
+js.Boot.__unhtml = function(s) {
+	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
+}
+js.Boot.__trace = function(v,i) {
+	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
+	msg += js.Boot.__unhtml(js.Boot.__string_rec(v,"")) + "<br/>";
+	var d = document.getElementById("haxe:trace");
+	if(d == null) alert("No haxe:trace element defined\n" + msg);
+	else d.innerHTML += msg;
+}
+js.Boot.__clear_trace = function() {
+	var d = document.getElementById("haxe:trace");
+	if(d != null) d.innerHTML = "";
+	else null;
+}
+js.Boot.__closure = function(o,f) {
+	var m = o[f];
+	if(m == null) return null;
+	var f1 = function() {
+		return m.apply(o,arguments);
+	}
+	f1.scope = o;
+	f1.method = m;
+	return f1;
+}
+js.Boot.__string_rec = function(o,s) {
+	if(o == null) return "null";
+	if(s.length >= 5) return "<...>";
+	var t = typeof(o);
+	if(t == "function" && (o.__name__ != null || o.__ename__ != null)) t = "object";
+	switch(t) {
+	case "object":{
+		if(o instanceof Array) {
+			if(o.__enum__ != null) {
+				if(o.length == 2) return o[0];
+				var str = o[0] + "(";
+				s += "\t";
+				{
+					var _g1 = 2, _g = o.length;
+					while(_g1 < _g) {
+						var i = _g1++;
+						if(i != 2) str += "," + js.Boot.__string_rec(o[i],s);
+						else str += js.Boot.__string_rec(o[i],s);
+					}
+				}
+				return str + ")";
+			}
+			var l = o.length;
+			var i;
+			var str = "[";
+			s += "\t";
+			{
+				var _g = 0;
+				while(_g < l) {
+					var i1 = _g++;
+					str += (i1 > 0?",":"") + js.Boot.__string_rec(o[i1],s);
+				}
+			}
+			str += "]";
+			return str;
+		}
+		var tostr;
+		try {
+			tostr = o.toString;
+		}
+		catch( $e0 ) {
+			{
+				var e = $e0;
+				{
+					return "???";
+				}
+			}
+		}
+		if(tostr != null && tostr != Object.toString) {
+			var s2 = o.toString();
+			if(s2 != "[object Object]") return s2;
+		}
+		var k = null;
+		var str = "{\n";
+		s += "\t";
+		var hasp = o.hasOwnProperty != null;
+		for( var k in o ) { ;
+		if(hasp && !o.hasOwnProperty(k)) continue;
+		if(k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__") continue;
+		if(str.length != 2) str += ", \n";
+		str += s + k + " : " + js.Boot.__string_rec(o[k],s);
+		}
+		s = s.substring(1);
+		str += "\n" + s + "}";
+		return str;
+	}break;
+	case "function":{
+		return "<function>";
+	}break;
+	case "string":{
+		return o;
+	}break;
+	default:{
+		return String(o);
+	}break;
+	}
+}
+js.Boot.__interfLoop = function(cc,cl) {
+	if(cc == null) return false;
+	if(cc == cl) return true;
+	var intf = cc.__interfaces__;
+	if(intf != null) {
+		var _g1 = 0, _g = intf.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var i1 = intf[i];
+			if(i1 == cl || js.Boot.__interfLoop(i1,cl)) return true;
+		}
+	}
+	return js.Boot.__interfLoop(cc.__super__,cl);
+}
+js.Boot.__instanceof = function(o,cl) {
+	try {
+		if(o instanceof cl) {
+			if(cl == Array) return o.__enum__ == null;
+			return true;
+		}
+		if(js.Boot.__interfLoop(o.__class__,cl)) return true;
+	}
+	catch( $e0 ) {
+		{
+			var e = $e0;
+			{
+				if(cl == null) return false;
+			}
+		}
+	}
+	switch(cl) {
+	case Int:{
+		return Math.ceil(o%2147483648.0) === o;
+	}break;
+	case Float:{
+		return typeof(o) == "number";
+	}break;
+	case Bool:{
+		return o === true || o === false;
+	}break;
+	case String:{
+		return typeof(o) == "string";
+	}break;
+	case Dynamic:{
+		return true;
+	}break;
+	default:{
+		if(o == null) return false;
+		return o.__enum__ == cl || cl == Class && o.__name__ != null || cl == Enum && o.__ename__ != null;
+	}break;
+	}
+}
+js.Boot.__init = function() {
+	js.Lib.isIE = typeof document!='undefined' && document.all != null && typeof window!='undefined' && window.opera == null;
+	js.Lib.isOpera = typeof window!='undefined' && window.opera != null;
+	Array.prototype.copy = Array.prototype.slice;
+	Array.prototype.insert = function(i,x) {
+		this.splice(i,0,x);
+	}
+	Array.prototype.remove = Array.prototype.indexOf?function(obj) {
+		var idx = this.indexOf(obj);
+		if(idx == -1) return false;
+		this.splice(idx,1);
+		return true;
+	}:function(obj) {
+		var i = 0;
+		var l = this.length;
+		while(i < l) {
+			if(this[i] == obj) {
+				this.splice(i,1);
+				return true;
+			}
+			i++;
+		}
+		return false;
+	}
+	Array.prototype.iterator = function() {
+		return { cur : 0, arr : this, hasNext : function() {
+			return this.cur < this.arr.length;
+		}, next : function() {
+			return this.arr[this.cur++];
+		}};
+	}
+	if(String.prototype.cca == null) String.prototype.cca = String.prototype.charCodeAt;
+	String.prototype.charCodeAt = function(i) {
+		var x = this.cca(i);
+		if(x != x) return null;
+		return x;
+	}
+	var oldsub = String.prototype.substr;
+	String.prototype.substr = function(pos,len) {
+		if(pos != null && pos != 0 && len != null && len < 0) return "";
+		if(len == null) len = this.length;
+		if(pos < 0) {
+			pos = this.length + pos;
+			if(pos < 0) pos = 0;
+		}
+		else if(len < 0) {
+			len = this.length + len - pos;
+		}
+		return oldsub.apply(this,[pos,len]);
+	}
+	$closure = js.Boot.__closure;
+}
+js.Boot.prototype.__class__ = js.Boot;
+haxe.Timer = function(time_ms) { if( time_ms === $_ ) return; {
+	this.id = haxe.Timer.arr.length;
+	haxe.Timer.arr[this.id] = this;
+	this.timerId = window.setInterval("haxe.Timer.arr[" + this.id + "].run();",time_ms);
+}}
+haxe.Timer.__name__ = ["haxe","Timer"];
+haxe.Timer.delay = function(f,time_ms) {
+	var t = new haxe.Timer(time_ms);
+	t.run = function() {
+		t.stop();
+		f();
+	}
+	return t;
+}
+haxe.Timer.measure = function(f,pos) {
+	var t0 = haxe.Timer.stamp();
+	var r = f();
+	haxe.Log.trace(haxe.Timer.stamp() - t0 + "s",pos);
+	return r;
+}
+haxe.Timer.stamp = function() {
+	return Date.now().getTime() / 1000;
+}
+haxe.Timer.prototype.id = null;
+haxe.Timer.prototype.timerId = null;
+haxe.Timer.prototype.stop = function() {
+	if(this.id == null) return;
+	window.clearInterval(this.timerId);
+	haxe.Timer.arr[this.id] = null;
+	if(this.id > 100 && this.id == haxe.Timer.arr.length - 1) {
+		var p = this.id - 1;
+		while(p >= 0 && haxe.Timer.arr[p] == null) p--;
+		haxe.Timer.arr = haxe.Timer.arr.slice(0,p + 1);
+	}
+	this.id = null;
+}
+haxe.Timer.prototype.run = function() {
+	null;
+}
+haxe.Timer.prototype.__class__ = haxe.Timer;
+IntHash = function(p) { if( p === $_ ) return; {
 	this.h = {}
 	if(this.h.__proto__ != null) {
 		this.h.__proto__ = null;
 		delete(this.h.__proto__);
 	}
 	else null;
-	$s.pop();
 }}
-Hash.__name__ = ["Hash"];
-Hash.prototype.exists = function(key) {
-	$s.push("Hash::exists");
-	var $spos = $s.length;
-	try {
-		key = "$" + key;
-		{
-			var $tmp = this.hasOwnProperty.call(this.h,key);
-			$s.pop();
-			return $tmp;
-		}
-	}
-	catch( $e0 ) {
-		{
-			var e = $e0;
-			{
-				$e = [];
-				while($s.length >= $spos) $e.unshift($s.pop());
-				$s.push($e[0]);
-				
-				for(var i in this.h)
-					if( i == key ) return true;
-			;
-				{
-					$s.pop();
-					return false;
-				}
-			}
-		}
-	}
-	$s.pop();
+IntHash.__name__ = ["IntHash"];
+IntHash.prototype.h = null;
+IntHash.prototype.set = function(key,value) {
+	this.h[key] = value;
 }
-Hash.prototype.get = function(key) {
-	$s.push("Hash::get");
-	var $spos = $s.length;
-	{
-		var $tmp = this.h["$" + key];
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+IntHash.prototype.get = function(key) {
+	return this.h[key];
 }
-Hash.prototype.h = null;
-Hash.prototype.iterator = function() {
-	$s.push("Hash::iterator");
-	var $spos = $s.length;
-	{
-		var $tmp = { ref : this.h, it : this.keys(), hasNext : function() {
-			$s.push("Hash::iterator@81");
-			var $spos = $s.length;
-			{
-				var $tmp = this.it.hasNext();
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		}, next : function() {
-			$s.push("Hash::iterator@82");
-			var $spos = $s.length;
-			var i = this.it.next();
-			{
-				var $tmp = this.ref["$" + i];
-				$s.pop();
-				return $tmp;
-			}
-			$s.pop();
-		}}
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+IntHash.prototype.exists = function(key) {
+	return this.h[key] != null;
 }
-Hash.prototype.keys = function() {
-	$s.push("Hash::keys");
-	var $spos = $s.length;
+IntHash.prototype.remove = function(key) {
+	if(this.h[key] == null) return false;
+	delete(this.h[key]);
+	return true;
+}
+IntHash.prototype.keys = function() {
 	var a = new Array();
 	
-			for(var i in this.h)
-				a.push(i.substr(1));
+			for( x in this.h )
+				a.push(x);
 		;
-	{
-		var $tmp = a.iterator();
-		$s.pop();
-		return $tmp;
-	}
-	$s.pop();
+	return a.iterator();
 }
-Hash.prototype.remove = function(key) {
-	$s.push("Hash::remove");
-	var $spos = $s.length;
-	if(!this.exists(key)) {
-		$s.pop();
-		return false;
-	}
-	delete(this.h["$" + key]);
-	{
-		$s.pop();
-		return true;
-	}
-	$s.pop();
+IntHash.prototype.iterator = function() {
+	return { ref : this.h, it : this.keys(), hasNext : function() {
+		return this.it.hasNext();
+	}, next : function() {
+		var i = this.it.next();
+		return this.ref[i];
+	}};
 }
-Hash.prototype.set = function(key,value) {
-	$s.push("Hash::set");
-	var $spos = $s.length;
-	this.h["$" + key] = value;
-	$s.pop();
-}
-Hash.prototype.toString = function() {
-	$s.push("Hash::toString");
-	var $spos = $s.length;
+IntHash.prototype.toString = function() {
 	var s = new StringBuf();
 	s.b[s.b.length] = "{";
 	var it = this.keys();
@@ -6142,68 +2727,2269 @@ Hash.prototype.toString = function() {
 	}
 	}}
 	s.b[s.b.length] = "}";
-	{
-		var $tmp = s.b.join("");
-		$s.pop();
-		return $tmp;
+	return s.b.join("");
+}
+IntHash.prototype.__class__ = IntHash;
+org.silex.runtime.ressource.js.ContainerLoader = function(p) { if( p === $_ ) return; {
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}}
+org.silex.runtime.ressource.js.ContainerLoader.__name__ = ["org","silex","runtime","ressource","js","ContainerLoader"];
+org.silex.runtime.ressource.js.ContainerLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.ContainerLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.ContainerLoader.prototype.onLoadComplete = function(data) {
+	var domObject = new org.silex.runtime.domobject.js.ContainerDOMObject(js.Lib.document.createElement("div"));
+	domObject.getReferenceToNativeDOM().innerHTML = data;
+	this._onLoadCompleteCallback(domObject);
+}
+org.silex.runtime.ressource.js.ContainerLoader.prototype.__class__ = org.silex.runtime.ressource.js.ContainerLoader;
+utest.ui.common.ResultAggregator = function(runner,flattenPackage) { if( runner === $_ ) return; {
+	if(flattenPackage == null) flattenPackage = false;
+	if(runner == null) throw "runner argument is null";
+	this.flattenPackage = flattenPackage;
+	this.runner = runner;
+	runner.onStart.add($closure(this,"start"));
+	runner.onProgress.add($closure(this,"progress"));
+	runner.onComplete.add($closure(this,"complete"));
+	this.onStart = new utest.Notifier();
+	this.onComplete = new utest.Dispatcher();
+	this.onProgress = new utest.Dispatcher();
+}}
+utest.ui.common.ResultAggregator.__name__ = ["utest","ui","common","ResultAggregator"];
+utest.ui.common.ResultAggregator.prototype.runner = null;
+utest.ui.common.ResultAggregator.prototype.flattenPackage = null;
+utest.ui.common.ResultAggregator.prototype.root = null;
+utest.ui.common.ResultAggregator.prototype.onStart = null;
+utest.ui.common.ResultAggregator.prototype.onComplete = null;
+utest.ui.common.ResultAggregator.prototype.onProgress = null;
+utest.ui.common.ResultAggregator.prototype.start = function(runner) {
+	this.root = new utest.ui.common.PackageResult(null);
+	this.onStart.dispatch();
+}
+utest.ui.common.ResultAggregator.prototype.getOrCreatePackage = function(pack,flat,ref) {
+	if(ref == null) ref = this.root;
+	if(pack == null || pack == "") return ref;
+	if(flat) {
+		if(ref.existsPackage(pack)) return ref.getPackage(pack);
+		var p = new utest.ui.common.PackageResult(pack);
+		ref.addPackage(p);
+		return p;
 	}
-	$s.pop();
+	else {
+		var parts = pack.split(".");
+		{
+			var _g = 0;
+			while(_g < parts.length) {
+				var part = parts[_g];
+				++_g;
+				ref = this.getOrCreatePackage(part,true,ref);
+			}
+		}
+		return ref;
+	}
+}
+utest.ui.common.ResultAggregator.prototype.getOrCreateClass = function(pack,cls,setup,teardown) {
+	if(pack.existsClass(cls)) return pack.getClass(cls);
+	var c = new utest.ui.common.ClassResult(cls,setup,teardown);
+	pack.addClass(c);
+	return c;
+}
+utest.ui.common.ResultAggregator.prototype.createFixture = function(result) {
+	var f = new utest.ui.common.FixtureResult(result.method);
+	{ var $it0 = result.assertations.iterator();
+	while( $it0.hasNext() ) { var assertation = $it0.next();
+	f.add(assertation);
+	}}
+	return f;
+}
+utest.ui.common.ResultAggregator.prototype.progress = function(e) {
+	this.root.addResult(e.result,this.flattenPackage);
+	this.onProgress.dispatch(e);
+}
+utest.ui.common.ResultAggregator.prototype.complete = function(runner) {
+	this.onComplete.dispatch(this.root);
+}
+utest.ui.common.ResultAggregator.prototype.__class__ = utest.ui.common.ResultAggregator;
+if(!utest.ui.text) utest.ui.text = {}
+utest.ui.text.HtmlReport = function(runner,outputHandler,traceRedirected) { if( runner === $_ ) return; {
+	if(traceRedirected == null) traceRedirected = true;
+	this.aggregator = new utest.ui.common.ResultAggregator(runner,true);
+	runner.onStart.add($closure(this,"start"));
+	this.aggregator.onComplete.add($closure(this,"complete"));
+	if(null == outputHandler) this.setHandler($closure(this,"_handler"));
+	else this.setHandler(outputHandler);
+	if(traceRedirected) this.redirectTrace();
+	this.displaySuccessResults = utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults;
+	this.displayHeader = utest.ui.common.HeaderDisplayMode.AlwaysShowHeader;
+}}
+utest.ui.text.HtmlReport.__name__ = ["utest","ui","text","HtmlReport"];
+utest.ui.text.HtmlReport.prototype.traceRedirected = null;
+utest.ui.text.HtmlReport.prototype.displaySuccessResults = null;
+utest.ui.text.HtmlReport.prototype.displayHeader = null;
+utest.ui.text.HtmlReport.prototype.handler = null;
+utest.ui.text.HtmlReport.prototype.aggregator = null;
+utest.ui.text.HtmlReport.prototype.oldTrace = null;
+utest.ui.text.HtmlReport.prototype._traces = null;
+utest.ui.text.HtmlReport.prototype.setHandler = function(handler) {
+	this.handler = handler;
+}
+utest.ui.text.HtmlReport.prototype.redirectTrace = function() {
+	if(this.traceRedirected) return;
+	this._traces = [];
+	this.oldTrace = $closure(haxe.Log,"trace");
+	haxe.Log.trace = $closure(this,"_trace");
+}
+utest.ui.text.HtmlReport.prototype.restoreTrace = function() {
+	if(!this.traceRedirected) return;
+	haxe.Log.trace = this.oldTrace;
+}
+utest.ui.text.HtmlReport.prototype._traceTime = null;
+utest.ui.text.HtmlReport.prototype._trace = function(v,infos) {
+	var time = haxe.Timer.stamp();
+	var delta = this._traceTime == null?0:time - this._traceTime;
+	this._traces.push({ msg : StringTools.htmlEscape(Std.string(v)), infos : infos, time : time - this.startTime, delta : delta, stack : haxe.Stack.callStack()});
+	this._traceTime = haxe.Timer.stamp();
+}
+utest.ui.text.HtmlReport.prototype.startTime = null;
+utest.ui.text.HtmlReport.prototype.start = function(e) {
+	this.startTime = haxe.Timer.stamp();
+}
+utest.ui.text.HtmlReport.prototype.cls = function(stats) {
+	if(stats.hasErrors) return "error";
+	else if(stats.hasFailures) return "failure";
+	else if(stats.hasWarnings) return "warn";
+	else return "ok";
+}
+utest.ui.text.HtmlReport.prototype.resultNumbers = function(buf,stats) {
+	var numbers = [];
+	if(stats.assertations == 1) numbers.push("<strong>1</strong> test");
+	else numbers.push("<strong>" + stats.assertations + "</strong> tests");
+	if(stats.successes != stats.assertations) {
+		if(stats.successes == 1) numbers.push("<strong>1</strong> pass");
+		else if(stats.successes > 0) numbers.push("<strong>" + stats.successes + "</strong> passes");
+	}
+	if(stats.errors == 1) numbers.push("<strong>1</strong> error");
+	else if(stats.errors > 0) numbers.push("<strong>" + stats.errors + "</strong> errors");
+	if(stats.failures == 1) numbers.push("<strong>1</strong> failure");
+	else if(stats.failures > 0) numbers.push("<strong>" + stats.failures + "</strong> failures");
+	if(stats.warnings == 1) numbers.push("<strong>1</strong> warning");
+	else if(stats.warnings > 0) numbers.push("<strong>" + stats.warnings + "</strong> warnings");
+	buf.b[buf.b.length] = numbers.join(", ");
+}
+utest.ui.text.HtmlReport.prototype.blockNumbers = function(buf,stats) {
+	buf.b[buf.b.length] = "<div class=\"" + this.cls(stats) + "bg statnumbers\">";
+	this.resultNumbers(buf,stats);
+	buf.b[buf.b.length] = "</div>";
+}
+utest.ui.text.HtmlReport.prototype.formatStack = function(stack,addNL) {
+	if(addNL == null) addNL = true;
+	var parts = [];
+	var nl = addNL?"\n":"";
+	var last = null;
+	var count = 1;
+	{
+		var _g = 0, _g1 = haxe.Stack.toString(stack).split("\n");
+		while(_g < _g1.length) {
+			var part = _g1[_g];
+			++_g;
+			if(StringTools.trim(part) == "") continue;
+			if(-1 < part.indexOf("Called from utest.")) continue;
+			if(part == last) {
+				parts[parts.length - 1] = part + " (#" + ++count + ")";
+			}
+			else {
+				count = 1;
+				parts.push(last = part);
+			}
+		}
+	}
+	var s = "<ul><li>" + parts.join("</li>" + nl + "<li>") + "</li></ul>" + nl;
+	return "<div>" + s + "</div>" + nl;
+}
+utest.ui.text.HtmlReport.prototype.addFixture = function(buf,result,name,isOk) {
+	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) return;
+	buf.b[buf.b.length] = "<li class=\"fixture\"><div class=\"li\">";
+	buf.b[buf.b.length] = "<span class=\"" + this.cls(result.stats) + "bg fixtureresult\">";
+	if(result.stats.isOk) {
+		buf.b[buf.b.length] = "OK ";
+	}
+	else if(result.stats.hasErrors) {
+		buf.b[buf.b.length] = "ERROR ";
+	}
+	else if(result.stats.hasFailures) {
+		buf.b[buf.b.length] = "FAILURE ";
+	}
+	else if(result.stats.hasWarnings) {
+		buf.b[buf.b.length] = "WARNING ";
+	}
+	buf.b[buf.b.length] = "</span>";
+	buf.b[buf.b.length] = "<div class=\"fixturedetails\">";
+	buf.b[buf.b.length] = "<strong>" + name + "</strong>";
+	buf.b[buf.b.length] = ": ";
+	this.resultNumbers(buf,result.stats);
+	var messages = [];
+	{ var $it0 = result.iterator();
+	while( $it0.hasNext() ) { var assertation = $it0.next();
+	{
+		var $e = assertation;
+		switch( $e[1] ) {
+		case 0:
+		var pos = $e[2];
+		{
+			null;
+		}break;
+		case 1:
+		var pos = $e[3], msg = $e[2];
+		{
+			messages.push("<strong>line " + pos.lineNumber + "</strong>: <em>" + StringTools.htmlEscape(msg) + "</em>");
+		}break;
+		case 2:
+		var s = $e[3], e = $e[2];
+		{
+			messages.push("<strong>error</strong>: <em>" + this.getErrorDescription(e) + "</em>\n<br/><strong>stack</strong>:" + this.getErrorStack(s,e));
+		}break;
+		case 3:
+		var s = $e[3], e = $e[2];
+		{
+			messages.push("<strong>setup error</strong>: " + this.getErrorDescription(e) + "\n<br/><strong>stack</strong>:" + this.getErrorStack(s,e));
+		}break;
+		case 4:
+		var s = $e[3], e = $e[2];
+		{
+			messages.push("<strong>tear-down error</strong>: " + this.getErrorDescription(e) + "\n<br/><strong>stack</strong>:" + this.getErrorStack(s,e));
+		}break;
+		case 5:
+		var s = $e[3], missedAsyncs = $e[2];
+		{
+			messages.push("<strong>missed async call(s)</strong>: " + missedAsyncs);
+		}break;
+		case 6:
+		var s = $e[3], e = $e[2];
+		{
+			messages.push("<strong>async error</strong>: " + this.getErrorDescription(e) + "\n<br/><strong>stack</strong>:" + this.getErrorStack(s,e));
+		}break;
+		case 7:
+		var msg = $e[2];
+		{
+			messages.push(StringTools.htmlEscape(msg));
+		}break;
+		}
+	}
+	}}
+	if(messages.length > 0) {
+		buf.b[buf.b.length] = "<div class=\"testoutput\">";
+		buf.b[buf.b.length] = messages.join("<br/>");
+		buf.b[buf.b.length] = "</div>\n";
+	}
+	buf.b[buf.b.length] = "</div>\n";
+	buf.b[buf.b.length] = "</div></li>\n";
+}
+utest.ui.text.HtmlReport.prototype.getErrorDescription = function(e) {
+	return Std.string(e);
+}
+utest.ui.text.HtmlReport.prototype.getErrorStack = function(s,e) {
+	return this.formatStack(s);
+}
+utest.ui.text.HtmlReport.prototype.addClass = function(buf,result,name,isOk) {
+	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) return;
+	buf.b[buf.b.length] = "<li>";
+	buf.b[buf.b.length] = "<h2 class=\"classname\">" + name + "</h2>";
+	this.blockNumbers(buf,result.stats);
+	buf.b[buf.b.length] = "<ul>\n";
+	{
+		var _g = 0, _g1 = result.methodNames();
+		while(_g < _g1.length) {
+			var mname = _g1[_g];
+			++_g;
+			this.addFixture(buf,result.get(mname),mname,isOk);
+		}
+	}
+	buf.b[buf.b.length] = "</ul>\n";
+	buf.b[buf.b.length] = "</li>\n";
+}
+utest.ui.text.HtmlReport.prototype.addPackages = function(buf,result,isOk) {
+	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) return;
+	buf.b[buf.b.length] = "<ul id=\"utest-results-packages\">\n";
+	{
+		var _g = 0, _g1 = result.packageNames(false);
+		while(_g < _g1.length) {
+			var name = _g1[_g];
+			++_g;
+			this.addPackage(buf,result.getPackage(name),name,isOk);
+		}
+	}
+	buf.b[buf.b.length] = "</ul>\n";
+}
+utest.ui.text.HtmlReport.prototype.addPackage = function(buf,result,name,isOk) {
+	if(utest.ui.common.ReportTools.skipResult(this,result.stats,isOk)) return;
+	if(name == "" && result.classNames().length == 0) return;
+	buf.b[buf.b.length] = "<li>";
+	buf.b[buf.b.length] = "<h2>" + name + "</h2>";
+	this.blockNumbers(buf,result.stats);
+	buf.b[buf.b.length] = "<ul>\n";
+	{
+		var _g = 0, _g1 = result.classNames();
+		while(_g < _g1.length) {
+			var cname = _g1[_g];
+			++_g;
+			this.addClass(buf,result.getClass(cname),cname,isOk);
+		}
+	}
+	buf.b[buf.b.length] = "</ul>\n";
+	buf.b[buf.b.length] = "</li>\n";
+}
+utest.ui.text.HtmlReport.prototype.getHeader = function() {
+	var buf = new StringBuf();
+	if(!utest.ui.common.ReportTools.hasHeader(this,this.result.stats)) return "";
+	var end = haxe.Timer.stamp();
+	var time = Std["int"]((end - this.startTime) * 1000) / 1000;
+	var msg = "TEST OK";
+	if(this.result.stats.hasErrors) msg = "TEST ERRORS";
+	else if(this.result.stats.hasFailures) msg = "TEST FAILED";
+	else if(this.result.stats.hasWarnings) msg = "WARNING REPORTED";
+	buf.b[buf.b.length] = "<h1 class=\"" + this.cls(this.result.stats) + "bg header\">" + msg + "</h1>\n";
+	buf.b[buf.b.length] = "<div class=\"headerinfo\">";
+	this.resultNumbers(buf,this.result.stats);
+	buf.b[buf.b.length] = " performed on <strong>" + utest.ui.text.HtmlReport.platform + "</strong>, executed in <strong> " + time + " sec. </strong></div >\n ";
+	return buf.b.join("");
+}
+utest.ui.text.HtmlReport.prototype.getTrace = function() {
+	var buf = new StringBuf();
+	if(this._traces == null || this._traces.length == 0) return "";
+	buf.b[buf.b.length] = "<div class=\"trace\"><h2>traces</h2><ol>";
+	{
+		var _g = 0, _g1 = this._traces;
+		while(_g < _g1.length) {
+			var t = _g1[_g];
+			++_g;
+			buf.b[buf.b.length] = "<li><div class=\"li\">";
+			var stack = StringTools.replace(this.formatStack(t.stack,false),"'","\\'");
+			var method = "<span class=\"tracepackage\">" + t.infos.className + "</span><br/>" + t.infos.methodName + "(" + t.infos.lineNumber + ")";
+			buf.b[buf.b.length] = "<span class=\"tracepos\" onmouseover=\"utestTooltip(this.parentNode, '" + stack + "')\" onmouseout=\"utestRemoveTooltip()\">";
+			buf.b[buf.b.length] = method;
+			buf.b[buf.b.length] = "</span><span class=\"tracetime\">";
+			buf.b[buf.b.length] = "@ " + this.formatTime(t.time);
+			if(Math.round(t.delta * 1000) > 0) buf.b[buf.b.length] = ", ~" + this.formatTime(t.delta);
+			buf.b[buf.b.length] = "</span><span class=\"tracemsg\">";
+			buf.b[buf.b.length] = StringTools.replace(StringTools.trim(t.msg),"\n","<br/>\n");
+			buf.b[buf.b.length] = "</span><div class=\"clr\"></div></div></li>";
+		}
+	}
+	buf.b[buf.b.length] = "</ol></div>";
+	return buf.b.join("");
+}
+utest.ui.text.HtmlReport.prototype.getResults = function() {
+	var buf = new StringBuf();
+	this.addPackages(buf,this.result,this.result.stats.isOk);
+	return buf.b.join("");
+}
+utest.ui.text.HtmlReport.prototype.getAll = function() {
+	if(!utest.ui.common.ReportTools.hasOutput(this,this.result.stats)) return "";
+	else return this.getHeader() + this.getTrace() + this.getResults();
+}
+utest.ui.text.HtmlReport.prototype.getHtml = function(title) {
+	if(null == title) title = "utest: " + utest.ui.text.HtmlReport.platform;
+	var s = this.getAll();
+	if("" == s) return "";
+	else return this.wrapHtml(title,s);
+}
+utest.ui.text.HtmlReport.prototype.result = null;
+utest.ui.text.HtmlReport.prototype.complete = function(result) {
+	this.result = result;
+	this.handler(this);
+	this.restoreTrace();
+}
+utest.ui.text.HtmlReport.prototype.formatTime = function(t) {
+	return Math.round(t * 1000) + " ms";
+}
+utest.ui.text.HtmlReport.prototype.cssStyle = function() {
+	return "body, dd, dt {\r\n\tfont-family: Verdana, Arial, Sans-serif;\r\n\tfont-size: 12px;\r\n}\r\ndl {\r\n\twidth: 180px;\r\n}\r\ndd, dt {\r\n\tmargin : 0;\r\n\tpadding : 2px 5px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n}\r\ndd.value {\r\n\ttext-align: center;\r\n\tbackground-color: #eeeeee;\r\n}\r\ndt {\r\n\ttext-align: left;\r\n\tbackground-color: #e6e6e6;\r\n\tfloat: left;\r\n\twidth: 100px;\r\n}\r\n\r\nh1, h2, h3, h4, h5, h6 {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n}\r\n\r\nh1 {\r\n\ttext-align: center;\r\n\tfont-weight: bold;\r\n\tpadding: 5px 0 4px 0;\r\n\tfont-family: Arial, Sans-serif;\r\n\tfont-size: 18px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tmargin: 0 2px 0px 2px;\r\n}\r\n\r\nh2 {\r\n\tfont-weight: bold;\r\n\tpadding: 2px 0 2px 8px;\r\n\tfont-family: Arial, Sans-serif;\r\n\tfont-size: 13px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tmargin: 0 0 0px 0;\r\n\tbackground-color: #FFFFFF;\r\n\tcolor: #777777;\r\n}\r\n\r\nh2.classname {\r\n\tcolor: #000000;\r\n}\r\n\r\n.okbg {\r\n\tbackground-color: #66FF55;\r\n}\r\n.errorbg {\r\n\tbackground-color: #CC1100;\r\n}\r\n.failurebg {\r\n\tbackground-color: #EE3322;\r\n}\r\n.warnbg {\r\n\tbackground-color: #FFCC99;\r\n}\r\n.headerinfo {\r\n\ttext-align: right;\r\n\tfont-size: 11px;\r\n\tfont - color: 0xCCCCCC;\r\n\tmargin: 0 2px 5px 2px;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tpadding: 2px;\r\n}\r\n\r\nli {\r\n\tpadding: 4px;\r\n\tmargin: 2px;\r\n\tborder-top: 1px solid #f0f0f0;\r\n\tborder-left: 1px solid #f0f0f0;\r\n\tborder-right: 1px solid #CCCCCC;\r\n\tborder-bottom: 1px solid #CCCCCC;\r\n\tbackground-color: #e6e6e6;\r\n}\r\n\r\nli.fixture {\r\n\tbackground-color: #f6f6f6;\r\n\tpadding-bottom: 6px;\r\n}\r\n\r\ndiv.fixturedetails {\r\n\tpadding-left: 108px;\r\n}\r\n\r\nul {\r\n\tpadding: 0;\r\n\tmargin: 6px 0 0 0;\r\n\tlist-style-type: none;\r\n}\r\n\r\nol {\r\n\tpadding: 0 0 0 28px;\r\n\tmargin: 0px 0 0 0;\r\n}\r\n\r\n.statnumbers {\r\n\tpadding: 2px 8px;\r\n}\r\n\r\n.fixtureresult {\r\n\twidth: 100px;\r\n\ttext-align: center;\r\n\tdisplay: block;\r\n\tfloat: left;\r\n\tfont-weight: bold;\r\n\tpadding: 1px;\r\n\tmargin: 0 0 0 0;\r\n}\r\n\r\n.testoutput {\r\n\tborder: 1px dashed #CCCCCC;\r\n\tmargin: 4px 0 0 0;\r\n\tpadding: 4px 8px;\r\n\tbackground-color: #eeeeee;\r\n}\r\n\r\nspan.tracepos, span.traceposempty {\r\n\tdisplay: block;\r\n\tfloat: left;\r\n\tfont-weight: bold;\r\n\tfont-size: 9px;\r\n\twidth: 170px;\r\n\tmargin: 2px 0 0 2px;\r\n}\r\n\r\nspan.tracepos:hover {\r\n\tcursor : pointer;\r\n\tbackground-color: #ffff99;\r\n}\r\n\r\nspan.tracemsg {\r\n\tdisplay: block;\r\n\tmargin-left: 180px;\r\n\tbackground-color: #eeeeee;\r\n\tpadding: 7px;\r\n}\r\n\r\nspan.tracetime {\r\n\tdisplay: block;\r\n\tfloat: right;\r\n\tmargin: 2px;\r\n\tfont-size: 9px;\r\n\tcolor: #777777;\r\n}\r\n\r\n\r\ndiv.trace ol {\r\n\tpadding: 0 0 0 40px;\r\n\tcolor: #777777;\r\n}\r\n\r\ndiv.trace li {\r\n\tpadding: 0;\r\n}\r\n\r\ndiv.trace li div.li {\r\n\tcolor: #000000;\r\n}\r\n\r\ndiv.trace h2 {\r\n\tmargin: 0 2px 0px 2px;\r\n\tpadding-left: 4px;\r\n}\r\n\r\n.tracepackage {\r\n\tcolor: #777777;\r\n\tfont-weight: normal;\r\n}\r\n\r\n.clr {\r\n\tclear: both;\r\n}\r\n\r\n#utesttip {\r\n\tmargin-top: -3px;\r\n\tmargin-left: 170px;\r\n\tfont-size: 9px;\r\n}\r\n\r\n#utesttip li {\r\n\tmargin: 0;\r\n\tbackground-color: #ffff99;\r\n\tpadding: 2px 4px;\r\n\tborder: 0;\r\n\tborder-bottom: 1px dashed #ffff33;\r\n}";
+}
+utest.ui.text.HtmlReport.prototype.jsScript = function() {
+	return "function utestTooltip(ref, text) {\r\n\tvar el = document.getElementById(\"utesttip\");\r\n\tif(!el) {\r\n\t\tvar el = document.createElement(\"div\")\r\n\t\tel.id = \"utesttip\";\r\n\t\tel.style.position = \"absolute\";\r\n\t\tdocument.body.appendChild(el)\r\n\t}\r\n\tvar p = utestFindPos(ref);\r\n\tel.style.left = (4 + p[0]) + \"px\";\r\n\tel.style.top = (p[1] - 1) + \"px\";\r\n\tel.innerHTML =  text;\r\n}\r\n\r\nfunction utestFindPos(el) {\r\n\tvar left = 0;\r\n\tvar top = 0;\r\n\tdo {\r\n\t\tleft += el.offsetLeft;\r\n\t\ttop += el.offsetTop;\r\n\t} while(el = el.offsetParent)\r\n\treturn [left, top];\r\n}\r\n\r\nfunction utestRemoveTooltip() {\r\n\tvar el = document.getElementById(\"utesttip\")\r\n\tif(el)\r\n\t\tdocument.body.removeChild(el)\r\n}";
+}
+utest.ui.text.HtmlReport.prototype.wrapHtml = function(title,s) {
+	return "<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\n<title>" + title + "</title>\r\n\t\t\t<style type=\"text/css\">" + this.cssStyle() + "</style>\r\n\t\t\t<script type=\"text/javascript\">\n" + this.jsScript() + "\n</script>\n</head>\r\n\t\t\t<body>\n" + s + "\n</body>\n</html>";
+}
+utest.ui.text.HtmlReport.prototype._handler = function(report) {
+	var isDef = function(v) {
+		return typeof v != 'undefined';
+	}
+	var head = js.Lib.document.getElementsByTagName("head")[0];
+	var script = js.Lib.document.createElement("script");
+	script.type = "text/javascript";
+	var sjs = report.jsScript();
+	if(isDef(script.text)) {
+		script.text = sjs;
+	}
+	else {
+		script.innerHTML = sjs;
+	}
+	head.appendChild(script);
+	var style = js.Lib.document.createElement("style");
+	style.type = "text/css";
+	var scss = report.cssStyle();
+	if(isDef(style.styleSheet)) {
+		style.styleSheet.cssText = scss;
+	}
+	else if(isDef(style.cssText)) {
+		style.cssText = scss;
+	}
+	else if(isDef(style.innerText)) {
+		style.innerText = scss;
+	}
+	else {
+		style.innerHTML = scss;
+	}
+	head.appendChild(style);
+	var el = js.Lib.document.getElementById("utest-results");
+	if(null == el) {
+		el = js.Lib.document.createElement("div");
+		el.id = "utest-results";
+		js.Lib.document.body.appendChild(el);
+	}
+	el.innerHTML = report.getAll();
+}
+utest.ui.text.HtmlReport.prototype.__class__ = utest.ui.text.HtmlReport;
+utest.ui.text.HtmlReport.__interfaces__ = [utest.ui.common.IReport];
+utest.ui.common.PackageResult = function(packageName) { if( packageName === $_ ) return; {
+	this.packageName = packageName;
+	this.classes = new Hash();
+	this.packages = new Hash();
+	this.stats = new utest.ui.common.ResultStats();
+}}
+utest.ui.common.PackageResult.__name__ = ["utest","ui","common","PackageResult"];
+utest.ui.common.PackageResult.prototype.packageName = null;
+utest.ui.common.PackageResult.prototype.classes = null;
+utest.ui.common.PackageResult.prototype.packages = null;
+utest.ui.common.PackageResult.prototype.stats = null;
+utest.ui.common.PackageResult.prototype.addResult = function(result,flattenPackage) {
+	var pack = this.getOrCreatePackage(result.pack,flattenPackage,this);
+	var cls = this.getOrCreateClass(pack,result.cls,result.setup,result.teardown);
+	var fix = this.createFixture(result.method,result.assertations);
+	cls.add(fix);
+}
+utest.ui.common.PackageResult.prototype.addClass = function(result) {
+	this.classes.set(result.className,result);
+	this.stats.wire(result.stats);
+}
+utest.ui.common.PackageResult.prototype.addPackage = function(result) {
+	this.packages.set(result.packageName,result);
+	this.stats.wire(result.stats);
+}
+utest.ui.common.PackageResult.prototype.existsPackage = function(name) {
+	return this.packages.exists(name);
+}
+utest.ui.common.PackageResult.prototype.existsClass = function(name) {
+	return this.classes.exists(name);
+}
+utest.ui.common.PackageResult.prototype.getPackage = function(name) {
+	if(this.packageName == null && name == "") return this;
+	return this.packages.get(name);
+}
+utest.ui.common.PackageResult.prototype.getClass = function(name) {
+	return this.classes.get(name);
+}
+utest.ui.common.PackageResult.prototype.classNames = function(errorsHavePriority) {
+	if(errorsHavePriority == null) errorsHavePriority = true;
+	var names = [];
+	{ var $it0 = this.classes.keys();
+	while( $it0.hasNext() ) { var name = $it0.next();
+	names.push(name);
+	}}
+	if(errorsHavePriority) {
+		var me = this;
+		names.sort(function(a,b) {
+			var $as = me.getClass(a).stats;
+			var bs = me.getClass(b).stats;
+			if($as.hasErrors) {
+				return !bs.hasErrors?-1:$as.errors == bs.errors?Reflect.compare(a,b):Reflect.compare($as.errors,bs.errors);
+			}
+			else if(bs.hasErrors) {
+				return 1;
+			}
+			else if($as.hasFailures) {
+				return !bs.hasFailures?-1:$as.failures == bs.failures?Reflect.compare(a,b):Reflect.compare($as.failures,bs.failures);
+			}
+			else if(bs.hasFailures) {
+				return 1;
+			}
+			else if($as.hasWarnings) {
+				return !bs.hasWarnings?-1:$as.warnings == bs.warnings?Reflect.compare(a,b):Reflect.compare($as.warnings,bs.warnings);
+			}
+			else if(bs.hasWarnings) {
+				return 1;
+			}
+			else {
+				return Reflect.compare(a,b);
+			}
+		});
+	}
+	else {
+		names.sort(function(a,b) {
+			return Reflect.compare(a,b);
+		});
+	}
+	return names;
+}
+utest.ui.common.PackageResult.prototype.packageNames = function(errorsHavePriority) {
+	if(errorsHavePriority == null) errorsHavePriority = true;
+	var names = [];
+	if(this.packageName == null) names.push("");
+	{ var $it0 = this.packages.keys();
+	while( $it0.hasNext() ) { var name = $it0.next();
+	names.push(name);
+	}}
+	if(errorsHavePriority) {
+		var me = this;
+		names.sort(function(a,b) {
+			var $as = me.getPackage(a).stats;
+			var bs = me.getPackage(b).stats;
+			if($as.hasErrors) {
+				return !bs.hasErrors?-1:$as.errors == bs.errors?Reflect.compare(a,b):Reflect.compare($as.errors,bs.errors);
+			}
+			else if(bs.hasErrors) {
+				return 1;
+			}
+			else if($as.hasFailures) {
+				return !bs.hasFailures?-1:$as.failures == bs.failures?Reflect.compare(a,b):Reflect.compare($as.failures,bs.failures);
+			}
+			else if(bs.hasFailures) {
+				return 1;
+			}
+			else if($as.hasWarnings) {
+				return !bs.hasWarnings?-1:$as.warnings == bs.warnings?Reflect.compare(a,b):Reflect.compare($as.warnings,bs.warnings);
+			}
+			else if(bs.hasWarnings) {
+				return 1;
+			}
+			else {
+				return Reflect.compare(a,b);
+			}
+		});
+	}
+	else {
+		names.sort(function(a,b) {
+			return Reflect.compare(a,b);
+		});
+	}
+	return names;
+}
+utest.ui.common.PackageResult.prototype.createFixture = function(method,assertations) {
+	var f = new utest.ui.common.FixtureResult(method);
+	{ var $it0 = assertations.iterator();
+	while( $it0.hasNext() ) { var assertation = $it0.next();
+	f.add(assertation);
+	}}
+	return f;
+}
+utest.ui.common.PackageResult.prototype.getOrCreateClass = function(pack,cls,setup,teardown) {
+	if(pack.existsClass(cls)) return pack.getClass(cls);
+	var c = new utest.ui.common.ClassResult(cls,setup,teardown);
+	pack.addClass(c);
+	return c;
+}
+utest.ui.common.PackageResult.prototype.getOrCreatePackage = function(pack,flat,ref) {
+	if(pack == null || pack == "") return ref;
+	if(flat) {
+		if(ref.existsPackage(pack)) return ref.getPackage(pack);
+		var p = new utest.ui.common.PackageResult(pack);
+		ref.addPackage(p);
+		return p;
+	}
+	else {
+		var parts = pack.split(".");
+		{
+			var _g = 0;
+			while(_g < parts.length) {
+				var part = parts[_g];
+				++_g;
+				ref = this.getOrCreatePackage(part,true,ref);
+			}
+		}
+		return ref;
+	}
+}
+utest.ui.common.PackageResult.prototype.__class__ = utest.ui.common.PackageResult;
+utest.TestHandler = function(fixture) { if( fixture === $_ ) return; {
+	if(fixture == null) throw "fixture argument is null";
+	this.fixture = fixture;
+	this.results = new List();
+	this.asyncStack = new List();
+	this.onTested = new utest.Dispatcher();
+	this.onTimeout = new utest.Dispatcher();
+	this.onComplete = new utest.Dispatcher();
+}}
+utest.TestHandler.__name__ = ["utest","TestHandler"];
+utest.TestHandler.exceptionStack = function(pops) {
+	if(pops == null) pops = 2;
+	var stack = haxe.Stack.exceptionStack();
+	while(pops-- > 0) {
+		stack.pop();
+	}
+	return stack;
+}
+utest.TestHandler.prototype.results = null;
+utest.TestHandler.prototype.fixture = null;
+utest.TestHandler.prototype.asyncStack = null;
+utest.TestHandler.prototype.onTested = null;
+utest.TestHandler.prototype.onTimeout = null;
+utest.TestHandler.prototype.onComplete = null;
+utest.TestHandler.prototype.execute = function() {
+	try {
+		this.executeMethod(this.fixture.setup);
+		try {
+			this.executeMethod(this.fixture.method);
+		}
+		catch( $e0 ) {
+			{
+				var e = $e0;
+				{
+					this.results.add(utest.Assertation.Error(e,utest.TestHandler.exceptionStack()));
+				}
+			}
+		}
+	}
+	catch( $e1 ) {
+		{
+			var e = $e1;
+			{
+				this.results.add(utest.Assertation.SetupError(e,utest.TestHandler.exceptionStack()));
+			}
+		}
+	}
+	this.checkTested();
+}
+utest.TestHandler.prototype.checkTested = function() {
+	if(this.expireson == null || this.asyncStack.length == 0) {
+		this.tested();
+	}
+	else if(haxe.Timer.stamp() > this.expireson) {
+		this.timeout();
+	}
+	else {
+		haxe.Timer.delay($closure(this,"checkTested"),10);
+	}
+}
+utest.TestHandler.prototype.expireson = null;
+utest.TestHandler.prototype.setTimeout = function(timeout) {
+	var newexpire = haxe.Timer.stamp() + timeout / 1000;
+	this.expireson = this.expireson == null?newexpire:newexpire > this.expireson?newexpire:this.expireson;
+}
+utest.TestHandler.prototype.bindHandler = function() {
+	utest.Assert.results = this.results;
+	utest.Assert.createAsync = $closure(this,"addAsync");
+	utest.Assert.createEvent = $closure(this,"addEvent");
+}
+utest.TestHandler.prototype.unbindHandler = function() {
+	utest.Assert.results = null;
+	utest.Assert.createAsync = function(f,t) {
+		return function() {
+			null;
+		}
+	}
+	utest.Assert.createEvent = function(f,t) {
+		return function(e) {
+			null;
+		}
+	}
+}
+utest.TestHandler.prototype.addAsync = function(f,timeout) {
+	if(timeout == null) timeout = 250;
+	if(null == f) f = function() {
+		null;
+	}
+	this.asyncStack.add(f);
+	var handler = this;
+	this.setTimeout(timeout);
+	return function() {
+		if(!handler.asyncStack.remove(f)) {
+			handler.results.add(utest.Assertation.AsyncError("method already executed",[]));
+			return;
+		}
+		try {
+			handler.bindHandler();
+			f();
+		}
+		catch( $e0 ) {
+			{
+				var e = $e0;
+				{
+					handler.results.add(utest.Assertation.AsyncError(e,utest.TestHandler.exceptionStack(0)));
+				}
+			}
+		}
+	}
+}
+utest.TestHandler.prototype.addEvent = function(f,timeout) {
+	if(timeout == null) timeout = 250;
+	this.asyncStack.add(f);
+	var handler = this;
+	this.setTimeout(timeout);
+	return function(e) {
+		if(!handler.asyncStack.remove(f)) {
+			handler.results.add(utest.Assertation.AsyncError("event already executed",[]));
+			return;
+		}
+		try {
+			handler.bindHandler();
+			f(e);
+		}
+		catch( $e0 ) {
+			{
+				var e1 = $e0;
+				{
+					handler.results.add(utest.Assertation.AsyncError(e1,utest.TestHandler.exceptionStack(0)));
+				}
+			}
+		}
+	}
+}
+utest.TestHandler.prototype.executeMethod = function(name) {
+	if(name == null) return;
+	this.bindHandler();
+	Reflect.field(this.fixture.target,name).apply(this.fixture.target,[]);
+}
+utest.TestHandler.prototype.tested = function() {
+	if(this.results.length == 0) this.results.add(utest.Assertation.Warning("no assertions"));
+	this.onTested.dispatch(this);
+	this.completed();
+}
+utest.TestHandler.prototype.timeout = function() {
+	this.results.add(utest.Assertation.TimeoutError(this.asyncStack.length,[]));
+	this.onTimeout.dispatch(this);
+	this.completed();
+}
+utest.TestHandler.prototype.completed = function() {
+	try {
+		this.executeMethod(this.fixture.teardown);
+	}
+	catch( $e0 ) {
+		{
+			var e = $e0;
+			{
+				this.results.add(utest.Assertation.TeardownError(e,utest.TestHandler.exceptionStack(2)));
+			}
+		}
+	}
+	this.unbindHandler();
+	this.onComplete.dispatch(this);
+}
+utest.TestHandler.prototype.__class__ = utest.TestHandler;
+org.silex.runtime.domobject.js.TextDOMObject = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.base.TextDOMObjectBase.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.js.TextDOMObject.__name__ = ["org","silex","runtime","domobject","js","TextDOMObject"];
+org.silex.runtime.domobject.js.TextDOMObject.__super__ = org.silex.runtime.domobject.base.TextDOMObjectBase;
+for(var k in org.silex.runtime.domobject.base.TextDOMObjectBase.prototype ) org.silex.runtime.domobject.js.TextDOMObject.prototype[k] = org.silex.runtime.domobject.base.TextDOMObjectBase.prototype[k];
+org.silex.runtime.domobject.js.TextDOMObject.prototype.setText = function(text) {
+	org.silex.runtime.domobject.base.TextDOMObjectBase.prototype.setText.call(this,text);
+	this._referenceToNativeDOM.innerHTML = text;
+}
+org.silex.runtime.domobject.js.TextDOMObject.prototype.__class__ = org.silex.runtime.domobject.js.TextDOMObject;
+StringBuf = function(p) { if( p === $_ ) return; {
+	this.b = new Array();
+}}
+StringBuf.__name__ = ["StringBuf"];
+StringBuf.prototype.add = function(x) {
+	this.b[this.b.length] = x;
+}
+StringBuf.prototype.addSub = function(s,pos,len) {
+	this.b[this.b.length] = s.substr(pos,len);
+}
+StringBuf.prototype.addChar = function(c) {
+	this.b[this.b.length] = String.fromCharCode(c);
+}
+StringBuf.prototype.toString = function() {
+	return this.b.join("");
+}
+StringBuf.prototype.b = null;
+StringBuf.prototype.__class__ = StringBuf;
+Lambda = function() { }
+Lambda.__name__ = ["Lambda"];
+Lambda.array = function(it) {
+	var a = new Array();
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var i = $it0.next();
+	a.push(i);
+	}}
+	return a;
+}
+Lambda.list = function(it) {
+	var l = new List();
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var i = $it0.next();
+	l.add(i);
+	}}
+	return l;
+}
+Lambda.map = function(it,f) {
+	var l = new List();
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	l.add(f(x));
+	}}
+	return l;
+}
+Lambda.mapi = function(it,f) {
+	var l = new List();
+	var i = 0;
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	l.add(f(i++,x));
+	}}
+	return l;
+}
+Lambda.has = function(it,elt,cmp) {
+	if(cmp == null) {
+		{ var $it0 = it.iterator();
+		while( $it0.hasNext() ) { var x = $it0.next();
+		if(x == elt) return true;
+		}}
+	}
+	else {
+		{ var $it1 = it.iterator();
+		while( $it1.hasNext() ) { var x = $it1.next();
+		if(cmp(x,elt)) return true;
+		}}
+	}
+	return false;
+}
+Lambda.exists = function(it,f) {
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	if(f(x)) return true;
+	}}
+	return false;
+}
+Lambda.foreach = function(it,f) {
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	if(!f(x)) return false;
+	}}
+	return true;
+}
+Lambda.iter = function(it,f) {
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	f(x);
+	}}
+}
+Lambda.filter = function(it,f) {
+	var l = new List();
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	if(f(x)) l.add(x);
+	}}
+	return l;
+}
+Lambda.fold = function(it,f,first) {
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	first = f(x,first);
+	}}
+	return first;
+}
+Lambda.count = function(it,pred) {
+	var n = 0;
+	if(pred == null) { var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var _ = $it0.next();
+	n++;
+	}}
+	else { var $it1 = it.iterator();
+	while( $it1.hasNext() ) { var x = $it1.next();
+	if(pred(x)) n++;
+	}}
+	return n;
+}
+Lambda.empty = function(it) {
+	return !it.iterator().hasNext();
+}
+Lambda.indexOf = function(it,v) {
+	var i = 0;
+	{ var $it0 = it.iterator();
+	while( $it0.hasNext() ) { var v2 = $it0.next();
+	{
+		if(v == v2) return i;
+		i++;
+	}
+	}}
+	return -1;
+}
+Lambda.concat = function(a,b) {
+	var l = new List();
+	{ var $it0 = a.iterator();
+	while( $it0.hasNext() ) { var x = $it0.next();
+	l.add(x);
+	}}
+	{ var $it1 = b.iterator();
+	while( $it1.hasNext() ) { var x = $it1.next();
+	l.add(x);
+	}}
+	return l;
+}
+Lambda.prototype.__class__ = Lambda;
+org.silex.runtime.domobject.base.ContainerDOMObjectBase = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.js.DOMObject.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.base.ContainerDOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","ContainerDOMObjectBase"];
+org.silex.runtime.domobject.base.ContainerDOMObjectBase.__super__ = org.silex.runtime.domobject.js.DOMObject;
+for(var k in org.silex.runtime.domobject.js.DOMObject.prototype ) org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype[k] = org.silex.runtime.domobject.js.DOMObject.prototype[k];
+org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype._semantic = null;
+org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype.setSemantic = function(semantic) {
+	this._semantic = semantic;
+}
+org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype.getSemantic = function() {
+	return this._semantic;
+}
+org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype.__class__ = org.silex.runtime.domobject.base.ContainerDOMObjectBase;
+utest.ui.common.ClassResult = function(className,setupName,teardownName) { if( className === $_ ) return; {
+	this.fixtures = new Hash();
+	this.className = className;
+	this.setupName = setupName;
+	this.hasSetup = setupName != null;
+	this.teardownName = teardownName;
+	this.hasTeardown = teardownName != null;
+	this.methods = 0;
+	this.stats = new utest.ui.common.ResultStats();
+}}
+utest.ui.common.ClassResult.__name__ = ["utest","ui","common","ClassResult"];
+utest.ui.common.ClassResult.prototype.fixtures = null;
+utest.ui.common.ClassResult.prototype.className = null;
+utest.ui.common.ClassResult.prototype.setupName = null;
+utest.ui.common.ClassResult.prototype.teardownName = null;
+utest.ui.common.ClassResult.prototype.hasSetup = null;
+utest.ui.common.ClassResult.prototype.hasTeardown = null;
+utest.ui.common.ClassResult.prototype.methods = null;
+utest.ui.common.ClassResult.prototype.stats = null;
+utest.ui.common.ClassResult.prototype.add = function(result) {
+	if(this.fixtures.exists(result.methodName)) throw "invalid duplicated fixture result";
+	this.stats.wire(result.stats);
+	this.methods++;
+	this.fixtures.set(result.methodName,result);
+}
+utest.ui.common.ClassResult.prototype.get = function(method) {
+	return this.fixtures.get(method);
+}
+utest.ui.common.ClassResult.prototype.exists = function(method) {
+	return this.fixtures.exists(method);
+}
+utest.ui.common.ClassResult.prototype.methodNames = function(errorsHavePriority) {
+	if(errorsHavePriority == null) errorsHavePriority = true;
+	var names = [];
+	{ var $it0 = this.fixtures.keys();
+	while( $it0.hasNext() ) { var name = $it0.next();
+	names.push(name);
+	}}
+	if(errorsHavePriority) {
+		var me = this;
+		names.sort(function(a,b) {
+			var $as = me.get(a).stats;
+			var bs = me.get(b).stats;
+			if($as.hasErrors) {
+				return !bs.hasErrors?-1:$as.errors == bs.errors?Reflect.compare(a,b):Reflect.compare($as.errors,bs.errors);
+			}
+			else if(bs.hasErrors) {
+				return 1;
+			}
+			else if($as.hasFailures) {
+				return !bs.hasFailures?-1:$as.failures == bs.failures?Reflect.compare(a,b):Reflect.compare($as.failures,bs.failures);
+			}
+			else if(bs.hasFailures) {
+				return 1;
+			}
+			else if($as.hasWarnings) {
+				return !bs.hasWarnings?-1:$as.warnings == bs.warnings?Reflect.compare(a,b):Reflect.compare($as.warnings,bs.warnings);
+			}
+			else if(bs.hasWarnings) {
+				return 1;
+			}
+			else {
+				return Reflect.compare(a,b);
+			}
+		});
+	}
+	else {
+		names.sort(function(a,b) {
+			return Reflect.compare(a,b);
+		});
+	}
+	return names;
+}
+utest.ui.common.ClassResult.prototype.__class__ = utest.ui.common.ClassResult;
+org.silex.runtime.domobject.js.GraphicDOMObject = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.base.GraphicDOMObjectBase.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.js.GraphicDOMObject.__name__ = ["org","silex","runtime","domobject","js","GraphicDOMObject"];
+org.silex.runtime.domobject.js.GraphicDOMObject.__super__ = org.silex.runtime.domobject.base.GraphicDOMObjectBase;
+for(var k in org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype ) org.silex.runtime.domobject.js.GraphicDOMObject.prototype[k] = org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype[k];
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.setWidth = function(value) {
+	this._referenceToNativeDOM.width = value;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.getWidth = function() {
+	return Std.parseInt(this._referenceToNativeDOM.width);
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.setHeight = function(value) {
+	this._referenceToNativeDOM.height = value;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.getHeight = function() {
+	return Std.parseInt(this._referenceToNativeDOM.height);
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.beginFill = function(fillStyle,lineStyle) {
+	org.silex.runtime.domobject.base.GraphicDOMObjectBase.prototype.beginFill.call(this,fillStyle,lineStyle);
+	this.setFillStyle(fillStyle);
+	this.setLineStyle(lineStyle);
+	var canvasContext = this.getContext();
+	canvasContext.beginPath();
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.endFill = function() {
+	var canvasContext = this.getContext();
+	canvasContext.closePath();
+	canvasContext.fill();
+	canvasContext.stroke();
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.clear = function() {
+	var canvasContext = this.getContext();
+	canvasContext.clearRect(0,0,this.getWidth(),this.getHeight());
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.setFillStyle = function(fillStyle) {
+	var canvasContext = this.getContext();
+	var $e = fillStyle;
+	switch( $e[1] ) {
+	case 0:
+	{
+		canvasContext.fillStyle = "rgba(0,0,0,0)";
+	}break;
+	case 1:
+	var colorStop = $e[2];
+	{
+		canvasContext.fillStyle = this.colorStopToRGBA(colorStop);
+	}break;
+	case 2:
+	var gradientStyle = $e[2];
+	{
+		canvasContext.fillStyle = this.getGradient(gradientStyle);
+	}break;
+	case 3:
+	var repeat = $e[3], imageDOMObject = $e[2];
+	{
+		canvasContext.fillStyle = this.getCanvasPattern(imageDOMObject,repeat);
+	}break;
+	}
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.setLineStyle = function(lineStyle) {
+	var canvasContext = this.getContext();
+	var $e = lineStyle;
+	switch( $e[1] ) {
+	case 0:
+	{
+		canvasContext.strokeStyle = "rgba(0,0,0,0)";
+	}break;
+	case 1:
+	var lineStyleData = $e[3], colorStop = $e[2];
+	{
+		this.initLineStyle(lineStyleData);
+		canvasContext.strokeStyle = this.colorStopToRGBA(colorStop);
+	}break;
+	case 2:
+	var lineStyleData = $e[3], gradientStyle = $e[2];
+	{
+		this.initLineStyle(lineStyleData);
+		canvasContext.strokeStyle = this.getGradient(gradientStyle);
+	}break;
+	case 3:
+	var repeat = $e[4], lineStyleData = $e[3], imageDOMObject = $e[2];
+	{
+		this.initLineStyle(lineStyleData);
+		canvasContext.strokeStyle = this.getCanvasPattern(imageDOMObject,repeat);
+	}break;
+	}
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.lineTo = function(x,y) {
+	var canvasContext = this.getContext();
+	canvasContext.lineTo(x,y);
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.moveTo = function(x,y) {
+	var canvasContext = this.getContext();
+	canvasContext.moveTo(x,y);
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.curveTo = function(controlX,controlY,x,y) {
+	var canvasContext = this.getContext();
+	canvasContext.quadraticCurveTo(controlX,controlY,x,y);
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.toNativeAlpha = function(genericAlpha) {
+	return genericAlpha * 0.01;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.toNativeRatio = function(genericRatio) {
+	return genericRatio * 0.01;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.toNativeCapStyle = function(genericCapStyle) {
+	var capStyle = "";
+	var $e = genericCapStyle;
+	switch( $e[1] ) {
+	case 2:
+	{
+		capStyle = "round";
+	}break;
+	case 1:
+	{
+		capStyle = "square";
+	}break;
+	case 0:
+	{
+		capStyle = "butt";
+	}break;
+	}
+	return capStyle;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.toNativeJointStyle = function(genericJointStyle) {
+	var jointStyle = "";
+	var $e = genericJointStyle;
+	switch( $e[1] ) {
+	case 0:
+	{
+		jointStyle = "miter";
+	}break;
+	case 1:
+	{
+		jointStyle = "round";
+	}break;
+	case 2:
+	{
+		jointStyle = "bevel";
+	}break;
+	}
+	return jointStyle;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.colorStopToRGBA = function(colorStop) {
+	var rgb = this.hexToRGB(this.getHexColor(colorStop.color));
+	return "rgba(" + rgb.red + "," + rgb.green + "," + rgb.blue + "," + this.toNativeAlpha(colorStop.alpha) + ");";
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.getHexColor = function(color) {
+	var hexColor = StringTools.hex(color);
+	while(hexColor.length < 6) {
+		hexColor = "0" + hexColor;
+	}
+	return "#" + hexColor;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.hexToRGB = function(hex) {
+	var hexCopy = hex;
+	var hexCopy1 = hexCopy.substr(1);
+	var rgb = { red : Std.parseInt("0x" + hexCopy1.substr(0,2)), green : Std.parseInt("0x" + hexCopy1.substr(2,2)), blue : Std.parseInt("0x" + hexCopy1.substr(4,2))};
+	return rgb;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.initLineStyle = function(lineStyleData) {
+	var canvasContext = this.getContext();
+	canvasContext.lineWidth = lineStyleData.thickness;
+	canvasContext.lineCap = this.toNativeCapStyle(lineStyleData.capStyle);
+	canvasContext.lineJoin = this.toNativeJointStyle(lineStyleData.jointStyle);
+	canvasContext.miterLimit = lineStyleData.miterLimit;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.getContext = function() {
+	return this._referenceToNativeDOM.getContext("2d");
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.getCanvasPattern = function(imageDOMObject,repeat) {
+	var canvasContext = this.getContext();
+	var repeatValue = "";
+	if(repeat == true) {
+		repeatValue = "repeat";
+	}
+	else {
+		repeatValue = "no-repeat";
+	}
+	return canvasContext.createPattern(imageDOMObject.getReferenceToNativeDOM(),repeatValue);
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.getGradient = function(gradientStyle) {
+	var gradient = { };
+	var canvasContext = this.getContext();
+	var $e = gradientStyle.gradientType;
+	switch( $e[1] ) {
+	case 0:
+	{
+		var gradientRadRotation = gradientStyle.rotation / 180 * Math.PI;
+		var xStart = 0;
+		var yStart = this.getHeight() / 2;
+		var xEnd = this.getWidth();
+		var yEnd = this.getHeight() / 2;
+		xStart -= this.getWidth() / 2;
+		yStart -= this.getHeight() / 2;
+		var rotatedStartX = xStart * Math.cos(gradientRadRotation) - yStart * Math.sin(gradientRadRotation);
+		var rotatedStartY = xStart * Math.sin(gradientRadRotation) + yStart * Math.cos(gradientRadRotation);
+		rotatedStartX += this.getWidth() / 2;
+		rotatedStartY += this.getHeight() / 2;
+		xEnd -= this.getWidth() / 2;
+		yEnd -= this.getHeight() / 2;
+		var rotatedEndX = xEnd * Math.cos(gradientRadRotation) - yEnd * Math.sin(gradientRadRotation);
+		var rotatedEndY = xEnd * Math.sin(gradientRadRotation) + yEnd * Math.cos(gradientRadRotation);
+		rotatedEndX += this.getWidth() / 2;
+		rotatedEndY += this.getHeight() / 2;
+		gradient = canvasContext.createLinearGradient(rotatedStartX,rotatedStartY,rotatedEndX,rotatedEndY);
+	}break;
+	case 1:
+	{
+		gradient = canvasContext.createRadialGradient(this.getWidth() / 2,this.getHeight() / 2,this.getWidth() / 4,this.getWidth() / 2,this.getHeight() / 2,this.getHeight() / 2);
+	}break;
+	}
+	var gradientStops = gradientStyle.gradientStops;
+	{
+		var _g1 = 0, _g = gradientStops.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			gradient.addColorStop(this.toNativeRatio(gradientStops[i].ratio),this.colorStopToRGBA(gradientStops[i].colorStop));
+		}
+	}
+	return gradient;
+}
+org.silex.runtime.domobject.js.GraphicDOMObject.prototype.__class__ = org.silex.runtime.domobject.js.GraphicDOMObject;
+org.silex.runtime.ressource.js.LibraryLoader = function(p) { if( p === $_ ) return; {
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}}
+org.silex.runtime.ressource.js.LibraryLoader.__name__ = ["org","silex","runtime","ressource","js","LibraryLoader"];
+org.silex.runtime.ressource.js.LibraryLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.LibraryLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.LibraryLoader.prototype.doLoad = function(url) {
+	var scrptE = js.Lib.document.createElement("script");
+	scrptE.setAttribute("type","text/javascript");
+	scrptE.setAttribute("language","JavaScript");
+	scrptE.setAttribute("src",url);
+	scrptE.onload = $closure(this,"onLoadComplete");
+	scrptE.onreadystatechange = function() {
+		if(this.readyState == "loaded" || this.readyState == "complete") onLoadCallback();
+	}
+	js.Lib.document.getElementsByTagName("head")[0].appendChild(scrptE);
+}
+org.silex.runtime.ressource.js.LibraryLoader.prototype.onLoadComplete = function(data) {
+	this._onLoadCompleteCallback(null);
+}
+org.silex.runtime.ressource.js.LibraryLoader.prototype.__class__ = org.silex.runtime.ressource.js.LibraryLoader;
+utest.ui.common.HeaderDisplayMode = { __ename__ : ["utest","ui","common","HeaderDisplayMode"], __constructs__ : ["AlwaysShowHeader","NeverShowHeader","ShowHeaderWithResults"] }
+utest.ui.common.HeaderDisplayMode.AlwaysShowHeader = ["AlwaysShowHeader",0];
+utest.ui.common.HeaderDisplayMode.AlwaysShowHeader.toString = $estr;
+utest.ui.common.HeaderDisplayMode.AlwaysShowHeader.__enum__ = utest.ui.common.HeaderDisplayMode;
+utest.ui.common.HeaderDisplayMode.NeverShowHeader = ["NeverShowHeader",1];
+utest.ui.common.HeaderDisplayMode.NeverShowHeader.toString = $estr;
+utest.ui.common.HeaderDisplayMode.NeverShowHeader.__enum__ = utest.ui.common.HeaderDisplayMode;
+utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults = ["ShowHeaderWithResults",2];
+utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults.toString = $estr;
+utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults.__enum__ = utest.ui.common.HeaderDisplayMode;
+utest.ui.common.SuccessResultsDisplayMode = { __ename__ : ["utest","ui","common","SuccessResultsDisplayMode"], __constructs__ : ["AlwaysShowSuccessResults","NeverShowSuccessResults","ShowSuccessResultsWithNoErrors"] }
+utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults = ["AlwaysShowSuccessResults",0];
+utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults.toString = $estr;
+utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults.__enum__ = utest.ui.common.SuccessResultsDisplayMode;
+utest.ui.common.SuccessResultsDisplayMode.NeverShowSuccessResults = ["NeverShowSuccessResults",1];
+utest.ui.common.SuccessResultsDisplayMode.NeverShowSuccessResults.toString = $estr;
+utest.ui.common.SuccessResultsDisplayMode.NeverShowSuccessResults.__enum__ = utest.ui.common.SuccessResultsDisplayMode;
+utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors = ["ShowSuccessResultsWithNoErrors",2];
+utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors.toString = $estr;
+utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors.__enum__ = utest.ui.common.SuccessResultsDisplayMode;
+org.silex.runtime.ressource.js.TextLoader = function(p) { if( p === $_ ) return; {
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}}
+org.silex.runtime.ressource.js.TextLoader.__name__ = ["org","silex","runtime","ressource","js","TextLoader"];
+org.silex.runtime.ressource.js.TextLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.TextLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.TextLoader.prototype.onLoadComplete = function(data) {
+	var domObject = new org.silex.runtime.domobject.js.TextDOMObject(js.Lib.document.createElement("div"));
+	domObject.setText(data);
+	this._onLoadCompleteCallback(domObject);
+}
+org.silex.runtime.ressource.js.TextLoader.prototype.__class__ = org.silex.runtime.ressource.js.TextLoader;
+utest.ui.Report = function() { }
+utest.ui.Report.__name__ = ["utest","ui","Report"];
+utest.ui.Report.create = function(runner,displaySuccessResults,headerDisplayMode) {
+	var report;
+	report = new utest.ui.text.HtmlReport(runner,null,true);
+	if(null == displaySuccessResults) report.displaySuccessResults = utest.ui.common.SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors;
+	else report.displaySuccessResults = displaySuccessResults;
+	if(null == headerDisplayMode) report.displayHeader = utest.ui.common.HeaderDisplayMode.ShowHeaderWithResults;
+	else report.displayHeader = headerDisplayMode;
+	return report;
+}
+utest.ui.Report.prototype.__class__ = utest.ui.Report;
+utest.ui.common.ReportTools = function() { }
+utest.ui.common.ReportTools.__name__ = ["utest","ui","common","ReportTools"];
+utest.ui.common.ReportTools.hasHeader = function(report,stats) {
+	var $e = report.displayHeader;
+	switch( $e[1] ) {
+	case 1:
+	{
+		return false;
+	}break;
+	case 2:
+	{
+		if(!stats.isOk) return true;
+		var $e = report.displaySuccessResults;
+		switch( $e[1] ) {
+		case 1:
+		{
+			return false;
+		}break;
+		case 0:
+		case 2:
+		{
+			return true;
+		}break;
+		}
+	}break;
+	case 0:
+	{
+		return true;
+	}break;
+	}
+}
+utest.ui.common.ReportTools.skipResult = function(report,stats,isOk) {
+	if(!stats.isOk) return false;
+	return (function($this) {
+		var $r;
+		var $e = report.displaySuccessResults;
+		switch( $e[1] ) {
+		case 1:
+		{
+			$r = true;
+		}break;
+		case 0:
+		{
+			$r = false;
+		}break;
+		case 2:
+		{
+			$r = !isOk;
+		}break;
+		}
+		return $r;
+	}(this));
+}
+utest.ui.common.ReportTools.hasOutput = function(report,stats) {
+	if(!stats.isOk) return true;
+	return utest.ui.common.ReportTools.hasHeader(report,stats);
+}
+utest.ui.common.ReportTools.prototype.__class__ = utest.ui.common.ReportTools;
+haxe.Log = function() { }
+haxe.Log.__name__ = ["haxe","Log"];
+haxe.Log.trace = function(v,infos) {
+	js.Boot.__trace(v,infos);
+}
+haxe.Log.clear = function() {
+	js.Boot.__clear_trace();
+}
+haxe.Log.prototype.__class__ = haxe.Log;
+Hash = function(p) { if( p === $_ ) return; {
+	this.h = {}
+	if(this.h.__proto__ != null) {
+		this.h.__proto__ = null;
+		delete(this.h.__proto__);
+	}
+	else null;
+}}
+Hash.__name__ = ["Hash"];
+Hash.prototype.h = null;
+Hash.prototype.set = function(key,value) {
+	this.h["$" + key] = value;
+}
+Hash.prototype.get = function(key) {
+	return this.h["$" + key];
+}
+Hash.prototype.exists = function(key) {
+	try {
+		key = "$" + key;
+		return this.hasOwnProperty.call(this.h,key);
+	}
+	catch( $e0 ) {
+		{
+			var e = $e0;
+			{
+				
+				for(var i in this.h)
+					if( i == key ) return true;
+			;
+				return false;
+			}
+		}
+	}
+}
+Hash.prototype.remove = function(key) {
+	if(!this.exists(key)) return false;
+	delete(this.h["$" + key]);
+	return true;
+}
+Hash.prototype.keys = function() {
+	var a = new Array();
+	
+			for(var i in this.h)
+				a.push(i.substr(1));
+		;
+	return a.iterator();
+}
+Hash.prototype.iterator = function() {
+	return { ref : this.h, it : this.keys(), hasNext : function() {
+		return this.it.hasNext();
+	}, next : function() {
+		var i = this.it.next();
+		return this.ref["$" + i];
+	}};
+}
+Hash.prototype.toString = function() {
+	var s = new StringBuf();
+	s.b[s.b.length] = "{";
+	var it = this.keys();
+	{ var $it0 = it;
+	while( $it0.hasNext() ) { var i = $it0.next();
+	{
+		s.b[s.b.length] = i;
+		s.b[s.b.length] = " => ";
+		s.b[s.b.length] = Std.string(this.get(i));
+		if(it.hasNext()) s.b[s.b.length] = ", ";
+	}
+	}}
+	s.b[s.b.length] = "}";
+	return s.b.join("");
 }
 Hash.prototype.__class__ = Hash;
+if(!utest._Dispatcher) utest._Dispatcher = {}
+utest._Dispatcher.EventException = { __ename__ : ["utest","_Dispatcher","EventException"], __constructs__ : ["StopPropagation"] }
+utest._Dispatcher.EventException.StopPropagation = ["StopPropagation",0];
+utest._Dispatcher.EventException.StopPropagation.toString = $estr;
+utest._Dispatcher.EventException.StopPropagation.__enum__ = utest._Dispatcher.EventException;
+utest.Dispatcher = function(p) { if( p === $_ ) return; {
+	this.handlers = new Array();
+}}
+utest.Dispatcher.__name__ = ["utest","Dispatcher"];
+utest.Dispatcher.stop = function() {
+	throw utest._Dispatcher.EventException.StopPropagation;
+}
+utest.Dispatcher.prototype.handlers = null;
+utest.Dispatcher.prototype.add = function(h) {
+	this.handlers.push(h);
+	return h;
+}
+utest.Dispatcher.prototype.remove = function(h) {
+	{
+		var _g1 = 0, _g = this.handlers.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(Reflect.compareMethods(this.handlers[i],h)) return this.handlers.splice(i,1)[0];
+		}
+	}
+	return null;
+}
+utest.Dispatcher.prototype.clear = function() {
+	this.handlers = new Array();
+}
+utest.Dispatcher.prototype.dispatch = function(e) {
+	try {
+		var list = this.handlers.copy();
+		{
+			var _g = 0;
+			while(_g < list.length) {
+				var l = list[_g];
+				++_g;
+				l(e);
+			}
+		}
+		return true;
+	}
+	catch( $e0 ) {
+		if( js.Boot.__instanceof($e0,utest._Dispatcher.EventException) ) {
+			var exc = $e0;
+			{
+				return false;
+			}
+		} else throw($e0);
+	}
+}
+utest.Dispatcher.prototype.has = function() {
+	return this.handlers.length > 0;
+}
+utest.Dispatcher.prototype.__class__ = utest.Dispatcher;
+utest.Notifier = function(p) { if( p === $_ ) return; {
+	this.handlers = new Array();
+}}
+utest.Notifier.__name__ = ["utest","Notifier"];
+utest.Notifier.stop = function() {
+	throw utest._Dispatcher.EventException.StopPropagation;
+}
+utest.Notifier.prototype.handlers = null;
+utest.Notifier.prototype.add = function(h) {
+	this.handlers.push(h);
+	return h;
+}
+utest.Notifier.prototype.remove = function(h) {
+	{
+		var _g1 = 0, _g = this.handlers.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(Reflect.compareMethods(this.handlers[i],h)) return this.handlers.splice(i,1)[0];
+		}
+	}
+	return null;
+}
+utest.Notifier.prototype.clear = function() {
+	this.handlers = new Array();
+}
+utest.Notifier.prototype.dispatch = function() {
+	try {
+		var list = this.handlers.copy();
+		{
+			var _g = 0;
+			while(_g < list.length) {
+				var l = list[_g];
+				++_g;
+				l();
+			}
+		}
+		return true;
+	}
+	catch( $e0 ) {
+		if( js.Boot.__instanceof($e0,utest._Dispatcher.EventException) ) {
+			var exc = $e0;
+			{
+				return false;
+			}
+		} else throw($e0);
+	}
+}
+utest.Notifier.prototype.has = function() {
+	return this.handlers.length > 0;
+}
+utest.Notifier.prototype.__class__ = utest.Notifier;
+Std = function() { }
+Std.__name__ = ["Std"];
+Std["is"] = function(v,t) {
+	return js.Boot.__instanceof(v,t);
+}
+Std.string = function(s) {
+	return js.Boot.__string_rec(s,"");
+}
+Std["int"] = function(x) {
+	if(x < 0) return Math.ceil(x);
+	return Math.floor(x);
+}
+Std.parseInt = function(x) {
+	var v = parseInt(x,10);
+	if(v == 0 && x.charCodeAt(1) == 120) v = parseInt(x);
+	if(isNaN(v)) return null;
+	return v;
+}
+Std.parseFloat = function(x) {
+	return parseFloat(x);
+}
+Std.random = function(x) {
+	return Math.floor(Math.random() * x);
+}
+Std.prototype.__class__ = Std;
+EReg = function(r,opt) { if( r === $_ ) return; {
+	opt = opt.split("u").join("");
+	this.r = new RegExp(r,opt);
+}}
+EReg.__name__ = ["EReg"];
+EReg.prototype.r = null;
+EReg.prototype.match = function(s) {
+	this.r.m = this.r.exec(s);
+	this.r.s = s;
+	this.r.l = RegExp.leftContext;
+	this.r.r = RegExp.rightContext;
+	return this.r.m != null;
+}
+EReg.prototype.matched = function(n) {
+	return this.r.m != null && n >= 0 && n < this.r.m.length?this.r.m[n]:(function($this) {
+		var $r;
+		throw "EReg::matched";
+		return $r;
+	}(this));
+}
+EReg.prototype.matchedLeft = function() {
+	if(this.r.m == null) throw "No string matched";
+	if(this.r.l == null) return this.r.s.substr(0,this.r.m.index);
+	return this.r.l;
+}
+EReg.prototype.matchedRight = function() {
+	if(this.r.m == null) throw "No string matched";
+	if(this.r.r == null) {
+		var sz = this.r.m.index + this.r.m[0].length;
+		return this.r.s.substr(sz,this.r.s.length - sz);
+	}
+	return this.r.r;
+}
+EReg.prototype.matchedPos = function() {
+	if(this.r.m == null) throw "No string matched";
+	return { pos : this.r.m.index, len : this.r.m[0].length};
+}
+EReg.prototype.split = function(s) {
+	var d = "#__delim__#";
+	return s.replace(this.r,d).split(d);
+}
+EReg.prototype.replace = function(s,by) {
+	return s.replace(this.r,by);
+}
+EReg.prototype.customReplace = function(s,f) {
+	var buf = new StringBuf();
+	while(true) {
+		if(!this.match(s)) break;
+		buf.b[buf.b.length] = this.matchedLeft();
+		buf.b[buf.b.length] = f(this);
+		s = this.matchedRight();
+	}
+	buf.b[buf.b.length] = s;
+	return buf.b.join("");
+}
+EReg.prototype.__class__ = EReg;
+org.silex.runtime.ressource.LoadingTypeValue = { __ename__ : ["org","silex","runtime","ressource","LoadingTypeValue"], __constructs__ : ["data","image","text","animation","container","library"] }
+org.silex.runtime.ressource.LoadingTypeValue.data = ["data",0];
+org.silex.runtime.ressource.LoadingTypeValue.data.toString = $estr;
+org.silex.runtime.ressource.LoadingTypeValue.data.__enum__ = org.silex.runtime.ressource.LoadingTypeValue;
+org.silex.runtime.ressource.LoadingTypeValue.image = ["image",1];
+org.silex.runtime.ressource.LoadingTypeValue.image.toString = $estr;
+org.silex.runtime.ressource.LoadingTypeValue.image.__enum__ = org.silex.runtime.ressource.LoadingTypeValue;
+org.silex.runtime.ressource.LoadingTypeValue.text = ["text",2];
+org.silex.runtime.ressource.LoadingTypeValue.text.toString = $estr;
+org.silex.runtime.ressource.LoadingTypeValue.text.__enum__ = org.silex.runtime.ressource.LoadingTypeValue;
+org.silex.runtime.ressource.LoadingTypeValue.animation = ["animation",3];
+org.silex.runtime.ressource.LoadingTypeValue.animation.toString = $estr;
+org.silex.runtime.ressource.LoadingTypeValue.animation.__enum__ = org.silex.runtime.ressource.LoadingTypeValue;
+org.silex.runtime.ressource.LoadingTypeValue.container = ["container",4];
+org.silex.runtime.ressource.LoadingTypeValue.container.toString = $estr;
+org.silex.runtime.ressource.LoadingTypeValue.container.__enum__ = org.silex.runtime.ressource.LoadingTypeValue;
+org.silex.runtime.ressource.LoadingTypeValue.library = ["library",5];
+org.silex.runtime.ressource.LoadingTypeValue.library.toString = $estr;
+org.silex.runtime.ressource.LoadingTypeValue.library.__enum__ = org.silex.runtime.ressource.LoadingTypeValue;
+org.silex.runtime.ressource.js.AnimationLoader = function(p) { if( p === $_ ) return; {
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}}
+org.silex.runtime.ressource.js.AnimationLoader.__name__ = ["org","silex","runtime","ressource","js","AnimationLoader"];
+org.silex.runtime.ressource.js.AnimationLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.AnimationLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.AnimationLoader.prototype.__class__ = org.silex.runtime.ressource.js.AnimationLoader;
+utest.ui.text.PlainTextReport = function(runner,outputHandler) { if( runner === $_ ) return; {
+	this.aggregator = new utest.ui.common.ResultAggregator(runner,true);
+	runner.onStart.add($closure(this,"start"));
+	this.aggregator.onComplete.add($closure(this,"complete"));
+	if(null != outputHandler) this.setHandler(outputHandler);
+	this.displaySuccessResults = utest.ui.common.SuccessResultsDisplayMode.AlwaysShowSuccessResults;
+	this.displayHeader = utest.ui.common.HeaderDisplayMode.AlwaysShowHeader;
+}}
+utest.ui.text.PlainTextReport.__name__ = ["utest","ui","text","PlainTextReport"];
+utest.ui.text.PlainTextReport.prototype.displaySuccessResults = null;
+utest.ui.text.PlainTextReport.prototype.displayHeader = null;
+utest.ui.text.PlainTextReport.prototype.handler = null;
+utest.ui.text.PlainTextReport.prototype.aggregator = null;
+utest.ui.text.PlainTextReport.prototype.newline = null;
+utest.ui.text.PlainTextReport.prototype.indent = null;
+utest.ui.text.PlainTextReport.prototype.setHandler = function(handler) {
+	this.handler = handler;
+}
+utest.ui.text.PlainTextReport.prototype.startTime = null;
+utest.ui.text.PlainTextReport.prototype.start = function(e) {
+	this.startTime = haxe.Timer.stamp();
+}
+utest.ui.text.PlainTextReport.prototype.indents = function(c) {
+	var s = "";
+	{
+		var _g = 0;
+		while(_g < c) {
+			var _ = _g++;
+			s += this.indent;
+		}
+	}
+	return s;
+}
+utest.ui.text.PlainTextReport.prototype.dumpStack = function(stack) {
+	if(stack.length == 0) return "";
+	var parts = haxe.Stack.toString(stack).split("\n");
+	var r = [];
+	{
+		var _g = 0;
+		while(_g < parts.length) {
+			var part = parts[_g];
+			++_g;
+			if(part.indexOf(" utest.") >= 0) continue;
+			r.push(part);
+		}
+	}
+	return r.join(this.newline);
+}
+utest.ui.text.PlainTextReport.prototype.addHeader = function(buf,result) {
+	if(!utest.ui.common.ReportTools.hasHeader(this,result.stats)) return;
+	var end = haxe.Timer.stamp();
+	var time = Std["int"]((end - this.startTime) * 1000) / 1000;
+	buf.b[buf.b.length] = "results: " + (result.stats.isOk?"ALL TESTS OK":"SOME TESTS FAILURES") + this.newline + " " + this.newline;
+	buf.b[buf.b.length] = "assertations: " + result.stats.assertations + this.newline;
+	buf.b[buf.b.length] = "successes: " + result.stats.successes + this.newline;
+	buf.b[buf.b.length] = "errors: " + result.stats.errors + this.newline;
+	buf.b[buf.b.length] = "failures: " + result.stats.failures + this.newline;
+	buf.b[buf.b.length] = "warnings: " + result.stats.warnings + this.newline;
+	buf.b[buf.b.length] = "execution time: " + time + this.newline;
+	buf.b[buf.b.length] = this.newline;
+}
+utest.ui.text.PlainTextReport.prototype.result = null;
+utest.ui.text.PlainTextReport.prototype.getResults = function() {
+	var buf = new StringBuf();
+	this.addHeader(buf,this.result);
+	{
+		var _g = 0, _g1 = this.result.packageNames();
+		while(_g < _g1.length) {
+			var pname = _g1[_g];
+			++_g;
+			var pack = this.result.getPackage(pname);
+			if(utest.ui.common.ReportTools.skipResult(this,pack.stats,this.result.stats.isOk)) continue;
+			{
+				var _g2 = 0, _g3 = pack.classNames();
+				while(_g2 < _g3.length) {
+					var cname = _g3[_g2];
+					++_g2;
+					var cls = pack.getClass(cname);
+					if(utest.ui.common.ReportTools.skipResult(this,cls.stats,this.result.stats.isOk)) continue;
+					buf.b[buf.b.length] = (pname == ""?"":pname + ".") + cname + this.newline;
+					{
+						var _g4 = 0, _g5 = cls.methodNames();
+						while(_g4 < _g5.length) {
+							var mname = _g5[_g4];
+							++_g4;
+							var fix = cls.get(mname);
+							if(utest.ui.common.ReportTools.skipResult(this,fix.stats,this.result.stats.isOk)) continue;
+							buf.b[buf.b.length] = this.indents(1) + mname + ": ";
+							if(fix.stats.isOk) {
+								buf.b[buf.b.length] = "OK ";
+							}
+							else if(fix.stats.hasErrors) {
+								buf.b[buf.b.length] = "ERROR ";
+							}
+							else if(fix.stats.hasFailures) {
+								buf.b[buf.b.length] = "FAILURE ";
+							}
+							else if(fix.stats.hasWarnings) {
+								buf.b[buf.b.length] = "WARNING ";
+							}
+							var messages = "";
+							{ var $it0 = fix.iterator();
+							while( $it0.hasNext() ) { var assertation = $it0.next();
+							{
+								var $e = assertation;
+								switch( $e[1] ) {
+								case 0:
+								var pos = $e[2];
+								{
+									buf.b[buf.b.length] = ".";
+								}break;
+								case 1:
+								var pos = $e[3], msg = $e[2];
+								{
+									buf.b[buf.b.length] = "F";
+									messages += this.indents(2) + "line: " + pos.lineNumber + ", " + msg + this.newline;
+								}break;
+								case 2:
+								var s = $e[3], e = $e[2];
+								{
+									buf.b[buf.b.length] = "E";
+									messages += this.indents(2) + Std.string(e) + this.dumpStack(s) + this.newline;
+								}break;
+								case 3:
+								var s = $e[3], e = $e[2];
+								{
+									buf.b[buf.b.length] = "S";
+									messages += this.indents(2) + Std.string(e) + this.dumpStack(s) + this.newline;
+								}break;
+								case 4:
+								var s = $e[3], e = $e[2];
+								{
+									buf.b[buf.b.length] = "T";
+									messages += this.indents(2) + Std.string(e) + this.dumpStack(s) + this.newline;
+								}break;
+								case 5:
+								var s = $e[3], missedAsyncs = $e[2];
+								{
+									buf.b[buf.b.length] = "O";
+									messages += this.indents(2) + "missed async calls: " + missedAsyncs + this.dumpStack(s) + this.newline;
+								}break;
+								case 6:
+								var s = $e[3], e = $e[2];
+								{
+									buf.b[buf.b.length] = "A";
+									messages += this.indents(2) + Std.string(e) + this.dumpStack(s) + this.newline;
+								}break;
+								case 7:
+								var msg = $e[2];
+								{
+									buf.b[buf.b.length] = "W";
+									messages += this.indents(2) + msg + this.newline;
+								}break;
+								}
+							}
+							}}
+							buf.b[buf.b.length] = this.newline;
+							buf.b[buf.b.length] = messages;
+						}
+					}
+				}
+			}
+		}
+	}
+	return buf.b.join("");
+}
+utest.ui.text.PlainTextReport.prototype.complete = function(result) {
+	this.result = result;
+	this.handler(this);
+}
+utest.ui.text.PlainTextReport.prototype.__class__ = utest.ui.text.PlainTextReport;
+utest.ui.text.PlainTextReport.__interfaces__ = [utest.ui.common.IReport];
 utest.TestFixture = function(target,method,setup,teardown) { if( target === $_ ) return; {
-	$s.push("utest.TestFixture::new");
-	var $spos = $s.length;
 	this.target = target;
 	this.method = method;
 	this.setup = setup;
 	this.teardown = teardown;
-	$s.pop();
 }}
 utest.TestFixture.__name__ = ["utest","TestFixture"];
-utest.TestFixture.prototype.checkMethod = function(name,arg) {
-	$s.push("utest.TestFixture::checkMethod");
-	var $spos = $s.length;
-	var field = Reflect.field(this.target,name);
-	if(field == null) throw ((arg + " function ") + name) + " is not a field of target";
-	if(!Reflect.isFunction(field)) throw ((arg + " function ") + name) + " is not a function";
-	$s.pop();
-}
+utest.TestFixture.prototype.target = null;
 utest.TestFixture.prototype.method = null;
 utest.TestFixture.prototype.setup = null;
-utest.TestFixture.prototype.target = null;
 utest.TestFixture.prototype.teardown = null;
+utest.TestFixture.prototype.checkMethod = function(name,arg) {
+	var field = Reflect.field(this.target,name);
+	if(field == null) throw arg + " function " + name + " is not a field of target";
+	if(!Reflect.isFunction(field)) throw arg + " function " + name + " is not a function";
+}
 utest.TestFixture.prototype.__class__ = utest.TestFixture;
+utest.ui.text.PrintReport = function(runner) { if( runner === $_ ) return; {
+	utest.ui.text.PlainTextReport.call(this,runner,$closure(this,"_handler"));
+	this.newline = "\n";
+	this.indent = "  ";
+}}
+utest.ui.text.PrintReport.__name__ = ["utest","ui","text","PrintReport"];
+utest.ui.text.PrintReport.__super__ = utest.ui.text.PlainTextReport;
+for(var k in utest.ui.text.PlainTextReport.prototype ) utest.ui.text.PrintReport.prototype[k] = utest.ui.text.PlainTextReport.prototype[k];
+utest.ui.text.PrintReport.prototype.useTrace = null;
+utest.ui.text.PrintReport.prototype._handler = function(report) {
+	this._trace(report.getResults());
+}
+utest.ui.text.PrintReport.prototype._trace = function(s) {
+	s = StringTools.replace(s,"  ",this.indent);
+	s = StringTools.replace(s,"\n",this.newline);
+	haxe.Log.trace(s,{ fileName : "PrintReport.hx", lineNumber : 66, className : "utest.ui.text.PrintReport", methodName : "_trace"});
+}
+utest.ui.text.PrintReport.prototype.__class__ = utest.ui.text.PrintReport;
+if(!haxe.io) haxe.io = {}
+haxe.io.Error = { __ename__ : ["haxe","io","Error"], __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] }
+haxe.io.Error.Blocked = ["Blocked",0];
+haxe.io.Error.Blocked.toString = $estr;
+haxe.io.Error.Blocked.__enum__ = haxe.io.Error;
+haxe.io.Error.Overflow = ["Overflow",1];
+haxe.io.Error.Overflow.toString = $estr;
+haxe.io.Error.Overflow.__enum__ = haxe.io.Error;
+haxe.io.Error.OutsideBounds = ["OutsideBounds",2];
+haxe.io.Error.OutsideBounds.toString = $estr;
+haxe.io.Error.OutsideBounds.__enum__ = haxe.io.Error;
+haxe.io.Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe.io.Error; $x.toString = $estr; return $x; }
+haxe.io.Bytes = function(length,b) { if( length === $_ ) return; {
+	this.length = length;
+	this.b = b;
+}}
+haxe.io.Bytes.__name__ = ["haxe","io","Bytes"];
+haxe.io.Bytes.alloc = function(length) {
+	var a = new Array();
+	{
+		var _g = 0;
+		while(_g < length) {
+			var i = _g++;
+			a.push(0);
+		}
+	}
+	return new haxe.io.Bytes(length,a);
+}
+haxe.io.Bytes.ofString = function(s) {
+	var a = new Array();
+	{
+		var _g1 = 0, _g = s.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var c = s.cca(i);
+			if(c <= 127) a.push(c);
+			else if(c <= 2047) {
+				a.push(192 | c >> 6);
+				a.push(128 | c & 63);
+			}
+			else if(c <= 65535) {
+				a.push(224 | c >> 12);
+				a.push(128 | c >> 6 & 63);
+				a.push(128 | c & 63);
+			}
+			else {
+				a.push(240 | c >> 18);
+				a.push(128 | c >> 12 & 63);
+				a.push(128 | c >> 6 & 63);
+				a.push(128 | c & 63);
+			}
+		}
+	}
+	return new haxe.io.Bytes(a.length,a);
+}
+haxe.io.Bytes.ofData = function(b) {
+	return new haxe.io.Bytes(b.length,b);
+}
+haxe.io.Bytes.prototype.length = null;
+haxe.io.Bytes.prototype.b = null;
+haxe.io.Bytes.prototype.get = function(pos) {
+	return this.b[pos];
+}
+haxe.io.Bytes.prototype.set = function(pos,v) {
+	this.b[pos] = v & 255;
+}
+haxe.io.Bytes.prototype.blit = function(pos,src,srcpos,len) {
+	if(pos < 0 || srcpos < 0 || len < 0 || pos + len > this.length || srcpos + len > src.length) throw haxe.io.Error.OutsideBounds;
+	var b1 = this.b;
+	var b2 = src.b;
+	if(b1 == b2 && pos > srcpos) {
+		var i = len;
+		while(i > 0) {
+			i--;
+			b1[i + pos] = b2[i + srcpos];
+		}
+		return;
+	}
+	{
+		var _g = 0;
+		while(_g < len) {
+			var i = _g++;
+			b1[i + pos] = b2[i + srcpos];
+		}
+	}
+}
+haxe.io.Bytes.prototype.sub = function(pos,len) {
+	if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
+	return new haxe.io.Bytes(len,this.b.slice(pos,pos + len));
+}
+haxe.io.Bytes.prototype.compare = function(other) {
+	var b1 = this.b;
+	var b2 = other.b;
+	var len = this.length < other.length?this.length:other.length;
+	{
+		var _g = 0;
+		while(_g < len) {
+			var i = _g++;
+			if(b1[i] != b2[i]) return b1[i] - b2[i];
+		}
+	}
+	return this.length - other.length;
+}
+haxe.io.Bytes.prototype.readString = function(pos,len) {
+	if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
+	var s = "";
+	var b = this.b;
+	var fcc = $closure(String,"fromCharCode");
+	var i = pos;
+	var max = pos + len;
+	while(i < max) {
+		var c = b[i++];
+		if(c < 128) {
+			if(c == 0) break;
+			s += fcc(c);
+		}
+		else if(c < 224) s += fcc((c & 63) << 6 | b[i++] & 127);
+		else if(c < 240) {
+			var c2 = b[i++];
+			s += fcc((c & 31) << 12 | (c2 & 127) << 6 | b[i++] & 127);
+		}
+		else {
+			var c2 = b[i++];
+			var c3 = b[i++];
+			s += fcc((c & 15) << 18 | (c2 & 127) << 12 | c3 << 6 & 127 | b[i++] & 127);
+		}
+	}
+	return s;
+}
+haxe.io.Bytes.prototype.toString = function() {
+	return this.readString(0,this.length);
+}
+haxe.io.Bytes.prototype.getData = function() {
+	return this.b;
+}
+haxe.io.Bytes.prototype.__class__ = haxe.io.Bytes;
+org.silex.runtime.domobject.base.AnimationDOMObjectBase = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.js.DOMObject.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.base.AnimationDOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","AnimationDOMObjectBase"];
+org.silex.runtime.domobject.base.AnimationDOMObjectBase.__super__ = org.silex.runtime.domobject.js.DOMObject;
+for(var k in org.silex.runtime.domobject.js.DOMObject.prototype ) org.silex.runtime.domobject.base.AnimationDOMObjectBase.prototype[k] = org.silex.runtime.domobject.js.DOMObject.prototype[k];
+org.silex.runtime.domobject.base.AnimationDOMObjectBase.prototype.__class__ = org.silex.runtime.domobject.base.AnimationDOMObjectBase;
+org.silex.runtime.domobject.js.AnimationDOMObject = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.base.AnimationDOMObjectBase.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.js.AnimationDOMObject.__name__ = ["org","silex","runtime","domobject","js","AnimationDOMObject"];
+org.silex.runtime.domobject.js.AnimationDOMObject.__super__ = org.silex.runtime.domobject.base.AnimationDOMObjectBase;
+for(var k in org.silex.runtime.domobject.base.AnimationDOMObjectBase.prototype ) org.silex.runtime.domobject.js.AnimationDOMObject.prototype[k] = org.silex.runtime.domobject.base.AnimationDOMObjectBase.prototype[k];
+org.silex.runtime.domobject.js.AnimationDOMObject.prototype.__class__ = org.silex.runtime.domobject.js.AnimationDOMObject;
+js.Lib = function() { }
+js.Lib.__name__ = ["js","Lib"];
+js.Lib.isIE = null;
+js.Lib.isOpera = null;
+js.Lib.document = null;
+js.Lib.window = null;
+js.Lib.alert = function(v) {
+	alert(js.Boot.__string_rec(v,""));
+}
+js.Lib.eval = function(code) {
+	return eval(code);
+}
+js.Lib.setErrorHandler = function(f) {
+	js.Lib.onerror = f;
+}
+js.Lib.prototype.__class__ = js.Lib;
+org.silex.runtime.domobject.FillStyleValue = { __ename__ : ["org","silex","runtime","domobject","FillStyleValue"], __constructs__ : ["none","monochrome","gradient","bitmap"] }
+org.silex.runtime.domobject.FillStyleValue.none = ["none",0];
+org.silex.runtime.domobject.FillStyleValue.none.toString = $estr;
+org.silex.runtime.domobject.FillStyleValue.none.__enum__ = org.silex.runtime.domobject.FillStyleValue;
+org.silex.runtime.domobject.FillStyleValue.monochrome = function(colorStop) { var $x = ["monochrome",1,colorStop]; $x.__enum__ = org.silex.runtime.domobject.FillStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.FillStyleValue.gradient = function(gradientStyle) { var $x = ["gradient",2,gradientStyle]; $x.__enum__ = org.silex.runtime.domobject.FillStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.FillStyleValue.bitmap = function(imageDOMObject,repeat) { var $x = ["bitmap",3,imageDOMObject,repeat]; $x.__enum__ = org.silex.runtime.domobject.FillStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.LineStyleValue = { __ename__ : ["org","silex","runtime","domobject","LineStyleValue"], __constructs__ : ["none","monochrome","gradient","bitmap"] }
+org.silex.runtime.domobject.LineStyleValue.none = ["none",0];
+org.silex.runtime.domobject.LineStyleValue.none.toString = $estr;
+org.silex.runtime.domobject.LineStyleValue.none.__enum__ = org.silex.runtime.domobject.LineStyleValue;
+org.silex.runtime.domobject.LineStyleValue.monochrome = function(colorStop,lineStyle) { var $x = ["monochrome",1,colorStop,lineStyle]; $x.__enum__ = org.silex.runtime.domobject.LineStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.LineStyleValue.gradient = function(gradientStyle,lineStyle) { var $x = ["gradient",2,gradientStyle,lineStyle]; $x.__enum__ = org.silex.runtime.domobject.LineStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.LineStyleValue.bitmap = function(imageDOMObject,lineStyle,repeat) { var $x = ["bitmap",3,imageDOMObject,lineStyle,repeat]; $x.__enum__ = org.silex.runtime.domobject.LineStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.GradientTypeValue = { __ename__ : ["org","silex","runtime","domobject","GradientTypeValue"], __constructs__ : ["linear","radial"] }
+org.silex.runtime.domobject.GradientTypeValue.linear = ["linear",0];
+org.silex.runtime.domobject.GradientTypeValue.linear.toString = $estr;
+org.silex.runtime.domobject.GradientTypeValue.linear.__enum__ = org.silex.runtime.domobject.GradientTypeValue;
+org.silex.runtime.domobject.GradientTypeValue.radial = ["radial",1];
+org.silex.runtime.domobject.GradientTypeValue.radial.toString = $estr;
+org.silex.runtime.domobject.GradientTypeValue.radial.__enum__ = org.silex.runtime.domobject.GradientTypeValue;
+org.silex.runtime.domobject.CapsStyleValue = { __ename__ : ["org","silex","runtime","domobject","CapsStyleValue"], __constructs__ : ["none","square","round"] }
+org.silex.runtime.domobject.CapsStyleValue.none = ["none",0];
+org.silex.runtime.domobject.CapsStyleValue.none.toString = $estr;
+org.silex.runtime.domobject.CapsStyleValue.none.__enum__ = org.silex.runtime.domobject.CapsStyleValue;
+org.silex.runtime.domobject.CapsStyleValue.square = ["square",1];
+org.silex.runtime.domobject.CapsStyleValue.square.toString = $estr;
+org.silex.runtime.domobject.CapsStyleValue.square.__enum__ = org.silex.runtime.domobject.CapsStyleValue;
+org.silex.runtime.domobject.CapsStyleValue.round = ["round",2];
+org.silex.runtime.domobject.CapsStyleValue.round.toString = $estr;
+org.silex.runtime.domobject.CapsStyleValue.round.__enum__ = org.silex.runtime.domobject.CapsStyleValue;
+org.silex.runtime.domobject.JointStyleValue = { __ename__ : ["org","silex","runtime","domobject","JointStyleValue"], __constructs__ : ["miter","round","bevel"] }
+org.silex.runtime.domobject.JointStyleValue.miter = ["miter",0];
+org.silex.runtime.domobject.JointStyleValue.miter.toString = $estr;
+org.silex.runtime.domobject.JointStyleValue.miter.__enum__ = org.silex.runtime.domobject.JointStyleValue;
+org.silex.runtime.domobject.JointStyleValue.round = ["round",1];
+org.silex.runtime.domobject.JointStyleValue.round.toString = $estr;
+org.silex.runtime.domobject.JointStyleValue.round.__enum__ = org.silex.runtime.domobject.JointStyleValue;
+org.silex.runtime.domobject.JointStyleValue.bevel = ["bevel",2];
+org.silex.runtime.domobject.JointStyleValue.bevel.toString = $estr;
+org.silex.runtime.domobject.JointStyleValue.bevel.__enum__ = org.silex.runtime.domobject.JointStyleValue;
+org.silex.runtime.domobject.TransformationOriginValue = { __ename__ : ["org","silex","runtime","domobject","TransformationOriginValue"], __constructs__ : ["constant","point"] }
+org.silex.runtime.domobject.TransformationOriginValue.constant = function(transformationOriginX,transformationOriginY) { var $x = ["constant",0,transformationOriginX,transformationOriginY]; $x.__enum__ = org.silex.runtime.domobject.TransformationOriginValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.TransformationOriginValue.point = function(point) { var $x = ["point",1,point]; $x.__enum__ = org.silex.runtime.domobject.TransformationOriginValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.TransformationOriginXValue = { __ename__ : ["org","silex","runtime","domobject","TransformationOriginXValue"], __constructs__ : ["left","center","right"] }
+org.silex.runtime.domobject.TransformationOriginXValue.left = ["left",0];
+org.silex.runtime.domobject.TransformationOriginXValue.left.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginXValue.left.__enum__ = org.silex.runtime.domobject.TransformationOriginXValue;
+org.silex.runtime.domobject.TransformationOriginXValue.center = ["center",1];
+org.silex.runtime.domobject.TransformationOriginXValue.center.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginXValue.center.__enum__ = org.silex.runtime.domobject.TransformationOriginXValue;
+org.silex.runtime.domobject.TransformationOriginXValue.right = ["right",2];
+org.silex.runtime.domobject.TransformationOriginXValue.right.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginXValue.right.__enum__ = org.silex.runtime.domobject.TransformationOriginXValue;
+org.silex.runtime.domobject.TransformationOriginYValue = { __ename__ : ["org","silex","runtime","domobject","TransformationOriginYValue"], __constructs__ : ["top","middle","bottom"] }
+org.silex.runtime.domobject.TransformationOriginYValue.top = ["top",0];
+org.silex.runtime.domobject.TransformationOriginYValue.top.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginYValue.top.__enum__ = org.silex.runtime.domobject.TransformationOriginYValue;
+org.silex.runtime.domobject.TransformationOriginYValue.middle = ["middle",1];
+org.silex.runtime.domobject.TransformationOriginYValue.middle.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginYValue.middle.__enum__ = org.silex.runtime.domobject.TransformationOriginYValue;
+org.silex.runtime.domobject.TransformationOriginYValue.bottom = ["bottom",2];
+org.silex.runtime.domobject.TransformationOriginYValue.bottom.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginYValue.bottom.__enum__ = org.silex.runtime.domobject.TransformationOriginYValue;
+StringTools = function() { }
+StringTools.__name__ = ["StringTools"];
+StringTools.urlEncode = function(s) {
+	return encodeURIComponent(s);
+}
+StringTools.urlDecode = function(s) {
+	return decodeURIComponent(s.split("+").join(" "));
+}
+StringTools.htmlEscape = function(s) {
+	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
+}
+StringTools.htmlUnescape = function(s) {
+	return s.split("&gt;").join(">").split("&lt;").join("<").split("&amp;").join("&");
+}
+StringTools.startsWith = function(s,start) {
+	return s.length >= start.length && s.substr(0,start.length) == start;
+}
+StringTools.endsWith = function(s,end) {
+	var elen = end.length;
+	var slen = s.length;
+	return slen >= elen && s.substr(slen - elen,elen) == end;
+}
+StringTools.isSpace = function(s,pos) {
+	var c = s.charCodeAt(pos);
+	return c >= 9 && c <= 13 || c == 32;
+}
+StringTools.ltrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,r)) {
+		r++;
+	}
+	if(r > 0) return s.substr(r,l - r);
+	else return s;
+}
+StringTools.rtrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,l - r - 1)) {
+		r++;
+	}
+	if(r > 0) {
+		return s.substr(0,l - r);
+	}
+	else {
+		return s;
+	}
+}
+StringTools.trim = function(s) {
+	return StringTools.ltrim(StringTools.rtrim(s));
+}
+StringTools.rpad = function(s,c,l) {
+	var sl = s.length;
+	var cl = c.length;
+	while(sl < l) {
+		if(l - sl < cl) {
+			s += c.substr(0,l - sl);
+			sl = l;
+		}
+		else {
+			s += c;
+			sl += cl;
+		}
+	}
+	return s;
+}
+StringTools.lpad = function(s,c,l) {
+	var ns = "";
+	var sl = s.length;
+	if(sl >= l) return s;
+	var cl = c.length;
+	while(sl < l) {
+		if(l - sl < cl) {
+			ns += c.substr(0,l - sl);
+			sl = l;
+		}
+		else {
+			ns += c;
+			sl += cl;
+		}
+	}
+	return ns + s;
+}
+StringTools.replace = function(s,sub,by) {
+	return s.split(sub).join(by);
+}
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	do {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+	} while(n > 0);
+	if(digits != null) while(s.length < digits) s = "0" + s;
+	return s;
+}
+StringTools.fastCodeAt = function(s,index) {
+	return s.cca(index);
+}
+StringTools.isEOF = function(c) {
+	return c != c;
+}
+StringTools.prototype.__class__ = StringTools;
+org.silex.runtime.domobject.js.ContainerDOMObject = function(referenceToNativeDOMObject) { if( referenceToNativeDOMObject === $_ ) return; {
+	org.silex.runtime.domobject.base.ContainerDOMObjectBase.call(this,referenceToNativeDOMObject);
+}}
+org.silex.runtime.domobject.js.ContainerDOMObject.__name__ = ["org","silex","runtime","domobject","js","ContainerDOMObject"];
+org.silex.runtime.domobject.js.ContainerDOMObject.__super__ = org.silex.runtime.domobject.base.ContainerDOMObjectBase;
+for(var k in org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype ) org.silex.runtime.domobject.js.ContainerDOMObject.prototype[k] = org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype[k];
+org.silex.runtime.domobject.js.ContainerDOMObject.prototype.setSemantic = function(semantic) {
+	org.silex.runtime.domobject.base.ContainerDOMObjectBase.prototype.setSemantic.call(this,semantic);
+	var currentNativeDOMContent = this._referenceToNativeDOM.innerHTML;
+	var currentNativeDOMAttributes = this._referenceToNativeDOM.attributes;
+	var newReferenceToNativeDOM = js.Lib.document.createElement(semantic);
+	newReferenceToNativeDOM.innerHTML = currentNativeDOMContent;
+	{
+		var _g1 = 0, _g = currentNativeDOMAttributes.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			newReferenceToNativeDOM.setAttribute(currentNativeDOMAttributes[i].nodeName,currentNativeDOMAttributes[i].nodeValue);
+		}
+	}
+	this._referenceToNativeDOM.parentNode.replaceChild(newReferenceToNativeDOM,this._referenceToNativeDOM);
+	this._referenceToNativeDOM = newReferenceToNativeDOM;
+}
+org.silex.runtime.domobject.js.ContainerDOMObject.prototype.__class__ = org.silex.runtime.domobject.js.ContainerDOMObject;
 $_ = {}
 js.Boot.__res = {}
-$s = [];
-$e = [];
 js.Boot.__init();
+{
+	js["XMLHttpRequest"] = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?function() {
+		try {
+			return new ActiveXObject("Msxml2.XMLHTTP");
+		}
+		catch( $e0 ) {
+			{
+				var e = $e0;
+				{
+					try {
+						return new ActiveXObject("Microsoft.XMLHTTP");
+					}
+					catch( $e1 ) {
+						{
+							var e1 = $e1;
+							{
+								throw "Unable to create XMLHttpRequest object.";
+							}
+						}
+					}
+				}
+			}
+		}
+	}:(function($this) {
+		var $r;
+		throw "Unable to create XMLHttpRequest object.";
+		return $r;
+	}(this));
+}
+{
+	Math.__name__ = ["Math"];
+	Math.NaN = Number["NaN"];
+	Math.NEGATIVE_INFINITY = Number["NEGATIVE_INFINITY"];
+	Math.POSITIVE_INFINITY = Number["POSITIVE_INFINITY"];
+	Math.isFinite = function(i) {
+		return isFinite(i);
+	}
+	Math.isNaN = function(i) {
+		return isNaN(i);
+	}
+}
+{
+	String.prototype.__class__ = String;
+	String.__name__ = ["String"];
+	Array.prototype.__class__ = Array;
+	Array.__name__ = ["Array"];
+	Int = { __name__ : ["Int"]};
+	Dynamic = { __name__ : ["Dynamic"]};
+	Float = Number;
+	Float.__name__ = ["Float"];
+	Bool = { __ename__ : ["Bool"]};
+	Class = { __name__ : ["Class"]};
+	Enum = { };
+	Void = { __ename__ : ["Void"]};
+}
 {
 	var d = Date;
 	d.now = function() {
-		$s.push("utest.TestFixture::checkMethod");
-		var $spos = $s.length;
-		{
-			var $tmp = new Date();
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
+		return new Date();
 	}
 	d.fromTime = function(t) {
-		$s.push("utest.TestFixture::checkMethod");
-		var $spos = $s.length;
 		var d1 = new Date();
 		d1["setTime"](t);
-		{
-			$s.pop();
-			return d1;
-		}
-		$s.pop();
+		return d1;
 	}
 	d.fromString = function(s) {
-		$s.push("utest.TestFixture::checkMethod");
-		var $spos = $s.length;
 		switch(s.length) {
 		case 8:{
 			var k = s.split(":");
@@ -6212,114 +4998,56 @@ js.Boot.__init();
 			d1["setUTCHours"](k[0]);
 			d1["setUTCMinutes"](k[1]);
 			d1["setUTCSeconds"](k[2]);
-			{
-				$s.pop();
-				return d1;
-			}
+			return d1;
 		}break;
 		case 10:{
 			var k = s.split("-");
-			{
-				var $tmp = new Date(k[0],k[1] - 1,k[2],0,0,0);
-				$s.pop();
-				return $tmp;
-			}
+			return new Date(k[0],k[1] - 1,k[2],0,0,0);
 		}break;
 		case 19:{
 			var k = s.split(" ");
 			var y = k[0].split("-");
 			var t = k[1].split(":");
-			{
-				var $tmp = new Date(y[0],y[1] - 1,y[2],t[0],t[1],t[2]);
-				$s.pop();
-				return $tmp;
-			}
+			return new Date(y[0],y[1] - 1,y[2],t[0],t[1],t[2]);
 		}break;
 		default:{
 			throw "Invalid date format : " + s;
 		}break;
 		}
-		$s.pop();
 	}
 	d.prototype["toString"] = function() {
-		$s.push("utest.TestFixture::checkMethod");
-		var $spos = $s.length;
 		var date = this;
 		var m = date.getMonth() + 1;
 		var d1 = date.getDate();
 		var h = date.getHours();
 		var mi = date.getMinutes();
 		var s = date.getSeconds();
-		{
-			var $tmp = (((((((((date.getFullYear() + "-") + ((m < 10?"0" + m:"" + m))) + "-") + ((d1 < 10?"0" + d1:"" + d1))) + " ") + ((h < 10?"0" + h:"" + h))) + ":") + ((mi < 10?"0" + mi:"" + mi))) + ":") + ((s < 10?"0" + s:"" + s));
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
+		return date.getFullYear() + "-" + (m < 10?"0" + m:"" + m) + "-" + (d1 < 10?"0" + d1:"" + d1) + " " + (h < 10?"0" + h:"" + h) + ":" + (mi < 10?"0" + mi:"" + mi) + ":" + (s < 10?"0" + s:"" + s);
 	}
 	d.prototype.__class__ = d;
 	d.__name__ = ["Date"];
 }
 {
-	String.prototype.__class__ = String;
-	String.__name__ = ["String"];
-	Array.prototype.__class__ = Array;
-	Array.__name__ = ["Array"];
-	Int = { __name__ : ["Int"]}
-	Dynamic = { __name__ : ["Dynamic"]}
-	Float = Number;
-	Float.__name__ = ["Float"];
-	Bool = { __ename__ : ["Bool"]}
-	Class = { __name__ : ["Class"]}
-	Enum = { }
-	Void = { __ename__ : ["Void"]}
-}
-{
-	Math.__name__ = ["Math"];
-	Math.NaN = Number["NaN"];
-	Math.NEGATIVE_INFINITY = Number["NEGATIVE_INFINITY"];
-	Math.POSITIVE_INFINITY = Number["POSITIVE_INFINITY"];
-	Math.isFinite = function(i) {
-		$s.push("utest.TestFixture::checkMethod");
-		var $spos = $s.length;
-		{
-			var $tmp = isFinite(i);
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-	Math.isNaN = function(i) {
-		$s.push("utest.TestFixture::checkMethod");
-		var $spos = $s.length;
-		{
-			var $tmp = isNaN(i);
-			$s.pop();
-			return $tmp;
-		}
-		$s.pop();
-	}
-}
-{
 	js.Lib.document = document;
 	js.Lib.window = window;
 	onerror = function(msg,url,line) {
-		var stack = $s.copy();
 		var f = js.Lib.onerror;
-		$s.splice(0,$s.length);
-		if( f == null ) {
-			var i = stack.length;
-			var s = "";
-			while( --i >= 0 )
-				s += "Called from "+stack[i]+"\n";
-			alert(msg+"\n\n"+s);
+		if( f == null )
 			return false;
-		}
-		return f(msg,stack);
+		return f(msg,[url+":"+line]);
 	}
 }
-utest.ui.text.HtmlReport.platform = "javascript";
+org.silex.runtime.ressource.RessourceLoaderManager._isLoading = false;
 haxe.Timer.arr = new Array();
-js.Lib.onerror = null;
+utest.ui.text.HtmlReport.platform = "javascript";
 utest.TestHandler.POLLING_TIME = 10;
-org.silex_unit_tests.runtime.nativeClass.NativeClassTests.main()
+org.silex.runtime.domobject.js.GraphicDOMObject.CAPS_STYLE_VALUE_NONE = "butt";
+org.silex.runtime.domobject.js.GraphicDOMObject.CAPS_STYLE_VALUE_ROUND = "round";
+org.silex.runtime.domobject.js.GraphicDOMObject.CAPS_STYLE_VALUE_SQUARE = "square";
+org.silex.runtime.domobject.js.GraphicDOMObject.JOINT_STYLE_VALUE_ROUND = "round";
+org.silex.runtime.domobject.js.GraphicDOMObject.JOINT_STYLE_VALUE_MITER = "miter";
+org.silex.runtime.domobject.js.GraphicDOMObject.JOINT_STYLE_VALUE_BEVEL = "bevel";
+org.silex.runtime.domobject.js.GraphicDOMObject.CANVAS_PATTERN_REPEAT = "repeat";
+org.silex.runtime.domobject.js.GraphicDOMObject.CANVAS_PATTERN_NO_REPEAT = "no-repeat";
+js.Lib.onerror = null;
+org.silex_unit_tests.runtime.domobject.DOMObjectTests.main()

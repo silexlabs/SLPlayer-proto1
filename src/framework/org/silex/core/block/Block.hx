@@ -164,7 +164,7 @@ class Block
 	
 	/**
 	 * Starts a block opening. To be opened a block must first be initialised
-	 * (all of it's data must have loaded already). Stores the success and error
+	 * (all of it's data must have been loaded already). Stores the success and error
 	 * callback.
 	 * @param	successCallback
 	 * @param	errorCallback
@@ -476,13 +476,13 @@ class Block
 		switch (Config.getConfigData().runtime)
 		{
 			case js:
-			skinUrl =  this._blockData.jsURL;
+			skinUrl =  this._blockData.jsSkinURL;
 			
 			case as3:
-			skinUrl =  this._blockData.as3URL;
+			skinUrl =  this._blockData.as3SkinURL;
 			
 			case php:
-			skinUrl = this._blockData.phpURL;
+			skinUrl = this._blockData.phpSkinURL;
 		}
 		
 		return skinUrl;
@@ -525,6 +525,16 @@ class Block
 	public function getIsAutoOpen():Bool
 	{
 		return this._isAutoOpen;
+	}
+	
+	public function setIsTransversal(value:Bool):Void
+	{
+		this._isTransversal = value;
+	}
+	
+	public function getIsTransversal():Bool
+	{
+		return this._isTransversal;
 	}
 	
 	public function setBlockData(value:BlockData):Void

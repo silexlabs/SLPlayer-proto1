@@ -34,17 +34,17 @@ class BlockBuilderTests
 	}
 	
     /**
-     * Sorts BlockData Arrays by className, which is needed as each target can order arrays differently
+     * Sorts Block Arrays by className, which is needed as each target can order arrays differently
 	 * To be used by array.sort()
 	 * 
      * @param	a
      * @param	b
      * @return
      */
-	private function blockDataSort(a:BlockData, b:BlockData):Int
+	private function blockSort(a:Block, b:Block):Int
     {
-		var aString:String = a.className.toLowerCase();
-		var bString:String = b.className.toLowerCase();
+		var aString:String = a.getBlockData().className.toLowerCase();
+		var bString:String = b.getBlockData().className.toLowerCase();
 
 		if (aString < bString) return -1;
 		if (aString > bString) return 1;
@@ -59,67 +59,75 @@ class BlockBuilderTests
 		// INPUT
 
 		var xmlString:String = '<HGroup>
-			<!-- these properties will be set on the controller class -->
-			<properties>
-				<x type="Float">606.6</x>
-				<y type="Float">199.95</y>
-				<width type="Integer">76</width>
-				<height type="Integer">26</height>
-			</properties>
-			<!-- the meta data are not set on any object -->
-			<!-- the meta data are available for the controller class, the skin or the plugins -->
-			<metaData>
-			</metaData>
+			<blockData>
+				<!-- these properties will be set on the controller class -->
+				<properties>
+					<x type="Float">606.6</x>
+					<y type="Float">199.95</y>
+					<width type="Integer">76</width>
+					<height type="Integer">26</height>
+				</properties>
+				<!-- the meta data are not set on any object -->
+				<!-- the meta data are available for the controller class, the skin or the plugins -->
+				<metaData>
+				</metaData>
+			</blockData>
 			<children>
 				<!-- this is a block with the controller class set to org.silex.blocks.Image -->
 				<Image>
-					<!-- these properties will be set on the controller class -->
-					<properties>
-						<url>media/test1/im1.jpg</url>
-						<x type="Float">606.6</x>
-						<y type="Float">199.95</y>
-						<width type="Integer">76</width>
-						<height type="Integer">26</height>
-						<rotation type="Integer">0</rotation>
-						<alpha type="Integer">1</alpha>
-						<textFormat type="Array">
-							<item><![CDATA[font=Arial]]></item>
-							<item><![CDATA[color=4D4D4D]]></item>
-							<item><![CDATA[size=17]]></item>
-						</textFormat>
-					</properties>
-					<!-- the meta data are not set on any object -->
-					<!-- the meta data are available for the controller class, the skin or the plugins -->
-					<metaData>
-					</metaData>
+					<blockData>
+						<!-- these properties will be set on the controller class -->
+						<properties>
+							<url>media/test1/im1.jpg</url>
+							<x type="Float">606.6</x>
+							<y type="Float">199.95</y>
+							<width type="Integer">76</width>
+							<height type="Integer">26</height>
+							<rotation type="Integer">0</rotation>
+							<alpha type="Integer">1</alpha>
+							<textFormat type="Array">
+								<item><![CDATA[font=Arial]]></item>
+								<item><![CDATA[color=4D4D4D]]></item>
+								<item><![CDATA[size=17]]></item>
+							</textFormat>
+						</properties>
+						<!-- the meta data are not set on any object -->
+						<!-- the meta data are available for the controller class, the skin or the plugins -->
+						<metaData>
+						</metaData>
+					</blockData>
 				</Image>
 				<!-- this is a block with a custom controller class, loaded as part of a library at startup -->
 				<CustomControllerClass nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
-					<properties>
-					</properties>
-					<metaData>
-					</metaData>
+					<blockData>
+						<properties>
+						</properties>
+						<metaData>
+						</metaData>
+					</blockData>
 				</CustomControllerClass>
 				<!-- this block data is in a separate XML file -->
-				<Group isAutoOpen="true" hasSeparateFile="true" fileUrl="contents/mysite1/layer023.xml" />
+				<Group isAutoOpen="true" fileUrl="contents/mysite1/layer023.xml" />
 				<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->
-				<SkinableBlock nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
-					<!-- URLs of the skin, depending on the target runtime -->
-					<domRoot>maindiv.containerdiv</domRoot>
-					<jsSkin>
-						<url>plugins/mycompanyComponents/js/SkinableBlock.js</url>
-					</jsSkin>
-					<phpSkin>
-						<url>plugins/mycompanyComponents/php/SkinableBlock.php</url>
-					</phpSkin>
-					<as3Skin>
-						<url>plugins/mycompanyComponents/as2/SkinableBlock.swf</url>
-					</as3Skin>
-					<properties>
-					</properties>
-					<metaData>
-					</metaData>
-				</SkinableBlock>
+				<SkinnableBlock nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
+					<blockData>
+						<descriptorUID>SkinnableBlockDescriptor</descriptorUID>
+						<!-- URLs of the skin, depending on the target runtime -->
+						<jsSkinURL>
+							<url>plugins/mycompanyComponents/js/SkinnableBlock.js</url>
+						</jsSkinURL>
+						<phpSkinURL>
+							<url>plugins/mycompanyComponents/php/SkinnableBlock.php</url>
+						</phpSkinURL>
+						<as3SkinURL>
+							<url>plugins/mycompanyComponents/as2/SkinnableBlock.swf</url>
+						</as3SkinURL>
+						<properties>
+						</properties>
+						<metaData>
+						</metaData>
+					</blockData>
+				</SkinnableBlock>
 			</children>
 		</HGroup>';
 	
@@ -133,12 +141,7 @@ class BlockBuilderTests
 		// VERIFICATION
 		
 		var childrenBlock:Array<Block> = block.getChildren();
-		var childrenBlockData:Array<BlockData> = new Array<BlockData>();
-		for (childBlock in childrenBlock)
-		{
-			childrenBlockData.push(childBlock.getBlockData());
-		}
-		childrenBlockData.sort(blockDataSort);
+		childrenBlock.sort(blockSort);
 		
 
 		// parent HGroup
@@ -146,35 +149,34 @@ class BlockBuilderTests
 		Assert.equals(606.6, block.getBlockData().properties.get('x'));
 		Assert.equals(76, block.getBlockData().properties.get('width'));
 		
-		var child:BlockData;
-		child = childrenBlockData.pop();
+		var child:Block;
+		child = childrenBlock.pop();
 		// child Image
-		Assert.equals('org.silex.blocks.Image', child.className);
-		Assert.equals(606.6, child.properties.get('x'));
-		Assert.equals(76, child.properties.get('width'));
-		Assert.equals(0, child.properties.get('rotation'));
-		Assert.equals(1, child.properties.get('alpha'));
+		Assert.equals('org.silex.blocks.Image', child.getBlockData().className);
+		Assert.equals(606.6, child.getBlockData().properties.get('x'));
+		Assert.equals(76, child.getBlockData().properties.get('width'));
+		Assert.equals(0, child.getBlockData().properties.get('rotation'));
+		Assert.equals(1, child.getBlockData().properties.get('alpha'));
 
-		child = childrenBlockData.pop();
+		child = childrenBlock.pop();
 		// child Group
-		Assert.equals('org.silex.blocks.Group', child.className);
-		Assert.equals(true, child.isAutoOpen);
-		Assert.equals(true, child.hasSeparateFile);
-		Assert.equals('contents/mysite1/layer023.xml', child.fileUrl);
+		Assert.equals('org.silex.blocks.Group', child.getBlockData().className);
+		Assert.equals(true, child.getIsAutoOpen());
+		Assert.equals('contents/mysite1/layer023.xml', child.getFileUrl());
 		
-		child = childrenBlockData.pop();
+		child = childrenBlock.pop();
 		// child SkinableBlock
-		Assert.equals('com.mycompany.silexcomponents.SkinableBlock', child.className);
-		Assert.equals(false, child.isAutoOpen);
-		Assert.equals('maindiv.containerdiv', child.domRoot);
-		Assert.equals('plugins/mycompanyComponents/js/SkinableBlock.js', child.jsURL);
-		Assert.equals('plugins/mycompanyComponents/php/SkinableBlock.php', child.phpURL);
-		Assert.equals('plugins/mycompanyComponents/as2/SkinableBlock.swf', child.as3URL);
+		Assert.equals('com.mycompany.silexcomponents.SkinnableBlock', child.getBlockData().className);
+		Assert.equals(false, child.getIsAutoOpen());
+		Assert.equals('SkinnableBlockDescriptor', child.getBlockData().descriptorUID);
+		Assert.equals('plugins/mycompanyComponents/js/SkinnableBlock.js', child.getBlockData().jsSkinURL);
+		Assert.equals('plugins/mycompanyComponents/php/SkinnableBlock.php', child.getBlockData().phpSkinURL);
+		Assert.equals('plugins/mycompanyComponents/as2/SkinnableBlock.swf', child.getBlockData().as3SkinURL);
 
-		child = childrenBlockData.pop();
+		child = childrenBlock.pop();
 		// child CustomControllerClass
-		Assert.equals('com.mycompany.silexcomponents.CustomControllerClass', child.className);
-		Assert.equals(false, child.isAutoOpen);
+		Assert.equals('com.mycompany.silexcomponents.CustomControllerClass', child.getBlockData().className);
+		Assert.equals(false, child.getIsAutoOpen());
 	}
 
 	/**
@@ -479,14 +481,9 @@ class BlockBuilderTests
 		var parentBlockBlockData:BlockData = {
 			className:"org.silex_unit_tests.core.block.TestNativeClass",
 			descriptorUID:null,
-			isAutoOpen:false,
-			isTransversal:false,
-			hasSeparateFile:false,
-			fileUrl:null,
-			domRoot:null,
-			jsURL:null,
-			as3URL:null,
-			phpURL:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
 			properties:properties,
 			metaData:new Hash<Dynamic>()
 		};

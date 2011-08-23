@@ -28,7 +28,7 @@ import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.domobject.base.DOMObjectBase;
 
 import org.silex.runtime.domobject.GraphicDOMObject;
-
+import org.silex.runtime.domobject.DOMObjectData;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
@@ -165,6 +165,7 @@ class DOMObjectTests
 		Assert.equals(childDOMObject.getY(), 50);
 		Assert.equals(childDOMObject.getZOrder(), 0);
 		
+		
 		//check the parent of the child DOMObject
 		//Assert.same(childDOMObject.getParent(), parentDOMObject);
 		
@@ -227,6 +228,55 @@ class DOMObjectTests
 		Assert.same(childDOMObject.getParent(), null);
 	}
 	#end
+	
+	/**
+	 * Test visibility and opacity methods
+	 */
+	public function testVisibilityOpacity()
+	{
+		#if flash9
+		var nativeDOMObject:Dynamic = new flash.display.Sprite();
+		#elseif js
+		var nativeDOMObject:Dynamic = js.Lib.document.createElement("canvas");
+		#end
+		
+		//test with a graphic dom object to easily have a background
+		var graphicDOMObject:GraphicDOMObject = new GraphicDOMObject(nativeDOMObject);
+		
+		graphicDOMObject.setWidth(200);
+		graphicDOMObject.setHeight(200);
+		graphicDOMObject.setX(0);
+		graphicDOMObject.setY(100);
+		
+		var colorStop:ColorStopData = { color:Std.parseInt("0xFF0000") , alpha:100 };
+		var fillStyle:FillStyleValue = monochrome(colorStop);
+		
+		var lineStyle:LineStyleValue = LineStyleValue.none;
+		
+		graphicDOMObject.beginFill(fillStyle, lineStyle);
+		
+		var cornerRadiuses:CornerRadiusData = {
+			tlCornerRadius:10,
+			trCornerRadius:0,
+			blCornerRadius:20,
+			brCornerRadius:0
+		}
+		
+		
+		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
+		graphicDOMObject.endFill();
+		
+		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		
+		graphicDOMObject.setIsVisible(false);
+		Assert.equals(graphicDOMObject.getIsVisible(), false);
+		
+		graphicDOMObject.setIsVisible(true);
+		Assert.equals(graphicDOMObject.getIsVisible(), true);
+		
+		graphicDOMObject.setAlpha(0.5);
+		Assert.equals(graphicDOMObject.getAlpha(), 0.5);
+	}
 	
 	/**
 	 * Test the manipulation of DOMObjects z-indexes in Flash and JavaScript

@@ -8,10 +8,10 @@ org.silex.runtime.domobject.base.DOMObjectBase = function(referenceToNativeDOMOb
 	if( referenceToNativeDOMObject === $_ ) return;
 	this._referenceToNativeDOM = referenceToNativeDOMObject;
 	this._children = new Array();
+	this._matrix = new org.silex.runtime.domobject.Matrix();
 	this.setNativeListeners();
 }
 org.silex.runtime.domobject.base.DOMObjectBase.__name__ = ["org","silex","runtime","domobject","base","DOMObjectBase"];
-org.silex.runtime.domobject.base.DOMObjectBase.rootDOMObject = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype.onPress = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype.onDoubleClick = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype.onRelease = null;
@@ -24,6 +24,7 @@ org.silex.runtime.domobject.base.DOMObjectBase.prototype.onFocusOut = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype._referenceToNativeDOM = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype._parent = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype._children = null;
+org.silex.runtime.domobject.base.DOMObjectBase.prototype._matrix = null;
 org.silex.runtime.domobject.base.DOMObjectBase.prototype.addChild = function(domObject) {
 	domObject.setParent(this);
 	this._children.push(domObject);
@@ -43,6 +44,68 @@ org.silex.runtime.domobject.base.DOMObjectBase.prototype.getChildren = function(
 }
 org.silex.runtime.domobject.base.DOMObjectBase.prototype.getReferenceToNativeDOM = function() {
 	return this._referenceToNativeDOM;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.translate = function(x,y) {
+	this._matrix.translate(x,y);
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.rotate = function(angle,transformationOrigin) {
+	this._matrix.rotate(angle,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.scale = function(scaleX,scaleY,transformationOrigin) {
+	this._matrix.scale(scaleX,scaleY,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.skew = function(skewX,skewY,transformationOrigin) {
+	this._matrix.skew(skewX,skewY,this.getTransformationOriginPoint(transformationOrigin));
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.setMatrix = function(matrix) {
+	this._matrix = matrix;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getMatrix = function() {
+	return this._matrix;
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.resetTransformations = function() {
+	this._matrix.identity();
+	this.setMatrix(this._matrix);
+}
+org.silex.runtime.domobject.base.DOMObjectBase.prototype.getTransformationOriginPoint = function(transformationOrigin) {
+	var transformationOriginPoint = { x : 0.0, y : 0.0};
+	var $e = (transformationOrigin);
+	switch( $e[1] ) {
+	case 1:
+		var point = $e[2];
+		transformationOriginPoint = point;
+		break;
+	case 0:
+		var transformationOriginY = $e[3], transformationOriginX = $e[2];
+		switch( (transformationOriginX)[1] ) {
+		case 0:
+			transformationOriginPoint.x = 0;
+			break;
+		case 1:
+			transformationOriginPoint.x = this.getWidth() / 2;
+			break;
+		case 2:
+			transformationOriginPoint.x = this.getWidth();
+			break;
+		}
+		switch( (transformationOriginY)[1] ) {
+		case 0:
+			transformationOriginPoint.y = 0;
+			break;
+		case 1:
+			transformationOriginPoint.y = this.getHeight() / 2;
+			break;
+		case 2:
+			transformationOriginPoint.y = this.getHeight();
+			break;
+		}
+		break;
+	}
+	return transformationOriginPoint;
 }
 org.silex.runtime.domobject.base.DOMObjectBase.prototype.setAttribute = function(propertyName,propertyValue) {
 	this._referenceToNativeDOM[propertyName] = propertyValue;
@@ -107,6 +170,7 @@ if(!org.silex.runtime.domobject.js) org.silex.runtime.domobject.js = {}
 org.silex.runtime.domobject.js.DOMObject = function(referenceToNativeDOM) {
 	if( referenceToNativeDOM === $_ ) return;
 	org.silex.runtime.domobject.base.DOMObjectBase.call(this,referenceToNativeDOM);
+	referenceToNativeDOM.style.position = "absolute";
 }
 org.silex.runtime.domobject.js.DOMObject.__name__ = ["org","silex","runtime","domobject","js","DOMObject"];
 org.silex.runtime.domobject.js.DOMObject.__super__ = org.silex.runtime.domobject.base.DOMObjectBase;
@@ -119,6 +183,26 @@ org.silex.runtime.domobject.js.DOMObject.prototype.addChild = function(domObject
 org.silex.runtime.domobject.js.DOMObject.prototype.removeChild = function(domObject) {
 	org.silex.runtime.domobject.base.DOMObjectBase.prototype.removeChild.call(this,domObject);
 	this._referenceToNativeDOM.removeChild(domObject.getReferenceToNativeDOM());
+}
+org.silex.runtime.domobject.js.DOMObject.prototype.setMatrix = function(matrix) {
+	org.silex.runtime.domobject.base.DOMObjectBase.prototype.setMatrix.call(this,matrix);
+	var nativeSprite = this._referenceToNativeDOM;
+	var matrixData = matrix.getMatrixData();
+	var cssMatrixProperty = "matrix(" + matrixData.a + "," + matrixData.b + "," + matrixData.c + "," + matrixData.d + "," + matrixData.e + "," + matrixData.f + ")";
+	if(this._referenceToNativeDOM.style.transform != null) {
+		this._referenceToNativeDOM.style.transform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.transformOrigin = "0 0";
+	}
+	if(this._referenceToNativeDOM.style.MozTransform != null) {
+		this._referenceToNativeDOM.style.MozTransform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.MozTransformOrigin = "0 0";
+	} else if(this._referenceToNativeDOM.style.WebkitTransform != null) {
+		this._referenceToNativeDOM.style.WebkitTransform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.WebkitTransformOrigin = "0 0";
+	} else if(this._referenceToNativeDOM.style.OTransform != null) {
+		this._referenceToNativeDOM.style.OTransform = cssMatrixProperty;
+		this._referenceToNativeDOM.style.OTransform = "0 0";
+	}
 }
 org.silex.runtime.domobject.js.DOMObject.prototype.setNativeListeners = function() {
 	this._referenceToNativeDOM.onmousedown = $closure(this,"onNativePress");
@@ -439,13 +523,13 @@ org.silex.core.block.Block.prototype.getSkinUrl = function() {
 	var skinUrl = "";
 	switch( (org.silex.core.config.Config.getConfigData().runtime)[1] ) {
 	case 1:
-		skinUrl = this._blockData.jsURL;
+		skinUrl = this._blockData.jsSkinURL;
 		break;
 	case 0:
-		skinUrl = this._blockData.as3URL;
+		skinUrl = this._blockData.as3SkinURL;
 		break;
 	case 2:
-		skinUrl = this._blockData.phpURL;
+		skinUrl = this._blockData.phpSkinURL;
 		break;
 	}
 	return skinUrl;
@@ -470,6 +554,12 @@ org.silex.core.block.Block.prototype.setIsAutoOpen = function(value) {
 }
 org.silex.core.block.Block.prototype.getIsAutoOpen = function() {
 	return this._isAutoOpen;
+}
+org.silex.core.block.Block.prototype.setIsTransversal = function(value) {
+	this._isTransversal = value;
+}
+org.silex.core.block.Block.prototype.getIsTransversal = function() {
+	return this._isTransversal;
 }
 org.silex.core.block.Block.prototype.setBlockData = function(value) {
 	this._blockData = value;
@@ -602,6 +692,94 @@ List.prototype.map = function(f) {
 	return b;
 }
 List.prototype.__class__ = List;
+org.silex.runtime.domobject.Matrix = function(matrixData) {
+	if( matrixData === $_ ) return;
+	this.setMatrixData(matrixData);
+}
+org.silex.runtime.domobject.Matrix.__name__ = ["org","silex","runtime","domobject","Matrix"];
+org.silex.runtime.domobject.Matrix.prototype._matrixData = null;
+org.silex.runtime.domobject.Matrix.prototype.identity = function() {
+	this._matrixData = { a : 1.0, b : 0.0, c : 0.0, d : 1.0, e : 0.0, f : 0.0};
+}
+org.silex.runtime.domobject.Matrix.prototype.setMatrixData = function(matrixData) {
+	this._matrixData = matrixData;
+	if(this._matrixData == null) this.identity();
+}
+org.silex.runtime.domobject.Matrix.prototype.getMatrixData = function() {
+	return this._matrixData;
+}
+org.silex.runtime.domobject.Matrix.prototype.concatenate = function(matrix) {
+	var currentMatrixData = this._matrixData;
+	var targetMatrixData = matrix.getMatrixData();
+	var a = currentMatrixData.a * targetMatrixData.a + currentMatrixData.c * targetMatrixData.b;
+	var b = currentMatrixData.b * targetMatrixData.a + currentMatrixData.d * targetMatrixData.b;
+	var c = currentMatrixData.a * targetMatrixData.c + currentMatrixData.c * targetMatrixData.d;
+	var d = currentMatrixData.b * targetMatrixData.c + currentMatrixData.d * targetMatrixData.d;
+	var e = currentMatrixData.a * targetMatrixData.e + currentMatrixData.c * targetMatrixData.f + currentMatrixData.e;
+	var f = currentMatrixData.b * targetMatrixData.e + currentMatrixData.d * targetMatrixData.f + currentMatrixData.f;
+	var concatenatedMatrixData = { a : a, b : b, c : c, d : d, e : e, f : f};
+	this.setMatrixData(concatenatedMatrixData);
+}
+org.silex.runtime.domobject.Matrix.prototype.translate = function(x,y) {
+	var translationMatrixData = { a : 1.0, b : 0.0, c : 0.0, d : 1.0, e : x, f : y};
+	var translationMatrix = new org.silex.runtime.domobject.Matrix(translationMatrixData);
+	this.concatenate(translationMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.rotate = function(angle,transformationOrigin) {
+	var angleInRad = angle / 180 * Math.PI;
+	haxe.Log.trace(angleInRad,{ fileName : "Matrix.hx", lineNumber : 169, className : "org.silex.runtime.domobject.Matrix", methodName : "rotate"});
+	var rotatedMatrix = new org.silex.runtime.domobject.Matrix();
+	rotatedMatrix.translate(transformationOrigin.x,transformationOrigin.y);
+	var rotationMatrixData = { a : Math.cos(angleInRad), b : Math.sin(angleInRad), c : Math.sin(angleInRad) * -1, d : Math.cos(angleInRad), e : 0.0, f : 0.0};
+	var rotationMatrix = new org.silex.runtime.domobject.Matrix(rotationMatrixData);
+	rotatedMatrix.concatenate(rotationMatrix);
+	rotatedMatrix.translate(transformationOrigin.x * -1,transformationOrigin.y * -1);
+	this.concatenate(rotatedMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.scale = function(scaleX,scaleY,transformationOrigin) {
+	var scaledMatrix = new org.silex.runtime.domobject.Matrix();
+	scaledMatrix.translate(transformationOrigin.x,transformationOrigin.y);
+	var scalingMatrixData = { a : scaleX, b : 0.0, c : 0.0, d : scaleY, e : 0.0, f : 0.0};
+	var scalingMatrix = new org.silex.runtime.domobject.Matrix(scalingMatrixData);
+	scaledMatrix.concatenate(scalingMatrix);
+	scaledMatrix.translate(transformationOrigin.x * -1,transformationOrigin.y * -1);
+	this.concatenate(scaledMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.skew = function(skewX,skewY,transformationOrigin) {
+	var skewedMatrix = new org.silex.runtime.domobject.Matrix();
+	skewedMatrix.translate(transformationOrigin.x,transformationOrigin.y);
+	var skewingMatrixData = { a : 1.0, b : Math.tan(skewY), c : Math.tan(skewX), d : 1.0, e : 0.0, f : 0.0};
+	var skewingMatrix = new org.silex.runtime.domobject.Matrix(skewingMatrixData);
+	skewedMatrix.concatenate(skewingMatrix);
+	skewedMatrix.translate(transformationOrigin.x * -1,transformationOrigin.y * -1);
+	this.concatenate(skewedMatrix);
+}
+org.silex.runtime.domobject.Matrix.prototype.getRotation = function() {
+	var rotation = Math.atan(this._matrixData.c * -1 / this._matrixData.a);
+	var scaleX = Math.sqrt(this._matrixData.a * this._matrixData.a + this._matrixData.c * this._matrixData.c);
+	var sign = Math.atan(this._matrixData.c * -1 / this._matrixData.a);
+	var radian = Math.acos(this._matrixData.a / scaleX);
+	var rotationInDegree = Math.round(radian * 180 / Math.PI);
+	if(rotationInDegree > 90 && sign > 0) rotation = (360 - rotationInDegree) / 180 * Math.PI; else if(rotationInDegree < 90 && sign < 0) rotation = (360 - rotationInDegree) / 180 * Math.PI; else rotation = radian;
+	return Math.round(rotation / Math.PI * 180);
+}
+org.silex.runtime.domobject.Matrix.prototype.getScaleX = function() {
+	var scaleSign = 0;
+	if(this._matrixData.a > 0) scaleSign = 1; else scaleSign = -1;
+	return scaleSign * Math.sqrt(this._matrixData.a * this._matrixData.a + this._matrixData.c * this._matrixData.c);
+}
+org.silex.runtime.domobject.Matrix.prototype.getScaleY = function() {
+	var scaleSign = 0;
+	if(this._matrixData.d > 0) scaleSign = 1; else scaleSign = -1;
+	return scaleSign * Math.sqrt(this._matrixData.b * this._matrixData.b + this._matrixData.d * this._matrixData.d);
+}
+org.silex.runtime.domobject.Matrix.prototype.getTranslationX = function() {
+	return this._matrixData.e;
+}
+org.silex.runtime.domobject.Matrix.prototype.getTranslationY = function() {
+	return this._matrixData.f;
+}
+org.silex.runtime.domobject.Matrix.prototype.__class__ = org.silex.runtime.domobject.Matrix;
 utest.Runner = function(p) {
 	if( p === $_ ) return;
 	this.fixtures = new Array();
@@ -697,40 +875,43 @@ org.silex.core.block.BlockBuilder.doCreateBlock = function(xml,parentBlock) {
 		while( $it1.hasNext() ) {
 			var child = $it1.next();
 			var block = new org.silex.core.block.Block(child.get("fileUrl"));
+			block.setIsAutoOpen(child.get("isAutoOpen") == "true");
+			block.setIsTransversal(child.get("isTransversal") == "true");
 			parentBlock.addChild(block);
 			org.silex.core.block.BlockBuilder.doCreateBlock(child,block);
 		}
 	}
 }
 org.silex.core.block.BlockBuilder.createBlockData = function(xml) {
-	var blockData = { className : null, descriptorUID : null, isAutoOpen : false, isTransversal : false, hasSeparateFile : false, fileUrl : null, domRoot : null, as3URL : null, jsURL : null, phpURL : null, properties : new Hash(), metaData : new Hash()};
+	var blockData = { className : null, descriptorUID : null, as3SkinURL : null, jsSkinURL : null, phpSkinURL : null, properties : new Hash(), metaData : new Hash()};
 	var blockXml = xml;
 	if(blockXml.exists("nameSpace")) blockData.className = blockXml.get("nameSpace") + "." + blockXml.getNodeName(); else blockData.className = "org.silex.blocks." + blockXml.getNodeName();
-	blockData.descriptorUID = blockXml.get("descriptorUID");
-	blockData.isAutoOpen = blockXml.get("isAutoOpen") == "true";
-	blockData.isTransversal = blockXml.get("isTransversal") == "true";
-	blockData.hasSeparateFile = blockXml.get("hasSeparateFile") == "true";
-	blockData.fileUrl = blockXml.get("fileUrl");
+	var blockDataXML = Xml.parse("");
 	var $it0 = blockXml.iterator();
 	while( $it0.hasNext() ) {
-		var childXml = $it0.next();
+		var children = $it0.next();
+		if(children.getNodeName() == "blockData") blockDataXML = children;
+	}
+	var $it1 = blockDataXML.iterator();
+	while( $it1.hasNext() ) {
+		var childXml = $it1.next();
 		switch(childXml.getNodeName()) {
-		case "domRoot":
-			blockData.domRoot = childXml.firstChild().toString();
+		case "as3SkinURL":
+			blockData.as3SkinURL = childXml.firstChild().firstChild().toString();
 			break;
-		case "as3Skin":
-			blockData.as3URL = childXml.firstChild().firstChild().toString();
+		case "jsSkinURL":
+			blockData.jsSkinURL = childXml.firstChild().firstChild().toString();
 			break;
-		case "jsSkin":
-			blockData.jsURL = childXml.firstChild().firstChild().toString();
+		case "phpSkinURL":
+			blockData.phpSkinURL = childXml.firstChild().firstChild().toString();
 			break;
-		case "phpSkin":
-			blockData.phpURL = childXml.firstChild().firstChild().toString();
+		case "descriptorUID":
+			blockData.descriptorUID = childXml.firstChild().toString();
 			break;
 		case "properties":
-			var $it1 = childXml.elements();
-			while( $it1.hasNext() ) {
-				var property = $it1.next();
+			var $it2 = childXml.elements();
+			while( $it2.hasNext() ) {
+				var property = $it2.next();
 				switch(property.get("type")) {
 				case "Integer":
 					blockData.properties.set(property.getNodeName(),Std.parseInt(property.firstChild().toString()));
@@ -743,9 +924,9 @@ org.silex.core.block.BlockBuilder.createBlockData = function(xml) {
 					break;
 				case "Array":
 					var items = new Array();
-					var $it2 = property.elements();
-					while( $it2.hasNext() ) {
-						var item = $it2.next();
+					var $it3 = property.elements();
+					while( $it3.hasNext() ) {
+						var item = $it3.next();
 						items.push(item.firstChild().getNodeValue());
 					}
 					blockData.properties.set(property.getNodeName(),items);
@@ -756,9 +937,9 @@ org.silex.core.block.BlockBuilder.createBlockData = function(xml) {
 			}
 			break;
 		case "metaData":
-			var $it3 = childXml.elements();
-			while( $it3.hasNext() ) {
-				var metaData = $it3.next();
+			var $it4 = childXml.elements();
+			while( $it4.hasNext() ) {
+				var metaData = $it4.next();
 				blockData.metaData.set(metaData.getNodeName(),Std.parseInt(metaData.firstChild().toString()));
 			}
 			break;
@@ -1773,8 +1954,11 @@ org.silex.runtime.ressource.js.ImageLoader.__super__ = org.silex.runtime.ressour
 for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.ImageLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
 org.silex.runtime.ressource.js.ImageLoader.prototype.doLoad = function(url) {
 	var domObject = new org.silex.runtime.domobject.js.ImageDOMObject(js.Lib.document.createElement("img"));
+	var onLoadCompleteDelegate = $closure(this,"onLoadComplete");
+	domObject.getReferenceToNativeDOM().onload = function() {
+		onLoadCompleteDelegate(domObject);
+	};
 	domObject.getReferenceToNativeDOM().setAttribute("src",url);
-	this.onLoadComplete(domObject);
 }
 org.silex.runtime.ressource.js.ImageLoader.prototype.__class__ = org.silex.runtime.ressource.js.ImageLoader;
 org.silex.runtime.ressource.RessourceLoaderManager = function(p) {
@@ -2872,111 +3056,6 @@ utest.ui.common.ResultAggregator.prototype.complete = function(runner) {
 	this.onComplete.dispatch(this.root);
 }
 utest.ui.common.ResultAggregator.prototype.__class__ = utest.ui.common.ResultAggregator;
-org.silex.core.XmlUtils = function() { }
-org.silex.core.XmlUtils.__name__ = ["org","silex","core","XmlUtils"];
-org.silex.core.XmlUtils.cleanUp = function(xml) {
-	var xmlCopy = Xml.parse(xml.toString()).firstElement();
-	if(xmlCopy != null) return org.silex.core.XmlUtils.cleanUpRecursive(xmlCopy); else return xml;
-}
-org.silex.core.XmlUtils.cleanUpRecursive = function(xml) {
-	var whiteSpaceValues = ["\n","\r","\t"];
-	var childData = null;
-	var child = null;
-	var cleanedXml = null;
-	switch(xml.nodeType) {
-	case Xml.Document:
-		cleanedXml = Xml.createDocument();
-		break;
-	case Xml.Element:
-		cleanedXml = Xml.createElement(xml.getNodeName());
-		var $it0 = xml.attributes();
-		while( $it0.hasNext() ) {
-			var attrib = $it0.next();
-			cleanedXml.set(attrib,xml.get(attrib));
-		}
-		break;
-	default:
-	}
-	var $it1 = xml.iterator();
-	while( $it1.hasNext() ) {
-		var child1 = $it1.next();
-		switch(child1.nodeType) {
-		case Xml.Element:
-			childData = org.silex.core.XmlUtils.cleanUpRecursive(child1);
-			cleanedXml.addChild(childData);
-			break;
-		case Xml.Comment:
-			break;
-		default:
-			var nodeValue = child1.getNodeValue();
-			if(nodeValue.substr(0,4) == "<!--" && nodeValue.substr(-3) == "-->") nodeValue = "";
-			var _g = 0;
-			while(_g < whiteSpaceValues.length) {
-				var whiteSpace = whiteSpaceValues[_g];
-				++_g;
-				nodeValue = StringTools.replace(nodeValue,whiteSpace,"");
-			}
-			while(nodeValue.substr(0,1) == " ") nodeValue = nodeValue.substr(1);
-			if(nodeValue != "") cleanedXml.addChild(child1);
-		}
-	}
-	return cleanedXml;
-}
-org.silex.core.XmlUtils.stringIndent2Xml = function(xmlString) {
-	var xml = Xml.parse(xmlString);
-	return org.silex.core.XmlUtils.cleanUp(xml);
-}
-org.silex.core.XmlUtils.xml2StringIndent = function(xml) {
-	var firstElement = xml.firstElement();
-	return org.silex.core.XmlUtils.xml2StringIndentRecursive(firstElement,"");
-}
-org.silex.core.XmlUtils.xml2StringIndentRecursive = function(xml,indentationLevel) {
-	if(indentationLevel == null) indentationLevel = "";
-	var toReturn = "";
-	toReturn += indentationLevel + "<" + xml.getNodeName();
-	var $it0 = xml.attributes();
-	while( $it0.hasNext() ) {
-		var attrib = $it0.next();
-		toReturn += " " + attrib + "=\"" + xml.get(attrib) + "\"";
-	}
-	toReturn += ">";
-	var firstChild = xml.firstChild();
-	if(firstChild != null) switch(firstChild.nodeType) {
-	case Xml.CData:
-		toReturn += "<![CDATA[" + firstChild.getNodeValue() + "]]>";
-		break;
-	case Xml.PCData:
-		toReturn += firstChild;
-		break;
-	case Xml.Element:
-		toReturn += "\n";
-		var element;
-		var $it1 = xml.iterator();
-		while( $it1.hasNext() ) {
-			var element1 = $it1.next();
-			toReturn += org.silex.core.XmlUtils.xml2StringIndentRecursive(element1,indentationLevel + "\t");
-		}
-		toReturn += indentationLevel;
-		break;
-	default:
-	}
-	toReturn += "</" + xml.getNodeName() + ">\n";
-	return toReturn;
-}
-org.silex.core.XmlUtils.prototype.__class__ = org.silex.core.XmlUtils;
-org.silex.runtime.ressource.js.ContainerLoader = function(p) {
-	if( p === $_ ) return;
-	org.silex.runtime.ressource.RessourceLoader.call(this);
-}
-org.silex.runtime.ressource.js.ContainerLoader.__name__ = ["org","silex","runtime","ressource","js","ContainerLoader"];
-org.silex.runtime.ressource.js.ContainerLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
-for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.ContainerLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
-org.silex.runtime.ressource.js.ContainerLoader.prototype.onLoadComplete = function(data) {
-	var domObject = new org.silex.runtime.domobject.js.ContainerDOMObject(js.Lib.document.createElement("div"));
-	domObject.getReferenceToNativeDOM().innerHTML = data;
-	this._onLoadCompleteCallback(domObject);
-}
-org.silex.runtime.ressource.js.ContainerLoader.prototype.__class__ = org.silex.runtime.ressource.js.ContainerLoader;
 if(!utest.ui.text) utest.ui.text = {}
 utest.ui.text.HtmlReport = function(runner,outputHandler,traceRedirected) {
 	if( runner === $_ ) return;
@@ -3257,6 +3336,111 @@ utest.ui.text.HtmlReport.prototype._handler = function(report) {
 }
 utest.ui.text.HtmlReport.prototype.__class__ = utest.ui.text.HtmlReport;
 utest.ui.text.HtmlReport.__interfaces__ = [utest.ui.common.IReport];
+org.silex.core.XmlUtils = function() { }
+org.silex.core.XmlUtils.__name__ = ["org","silex","core","XmlUtils"];
+org.silex.core.XmlUtils.cleanUp = function(xml) {
+	var xmlCopy = Xml.parse(xml.toString()).firstElement();
+	if(xmlCopy != null) return org.silex.core.XmlUtils.cleanUpRecursive(xmlCopy); else return xml;
+}
+org.silex.core.XmlUtils.cleanUpRecursive = function(xml) {
+	var whiteSpaceValues = ["\n","\r","\t"];
+	var childData = null;
+	var child = null;
+	var cleanedXml = null;
+	switch(xml.nodeType) {
+	case Xml.Document:
+		cleanedXml = Xml.createDocument();
+		break;
+	case Xml.Element:
+		cleanedXml = Xml.createElement(xml.getNodeName());
+		var $it0 = xml.attributes();
+		while( $it0.hasNext() ) {
+			var attrib = $it0.next();
+			cleanedXml.set(attrib,xml.get(attrib));
+		}
+		break;
+	default:
+	}
+	var $it1 = xml.iterator();
+	while( $it1.hasNext() ) {
+		var child1 = $it1.next();
+		switch(child1.nodeType) {
+		case Xml.Element:
+			childData = org.silex.core.XmlUtils.cleanUpRecursive(child1);
+			cleanedXml.addChild(childData);
+			break;
+		case Xml.Comment:
+			break;
+		default:
+			var nodeValue = child1.getNodeValue();
+			if(nodeValue.substr(0,4) == "<!--" && nodeValue.substr(-3) == "-->") nodeValue = "";
+			var _g = 0;
+			while(_g < whiteSpaceValues.length) {
+				var whiteSpace = whiteSpaceValues[_g];
+				++_g;
+				nodeValue = StringTools.replace(nodeValue,whiteSpace,"");
+			}
+			while(nodeValue.substr(0,1) == " ") nodeValue = nodeValue.substr(1);
+			if(nodeValue != "") cleanedXml.addChild(child1);
+		}
+	}
+	return cleanedXml;
+}
+org.silex.core.XmlUtils.stringIndent2Xml = function(xmlString) {
+	var xml = Xml.parse(xmlString);
+	return org.silex.core.XmlUtils.cleanUp(xml);
+}
+org.silex.core.XmlUtils.xml2StringIndent = function(xml) {
+	var firstElement = xml.firstElement();
+	return org.silex.core.XmlUtils.xml2StringIndentRecursive(firstElement,"");
+}
+org.silex.core.XmlUtils.xml2StringIndentRecursive = function(xml,indentationLevel) {
+	if(indentationLevel == null) indentationLevel = "";
+	var toReturn = "";
+	toReturn += indentationLevel + "<" + xml.getNodeName();
+	var $it0 = xml.attributes();
+	while( $it0.hasNext() ) {
+		var attrib = $it0.next();
+		toReturn += " " + attrib + "=\"" + xml.get(attrib) + "\"";
+	}
+	toReturn += ">";
+	var firstChild = xml.firstChild();
+	if(firstChild != null) switch(firstChild.nodeType) {
+	case Xml.CData:
+		toReturn += "<![CDATA[" + firstChild.getNodeValue() + "]]>";
+		break;
+	case Xml.PCData:
+		toReturn += firstChild;
+		break;
+	case Xml.Element:
+		toReturn += "\n";
+		var element;
+		var $it1 = xml.iterator();
+		while( $it1.hasNext() ) {
+			var element1 = $it1.next();
+			toReturn += org.silex.core.XmlUtils.xml2StringIndentRecursive(element1,indentationLevel + "\t");
+		}
+		toReturn += indentationLevel;
+		break;
+	default:
+	}
+	toReturn += "</" + xml.getNodeName() + ">\n";
+	return toReturn;
+}
+org.silex.core.XmlUtils.prototype.__class__ = org.silex.core.XmlUtils;
+org.silex.runtime.ressource.js.ContainerLoader = function(p) {
+	if( p === $_ ) return;
+	org.silex.runtime.ressource.RessourceLoader.call(this);
+}
+org.silex.runtime.ressource.js.ContainerLoader.__name__ = ["org","silex","runtime","ressource","js","ContainerLoader"];
+org.silex.runtime.ressource.js.ContainerLoader.__super__ = org.silex.runtime.ressource.RessourceLoader;
+for(var k in org.silex.runtime.ressource.RessourceLoader.prototype ) org.silex.runtime.ressource.js.ContainerLoader.prototype[k] = org.silex.runtime.ressource.RessourceLoader.prototype[k];
+org.silex.runtime.ressource.js.ContainerLoader.prototype.onLoadComplete = function(data) {
+	var domObject = new org.silex.runtime.domobject.js.ContainerDOMObject(js.Lib.document.createElement("div"));
+	domObject.getReferenceToNativeDOM().innerHTML = data;
+	this._onLoadCompleteCallback(domObject);
+}
+org.silex.runtime.ressource.js.ContainerLoader.prototype.__class__ = org.silex.runtime.ressource.js.ContainerLoader;
 utest.TestHandler = function(fixture) {
 	if( fixture === $_ ) return;
 	if(fixture == null) throw "fixture argument is null";
@@ -3955,51 +4139,43 @@ org.silex_unit_tests.core.block.BlockBuilderTests.main = function() {
 	utest.ui.Report.create(runner);
 	runner.run();
 }
-org.silex_unit_tests.core.block.BlockBuilderTests.prototype.blockDataSort = function(a,b) {
-	var aString = a.className.toLowerCase();
-	var bString = b.className.toLowerCase();
+org.silex_unit_tests.core.block.BlockBuilderTests.prototype.blockSort = function(a,b) {
+	var aString = a.getBlockData().className.toLowerCase();
+	var bString = b.getBlockData().className.toLowerCase();
 	if(aString < bString) return -1;
 	if(aString > bString) return 1;
 	return 0;
 }
 org.silex_unit_tests.core.block.BlockBuilderTests.prototype.test_deserializeBlockData_1 = function() {
-	var xmlString = "<HGroup>\r\n\t\t\t<!-- these properties will be set on the controller class -->\r\n\t\t\t<properties>\r\n\t\t\t\t<x type=\"Float\">606.6</x>\r\n\t\t\t\t<y type=\"Float\">199.95</y>\r\n\t\t\t\t<width type=\"Integer\">76</width>\r\n\t\t\t\t<height type=\"Integer\">26</height>\r\n\t\t\t</properties>\r\n\t\t\t<!-- the meta data are not set on any object -->\r\n\t\t\t<!-- the meta data are available for the controller class, the skin or the plugins -->\r\n\t\t\t<metaData>\r\n\t\t\t</metaData>\r\n\t\t\t<children>\r\n\t\t\t\t<!-- this is a block with the controller class set to org.silex.blocks.Image -->\r\n\t\t\t\t<Image>\r\n\t\t\t\t\t<!-- these properties will be set on the controller class -->\r\n\t\t\t\t\t<properties>\r\n\t\t\t\t\t\t<url>media/test1/im1.jpg</url>\r\n\t\t\t\t\t\t<x type=\"Float\">606.6</x>\r\n\t\t\t\t\t\t<y type=\"Float\">199.95</y>\r\n\t\t\t\t\t\t<width type=\"Integer\">76</width>\r\n\t\t\t\t\t\t<height type=\"Integer\">26</height>\r\n\t\t\t\t\t\t<rotation type=\"Integer\">0</rotation>\r\n\t\t\t\t\t\t<alpha type=\"Integer\">1</alpha>\r\n\t\t\t\t\t\t<textFormat type=\"Array\">\r\n\t\t\t\t\t\t\t<item><![CDATA[font=Arial]]></item>\r\n\t\t\t\t\t\t\t<item><![CDATA[color=4D4D4D]]></item>\r\n\t\t\t\t\t\t\t<item><![CDATA[size=17]]></item>\r\n\t\t\t\t\t\t</textFormat>\r\n\t\t\t\t\t</properties>\r\n\t\t\t\t\t<!-- the meta data are not set on any object -->\r\n\t\t\t\t\t<!-- the meta data are available for the controller class, the skin or the plugins -->\r\n\t\t\t\t\t<metaData>\r\n\t\t\t\t\t</metaData>\r\n\t\t\t\t</Image>\r\n\t\t\t\t<!-- this is a block with a custom controller class, loaded as part of a library at startup -->\r\n\t\t\t\t<CustomControllerClass nameSpace=\"com.mycompany.silexcomponents\" isAutoOpen=\"false\">\r\n\t\t\t\t\t<properties>\r\n\t\t\t\t\t</properties>\r\n\t\t\t\t\t<metaData>\r\n\t\t\t\t\t</metaData>\r\n\t\t\t\t</CustomControllerClass>\r\n\t\t\t\t<!-- this block data is in a separate XML file -->\r\n\t\t\t\t<Group isAutoOpen=\"true\" hasSeparateFile=\"true\" fileUrl=\"contents/mysite1/layer023.xml\" />\r\n\t\t\t\t<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->\r\n\t\t\t\t<SkinableBlock nameSpace=\"com.mycompany.silexcomponents\" isAutoOpen=\"false\">\r\n\t\t\t\t\t<!-- URLs of the skin, depending on the target runtime -->\r\n\t\t\t\t\t<domRoot>maindiv.containerdiv</domRoot>\r\n\t\t\t\t\t<jsSkin>\r\n\t\t\t\t\t\t<url>plugins/mycompanyComponents/js/SkinableBlock.js</url>\r\n\t\t\t\t\t</jsSkin>\r\n\t\t\t\t\t<phpSkin>\r\n\t\t\t\t\t\t<url>plugins/mycompanyComponents/php/SkinableBlock.php</url>\r\n\t\t\t\t\t</phpSkin>\r\n\t\t\t\t\t<as3Skin>\r\n\t\t\t\t\t\t<url>plugins/mycompanyComponents/as2/SkinableBlock.swf</url>\r\n\t\t\t\t\t</as3Skin>\r\n\t\t\t\t\t<properties>\r\n\t\t\t\t\t</properties>\r\n\t\t\t\t\t<metaData>\r\n\t\t\t\t\t</metaData>\r\n\t\t\t\t</SkinableBlock>\r\n\t\t\t</children>\r\n\t\t</HGroup>";
+	var xmlString = "<HGroup>\r\n\t\t\t<blockData>\r\n\t\t\t\t<!-- these properties will be set on the controller class -->\r\n\t\t\t\t<properties>\r\n\t\t\t\t\t<x type=\"Float\">606.6</x>\r\n\t\t\t\t\t<y type=\"Float\">199.95</y>\r\n\t\t\t\t\t<width type=\"Integer\">76</width>\r\n\t\t\t\t\t<height type=\"Integer\">26</height>\r\n\t\t\t\t</properties>\r\n\t\t\t\t<!-- the meta data are not set on any object -->\r\n\t\t\t\t<!-- the meta data are available for the controller class, the skin or the plugins -->\r\n\t\t\t\t<metaData>\r\n\t\t\t\t</metaData>\r\n\t\t\t</blockData>\r\n\t\t\t<children>\r\n\t\t\t\t<!-- this is a block with the controller class set to org.silex.blocks.Image -->\r\n\t\t\t\t<Image>\r\n\t\t\t\t\t<blockData>\r\n\t\t\t\t\t\t<!-- these properties will be set on the controller class -->\r\n\t\t\t\t\t\t<properties>\r\n\t\t\t\t\t\t\t<url>media/test1/im1.jpg</url>\r\n\t\t\t\t\t\t\t<x type=\"Float\">606.6</x>\r\n\t\t\t\t\t\t\t<y type=\"Float\">199.95</y>\r\n\t\t\t\t\t\t\t<width type=\"Integer\">76</width>\r\n\t\t\t\t\t\t\t<height type=\"Integer\">26</height>\r\n\t\t\t\t\t\t\t<rotation type=\"Integer\">0</rotation>\r\n\t\t\t\t\t\t\t<alpha type=\"Integer\">1</alpha>\r\n\t\t\t\t\t\t\t<textFormat type=\"Array\">\r\n\t\t\t\t\t\t\t\t<item><![CDATA[font=Arial]]></item>\r\n\t\t\t\t\t\t\t\t<item><![CDATA[color=4D4D4D]]></item>\r\n\t\t\t\t\t\t\t\t<item><![CDATA[size=17]]></item>\r\n\t\t\t\t\t\t\t</textFormat>\r\n\t\t\t\t\t\t</properties>\r\n\t\t\t\t\t\t<!-- the meta data are not set on any object -->\r\n\t\t\t\t\t\t<!-- the meta data are available for the controller class, the skin or the plugins -->\r\n\t\t\t\t\t\t<metaData>\r\n\t\t\t\t\t\t</metaData>\r\n\t\t\t\t\t</blockData>\r\n\t\t\t\t</Image>\r\n\t\t\t\t<!-- this is a block with a custom controller class, loaded as part of a library at startup -->\r\n\t\t\t\t<CustomControllerClass nameSpace=\"com.mycompany.silexcomponents\" isAutoOpen=\"false\">\r\n\t\t\t\t\t<blockData>\r\n\t\t\t\t\t\t<properties>\r\n\t\t\t\t\t\t</properties>\r\n\t\t\t\t\t\t<metaData>\r\n\t\t\t\t\t\t</metaData>\r\n\t\t\t\t\t</blockData>\r\n\t\t\t\t</CustomControllerClass>\r\n\t\t\t\t<!-- this block data is in a separate XML file -->\r\n\t\t\t\t<Group isAutoOpen=\"true\" fileUrl=\"contents/mysite1/layer023.xml\" />\r\n\t\t\t\t<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->\r\n\t\t\t\t<SkinnableBlock nameSpace=\"com.mycompany.silexcomponents\" isAutoOpen=\"false\">\r\n\t\t\t\t\t<blockData>\r\n\t\t\t\t\t\t<descriptorUID>SkinnableBlockDescriptor</descriptorUID>\r\n\t\t\t\t\t\t<!-- URLs of the skin, depending on the target runtime -->\r\n\t\t\t\t\t\t<domRoot>maindiv.containerdiv</domRoot>\r\n\t\t\t\t\t\t<jsSkinURL>\r\n\t\t\t\t\t\t\t<url>plugins/mycompanyComponents/js/SkinnableBlock.js</url>\r\n\t\t\t\t\t\t</jsSkinURL>\r\n\t\t\t\t\t\t<phpSkinURL>\r\n\t\t\t\t\t\t\t<url>plugins/mycompanyComponents/php/SkinnableBlock.php</url>\r\n\t\t\t\t\t\t</phpSkinURL>\r\n\t\t\t\t\t\t<as3SkinURL>\r\n\t\t\t\t\t\t\t<url>plugins/mycompanyComponents/as2/SkinnableBlock.swf</url>\r\n\t\t\t\t\t\t</as3SkinURL>\r\n\t\t\t\t\t\t<properties>\r\n\t\t\t\t\t\t</properties>\r\n\t\t\t\t\t\t<metaData>\r\n\t\t\t\t\t\t</metaData>\r\n\t\t\t\t\t</blockData>\r\n\t\t\t\t</SkinnableBlock>\r\n\t\t\t</children>\r\n\t\t</HGroup>";
 	var block = new org.silex.core.block.Block("");
 	org.silex.core.block.BlockBuilder.deserializeBlockData(block,xmlString);
 	var childrenBlock = block.getChildren();
-	var childrenBlockData = new Array();
-	var _g = 0;
-	while(_g < childrenBlock.length) {
-		var childBlock = childrenBlock[_g];
-		++_g;
-		childrenBlockData.push(childBlock.getBlockData());
-	}
-	childrenBlockData.sort($closure(this,"blockDataSort"));
-	utest.Assert.equals("org.silex.blocks.HGroup",block.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 145, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(606.6,block.getBlockData().properties.get("x"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 146, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(76,block.getBlockData().properties.get("width"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 147, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	childrenBlock.sort($closure(this,"blockSort"));
+	utest.Assert.equals("org.silex.blocks.HGroup",block.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 149, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(606.6,block.getBlockData().properties.get("x"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 150, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(76,block.getBlockData().properties.get("width"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 151, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
 	var child;
-	child = childrenBlockData.pop();
-	utest.Assert.equals("org.silex.blocks.Image",child.className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 152, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(606.6,child.properties.get("x"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 153, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(76,child.properties.get("width"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 154, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(0,child.properties.get("rotation"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 155, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(1,child.properties.get("alpha"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 156, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	child = childrenBlockData.pop();
-	utest.Assert.equals("org.silex.blocks.Group",child.className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 160, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(true,child.isAutoOpen,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 161, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(true,child.hasSeparateFile,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 162, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("contents/mysite1/layer023.xml",child.fileUrl,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 163, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	child = childrenBlockData.pop();
-	utest.Assert.equals("com.mycompany.silexcomponents.SkinableBlock",child.className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 167, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(false,child.isAutoOpen,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 168, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("maindiv.containerdiv",child.domRoot,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 169, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("plugins/mycompanyComponents/js/SkinableBlock.js",child.jsURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 170, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("plugins/mycompanyComponents/php/SkinableBlock.php",child.phpURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 171, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("plugins/mycompanyComponents/as2/SkinableBlock.swf",child.as3URL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 172, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	child = childrenBlockData.pop();
-	utest.Assert.equals("com.mycompany.silexcomponents.CustomControllerClass",child.className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 176, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(false,child.isAutoOpen,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 177, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	child = childrenBlock.pop();
+	utest.Assert.equals("org.silex.blocks.Image",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 156, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(606.6,child.getBlockData().properties.get("x"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 157, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(76,child.getBlockData().properties.get("width"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 158, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(0,child.getBlockData().properties.get("rotation"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 159, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(1,child.getBlockData().properties.get("alpha"),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 160, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	child = childrenBlock.pop();
+	utest.Assert.equals("org.silex.blocks.Group",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 164, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(true,child.getIsAutoOpen(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 165, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("contents/mysite1/layer023.xml",child.getFileUrl(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 166, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	child = childrenBlock.pop();
+	utest.Assert.equals("com.mycompany.silexcomponents.SkinnableBlock",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 170, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(false,child.getIsAutoOpen(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 171, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("SkinnableBlockDescriptor",child.getBlockData().descriptorUID,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 172, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("plugins/mycompanyComponents/js/SkinnableBlock.js",child.getBlockData().jsSkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 173, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("plugins/mycompanyComponents/php/SkinnableBlock.php",child.getBlockData().phpSkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 174, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("plugins/mycompanyComponents/as2/SkinnableBlock.swf",child.getBlockData().as3SkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 175, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	child = childrenBlock.pop();
+	utest.Assert.equals("com.mycompany.silexcomponents.CustomControllerClass",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 179, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(false,child.getIsAutoOpen(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 180, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
 }
 org.silex_unit_tests.core.block.BlockBuilderTests.prototype.testSetBlockAttribute = function() {
 	var parentBlock = new org.silex.core.block.Block("");
@@ -4009,17 +4185,17 @@ org.silex_unit_tests.core.block.BlockBuilderTests.prototype.testSetBlockAttribut
 	properties.set("testFloatProperty",1.2);
 	properties.set("testBoolProperty",true);
 	properties.set("testArrayProperty",[1,"value"]);
-	var parentBlockBlockData = { className : "org.silex_unit_tests.core.block.TestNativeClass", descriptorUID : null, isAutoOpen : false, isTransversal : false, hasSeparateFile : false, fileUrl : null, domRoot : null, jsURL : null, as3URL : null, phpURL : null, properties : properties, metaData : new Hash()};
+	var parentBlockBlockData = { className : "org.silex_unit_tests.core.block.TestNativeClass", descriptorUID : null, jsSkinURL : null, as3SkinURL : null, phpSkinURL : null, properties : properties, metaData : new Hash()};
 	parentBlock.setBlockData(parentBlockBlockData);
 	var blockBuilder = new org.silex.core.block.BlockBuilder(parentBlock);
 	blockBuilder.createNativeClassInstance();
 	blockBuilder.setBlockAttributes();
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testStringProperty"),"testStringValue",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 504, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testBoolProperty"),true,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 506, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testIntProperty"),1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 508, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testFloatProperty"),1.2,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 510, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[0],1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 512, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[1],"value",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 513, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testStringProperty"),"testStringValue",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 502, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testBoolProperty"),true,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 504, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testIntProperty"),1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 506, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testFloatProperty"),1.2,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 508, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[0],1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 510, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[1],"value",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 511, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
 }
 org.silex_unit_tests.core.block.BlockBuilderTests.prototype.__class__ = org.silex_unit_tests.core.block.BlockBuilderTests;
 org.silex_unit_tests.core.block.TestNativeClass = function(p) {
@@ -4421,6 +4597,70 @@ js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
 js.Lib.prototype.__class__ = js.Lib;
+org.silex.runtime.domobject.FillStyleValue = { __ename__ : ["org","silex","runtime","domobject","FillStyleValue"], __constructs__ : ["none","monochrome","gradient","bitmap"] }
+org.silex.runtime.domobject.FillStyleValue.none = ["none",0];
+org.silex.runtime.domobject.FillStyleValue.none.toString = $estr;
+org.silex.runtime.domobject.FillStyleValue.none.__enum__ = org.silex.runtime.domobject.FillStyleValue;
+org.silex.runtime.domobject.FillStyleValue.monochrome = function(colorStop) { var $x = ["monochrome",1,colorStop]; $x.__enum__ = org.silex.runtime.domobject.FillStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.FillStyleValue.gradient = function(gradientStyle) { var $x = ["gradient",2,gradientStyle]; $x.__enum__ = org.silex.runtime.domobject.FillStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.FillStyleValue.bitmap = function(imageDOMObject,repeat) { var $x = ["bitmap",3,imageDOMObject,repeat]; $x.__enum__ = org.silex.runtime.domobject.FillStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.LineStyleValue = { __ename__ : ["org","silex","runtime","domobject","LineStyleValue"], __constructs__ : ["none","monochrome","gradient","bitmap"] }
+org.silex.runtime.domobject.LineStyleValue.none = ["none",0];
+org.silex.runtime.domobject.LineStyleValue.none.toString = $estr;
+org.silex.runtime.domobject.LineStyleValue.none.__enum__ = org.silex.runtime.domobject.LineStyleValue;
+org.silex.runtime.domobject.LineStyleValue.monochrome = function(colorStop,lineStyle) { var $x = ["monochrome",1,colorStop,lineStyle]; $x.__enum__ = org.silex.runtime.domobject.LineStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.LineStyleValue.gradient = function(gradientStyle,lineStyle) { var $x = ["gradient",2,gradientStyle,lineStyle]; $x.__enum__ = org.silex.runtime.domobject.LineStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.LineStyleValue.bitmap = function(imageDOMObject,lineStyle,repeat) { var $x = ["bitmap",3,imageDOMObject,lineStyle,repeat]; $x.__enum__ = org.silex.runtime.domobject.LineStyleValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.GradientTypeValue = { __ename__ : ["org","silex","runtime","domobject","GradientTypeValue"], __constructs__ : ["linear","radial"] }
+org.silex.runtime.domobject.GradientTypeValue.linear = ["linear",0];
+org.silex.runtime.domobject.GradientTypeValue.linear.toString = $estr;
+org.silex.runtime.domobject.GradientTypeValue.linear.__enum__ = org.silex.runtime.domobject.GradientTypeValue;
+org.silex.runtime.domobject.GradientTypeValue.radial = ["radial",1];
+org.silex.runtime.domobject.GradientTypeValue.radial.toString = $estr;
+org.silex.runtime.domobject.GradientTypeValue.radial.__enum__ = org.silex.runtime.domobject.GradientTypeValue;
+org.silex.runtime.domobject.CapsStyleValue = { __ename__ : ["org","silex","runtime","domobject","CapsStyleValue"], __constructs__ : ["none","square","round"] }
+org.silex.runtime.domobject.CapsStyleValue.none = ["none",0];
+org.silex.runtime.domobject.CapsStyleValue.none.toString = $estr;
+org.silex.runtime.domobject.CapsStyleValue.none.__enum__ = org.silex.runtime.domobject.CapsStyleValue;
+org.silex.runtime.domobject.CapsStyleValue.square = ["square",1];
+org.silex.runtime.domobject.CapsStyleValue.square.toString = $estr;
+org.silex.runtime.domobject.CapsStyleValue.square.__enum__ = org.silex.runtime.domobject.CapsStyleValue;
+org.silex.runtime.domobject.CapsStyleValue.round = ["round",2];
+org.silex.runtime.domobject.CapsStyleValue.round.toString = $estr;
+org.silex.runtime.domobject.CapsStyleValue.round.__enum__ = org.silex.runtime.domobject.CapsStyleValue;
+org.silex.runtime.domobject.JointStyleValue = { __ename__ : ["org","silex","runtime","domobject","JointStyleValue"], __constructs__ : ["miter","round","bevel"] }
+org.silex.runtime.domobject.JointStyleValue.miter = ["miter",0];
+org.silex.runtime.domobject.JointStyleValue.miter.toString = $estr;
+org.silex.runtime.domobject.JointStyleValue.miter.__enum__ = org.silex.runtime.domobject.JointStyleValue;
+org.silex.runtime.domobject.JointStyleValue.round = ["round",1];
+org.silex.runtime.domobject.JointStyleValue.round.toString = $estr;
+org.silex.runtime.domobject.JointStyleValue.round.__enum__ = org.silex.runtime.domobject.JointStyleValue;
+org.silex.runtime.domobject.JointStyleValue.bevel = ["bevel",2];
+org.silex.runtime.domobject.JointStyleValue.bevel.toString = $estr;
+org.silex.runtime.domobject.JointStyleValue.bevel.__enum__ = org.silex.runtime.domobject.JointStyleValue;
+org.silex.runtime.domobject.TransformationOriginValue = { __ename__ : ["org","silex","runtime","domobject","TransformationOriginValue"], __constructs__ : ["constant","point"] }
+org.silex.runtime.domobject.TransformationOriginValue.constant = function(transformationOriginX,transformationOriginY) { var $x = ["constant",0,transformationOriginX,transformationOriginY]; $x.__enum__ = org.silex.runtime.domobject.TransformationOriginValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.TransformationOriginValue.point = function(point) { var $x = ["point",1,point]; $x.__enum__ = org.silex.runtime.domobject.TransformationOriginValue; $x.toString = $estr; return $x; }
+org.silex.runtime.domobject.TransformationOriginXValue = { __ename__ : ["org","silex","runtime","domobject","TransformationOriginXValue"], __constructs__ : ["left","center","right"] }
+org.silex.runtime.domobject.TransformationOriginXValue.left = ["left",0];
+org.silex.runtime.domobject.TransformationOriginXValue.left.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginXValue.left.__enum__ = org.silex.runtime.domobject.TransformationOriginXValue;
+org.silex.runtime.domobject.TransformationOriginXValue.center = ["center",1];
+org.silex.runtime.domobject.TransformationOriginXValue.center.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginXValue.center.__enum__ = org.silex.runtime.domobject.TransformationOriginXValue;
+org.silex.runtime.domobject.TransformationOriginXValue.right = ["right",2];
+org.silex.runtime.domobject.TransformationOriginXValue.right.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginXValue.right.__enum__ = org.silex.runtime.domobject.TransformationOriginXValue;
+org.silex.runtime.domobject.TransformationOriginYValue = { __ename__ : ["org","silex","runtime","domobject","TransformationOriginYValue"], __constructs__ : ["top","middle","bottom"] }
+org.silex.runtime.domobject.TransformationOriginYValue.top = ["top",0];
+org.silex.runtime.domobject.TransformationOriginYValue.top.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginYValue.top.__enum__ = org.silex.runtime.domobject.TransformationOriginYValue;
+org.silex.runtime.domobject.TransformationOriginYValue.middle = ["middle",1];
+org.silex.runtime.domobject.TransformationOriginYValue.middle.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginYValue.middle.__enum__ = org.silex.runtime.domobject.TransformationOriginYValue;
+org.silex.runtime.domobject.TransformationOriginYValue.bottom = ["bottom",2];
+org.silex.runtime.domobject.TransformationOriginYValue.bottom.toString = $estr;
+org.silex.runtime.domobject.TransformationOriginYValue.bottom.__enum__ = org.silex.runtime.domobject.TransformationOriginYValue;
 StringTools = function() { }
 StringTools.__name__ = ["StringTools"];
 StringTools.urlEncode = function(s) {
@@ -4652,8 +4892,8 @@ Xml.ecdata_end = new EReg("\\]\\]>","");
 Xml.edoctype_elt = new EReg("[\\[|\\]>]","");
 Xml.ecomment_end = new EReg("-->","");
 haxe.Timer.arr = new Array();
-org.silex.core.XmlUtils.INDENT_STRING = "\t";
 utest.ui.text.HtmlReport.platform = "javascript";
+org.silex.core.XmlUtils.INDENT_STRING = "\t";
 utest.TestHandler.POLLING_TIME = 10;
 js.Lib.onerror = null;
 org.silex_unit_tests.core.block.BlockBuilderTests.main()
