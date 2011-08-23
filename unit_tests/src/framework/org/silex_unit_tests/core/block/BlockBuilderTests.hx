@@ -169,7 +169,6 @@ class BlockBuilderTests
 		// child SkinableBlock
 		Assert.equals('com.mycompany.silexcomponents.SkinnableBlock', child.getBlockData().className);
 		Assert.equals(false, child.getIsAutoOpen());
-		Assert.equals('maindiv.containerdiv', child.getBlockData().domRoot);
 		Assert.equals('SkinnableBlockDescriptor', child.getBlockData().descriptorUID);
 		Assert.equals('plugins/mycompanyComponents/js/SkinnableBlock.js', child.getBlockData().jsSkinURL);
 		Assert.equals('plugins/mycompanyComponents/php/SkinnableBlock.php', child.getBlockData().phpSkinURL);
@@ -483,7 +482,6 @@ class BlockBuilderTests
 		var parentBlockBlockData:BlockData = {
 			className:"org.silex_unit_tests.core.block.TestNativeClass",
 			descriptorUID:null,
-			domRoot:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,

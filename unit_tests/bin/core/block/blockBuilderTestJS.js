@@ -883,7 +883,7 @@ org.silex.core.block.BlockBuilder.doCreateBlock = function(xml,parentBlock) {
 	}
 }
 org.silex.core.block.BlockBuilder.createBlockData = function(xml) {
-	var blockData = { className : null, descriptorUID : null, domRoot : null, as3SkinURL : null, jsSkinURL : null, phpSkinURL : null, properties : new Hash(), metaData : new Hash()};
+	var blockData = { className : null, descriptorUID : null, as3SkinURL : null, jsSkinURL : null, phpSkinURL : null, properties : new Hash(), metaData : new Hash()};
 	var blockXml = xml;
 	if(blockXml.exists("nameSpace")) blockData.className = blockXml.get("nameSpace") + "." + blockXml.getNodeName(); else blockData.className = "org.silex.blocks." + blockXml.getNodeName();
 	var blockDataXML = Xml.parse("");
@@ -896,9 +896,6 @@ org.silex.core.block.BlockBuilder.createBlockData = function(xml) {
 	while( $it1.hasNext() ) {
 		var childXml = $it1.next();
 		switch(childXml.getNodeName()) {
-		case "domRoot":
-			blockData.domRoot = childXml.firstChild().toString();
-			break;
 		case "as3SkinURL":
 			blockData.as3SkinURL = childXml.firstChild().firstChild().toString();
 			break;
@@ -4172,14 +4169,13 @@ org.silex_unit_tests.core.block.BlockBuilderTests.prototype.test_deserializeBloc
 	child = childrenBlock.pop();
 	utest.Assert.equals("com.mycompany.silexcomponents.SkinnableBlock",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 170, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
 	utest.Assert.equals(false,child.getIsAutoOpen(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 171, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("maindiv.containerdiv",child.getBlockData().domRoot,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 172, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("SkinnableBlockDescriptor",child.getBlockData().descriptorUID,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 173, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("plugins/mycompanyComponents/js/SkinnableBlock.js",child.getBlockData().jsSkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 174, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("plugins/mycompanyComponents/php/SkinnableBlock.php",child.getBlockData().phpSkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 175, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals("plugins/mycompanyComponents/as2/SkinnableBlock.swf",child.getBlockData().as3SkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 176, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("SkinnableBlockDescriptor",child.getBlockData().descriptorUID,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 172, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("plugins/mycompanyComponents/js/SkinnableBlock.js",child.getBlockData().jsSkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 173, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("plugins/mycompanyComponents/php/SkinnableBlock.php",child.getBlockData().phpSkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 174, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("plugins/mycompanyComponents/as2/SkinnableBlock.swf",child.getBlockData().as3SkinURL,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 175, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
 	child = childrenBlock.pop();
-	utest.Assert.equals("com.mycompany.silexcomponents.CustomControllerClass",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 180, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
-	utest.Assert.equals(false,child.getIsAutoOpen(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 181, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals("com.mycompany.silexcomponents.CustomControllerClass",child.getBlockData().className,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 179, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
+	utest.Assert.equals(false,child.getIsAutoOpen(),null,{ fileName : "BlockBuilderTests.hx", lineNumber : 180, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "test_deserializeBlockData_1"});
 }
 org.silex_unit_tests.core.block.BlockBuilderTests.prototype.testSetBlockAttribute = function() {
 	var parentBlock = new org.silex.core.block.Block("");
@@ -4189,17 +4185,17 @@ org.silex_unit_tests.core.block.BlockBuilderTests.prototype.testSetBlockAttribut
 	properties.set("testFloatProperty",1.2);
 	properties.set("testBoolProperty",true);
 	properties.set("testArrayProperty",[1,"value"]);
-	var parentBlockBlockData = { className : "org.silex_unit_tests.core.block.TestNativeClass", descriptorUID : null, domRoot : null, jsSkinURL : null, as3SkinURL : null, phpSkinURL : null, properties : properties, metaData : new Hash()};
+	var parentBlockBlockData = { className : "org.silex_unit_tests.core.block.TestNativeClass", descriptorUID : null, jsSkinURL : null, as3SkinURL : null, phpSkinURL : null, properties : properties, metaData : new Hash()};
 	parentBlock.setBlockData(parentBlockBlockData);
 	var blockBuilder = new org.silex.core.block.BlockBuilder(parentBlock);
 	blockBuilder.createNativeClassInstance();
 	blockBuilder.setBlockAttributes();
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testStringProperty"),"testStringValue",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 504, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testBoolProperty"),true,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 506, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testIntProperty"),1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 508, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testFloatProperty"),1.2,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 510, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[0],1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 512, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
-	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[1],"value",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 513, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testStringProperty"),"testStringValue",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 502, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testBoolProperty"),true,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 504, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testIntProperty"),1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 506, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testFloatProperty"),1.2,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 508, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[0],1,null,{ fileName : "BlockBuilderTests.hx", lineNumber : 510, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
+	utest.Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[1],"value",null,{ fileName : "BlockBuilderTests.hx", lineNumber : 511, className : "org.silex_unit_tests.core.block.BlockBuilderTests", methodName : "testSetBlockAttribute"});
 }
 org.silex_unit_tests.core.block.BlockBuilderTests.prototype.__class__ = org.silex_unit_tests.core.block.BlockBuilderTests;
 org.silex_unit_tests.core.block.TestNativeClass = function(p) {

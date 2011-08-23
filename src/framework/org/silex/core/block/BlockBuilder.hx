@@ -139,7 +139,6 @@ class BlockBuilder
 		{
 			className : null,
 			descriptorUID : null,
-			domRoot : null,
 			as3SkinURL : null,
 			jsSkinURL : null,
 			phpSkinURL : null,
@@ -178,10 +177,6 @@ class BlockBuilder
 			switch (childXml.nodeName)
 			{
 				// SKIN VALUES
-				
-				// get domRoot value
-				case 'domRoot':
-				blockData.domRoot = childXml.firstChild().toString();
 				
 				// get as3 skin value
 				case 'as3SkinURL':
@@ -371,7 +366,7 @@ class BlockBuilder
 			}
 		}
 		
-		//if it does'nt exist, set it on the domObject (skin)
+		//if it doesn't exist, set it on the domObject (skin)
 		else if (_block.getDOMObject() != null)
 		{
 			for (propertyName in _block.getBlockData().properties.keys())

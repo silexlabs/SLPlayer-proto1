@@ -36,11 +36,6 @@ typedef BlockData =
 	 * It is useful to add the block and to edit the block.
 	 */
 	var descriptorUID : String;
-	 
-	 /**
-	 * The DOM Root
-	 */
-	var domRoot : String;
 	
 	/**
 	 * URLs of the skin, depending on the target.
