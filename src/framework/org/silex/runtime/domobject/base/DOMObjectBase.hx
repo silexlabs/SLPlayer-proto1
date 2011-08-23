@@ -24,6 +24,7 @@ import org.silex.runtime.domobject.DOMObjectData;
  */
 class DOMObjectBase 
 {
+	public static var rootDOMObject:DOMObjectBase;
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Event callbacks, cross-platform callbacks for runtime specific events
@@ -210,6 +211,30 @@ class DOMObjectBase
 		_matrix.rotate(angle, getTransformationOriginPoint(transformationOrigin));
 		//refresh the matrix to refresh the domObject display
 		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Set the rotation to an absolute angle instead of adding a rotation to the existing 
+	 * rotation
+	 * @param	angle the target angle
+	 * @param	transformationOrigin the rotation center
+	 */
+	public function setRotation(angle:Int, transformationOrigin:TransformationOriginValue):Void {
+		
+		//use the matrix API
+		_matrix.setRotation(angle, getTransformationOriginPoint(transformationOrigin));
+		//refresh the matrix to refresh the domObject display
+		setMatrix(this._matrix);
+	}
+	
+	/**
+	 * Return the current rotation angle in deg
+	 * @return an Int from 0 to 360
+	 */
+	public function getRotation():Int { 
+		
+		//use the Matrix API
+		return _matrix.getRotation();
 	}
 	
 	/**
@@ -458,10 +483,6 @@ class DOMObjectBase
 	public function setHeight(value:Int):Void {}
 	
 	public function getHeight():Int { return 0; }
-	
-	public function setRotation(value:Int):Void {}
-	
-	public function getRotation():Int { return 0; }
 	
 	public function setZOrder(value:Int) {}
 	

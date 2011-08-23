@@ -163,15 +163,7 @@ class DOMObject extends DOMObjectBase
 		return this._referenceToNativeDOM.height;
 	}
 	
-	override public function setRotation(value:Int):Void
-	{
-		this._referenceToNativeDOM.rotation = value;
-	}
-	
-	override public function getRotation():Int
-	{
-		return this._referenceToNativeDOM.rotation;
-	}
+
 	
 	override public function setZOrder(value:Int)
 	{

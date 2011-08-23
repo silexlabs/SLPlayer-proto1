@@ -166,7 +166,7 @@ class Matrix
 	{
 		//convert degree to radian
 		var angleInRad:Float = angle / 180 * Math.PI;
-		Log.trace(angleInRad);
+		
 		//the matrix that will be rotated along transformation origin point. It will be
 		//concatenated with the current matrix. Default to an identity matrix
 		var rotatedMatrix:Matrix = new Matrix();
@@ -287,8 +287,29 @@ class Matrix
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Helper methods to extract transform values from the matrix
+	// Helper methods to set and get transform values from the matrix
 	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Set the rotation of the matrix to an absolut value instead of adding a rotation
+	 * to an existing rotation. Preserve the existing transformations
+	 * @param	angle the angle that must be applied
+	 * @param	transformationOrigin the rotation center
+	 */
+	public function setRotation(angle:Int, transformationOrigin:Point):Void 
+	{
+		//get the current angle
+		var currentRotation:Int = getRotation();
+		
+		//find the complementary angle to reset the rotation to 0
+		var resetAngle:Int = 360 - currentRotation;
+		
+		//reset the rotation while preserving other transformations
+		this.rotate(resetAngle, transformationOrigin );
+		
+		//set the new rotation value
+		this.rotate(angle, transformationOrigin);
+	}
 	
 	/**
 	 * return the current matrix rotation in degree
