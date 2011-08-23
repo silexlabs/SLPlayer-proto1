@@ -143,6 +143,46 @@ class MatrixTests
 		Assert.equals(domObject.getMatrix().getTranslationX(), 20);
 		Assert.equals(domObject.getMatrix().getTranslationY(), 30);
 		
+		//test absolut rotation setting
+		
+		domObject.setRotation(45, constant(center, middle));
+		domObject.setRotation(45, constant(center, middle));
+		domObject.setRotation(20, constant(center, middle));
+		
+		Assert.equals(domObject.getRotation(), 20);
+		
+		domObject.resetTransformations();
+		
+		//test absolut scale setting
+		
+		domObject.setScaleX(2, constant(center, middle));
+		domObject.setScaleX(2, constant(center, middle));
+		domObject.setScaleX(2, constant(center, middle));
+		
+		domObject.setScaleY(3, constant(center, middle));
+		domObject.setScaleY(3, constant(center, middle));
+		domObject.setScaleY(3, constant(center, middle));
+		
+		
+		Assert.equals(domObject.getScaleX(), 2);
+		Assert.equals(domObject.getScaleY(), 3);
+		
+		domObject.resetTransformations();
+		
+		//test absolut translation setting
+		
+		domObject.setTranslationX(50);
+		domObject.setTranslationX(50);
+		domObject.setTranslationX(50);
+		
+		domObject.setTranslationY(20);
+		domObject.setTranslationY(20);
+		domObject.setTranslationY(20);
+		
+		Assert.equals(domObject.getTranslationX(), 50);
+		Assert.equals(domObject.getTranslationY(), 20);
+		
+		
 	}
 	
 	
