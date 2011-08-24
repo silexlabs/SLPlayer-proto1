@@ -65,6 +65,61 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden public and private methods to manage the visibility and opacity of the dom object
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Show or hide the native HTML element. 
+	 * @param	value true if the element must be visible
+	 */
+	override public function setIsVisible(value:Bool):Void
+	{
+		//set the right visibility CSS property value
+		if (value == true)
+		{
+			this._referenceToNativeDOM.style.visibility = "visible";
+		}
+		else
+		{
+			this._referenceToNativeDOM.style.visibility = "hidden";
+		}
+	}
+	
+	/**
+	 * Return wether the native HTML element is visible.
+	 */
+	override public function getIsVisible():Bool
+	{
+		if (this._referenceToNativeDOM.style.visibility == "visible")
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Set the opacity of the HTML element
+	 * @param	value from 0 (transparent) to 1 (opaque)
+	 */
+	override public function setAlpha(value:Float):Void
+	{
+		super.setAlpha(value);
+		this._referenceToNativeDOM.style.opacity = value;
+	}
+	
+	/**
+	 * return the opacity of the HTML element, 
+	 * from 0 to 1
+	 */ 
+	override public function getAlpha():Float
+	{
+		return Std.parseFloat(this._referenceToNativeDOM.style.opacity);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
 	// Overriden methods to transform the dom object and manipulate it's matrix
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -186,67 +241,6 @@ class DOMObject extends DOMObjectBase
 		return Std.parseInt(this._referenceToNativeDOM.style.height);
 	}
 	
-	/**
-	 * Set rotation of the html element. Implementation vary based on browser
-	 * 'c'est la misère'
-	 * @param	value the rotation angle in deg
-	 */
-	override public function setRotation(value:Int):Void
-	{
-		//prepare the CSS value which is the same for each browser
-		var rotationValue:String = "rotate(" + value + "deg)";
-		
-		//test the current browser with a browser specific CSS style
-		//and set the rotation value and origin point to match Flash
-		if (this._referenceToNativeDOM.style.MozTransform != null)
-		{
-			this._referenceToNativeDOM.style.MozTransform = rotationValue;
-			this._referenceToNativeDOM.style.MozTransformOrigin = "0 0";
-		}
-		else if (this._referenceToNativeDOM.style.WebkitTransform != null)
-		{
-			this._referenceToNativeDOM.style.WebkitTransform = rotationValue;
-			this._referenceToNativeDOM.style.WebkitTransformOrigin = "0 0";
-		}
-		else if (this._referenceToNativeDOM.style.OTransform != null)
-		{
-			this._referenceToNativeDOM.style.OTransform = rotationValue;
-			this._referenceToNativeDOM.style.OTransform = "0 0";
-		}
-		
-	}
-	
-	/**
-	 * When returning the rotation, the rotation value must be extracted from
-	 * the CSS style
-	 * @return the rotation in deg
-	 */
-	override public function getRotation():Int
-	{
-		//will store the CSS rotation value
-		var nativeRotation:String = "";
-		
-		//test the current browser to retrieve the rotation value
-		if (this._referenceToNativeDOM.style.MozTransform != null)
-		{
-			nativeRotation =  this._referenceToNativeDOM.style.MozTransform;
-		}
-		else if (this._referenceToNativeDOM.style.WebkitTransform != null)
-		{
-			nativeRotation =  this._referenceToNativeDOM.style.WebkitTransform;
-		}
-		else if (this._referenceToNativeDOM.style.OTransform != null)
-		{
-			nativeRotation =  this._referenceToNativeDOM.style.OTransform;
-		}
-		
-		//extract the numerical value of the rotation
-		nativeRotation = StringTools.replace(nativeRotation, "rotate(", "");
-		nativeRotation = StringTools.replace(nativeRotation, "deg)", "");
-		
-		//cast it as an Int
-		return Std.parseInt(nativeRotation);
-	}
 	
 	/**
 	 * When setting the z-order on an HTML element,

@@ -166,7 +166,7 @@ class Matrix
 	{
 		//convert degree to radian
 		var angleInRad:Float = angle / 180 * Math.PI;
-		Log.trace(angleInRad);
+		
 		//the matrix that will be rotated along transformation origin point. It will be
 		//concatenated with the current matrix. Default to an identity matrix
 		var rotatedMatrix:Matrix = new Matrix();
@@ -287,8 +287,29 @@ class Matrix
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Helper methods to extract transform values from the matrix
+	// Helper methods to set and get transform values from the matrix
 	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Set the rotation of the matrix to an absolut value instead of adding a rotation
+	 * to an existing rotation. Preserve the existing transformations
+	 * @param	angle the angle that must be applied
+	 * @param	transformationOrigin the rotation center
+	 */
+	public function setRotation(angle:Int, transformationOrigin:Point):Void 
+	{
+		//get the current angle
+		var currentRotation:Int = getRotation();
+		
+		//find the complementary angle to reset the rotation to 0
+		var resetAngle:Int = 360 - currentRotation;
+		
+		//reset the rotation while preserving other transformations
+		this.rotate(resetAngle, transformationOrigin );
+		
+		//set the new rotation value
+		this.rotate(angle, transformationOrigin);
+	}
 	
 	/**
 	 * return the current matrix rotation in degree
@@ -322,6 +343,26 @@ class Matrix
 	}
 	
 	/**
+	 * Set the absolut scale x value instead of adding it to the
+	 * current scale x value
+	 * @param	scaleXFactor the target scale x
+	 * @param	transformationOrigin the scale center
+	 */
+	public function setScaleX(scaleXFactor:Float, transformationOrigin:Point):Void
+	{
+		var currentScaleX:Float = getScaleX();
+		
+		//find the complementary scale x to reset the scale to 1
+		var resetScaleX:Float = 1 / currentScaleX;
+		
+		//reset the x scale while preserving other transformations
+		this.scale(resetScaleX, 1, transformationOrigin);
+		
+		//set the new scale x value
+		this.scale(scaleXFactor, 1, transformationOrigin);
+	}
+	
+	/**
 	 * Return the current X scale of the matrix
 	 */
 	public function getScaleX():Float
@@ -339,6 +380,26 @@ class Matrix
 		}
 		
 		return scaleSign *  Math.sqrt((_matrixData.a * _matrixData.a) + (_matrixData.c * _matrixData.c));
+	}
+	
+	/**
+	 * Set the absolut scale y value instead of adding it to the
+	 * current scale y value
+	 * @param	scaleXFactor the target scale y
+	 * @param	transformationOrigin the scale center
+	 */
+	public function setScaleY(scaleYFactor:Float, transformationOrigin:Point):Void
+	{
+		var currentScaleY:Float = getScaleY();
+		
+		//find the complementary scale y to reset the scale to 1
+		var resetScaleY:Float = 1 / currentScaleY;
+		
+		//reset the y scale while preserving other transformations
+		this.scale(1, resetScaleY, transformationOrigin);
+		
+		//set the new scale y value
+		this.scale(1, scaleYFactor, transformationOrigin);
 	}
 	
 	/**
@@ -362,11 +423,47 @@ class Matrix
 	}
 	
 	/**
+	 * Set the absolut x translation instead of adding it to the 
+	 * current x translation
+	 * @param	translationX the target x translation
+	 */
+	public function setTranslationX(translationX:Float):Void
+	{
+		var currentTranslationX:Float = getTranslationX();
+		
+		//find the complimentary x translation to reset it to 0
+		var resetTranslationX:Float = currentTranslationX * -1;
+		//reset the x translation
+		this.translate(resetTranslationX, 0);
+		
+		//set the new x translation
+		this.translate(translationX, 0);
+	}
+	
+	/**
 	 * Return the current X translation of the matrix
 	 */
 	public function getTranslationX():Float
 	{
 		return _matrixData.e;
+	}
+	
+	/**
+	 * Set the absolut y translation instead of adding it to the 
+	 * current y translation
+	 * @param	translationY the target y translation
+	 */
+	public function setTranslationY(translationY:Float):Void
+	{
+		var currentTranslationY:Float = getTranslationY();
+		
+		//find the complimentary y translation to reset it to 0
+		var resetTranslationY:Float = currentTranslationY * -1;
+		//reset the y translation
+		this.translate(0, resetTranslationY);
+		
+		//set the new y translation
+		this.translate(0, translationY);
 	}
 	
 	/**

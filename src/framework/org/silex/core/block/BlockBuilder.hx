@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.core.block;
 
+import haxe.Log;
 import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.nativeClass.NativeClass;
 import org.silex.runtime.ressource.RessourceLoaderManager;
@@ -28,6 +29,7 @@ import org.silex.core.XmlUtils;
  *   or DOMObject
  * 
  * @author Yannick DOMINGUEZ
+ * @author Raphael HARMEL
  */
 class BlockBuilder 
 {
@@ -107,54 +109,41 @@ class BlockBuilder
 		// set the parentBlock's BlockData
 		var parentBlockData:BlockData = createBlockData(xml);
 		parentBlock.setBlockData(parentBlockData);
-
-		//if the xml has no children
-		/*if (xml.elementsNamed("children") == null)
+		
+		for (children in xml.elementsNamed("children"))
 		{
-			trace("no children");
-		}
-		else
-		{*/
-			for (children in xml.elementsNamed("children"))
+			for (child in children.elements())
 			{
-				//trace("children: " + children);
-				for (child in children.elements())
-				{
-					//trace("child: " + child);
-					//trace('child.get("fileUrl"): ' + child.get("fileUrl"));
-					
-					var block:Block = new Block(child.get("fileUrl"));
-					parentBlock.addChild(block);
-					doCreateBlock(child, block);
-				}
+				//instantiate the block and set it's class attributes
+				//retrieved from the XML
+				var block:Block = new Block(child.get("fileUrl"));
+				block.setIsAutoOpen(child.get('isAutoOpen') == 'true');
+				block.setIsTransversal(child.get('isTransversal') == 'true');
+				
+				parentBlock.addChild(block);
+				doCreateBlock(child, block);
 			}
-		//}
+		}
 	}
 	
 	/**
-	 * Takes a BlockData xml and returns the equivalent BlockData
+	 * Takes a Block's xml and returns the equivalent BlockData
 	 * 
 	 * @param	xml
 	 * @return
 	 */
 	private static function createBlockData(xml:Xml):BlockData
 	{
-		// define and init return BlockData
+		// define and init the returned BlockData
 		var blockData:BlockData =
 		{
 			className : null,
 			descriptorUID : null,
-			isAutoOpen : false,
-			isTransversal : false,
-			hasSeparateFile : false,
-			fileUrl : null,
-			domRoot : null,
-			as3URL : null,
-			jsURL : null,
-			phpURL : null,
+			as3SkinURL : null,
+			jsSkinURL : null,
+			phpSkinURL : null,
 			properties : new Hash<Dynamic>(),
 			metaData : new Hash<Dynamic>(),
-			//children : new Array<BlockData>()
 		};
 		
 		var blockXml:Xml = xml;
@@ -169,34 +158,41 @@ class BlockBuilder
 			blockData.className = 'org.silex.blocks.' + blockXml.nodeName;
 		}
 		
-		// get attributes values and set them to the corresponding blockData attributes
-		blockData.descriptorUID = blockXml.get('descriptorUID');
-		blockData.isAutoOpen = (blockXml.get('isAutoOpen') == 'true');
-		blockData.isTransversal = (blockXml.get('isTransversal') == 'true');
-		blockData.hasSeparateFile = (blockXml.get('hasSeparateFile') == 'true');
-		blockData.fileUrl = blockXml.get('fileUrl');
+		//init the Xml object that will contain
+		//the blockData node
+		var blockDataXML:Xml = Xml.parse('');
 		
-		for (childXml in blockXml)
+		//retrieve the blockData node
+		for (children in blockXml)
+		{
+			if (children.nodeName == 'blockData')
+			{
+				blockDataXML = children;
+			}
+		}
+		
+		//parse the blockData node
+		for (childXml in blockDataXML)
 		{
 			switch (childXml.nodeName)
 			{
 				// SKIN VALUES
 				
-				// get domRoot value
-				case 'domRoot':
-				blockData.domRoot = childXml.firstChild().toString();
-				
 				// get as3 skin value
-				case 'as3Skin':
-				blockData.as3URL = childXml.firstChild().firstChild().toString();
+				case 'as3SkinURL':
+				blockData.as3SkinURL = childXml.firstChild().firstChild().toString();
 				
 				// get js skin value
-				case 'jsSkin':
-				blockData.jsURL = childXml.firstChild().firstChild().toString();
+				case 'jsSkinURL':
+				blockData.jsSkinURL = childXml.firstChild().firstChild().toString();
 
 				// get php skin value
-				case 'phpSkin':
-				blockData.phpURL = childXml.firstChild().firstChild().toString();
+				case 'phpSkinURL':
+				blockData.phpSkinURL = childXml.firstChild().firstChild().toString();
+				
+				//get descriptor UID value
+				case 'descriptorUID':
+				blockData.descriptorUID = childXml.firstChild().toString();
 				
 				// get properties
 				case 'properties':
@@ -239,13 +235,6 @@ class BlockBuilder
 				{
 					blockData.metaData.set(metaData.nodeName, Std.parseInt(metaData.firstChild().toString()));
 				}
-				
-				// recursive call on children
-				/*case 'children':
-				for (childBlock in childXml.elements())
-				{
-					blockData.children.push(createBlockData(childBlock));
-				}*/
 			}
 		}
 		
@@ -377,7 +366,7 @@ class BlockBuilder
 			}
 		}
 		
-		//if it does'nt exist, set it on the domObject (skin)
+		//if it doesn't exist, set it on the domObject (skin)
 		else if (_block.getDOMObject() != null)
 		{
 			for (propertyName in _block.getBlockData().properties.keys())
