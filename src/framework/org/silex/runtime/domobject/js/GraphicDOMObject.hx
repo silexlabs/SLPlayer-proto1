@@ -307,7 +307,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	private function colorStopToRGBA(colorStop:ColorStopData):String
 	{
 		var rgb:RGB = hexToRGB(getHexColor(colorStop.color));
-		return "rgba(" + rgb.red + "," + rgb.green + "," + rgb.blue + "," + toNativeAlpha(colorStop.alpha) + ");";
+		return "rgba(" + rgb.red + "," + rgb.green + "," + rgb.blue + "," + toNativeAlpha(colorStop.alpha) + ")";
 	}
 	
 	/**
@@ -435,7 +435,6 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 				//geometric space (use the center as origin)
 				xStart -= this.getWidth() / 2;
 				yStart -= this.getHeight() / 2;
-				
 				
 				
 				//rotate the starting point with the rotation value of the gradient
