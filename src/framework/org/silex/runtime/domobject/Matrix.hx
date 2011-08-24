@@ -312,34 +312,88 @@ class Matrix
 	}
 	
 	/**
-	 * return the current matrix rotation in degree
+	 * return an estimation of the current matrix rotation in degree. 
+	 * This method assumes that the matrix has not been skewed
 	 */
 	public function getRotation():Int
 	{
-		//it's copy/pasted, I don't get it
+		//return -1 is one of the axis is flipped, else 1
+		var flip:Int = getFlip();
+	
+		//get x scale and skew
+		var scaleX:Float = getScaleX();
+		var skewX:Float = getSkewX();
 		
-		var rotation:Float = Math.atan( (_matrixData.c * -1) / _matrixData.a);
-		var scaleX:Float = Math.sqrt((_matrixData.a * _matrixData.a) + (_matrixData.c * _matrixData.c));
-		var sign:Float = Math.atan( (_matrixData.c * -1) / _matrixData.a);
+		//get the actual x scale by cancelling the effect of flip and rotation
+		var actualScaleX:Float = Math.sqrt((scaleX * scaleX) + (skewX * skewX));
 		
-		var radian:Float = Math.acos(_matrixData.a / scaleX);
+		//same for y scale
+		var scaleY:Float = getScaleY();
+		var skewY:Float = getSkewY() * flip;
 		
-		var rotationInDegree:Int = Math.round((radian * 180) / Math.PI);
+		var actualScaleY:Float = Math.sqrt((scaleY * scaleY) + (skewY * skewY));
 		
-		if (rotationInDegree > 90 && sign > 0 )
+		//get the estimated rotation in rad
+        var rotationInRad:Float =  Math.atan2((skewY / actualScaleY) - (skewX / actualScaleX),
+												(scaleY / actualScaleY) + (scaleX / actualScaleX));
+		
+		//convert to deg and report to a 360 angle if the rotation is negative										
+		var rotationInDeg:Int = Math.round((rotationInRad * 180 ) / Math.PI);
+		if (rotationInDeg < 0)
 		{
-			rotation = (360 - rotationInDegree) / 180 * Math.PI ;
+			rotationInDeg = 360 + rotationInDeg;
 		}
-		else if (rotationInDegree < 90 && sign < 0)
+			
+		return  rotationInDeg;
+		
+	}
+	
+	/**
+	 * Returns wether an axis has
+	 * been flipped
+	 * @return -1 if it has else 1 
+	 */
+	private function getFlip():Int
+	{
+		//get the sign from the scale factor
+		var scaleX:Float = getScaleX();
+		var scaleXSign:Int = 0;
+		
+		//store it as 1 if it is positive and
+		//-1 for negative
+		if (scaleX >= 0)
 		{
-			rotation = (360 - rotationInDegree) / 180 * Math.PI ;
+			scaleXSign = 1;
 		}
 		else
 		{
-			rotation = radian;
+			scaleXSign = -1;
 		}
 		
-		return Math.round((rotation / Math.PI) * 180);
+		//same for scale y and skew x and y
+		var scaleY:Float = getScaleY();
+		var scaleYSign:Int = (scaleY >= 0) ? 1 : -1 ;
+		
+		var skewX:Float = getSkewX();
+		var skewXSign:Int = (skewX >= 0) ? 1 : -1;
+		
+		var skewY:Float = getSkewY();
+		var skewYSign:Int = (skewY >= 0) ? 1 : -1;
+		
+		//determine if an axis has been flipped
+		if (scaleXSign == scaleYSign && skewXSign == (skewYSign  * -1))
+		{
+			return 1;
+		}
+		
+		if (scaleXSign == (scaleYSign * -1) && skewXSign == skewYSign)
+		{
+			return -1;
+		}
+		
+		//here it is unknown if an axis was flipped
+		return 1;
+		
 	}
 	
 	/**
@@ -367,19 +421,7 @@ class Matrix
 	 */
 	public function getScaleX():Float
 	{
-		//scale sign (positive or negative) depends, on the sign of
-		//the "a" matrix value
-		var scaleSign:Int = 0;
-		if (_matrixData.a > 0)
-		{
-			scaleSign = 1;
-		}
-		else
-		{
-			scaleSign = -1;
-		}
-		
-		return scaleSign *  Math.sqrt((_matrixData.a * _matrixData.a) + (_matrixData.c * _matrixData.c));
+		return _matrixData.a;
 	}
 	
 	/**
@@ -407,19 +449,7 @@ class Matrix
 	 */
 	public function getScaleY():Float
 	{
-		//scale sign (positive or negative) depends, on the sign of
-		//the "d" matrix value
-		var scaleSign:Int = 0;
-		if (_matrixData.d > 0)
-		{
-			scaleSign = 1;
-		}
-		else
-		{
-			scaleSign = -1;
-		}
-		
-		return scaleSign *  Math.sqrt((_matrixData.b * _matrixData.b) + (_matrixData.d * _matrixData.d));
+		return _matrixData.d;
 	}
 	
 	/**
@@ -474,5 +504,20 @@ class Matrix
 		return _matrixData.f;
 	}
 	
+	/**
+	 * Return the current x skew of the matrix
+	 */
+	public function getSkewX():Float
+	{
+		return _matrixData.c;
+	}
+	
+	/**
+	 * Return the current y skew of the matrix
+	 */
+	public function getSkewY():Float
+	{
+		return _matrixData.b;
+	}
 	
 }
