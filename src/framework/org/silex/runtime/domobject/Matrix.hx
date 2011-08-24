@@ -174,13 +174,42 @@ class Matrix
 		//translate the matrix to set the transformation origin as it's pivot point
 		rotatedMatrix.translate(transformationOrigin.x, transformationOrigin.y);
 		
+		var a:Float = 0;
+		var b:Float = 0;
+		var c:Float = 0;
+		var d:Float = 0;
+		
+		//check for special angles
+		
+		if (angle == 90)
+		{
+			a = d = 0;
+			c = b = 1;
+			
+		}
+		else if (angle == 180)
+		{
+			a = d = -1;
+			c = b = 0;
+		}
+		else if (angle == 270)
+		{
+			a = d = 0;
+			c = b = -1;
+		}
+		else
+		{
+			a = d = Math.cos(angleInRad);
+			c = b = Math.sin(angleInRad);
+		}
+		
 		//create the matrix data corresponding to an identity matrix
 		//rotated by the angle
 		var rotationMatrixData:MatrixData = {
-			a:Math.cos(angleInRad),
-			b:Math.sin(angleInRad),
-			c:Math.sin(angleInRad) * -1,
-			d:Math.cos(angleInRad),
+			a:a,
+			b:b,
+			c:c * -1,
+			d:d,
 			e:0.0,
 			f:0.0
 		};
