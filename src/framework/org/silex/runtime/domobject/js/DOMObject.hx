@@ -196,51 +196,38 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Overriden Setters/Getters to manipulate the JavaScript DOMObject
-	// set/get the following attributes : x,y,width,height,z-order
+	// Overriden Setters to manipulate the JavaScript DOMObject
+	// set the following attributes : x,y,width,height
 	//////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	override public function setX(value:Int):Void 
 	{
+		super.setX(value);
 		this._referenceToNativeDOM.style.left = value+"px";
-	}
-	
-	override public function getX():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.left);
 	}
 	
 	override public function setY(value:Int):Void 
 	{
+		super.setY(value);
 		this._referenceToNativeDOM.style.top = value+"px";
-	}
-	
-	override public function getY():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.top);
 	}
 	
 	override public function setWidth(value:Int):Void
 	{
+		super.setWidth(value);
 		this._referenceToNativeDOM.style.width = value +"px";
-	}
-	
-	override public function getWidth():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.width);
 	}
 	
 	override public function setHeight(value:Int):Void 
 	{
+		super.setHeight(value);
 		this._referenceToNativeDOM.style.height = value+"px";
 	}
-	
-	override public function getHeight():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.height);
-	}
-	
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Z-INDEX SETTER/GETTER
+	// Setter/Getter to manipulate a native DOMObject z order in the publication
+	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * When setting the z-order on an HTML element,
