@@ -20,4 +20,7 @@ typedef NativeDOMObject =  flash.display.Sprite;
 import js.Dom;
 typedef NativeDOMObject =  js.HtmlDom;
 
+#elseif php
+typedef NativeDOMObject =  Xml;
+
 #end
