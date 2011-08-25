@@ -200,12 +200,23 @@ class RessourceTests
 	}
 	
 	/**
+	 * test a 404 error on a picture
+	 * @param	error
+	 */
+	public function testPictureLoadError():Void
+	{
+		var errorCallback:Dynamic->Void = Assert.createEvent(onPictureLoadError);
+		RessourceLoaderManager.loadImage("falseURL.jpg", onPictureLoaded, errorCallback);
+	}
+	
+	/**
 	 * Called when there is an error while loading picture
 	 * @param	error
 	 */
 	public function onPictureLoadError(error:String)
 	{
-		
+		Assert.equals(1, 1);
+		Log.trace(error);
 	}
 	
 	/**

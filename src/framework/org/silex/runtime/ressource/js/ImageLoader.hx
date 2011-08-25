@@ -53,8 +53,12 @@ class ImageLoader extends RessourceLoader
 		
 		//create a delegate to call the success callback once the native image element is done loading the source picture
 		var onLoadCompleteDelegate:DOMObject->Void = onLoadComplete;
-		//listens to image load complete
+		//create a delegate for the error callback
+		var onLoadErrorDelegate:String->Void = onLoadError;
+		
+		//listens to image load complete and load error
 		domObject.getReferenceToNativeDOM().onload = function() { onLoadCompleteDelegate(domObject); };
+		domObject.getReferenceToNativeDOM().onerror = function() { onLoadErrorDelegate("couldn't load picture"); };
 		
 		// set it's source to start the loading of the picture
 		domObject.getReferenceToNativeDOM().setAttribute("src", url);
