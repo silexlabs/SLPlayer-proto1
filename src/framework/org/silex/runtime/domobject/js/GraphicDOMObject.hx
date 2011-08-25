@@ -68,22 +68,22 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	
 	override public function setWidth(value:Int):Void
 	{
-		this._referenceToNativeDOM.width = value;
+		untyped this._referenceToNativeDOM.width = value;
 	}
 	
 	override public function getWidth():Int 
 	{
-		return Std.parseInt(this._referenceToNativeDOM.width);
+		return untyped Std.parseInt(this._referenceToNativeDOM.width);
 	}
 	
 	override public function setHeight(value:Int):Void 
 	{
-		this._referenceToNativeDOM.height = value;
+		untyped this._referenceToNativeDOM.height = value;
 	}
 	
 	override public function getHeight():Int 
 	{
-		return Std.parseInt(this._referenceToNativeDOM.height);
+		return untyped Std.parseInt(this._referenceToNativeDOM.height);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -370,7 +370,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	private function getContext():Dynamic
 	{
-		return _referenceToNativeDOM.getContext("2d");
+		return untyped _referenceToNativeDOM.getContext("2d");
 	}
 	
 	/**

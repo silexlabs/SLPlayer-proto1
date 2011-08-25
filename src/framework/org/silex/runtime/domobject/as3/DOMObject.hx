@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domobject.as3;
 
+import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import org.silex.runtime.domobject.base.DOMObjectBase;
@@ -199,17 +200,17 @@ class DOMObject extends DOMObjectBase
 			value = _parent.getChildren().length - 1;
 		}
 		
-		//retrieve the parent Sprite, and use it to set
+		//retrieve the parent Display Object, and use it to set
 		//the new index on the current Sprite
-		var parent:Sprite = this._referenceToNativeDOM.parent;
+		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
 		parent.setChildIndex(this._referenceToNativeDOM, value);
 	}
 	
 	override public function getZOrder():Int 
 	{
-		//retrieve the parent Sprite, and use it to retrieve the current
+		//retrieve the parent Display object, and use it to retrieve the current
 		//child index
-		var parent:Sprite = this._referenceToNativeDOM.parent;
+		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
 		return parent.getChildIndex(this._referenceToNativeDOM);
 	}
 	

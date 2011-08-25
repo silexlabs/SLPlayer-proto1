@@ -14,6 +14,7 @@ package org.silex.runtime.domobject.base;
 import haxe.Log;
 import org.silex.runtime.domobject.Matrix;
 import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domobject.NativeDOMObject;
 
 /**
  * This is a base class for runtime specific DOMObject. A DOMObject is an abstraction of the visual base element of a runtime.
@@ -94,7 +95,7 @@ class DOMObjectBase
 	 * runtime : in JS it is an HTML element, in Flash a Sprite,
 	 * in PHP a ressource
 	 */
-	private var _referenceToNativeDOM:Dynamic;
+	private var _referenceToNativeDOM:NativeDOMObject;
 	
 	/**
 	 * a reference to the parent of this DOMObject
