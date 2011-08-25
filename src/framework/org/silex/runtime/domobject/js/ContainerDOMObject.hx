@@ -48,7 +48,7 @@ class ContainerDOMObject extends ContainerDOMObjectBase
 		var currentNativeDOMContent:Dynamic = this._referenceToNativeDOM.innerHTML;
 		
 		//store all the attributes of the current node to set them on the new node
-		var currentNativeDOMAttributes:Array<Dynamic> = this._referenceToNativeDOM.attributes;
+		 var currentNativeDOMAttributes:Array<Dynamic> = untyped this._referenceToNativeDOM.attributes;
 		
 		//create a new node with the right node name
 		var newReferenceToNativeDOM:Dynamic = Lib.document.createElement(semantic);

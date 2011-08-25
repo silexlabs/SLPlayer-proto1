@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domobject.as3;
 
+import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import org.silex.runtime.domobject.base.DOMObjectBase;
@@ -157,53 +158,39 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Overriden Setters/Getters to manipulate the Flash DOMObject
-	// set/get the following attributes : x,y,width,height,z-order,rotation
+	// Overriden Setters to manipulate the Flash DOMObject
+	// set the following attributes : x,y,width,height
 	//////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	override public function setX(value:Int):Void 
 	{
+		super.setX(value);
 		this._referenceToNativeDOM.x = value;
-	}
-	
-	override public function getX():Int 
-	{
-		return this._referenceToNativeDOM.x;
 	}
 	
 	override public function setY(value:Int):Void 
 	{
+		super.setY(value);
 		this._referenceToNativeDOM.y = value;
-	}
-	
-	override public function getY():Int 
-	{
-		return this._referenceToNativeDOM.y;
 	}
 	
 	override public function setWidth(value:Int):Void
 	{
+		super.setWidth(value);
 		this._referenceToNativeDOM.width = value;
-	}
-	
-	override public function getWidth():Int 
-	{
-		return this._referenceToNativeDOM.width;
 	}
 	
 	override public function setHeight(value:Int):Void 
 	{
+		super.setHeight(value);
 		this._referenceToNativeDOM.height = value;
 	}
-
-	override public function getHeight():Int 
-	{
-		return this._referenceToNativeDOM.height;
-	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Z-INDEX SETTER/GETTER
+	// Setter/Getter to manipulate a native DOMObject z order in the publication
+	//////////////////////////////////////////////////////////////////////////////////////////
 
-	
 	override public function setZOrder(value:Int)
 	{
 		//if the value is outside of the children range, set it to the 
@@ -213,17 +200,17 @@ class DOMObject extends DOMObjectBase
 			value = _parent.getChildren().length - 1;
 		}
 		
-		//retrieve the parent Sprite, and use it to set
+		//retrieve the parent Display Object, and use it to set
 		//the new index on the current Sprite
-		var parent:Sprite = this._referenceToNativeDOM.parent;
+		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
 		parent.setChildIndex(this._referenceToNativeDOM, value);
 	}
 	
 	override public function getZOrder():Int 
 	{
-		//retrieve the parent Sprite, and use it to retrieve the current
+		//retrieve the parent Display object, and use it to retrieve the current
 		//child index
-		var parent:Sprite = this._referenceToNativeDOM.parent;
+		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
 		return parent.getChildIndex(this._referenceToNativeDOM);
 	}
 	
