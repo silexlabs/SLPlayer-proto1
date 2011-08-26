@@ -89,21 +89,21 @@ class MatrixTests
 		
 		domObject.resetTransformations();
 		
-		domObject.rotate(95, constant(center, middle));
+		domObject.rotate(90, constant(center, middle));
 		
-		Assert.equals(domObject.getMatrix().getRotation(), 95);
-		
-		domObject.resetTransformations();
-		
-		domObject.rotate(190, constant(center, middle));
-		
-		Assert.equals(domObject.getMatrix().getRotation(), 190);
+		Assert.equals(domObject.getMatrix().getRotation(), 90);
 		
 		domObject.resetTransformations();
 		
-		domObject.rotate(280, constant(center, middle));
+		domObject.rotate(180, constant(center, middle));
 		
-		Assert.equals(domObject.getMatrix().getRotation(), 280);
+		Assert.equals(domObject.getMatrix().getRotation(), 180);
+		
+		domObject.resetTransformations();
+		
+		domObject.rotate(270, constant(center, middle));
+		
+		Assert.equals(domObject.getMatrix().getRotation(), 270);
 		
 		
 		//test x scale
@@ -143,7 +143,19 @@ class MatrixTests
 		Assert.equals(domObject.getMatrix().getTranslationX(), 20);
 		Assert.equals(domObject.getMatrix().getTranslationY(), 30);
 		
+		
+		//test skew
+		
+		domObject.resetTransformations();
+		
+		domObject.skew(0.5, 0.2, constant(center, middle));
+		
+		Assert.equals(Std.string(domObject.getMatrix().getSkewX()).substr(0,3), "0.5");
+		Assert.equals(Std.string(domObject.getMatrix().getSkewY()).substr(0,3), "0.2");
+		
 		//test absolut rotation setting
+		
+		domObject.resetTransformations();
 		
 		domObject.setRotation(45, constant(center, middle));
 		domObject.setRotation(45, constant(center, middle));
@@ -171,15 +183,15 @@ class MatrixTests
 		
 		//test absolut translation setting
 		
-		domObject.setTranslationX(50);
-		domObject.setTranslationX(50);
-		domObject.setTranslationX(50);
+		domObject.setTranslationX(500);
+		domObject.setTranslationX(500);
+		domObject.setTranslationX(500);
 		
 		domObject.setTranslationY(20);
 		domObject.setTranslationY(20);
 		domObject.setTranslationY(20);
 		
-		Assert.equals(domObject.getTranslationX(), 50);
+		Assert.equals(domObject.getTranslationX(), 500);
 		Assert.equals(domObject.getTranslationY(), 20);
 		
 		

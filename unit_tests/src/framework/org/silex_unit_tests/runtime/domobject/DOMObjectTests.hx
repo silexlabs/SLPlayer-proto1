@@ -93,7 +93,8 @@ class DOMObjectTests
 		spriteChildDOMObject.graphics.endFill();
 		//create a child DOMObject
 		var childDOMObject:DOMObject = new DOMObject(spriteChildDOMObject);
-		
+		childDOMObject.setWidth(100);
+		childDOMObject.setHeight(100);
 		
 		//add the child DOMObject to the parent DOMObject
 		parentDOMObject.addChild(childDOMObject);

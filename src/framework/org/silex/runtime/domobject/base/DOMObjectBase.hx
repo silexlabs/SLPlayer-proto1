@@ -14,6 +14,7 @@ package org.silex.runtime.domobject.base;
 import haxe.Log;
 import org.silex.runtime.domobject.Matrix;
 import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domobject.NativeDOMObject;
 
 /**
  * This is a base class for runtime specific DOMObject. A DOMObject is an abstraction of the visual base element of a runtime.
@@ -94,7 +95,7 @@ class DOMObjectBase
 	 * runtime : in JS it is an HTML element, in Flash a Sprite,
 	 * in PHP a ressource
 	 */
-	private var _referenceToNativeDOM:Dynamic;
+	private var _referenceToNativeDOM:NativeDOMObject;
 	
 	/**
 	 * a reference to the parent of this DOMObject
@@ -111,6 +112,34 @@ class DOMObjectBase
 	 * a reference to this domObject transformation matrix
 	 */
 	private var _matrix:Matrix;
+	
+	/////////////////////////////////
+	// COORDS Atributes
+	// Stores the coords of the DOM Object
+	// as they are set. This abstraction is used
+	// to prevent runtime inconsistencies happening
+	// when retrieving coords form a native dom object
+	////////////////////////////////
+	
+	/**
+	 * Stores the x position of this dom object
+	 */
+	private var _x:Int;
+	
+	/**
+	 * Stores the y position of this dom object
+	 */
+	private var _y:Int;
+	
+	/**
+	 * Stores the width position of this dom object
+	 */
+	private var _width:Int;
+	
+	/**
+	 * Stores the height position of this dom object
+	 */
+	private var _height:Int;
 	
 	/**
 	 * class constructor. Set the reference to the native DOMObject
@@ -611,21 +640,50 @@ class DOMObjectBase
 	// Setters/Getters to manipulate a native DOMObject positioning in the publication
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	public function setX(value:Int):Void {}
+	public function setX(value:Int):Void 
+	{
+		this._x = value;
+	}
 	
-	public function getX():Int { return 0; }
+	public function getX():Int 
+	{ 
+		return this._x; 
+	}
 	
-	public function setY(value:Int):Void {}
+	public function setY(value:Int):Void
+	{
+		this._y = value;
+	}
 	
-	public function getY():Int { return 0; }
+	public function getY():Int 
+	{ 
+		return this._y; 
+	}
 	
-	public function setWidth(value:Int):Void {}
+	public function setWidth(value:Int):Void
+	{
+		this._width = value;
+	}
 	
-	public function getWidth():Int { return 0; }
+	public function getWidth():Int 
+	{ 
+		return this._width; 
+	}
 	
-	public function setHeight(value:Int):Void {}
+	public function setHeight(value:Int):Void
+	{
+		this._height = value;
+	}
 	
-	public function getHeight():Int { return 0; }
+	public function getHeight():Int 
+	{ 
+		return this._height; 
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Z-INDEX SETTER/GETTER
+	// Setter/Gettersto manipulate a native DOMObject z order in the publication
+	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	public function setZOrder(value:Int) {}
 	

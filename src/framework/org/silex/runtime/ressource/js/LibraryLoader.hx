@@ -58,10 +58,9 @@ class LibraryLoader extends RessourceLoader
 		// Set it's onLoad callback
 		untyped scrptE.onload = onLoadComplete;
 		
-		// for IE :
-		untyped scrptE.onreadystatechange = function () {
-			if (this.readyState == 'loaded' || this.readyState == 'complete') onLoadCallback();
-		}
+		//Set it's error callback
+		untyped scrptE.onerror = onLoadError;
+		
 
 		// Now add this new element to the head tag
 		Lib.document.getElementsByTagName("head")[0].appendChild(scrptE);

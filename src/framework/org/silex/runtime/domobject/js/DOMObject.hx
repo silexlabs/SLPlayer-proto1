@@ -107,7 +107,7 @@ class DOMObject extends DOMObjectBase
 	override public function setAlpha(value:Float):Void
 	{
 		super.setAlpha(value);
-		this._referenceToNativeDOM.style.opacity = value;
+		untyped this._referenceToNativeDOM.style.opacity = value;
 	}
 	
 	/**
@@ -116,7 +116,7 @@ class DOMObject extends DOMObjectBase
 	 */ 
 	override public function getAlpha():Float
 	{
-		return Std.parseFloat(this._referenceToNativeDOM.style.opacity);
+		return untyped Std.parseFloat(this._referenceToNativeDOM.style.opacity);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -143,25 +143,25 @@ class DOMObject extends DOMObjectBase
 		
 		//first test if the transform property is set for the current browser,
 		//else test vendor specific properties
-		if (this._referenceToNativeDOM.style.transform != null)
+		if (untyped this._referenceToNativeDOM.style.transform != null)
 		{
-			this._referenceToNativeDOM.style.transform = cssMatrixProperty;
-			this._referenceToNativeDOM.style.transformOrigin = "0 0";
+			untyped this._referenceToNativeDOM.style.transform = cssMatrixProperty;
+			untyped this._referenceToNativeDOM.style.transformOrigin = "0 0";
 		}
-		if (this._referenceToNativeDOM.style.MozTransform != null)
+		if (untyped this._referenceToNativeDOM.style.MozTransform != null)
 		{
-			this._referenceToNativeDOM.style.MozTransform = cssMatrixProperty;
-			this._referenceToNativeDOM.style.MozTransformOrigin = "0 0";
+			untyped this._referenceToNativeDOM.style.MozTransform = cssMatrixProperty;
+			untyped this._referenceToNativeDOM.style.MozTransformOrigin = "0 0";
 		}
-		else if (this._referenceToNativeDOM.style.WebkitTransform != null)
+		else if (untyped this._referenceToNativeDOM.style.WebkitTransform != null)
 		{
-			this._referenceToNativeDOM.style.WebkitTransform = cssMatrixProperty;
-			this._referenceToNativeDOM.style.WebkitTransformOrigin = "0 0";
+			untyped this._referenceToNativeDOM.style.WebkitTransform = cssMatrixProperty;
+			untyped this._referenceToNativeDOM.style.WebkitTransformOrigin = "0 0";
 		}
-		else if (this._referenceToNativeDOM.style.OTransform != null)
+		else if (untyped this._referenceToNativeDOM.style.OTransform != null)
 		{
-			this._referenceToNativeDOM.style.OTransform = cssMatrixProperty;
-			this._referenceToNativeDOM.style.OTransform = "0 0";
+			untyped this._referenceToNativeDOM.style.OTransform = cssMatrixProperty;
+			untyped this._referenceToNativeDOM.style.OTransform = "0 0";
 		}
 	}
 	
@@ -196,51 +196,38 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// Overriden Setters/Getters to manipulate the JavaScript DOMObject
-	// set/get the following attributes : x,y,width,height,z-order
+	// Overriden Setters to manipulate the JavaScript DOMObject
+	// set the following attributes : x,y,width,height
 	//////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	override public function setX(value:Int):Void 
 	{
+		super.setX(value);
 		this._referenceToNativeDOM.style.left = value+"px";
-	}
-	
-	override public function getX():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.left);
 	}
 	
 	override public function setY(value:Int):Void 
 	{
+		super.setY(value);
 		this._referenceToNativeDOM.style.top = value+"px";
-	}
-	
-	override public function getY():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.top);
 	}
 	
 	override public function setWidth(value:Int):Void
 	{
+		super.setWidth(value);
 		this._referenceToNativeDOM.style.width = value +"px";
-	}
-	
-	override public function getWidth():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.width);
 	}
 	
 	override public function setHeight(value:Int):Void 
 	{
+		super.setHeight(value);
 		this._referenceToNativeDOM.style.height = value+"px";
 	}
-	
-	override public function getHeight():Int 
-	{
-		return Std.parseInt(this._referenceToNativeDOM.style.height);
-	}
-	
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Z-INDEX SETTER/GETTER
+	// Setter/Getter to manipulate a native DOMObject z order in the publication
+	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * When setting the z-order on an HTML element,
@@ -309,7 +296,7 @@ class DOMObject extends DOMObjectBase
 	
 	override public function getZOrder():Int 
 	{
-		return Std.parseInt(this._referenceToNativeDOM.style.zIndex);
+		return this._referenceToNativeDOM.style.zIndex;
 	}
 	
 }
