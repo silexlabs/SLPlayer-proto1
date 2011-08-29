@@ -56,9 +56,10 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	// acts as a mask, to clip the graphics
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	override public function setWidth(value:Int):Void
+	override public function setWidth(value:Int):Int
 	{
 		setUpBackgroundSprite(this._backGroundSprite, value, getHeight());
+		return value;
 	}
 	
 	override public function getWidth():Int 
@@ -66,9 +67,10 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 		return Math.round(_backGroundSprite.width);
 	}
 	
-	override public function setHeight(value:Int):Void 
+	override public function setHeight(value:Int):Int 
 	{
 		setUpBackgroundSprite(this._backGroundSprite, getWidth(), value);
+		return value;
 	}
 	
 	override public function getHeight():Int 

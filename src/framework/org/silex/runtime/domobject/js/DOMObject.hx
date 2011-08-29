@@ -72,7 +72,7 @@ class DOMObject extends DOMObjectBase
 	 * Show or hide the native HTML element. 
 	 * @param	value true if the element must be visible
 	 */
-	override public function setIsVisible(value:Bool):Void
+	override public function setIsVisible(value:Bool):Bool
 	{
 		//set the right visibility CSS property value
 		if (value == true)
@@ -83,6 +83,8 @@ class DOMObject extends DOMObjectBase
 		{
 			this._referenceToNativeDOM.style.visibility = "hidden";
 		}
+		
+		return value;
 	}
 	
 	/**
@@ -104,10 +106,11 @@ class DOMObject extends DOMObjectBase
 	 * Set the opacity of the HTML element
 	 * @param	value from 0 (transparent) to 1 (opaque)
 	 */
-	override public function setAlpha(value:Float):Void
+	override public function setAlpha(value:Float):Float
 	{
 		super.setAlpha(value);
 		untyped this._referenceToNativeDOM.style.opacity = value;
+		return value;
 	}
 	
 	/**
@@ -129,7 +132,7 @@ class DOMObject extends DOMObjectBase
 	 * HTML DOM native element
 	 * @param	matrix
 	 */
-	override public function setMatrix(matrix:Matrix):Void
+	override public function setMatrix(matrix:Matrix):Matrix
 	{
 		super.setMatrix(matrix);
 		
@@ -163,6 +166,8 @@ class DOMObject extends DOMObjectBase
 			untyped this._referenceToNativeDOM.style.OTransform = cssMatrixProperty;
 			untyped this._referenceToNativeDOM.style.OTransform = "0 0";
 		}
+		
+		return this._matrix;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -200,28 +205,32 @@ class DOMObject extends DOMObjectBase
 	// set the following attributes : x,y,width,height
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	override public function setX(value:Int):Void 
+	override public function setX(value:Int):Int 
 	{
 		super.setX(value);
-		this._referenceToNativeDOM.style.left = value+"px";
+		this._referenceToNativeDOM.style.left = value + "px";
+		return this._x;
 	}
 	
-	override public function setY(value:Int):Void 
+	override public function setY(value:Int):Int 
 	{
 		super.setY(value);
-		this._referenceToNativeDOM.style.top = value+"px";
+		this._referenceToNativeDOM.style.top = value + "px";
+		return this._y;
 	}
 	
-	override public function setWidth(value:Int):Void
+	override public function setWidth(value:Int):Int
 	{
 		super.setWidth(value);
 		this._referenceToNativeDOM.style.width = value +"px";
+		return this._width;
 	}
 	
-	override public function setHeight(value:Int):Void 
+	override public function setHeight(value:Int):Int 
 	{
 		super.setHeight(value);
-		this._referenceToNativeDOM.style.height = value+"px";
+		this._referenceToNativeDOM.style.height = value + "px";
+		return this._height;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -236,7 +245,7 @@ class DOMObject extends DOMObjectBase
 	 * they are incremented
 	 * @param	value the z index to set
 	 */
-	override public function setZOrder(value:Int) 
+	override public function setZOrder(value:Int):Int 
 	{
 		//if the z-index is outside of the children range, 
 		//set it as the last z-index of the range
@@ -292,6 +301,8 @@ class DOMObject extends DOMObjectBase
 		
 		//set the z-index of the current element
 		this._referenceToNativeDOM.style.zIndex = value;
+		
+		return value;
 	}
 	
 	override public function getZOrder():Int 

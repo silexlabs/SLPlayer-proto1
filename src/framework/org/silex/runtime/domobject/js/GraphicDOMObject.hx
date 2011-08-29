@@ -66,9 +66,10 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	// are attributes of the Canvas tag and not styles
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	override public function setWidth(value:Int):Void
+	override public function setWidth(value:Int):Int
 	{
 		untyped this._referenceToNativeDOM.width = value;
+		return value;
 	}
 	
 	override public function getWidth():Int 
@@ -76,9 +77,10 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 		return untyped Std.parseInt(this._referenceToNativeDOM.width);
 	}
 	
-	override public function setHeight(value:Int):Void 
+	override public function setHeight(value:Int):Int 
 	{
 		untyped this._referenceToNativeDOM.height = value;
+		return value;
 	}
 	
 	override public function getHeight():Int 

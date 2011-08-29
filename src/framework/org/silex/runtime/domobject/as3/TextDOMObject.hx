@@ -69,20 +69,22 @@ class TextDOMObject extends TextDOMObjectBase
 	 * override to set also the width of the native text
 	 * field to match the size of the DOMObject
 	 */ 
-	override public function setWidth(value:Int):Void
+	override public function setWidth(value:Int):Int
 	{
 		super.setWidth(value);
 		_nativeTextField.width = value;
+		return this._width;
 	}
 	
 	/**
 	 * override to set also the height of the native text
 	 * field to match the size of the DOMObject
 	 */ 
-	override public function setHeight(value:Int):Void
+	override public function setHeight(value:Int):Int
 	{
 		super.setHeight(value);
 		_nativeTextField.height = value;
+		return this._height;
 	}
 	
 }
