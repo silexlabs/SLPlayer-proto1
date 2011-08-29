@@ -101,45 +101,77 @@ class DOMObjectBase
 	 * a reference to the parent of this DOMObject
 	 */ 
 	private var _parent:DOMObjectBase;
+	public var parent(getParent, setParent):DOMObjectBase;
 	
 	/**
 	 *  a reference to each of the DOMObject childs, stored by
 	 *  z-index
 	 */
 	private var _children:Array<DOMObjectBase>;
+	public var children(getChildren, never):Array<DOMObjectBase>;
 	
 	/**
 	 * a reference to this domObject transformation matrix
 	 */
 	private var _matrix:Matrix;
+	public var matrix(getMatrix, setMatrix):Matrix;
 	
 	/////////////////////////////////
-	// COORDS Atributes
+	// COORDS Attributes
 	// Stores the coords of the DOM Object
 	// as they are set. This abstraction is used
 	// to prevent runtime inconsistencies happening
-	// when retrieving coords form a native dom object
+	// when retrieving coords from a native dom object
 	////////////////////////////////
 	
 	/**
 	 * Stores the x position of this dom object
 	 */
 	private var _x:Int;
+	public var x(getX, setX):Int;
 	
 	/**
 	 * Stores the y position of this dom object
 	 */
 	private var _y:Int;
+	public var y(getY, setY):Int;
 	
 	/**
 	 * Stores the width position of this dom object
 	 */
 	private var _width:Int;
+	public var width(getWidth, setWidth):Int;
 	
 	/**
 	 * Stores the height position of this dom object
 	 */
 	private var _height:Int;
+	public var height(getHeight, setHeight):Int;
+	
+	/////////////////////////////////
+	// VISIBILITY/OPACITY attributes
+	////////////////////////////////
+	
+	/**
+	 * The opacity of the DOM Object, from 0 to 1
+	 */
+	public var alpha(getAlpha, setAlpha):Float;
+	
+	/**
+	 * Wheter the DOMObject is visible
+	 */
+	public var isVisible(getIsVisible, setIsVisible):Bool;
+	
+	/////////////////////////////////
+	// Z-ORDER attribute
+	/////////////////////////////////
+	
+	/**
+	 * The z-order / z-index of this DOM Object, relative to
+	 * its parent (the first child of a DOMObject always has
+	 * a 0 z-order)
+	 */
+	public var zOrder(getZOrder, setZOrder):Int;
 	
 	/**
 	 * class constructor. Set the reference to the native DOMObject
@@ -196,9 +228,10 @@ class DOMObjectBase
 	/**
 	 * set the parent of this DOMObject
 	 */
-	public function setParent(domObject:DOMObjectBase):Void
+	public function setParent(domObject:DOMObjectBase):DOMObjectBase
 	{
 		this._parent = domObject;
+		return this._parent;
 	}
 	
 	/**
@@ -229,9 +262,9 @@ class DOMObjectBase
 	 * by runtime specific sub class
 	 * @param	value true if the DOM object must be visible
 	 */
-	public function setIsVisible(value:Bool):Void
+	public function setIsVisible(value:Bool):Bool
 	{
-		//abstract
+		return value;
 	}
 	
 	/**
@@ -247,9 +280,9 @@ class DOMObjectBase
 	 * Set the opacity of the DOM object
 	 * @param	value from 0 (transparent) to 1 (opaque)
 	 */
-	public function setAlpha(value:Float):Void
+	public function setAlpha(value:Float):Float
 	{
-		//abstract
+		return value;
 	}
 	
 	/**
@@ -271,9 +304,10 @@ class DOMObjectBase
 	 * by the inheriting runtime specific class to update
 	 * their native matrix transformations
 	 */
-	public function setMatrix(matrix:Matrix):Void
+	public function setMatrix(matrix:Matrix):Matrix
 	{
 		this._matrix = matrix;
+		return this._matrix;
 	}
 	
 	/**
@@ -640,9 +674,10 @@ class DOMObjectBase
 	// Setters/Getters to manipulate a native DOMObject positioning in the publication
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	public function setX(value:Int):Void 
+	public function setX(value:Int):Int 
 	{
 		this._x = value;
+		return this._x;
 	}
 	
 	public function getX():Int 
@@ -650,9 +685,10 @@ class DOMObjectBase
 		return this._x; 
 	}
 	
-	public function setY(value:Int):Void
+	public function setY(value:Int):Int
 	{
 		this._y = value;
+		return this._y;
 	}
 	
 	public function getY():Int 
@@ -660,9 +696,10 @@ class DOMObjectBase
 		return this._y; 
 	}
 	
-	public function setWidth(value:Int):Void
+	public function setWidth(value:Int):Int
 	{
 		this._width = value;
+		return this._width;
 	}
 	
 	public function getWidth():Int 
@@ -670,22 +707,29 @@ class DOMObjectBase
 		return this._width; 
 	}
 	
-	public function setHeight(value:Int):Void
+	public function setHeight(value:Int):Int
 	{
 		this._height = value;
+		return this._height;
 	}
 	
 	public function getHeight():Int 
 	{ 
-		return this._height; 
+		return this._height;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Z-INDEX SETTER/GETTER
-	// Setter/Gettersto manipulate a native DOMObject z order in the publication
+	// Setter/Getter to manipulate a native DOMObject z order in the publication
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	public function setZOrder(value:Int) {}
+	public function setZOrder(value:Int):Int 
+	{
+		return value;
+	}
 	
-	public function getZOrder():Int { return 0; }
+	public function getZOrder():Int 
+	{
+		return 0;
+	}
 }

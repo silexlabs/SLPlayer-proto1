@@ -140,14 +140,9 @@ class BlockTests
 		var parentBlockBlockData:BlockData = {
 			className:"org.silex_unit_tests.core.block.TestNativeClass",
 			descriptorUID:null,
-			isAutoOpen:false,
-			isTransversal:false,
-			hasSeparateFile:false,
-			fileUrl:null,
-			domRoot:null,
-			jsURL:null,
-			as3URL:null,
-			phpURL:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
 			metaData:new Hash<Dynamic>()
 		};
@@ -205,14 +200,9 @@ class BlockTests
 		var parentBlockBlockData:BlockData = {
 			className:"org.silex_unit_tests.core.block.TestNativeClass",
 			descriptorUID:null,
-			isAutoOpen:false,
-			isTransversal:false,
-			hasSeparateFile:false,
-			fileUrl:null,
-			domRoot:null,
-			jsURL:null,
-			as3URL:null,
-			phpURL:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
 			properties:properties,
 			metaData:new Hash<Dynamic>()
 		};
@@ -264,14 +254,9 @@ class BlockTests
 		var parentBlockBlockData:BlockData = {
 			className:"org.silex_unit_tests.core.block.TestNativeClass",
 			descriptorUID:null,
-			isAutoOpen:false,
-			isTransversal:false,
-			hasSeparateFile:false,
-			fileUrl:null,
-			domRoot:null,
-			jsURL:null,
-			as3URL:null,
-			phpURL:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
 			metaData:new Hash<Dynamic>()
 		};
@@ -291,14 +276,9 @@ class BlockTests
 		var childBlockData:BlockData = {
 			className:"org.silex_unit_tests.core.block.TestNativeClass",
 			descriptorUID:null,
-			isAutoOpen:true,
-			isTransversal:false,
-			hasSeparateFile:false,
-			fileUrl:null,
-			domRoot:null,
-			jsURL:null,
-			as3URL:null,
-			phpURL:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
 			metaData:new Hash<Dynamic>()
 		};

@@ -9,6 +9,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.nativeClass;
+import haxe.Log;
 
 /**
  * This class is used to manipulate a native class instance, 
@@ -30,6 +31,16 @@ class NativeInstanceBase
 	 * a reference to a native class instance, specific to a given runtime
 	 */
 	private var _refToNativeClassInstance:Dynamic;
+	
+	/**
+	 * prefix of a setter function
+	 */
+	private static inline var SETTER_PREFIX:String = "set";
+	
+	/**
+	 * prefix of a getter function
+	 */
+	private static inline var GETTER_PREFIX:String = "get";
 	
 	/**
 	 * Instantiate the native class with the provided class name. Instantiation
@@ -56,7 +67,7 @@ class NativeInstanceBase
 	public function callMethod(methodName:String, args:Array<Dynamic>):Dynamic
 	{
 		//check if the method exists before calling it
-		if (Reflect.isFunction(Reflect.field(_refToNativeClassInstance, methodName)))
+		if (isFunction(methodName))
 		{
 			var method:Dynamic = Reflect.field(_refToNativeClassInstance, methodName);
 			return Reflect.callMethod(_refToNativeClassInstance, method, args);
@@ -72,14 +83,18 @@ class NativeInstanceBase
 	 */
 	public function getField(fieldName:String):Dynamic
 	{
-		//check if the field exists before returning it, else return null
-		if (Reflect.hasField(_refToNativeClassInstance, fieldName))
+		//construct the getter name corresponding to the field by convention ("get" + fieldName in camel case)
+		var fieldGetterName:String = GETTER_PREFIX + fieldName.substr(0, 1).toUpperCase() + fieldName.substr(1);
+		
+		//if a getter function exist for this field, return it's value
+		if (isFunction(fieldGetterName))
 		{
-			return Reflect.field(_refToNativeClassInstance, fieldName);
+			return Reflect.callMethod(_refToNativeClassInstance, Reflect.field(_refToNativeClassInstance, fieldGetterName), []);
 		}
+		//else return the value of the attribute
 		else
 		{
-			return null;
+			return Reflect.field(_refToNativeClassInstance, fieldName);
 		}
 	}
 	
@@ -94,7 +109,33 @@ class NativeInstanceBase
 	 */
 	public function setField(fieldName:String, fieldValue:Dynamic):Void
 	{
-		Reflect.setField(_refToNativeClassInstance, fieldName, fieldValue);
+		//construct the setter name corresponding to the field by convention ("set" + fieldName in camel case)
+		var fieldSetterName:String = SETTER_PREFIX + fieldName.substr(0, 1).toUpperCase() + fieldName.substr(1);
+		
+		//if a setter function exists for this field, call it
+		if (isFunction(fieldSetterName))
+		{
+			Reflect.callMethod(_refToNativeClassInstance, Reflect.field(_refToNativeClassInstance, fieldSetterName), [fieldValue]);
+		}
+		//else set the field directly
+		else
+		{
+			Reflect.setField(_refToNativeClassInstance, fieldName, fieldValue);
+		}
+	}
+	
+	/**
+	 * Return wether the provided function name references a function.
+	 * 
+	 * note : this method proxies the isFunction Reflection API method
+	 * to allow runtime specific override, as its implementation vary.
+	 *	
+	 * @param	functionName the name of the tested function
+	 * @return true if function, false if not or non-existent
+	 */
+	public function isFunction(functionName:String):Bool
+	{
+		return Reflect.isFunction(Reflect.field(_refToNativeClassInstance, functionName));
 	}
 	
 	/**

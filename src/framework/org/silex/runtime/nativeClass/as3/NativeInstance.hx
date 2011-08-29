@@ -39,10 +39,14 @@ class NativeInstance extends NativeInstanceBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * check if the method exist before calling it. Must rely on Type.getInstanceField to check if
-	 * the method exists, as Reflect.hasField only works for attribute and only return false for method.
+	 * check if a function exists on the class instance. Must rely on Type.getInstanceField to check if
+	 * the method exists, as Reflect.hasField only works for dynamic attributes and only return false for 
+	 * class attributes/methods.
+	 * 
+	 * @param functionName the name of the searched method
+	 * @return
 	 */
-	override public function callMethod(methodName:String, args:Array<Dynamic>):Dynamic
+	override public function isFunction(functionName:String):Bool
 	{
 		//retrieve all the static native class fields
 		var instanceFields:Array<String> = Type.getInstanceFields(Type.getClass(_refToNativeClassInstance));
@@ -51,14 +55,16 @@ class NativeInstance extends NativeInstanceBase
 		//loop in the fields to find a match for the method name
 		for (i in 0...numInstanceFields)
 		{
-			if (instanceFields[i] == methodName)
+			if (instanceFields[i] == functionName)
 			{
-				//if the method is found call it and return it's returned value
-				return super.callMethod(methodName, args);
+				//a field with the right name exists,
+				//test if it is a function
+				return super.isFunction(functionName);
 			}
 		}
 
-		return null;
+		//the method does not exist
+		return false;
 	}
 	
 }
