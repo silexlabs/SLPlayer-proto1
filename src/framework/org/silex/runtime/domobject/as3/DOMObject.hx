@@ -66,9 +66,10 @@ class DOMObject extends DOMObjectBase
 	 * Show or hide the native Sprite. 
 	 * @param	value true if the Sprite must be visible
 	 */
-	override public function setIsVisible(value:Bool):Void
+	override public function setIsVisible(value:Bool):Bool
 	{
 		this._referenceToNativeDOM.visible = value;
+		return value;
 	}
 	
 	/**
@@ -83,9 +84,10 @@ class DOMObject extends DOMObjectBase
 	 * Set the opacity of the Sprite
 	 * @param	value from 0 (transparent) to 1 (opaque)
 	 */
-	override public function setAlpha(value:Float):Void
+	override public function setAlpha(value:Float):Float
 	{
 		this._referenceToNativeDOM.alpha = value;
+		return value;
 	}
 	
 	/**
@@ -107,7 +109,7 @@ class DOMObject extends DOMObjectBase
 	 * native Sprite
 	 * @param	matrix
 	 */
-	override public function setMatrix(matrix:Matrix):Void
+	override public function setMatrix(matrix:Matrix):Matrix
 	{
 		super.setMatrix(matrix);
 		
@@ -122,6 +124,8 @@ class DOMObject extends DOMObjectBase
 		
 		//set the native matrix on the native sprite to refresh its display
 		nativeSprite.transform.matrix = nativeTransformMatrix;
+		
+		return this._matrix;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -162,28 +166,32 @@ class DOMObject extends DOMObjectBase
 	// set the following attributes : x,y,width,height
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	override public function setX(value:Int):Void 
+	override public function setX(value:Int):Int 
 	{
 		super.setX(value);
 		this._referenceToNativeDOM.x = value;
+		return this._x;
 	}
 	
-	override public function setY(value:Int):Void 
+	override public function setY(value:Int):Int 
 	{
 		super.setY(value);
 		this._referenceToNativeDOM.y = value;
+		return this._y;
 	}
 	
-	override public function setWidth(value:Int):Void
+	override public function setWidth(value:Int):Int
 	{
 		super.setWidth(value);
 		this._referenceToNativeDOM.width = value;
+		return this._width;
 	}
 	
-	override public function setHeight(value:Int):Void 
+	override public function setHeight(value:Int):Int 
 	{
 		super.setHeight(value);
 		this._referenceToNativeDOM.height = value;
+		return this._height;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +199,7 @@ class DOMObject extends DOMObjectBase
 	// Setter/Getter to manipulate a native DOMObject z order in the publication
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	override public function setZOrder(value:Int)
+	override public function setZOrder(value:Int):Int
 	{
 		//if the value is outside of the children range, set it to the 
 		//last children range
@@ -204,6 +212,8 @@ class DOMObject extends DOMObjectBase
 		//the new index on the current Sprite
 		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
 		parent.setChildIndex(this._referenceToNativeDOM, value);
+		
+		return value;
 	}
 	
 	override public function getZOrder():Int 
