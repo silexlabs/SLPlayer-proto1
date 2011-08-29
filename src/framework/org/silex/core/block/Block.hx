@@ -87,6 +87,7 @@ class Block
 	 * and may be different based on the target.
 	 */
 	private var _domObject:DOMObject;
+	public var domObject(getDOMObject, setDOMObject):DOMObject;
 	
 	/**
 	 * This attribute is set to an instance of the class whose name is in the block's descriptor.
@@ -94,38 +95,45 @@ class Block
 	 * This is the controller of the block, the block's properties and metadata will be pushed into it.
 	 */
 	private var _nativeClassInstance:NativeInstance;
+	public var nativeClassInstance(getNativeClassInstance, setNativeClassInstance):NativeInstance;
 	
 	/**
 	 * The url of the file containing the data of the block (XML, JSON...).
 	 * It can be absolute or relative to the publication content folder.
 	 */ 
 	private var _fileUrl : String;
+	public var fileUrl(getFileUrl, setFileUrl):String;
 	
 	/**
 	 * A BlockStateValue enum (opened, closed, loading).
 	 */
 	private var _state:BlockStateValue;
+	public var state(getState, never):BlockStateValue;
 	
 	/**
 	 * The children blocks of the block.
 	 */
 	private var _children:Array<Block>;
+	public var children(getChildren, never):Array<Block>;
 	
 	/**
 	 * A reference to the parent of the block.
 	 */
 	private var _parent:Block;
+	public var parent(getParent, setParent):Block;
 	
 	/**
 	 * If true, when a block deeper in the hierarchy is
 	 * opened, this one stays opened
 	 */
 	private var _isTransversal:Bool;
+	public var isTransversal(getIsTransversal, setIsTransversal):Bool;
 	
 	/**
 	 * If true, when the block's parent opens, the block also opens.
 	 */
 	private var _isAutoOpen:Bool;
+	public var isAutoOpen(getIsAutoOpen, setIsAutoOpen):Bool;
 	
 	/**
 	 * an index used when opening child block. As the opening is 
@@ -497,6 +505,12 @@ class Block
 		return this._fileUrl;
 	}
 	
+	public function setFileUrl(value:String):String
+	{
+		this._fileUrl = value;
+		return this._fileUrl;
+	}
+	
 	public function getChildren():Array<Block>
 	{
 		return this._children;
@@ -512,14 +526,16 @@ class Block
 		return this._state;
 	}
 	
-	public function setParent(value:Block):Void
+	public function setParent(value:Block):Block
 	{
 		this._parent = value;
+		return this._parent;
 	}
 	
-	public function setIsAutoOpen(value:Bool):Void
+	public function setIsAutoOpen(value:Bool):Bool
 	{
 		this._isAutoOpen = value;
+		return this._isAutoOpen;
 	}
 	
 	public function getIsAutoOpen():Bool
@@ -527,9 +543,10 @@ class Block
 		return this._isAutoOpen;
 	}
 	
-	public function setIsTransversal(value:Bool):Void
+	public function setIsTransversal(value:Bool):Bool
 	{
 		this._isTransversal = value;
+		return this._isTransversal;
 	}
 	
 	public function getIsTransversal():Bool
@@ -537,9 +554,10 @@ class Block
 		return this._isTransversal;
 	}
 	
-	public function setBlockData(value:BlockData):Void
+	public function setBlockData(value:BlockData):BlockData
 	{
 		_blockData = value;
+		return this._blockData;
 	}
 	
 	public function getBlockData():BlockData
@@ -547,9 +565,10 @@ class Block
 		return this._blockData;
 	}
 	
-	public function setDOMObject(value:DOMObject):Void
+	public function setDOMObject(value:DOMObject):DOMObject
 	{
 		_domObject = value;
+		return this._domObject;
 	}
 	
 	public function getDOMObject():DOMObject
@@ -557,9 +576,10 @@ class Block
 		return this._domObject;
 	}
 	
-	public function setNativeClassInstance(nativeClassInstance:NativeInstance):Void
+	public function setNativeClassInstance(nativeClassInstance:NativeInstance):NativeInstance
 	{
 		this._nativeClassInstance = nativeClassInstance;
+		return this._nativeClassInstance;
 	}
 	
 	public function getNativeClassInstance():NativeInstance
