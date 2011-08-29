@@ -42,19 +42,16 @@ class NativeClassTests
 		var nativeClass:NativeInstance = NativeClass.getNativeInstanceByClassName("org.silex_unit_tests.runtime.nativeClass.TestClass");
 		
 		//test native instance methods
-		Assert.equals(nativeClass.getField("_testAttribute"), "bim");
+		Assert.isNull(nativeClass.getField("testAttribute"));
 		
 		Assert.equals(nativeClass.callMethod("testMethod", []), "test OK");
 		
 		nativeClass.setField("_testAttribute", "new value");
 		Assert.equals(nativeClass.getField("_testAttribute"), "new value");
 		
-		//test native instance method with wrong values
-		Assert.isNull(nativeClass.getField("fakeField"));
+		nativeClass.setField("testAttribute", "new setter value");
+		Assert.equals(nativeClass.getField("testAttribute"), "new setter value");
 		
-		nativeClass.setField("fakeField", "fakeValue");
-		
-		Assert.isNull(nativeClass.callMethod("fakeMethod", []));
 		
 	}
 	
@@ -66,15 +63,28 @@ class NativeClassTests
  */
 class TestClass
 {
+	public var testAttribute(getTestAttribute, setTestAttribute):String;
+	
 	private var _testAttribute:String;
 	
 	public function new()
 	{
-		_testAttribute = "bim";
+	
 	}
 	
 	public function testMethod():String
 	{
 		return "test OK";
+	}
+	
+	private function setTestAttribute(value:String):String
+	{
+		_testAttribute = value;
+		return _testAttribute;
+	}
+	
+	private function getTestAttribute():String
+	{
+		return _testAttribute;
 	}
 }
