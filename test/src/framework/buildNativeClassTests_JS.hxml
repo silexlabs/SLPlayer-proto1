@@ -1,0 +1,4 @@
+-cp ../../../src/framework/
+-main org.silex_unit_tests.runtime.nativeClass.NativeClassTests
+-lib utest
+-js ../../bin/runtime/nativeClass/nativeClassTestJS.js 

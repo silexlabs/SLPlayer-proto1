@@ -1,0 +1,4 @@
+-cp ../../../src/framework/
+-main org.silex_unit_tests.runtime.nativeClass.NativeClassTests
+-lib utest
+-php ../../bin/runtime/nativeClass
