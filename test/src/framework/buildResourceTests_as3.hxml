@@ -1,0 +1,4 @@
+-cp ../../../src/framework/
+-main org.silex_unit_tests.runtime.resource.ResourceTests
+-lib utest
+-swf9 ../../bin/runtime/resource/resourceTestAs3.swf 

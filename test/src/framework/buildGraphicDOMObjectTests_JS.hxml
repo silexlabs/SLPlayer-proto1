@@ -1,4 +1,4 @@
 -cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domobject.GraphicDOMObjectTests
+-main org.silex_unit_tests.runtime.domObject.GraphicDOMObjectTests
 -lib utest
--js ../../bin/runtime/domobject/graphicDOMObjectTestJS.js
+-js ../../bin/runtime/domObject/graphicDOMObjectTestJS.js

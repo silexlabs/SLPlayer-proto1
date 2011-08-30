@@ -1,4 +1,4 @@
 -cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domobject.MatrixTests
+-main org.silex_unit_tests.runtime.domObject.MatrixTests
 -lib utest
--js ../../bin/runtime/domobject/matrixTestJS.js
+-js ../../bin/runtime/domObject/matrixTestJS.js

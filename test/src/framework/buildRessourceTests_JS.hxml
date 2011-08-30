@@ -1,4 +1,0 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.runtime.ressource.RessourceTests
--lib utest
--js ../../bin/runtime/ressource/ressourceTestJS.js 

@@ -1,4 +1,4 @@
 -cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domobject.DOMObjectTests
+-main org.silex_unit_tests.runtime.domObject.DOMObjectTests
 -lib utest
--js ../../bin/runtime/domobject/domObjectTestJS.js
+-js ../../bin/runtime/domObject/domObjectTestJS.js
