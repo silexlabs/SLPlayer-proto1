@@ -9,8 +9,8 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.as3;
-import org.silex.runtime.domobject.base.ContainerDOMObjectBase;
+package org.silex.runtime.domObject.as3;
+import org.silex.runtime.domObject.base.ContainerDOMObjectBase;
 
 /**
  * This is the Flash implementation of the container DOMObject.

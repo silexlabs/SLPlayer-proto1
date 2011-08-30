@@ -14,8 +14,8 @@ package org.silex.runtime.resource.php;
 import haxe.Http;
 import haxe.Log;
 import php.Web;
-import org.silex.runtime.domobject.ContainerDOMObject;
-import org.silex.runtime.domobject.DOMObject;
+import org.silex.runtime.domObject.ContainerDOMObject;
+import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.resource.ResourceLoader;
 import org.silex.runtime.resource.ResourceData;
 

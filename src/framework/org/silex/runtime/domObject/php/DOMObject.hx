@@ -9,11 +9,11 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.php;
+package org.silex.runtime.domObject.php;
 
 
 //import js.Dom;
-import org.silex.runtime.domobject.base.DOMObjectBase;
+import org.silex.runtime.domObject.base.DOMObjectBase;
 
 /**
  * This is the DOMObject implementation for PHP. 

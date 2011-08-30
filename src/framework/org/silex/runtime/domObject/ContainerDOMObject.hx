@@ -8,18 +8,18 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject;
+package org.silex.runtime.domObject;
 
 /**
  * Set the right runtime specific ContainerDOMObject at compile-time
  */
 #if flash9
-typedef ContainerDOMObject =  org.silex.runtime.domobject.as3.ContainerDOMObject;
+typedef ContainerDOMObject =  org.silex.runtime.domObject.as3.ContainerDOMObject;
 
 #elseif js
-typedef ContainerDOMObject =  org.silex.runtime.domobject.js.ContainerDOMObject;
+typedef ContainerDOMObject =  org.silex.runtime.domObject.js.ContainerDOMObject;
 
 #elseif php
-typedef ContainerDOMObject =  org.silex.runtime.domobject.php.ContainerDOMObject;
+typedef ContainerDOMObject =  org.silex.runtime.domObject.php.ContainerDOMObject;
 
 #end

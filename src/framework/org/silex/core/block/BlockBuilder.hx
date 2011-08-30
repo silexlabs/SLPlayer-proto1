@@ -12,7 +12,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.core.block;
 
 import haxe.Log;
-import org.silex.runtime.domobject.DOMObject;
+import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.nativeClass.NativeClass;
 import org.silex.runtime.resource.ResourceLoaderManager;
 import org.silex.core.XmlUtils;

@@ -15,7 +15,7 @@ package org.silex_unit_tests.core.block;
 import haxe.Log;
 import org.silex.core.block.Block;
 import org.silex.core.block.BlockData;
-import org.silex.runtime.domobject.DOMObject;
+import org.silex.runtime.domObject.DOMObject;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
@@ -73,7 +73,7 @@ class BlockTests
 		var refToDOM:Dynamic = js.Lib.document.body;	
 		#end
 		
-		//create parent block and set it's domobject
+		//create parent block and set it's domObject
 		var parentBlock:Block = new Block("");
 		var parentBlockDOMObject:DOMObject = new DOMObject(refToDOM);
 		parentBlock.setDOMObject(parentBlockDOMObject);
@@ -84,7 +84,7 @@ class BlockTests
 		var childRefToDOM:Dynamic = js.Lib.document.createElement("div");	
 		#end
 		
-		//create child block and set it's domobject
+		//create child block and set it's domObject
 		var childBlock:Block = new Block("");
 		var childBlockDOMObject:DOMObject = new DOMObject(childRefToDOM);
 		childBlock.setDOMObject(childBlockDOMObject);

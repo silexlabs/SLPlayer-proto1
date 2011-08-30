@@ -12,11 +12,11 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.resource;
 
 import haxe.Log;
-import org.silex.runtime.domobject.ContainerDOMObject;
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.ImageDOMObject;
-import org.silex.runtime.domobject.js.AnimationDOMObject;
-import org.silex.runtime.domobject.TextDOMObject;
+import org.silex.runtime.domObject.ContainerDOMObject;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.ImageDOMObject;
+import org.silex.runtime.domObject.js.AnimationDOMObject;
+import org.silex.runtime.domObject.TextDOMObject;
 import org.silex.runtime.resource.ResourceData;
 
 #if flash9

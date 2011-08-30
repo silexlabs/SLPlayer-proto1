@@ -9,7 +9,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.as3;
+package org.silex.runtime.domObject.as3;
 
 import flash.display.BitmapData;
 import flash.display.CapsStyle;
@@ -19,8 +19,8 @@ import flash.display.LineScaleMode;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import haxe.Log;
-import org.silex.runtime.domobject.base.GraphicDOMObjectBase;
-import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domObject.base.GraphicDOMObjectBase;
+import org.silex.runtime.domObject.DOMObjectData;
 
 /**
  * This is the Flash AVM2 implementation of the graphic DOMObject.

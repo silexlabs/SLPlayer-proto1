@@ -10,7 +10,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 
-package org.silex_unit_tests.runtime.domobject;
+package org.silex_unit_tests.runtime.domObject;
 
 /**
  * Units tests for DOMObjects
@@ -21,14 +21,14 @@ package org.silex_unit_tests.runtime.domobject;
  */
 
 import haxe.Log;
-import org.silex.runtime.domobject.ContainerDOMObject;
-import org.silex.runtime.domobject.TextDOMObject;
+import org.silex.runtime.domObject.ContainerDOMObject;
+import org.silex.runtime.domObject.TextDOMObject;
 
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.base.DOMObjectBase;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.base.DOMObjectBase;
 
-import org.silex.runtime.domobject.GraphicDOMObject;
-import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domObject.GraphicDOMObject;
+import org.silex.runtime.domObject.DOMObjectData;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;

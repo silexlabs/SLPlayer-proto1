@@ -8,15 +8,15 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject;
+package org.silex.runtime.domObject;
 
 /**
  * Set the right runtime specific AnimationDOMObject at compile-time
  */
 #if flash9
-typedef AnimationDOMObject =  org.silex.runtime.domobject.as3.AnimationDOMObject;
+typedef AnimationDOMObject =  org.silex.runtime.domObject.as3.AnimationDOMObject;
 
 #elseif js
-typedef AnimationDOMObject =  org.silex.runtime.domobject.js.AnimationDOMObject;
+typedef AnimationDOMObject =  org.silex.runtime.domObject.js.AnimationDOMObject;
 
 #end

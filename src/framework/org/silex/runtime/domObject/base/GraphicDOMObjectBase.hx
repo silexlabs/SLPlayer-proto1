@@ -9,10 +9,10 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.base;
+package org.silex.runtime.domObject.base;
 
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.DOMObjectData;
 
 /**
  * The graphic DOMObject is used as a canvas to draw bitmap graphics programmatically. 

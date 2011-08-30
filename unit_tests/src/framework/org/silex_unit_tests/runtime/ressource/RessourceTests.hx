@@ -17,11 +17,11 @@ import flash.Lib;
 import flash.system.ApplicationDomain;
 
 #end
-import org.silex.runtime.domobject.TextDOMObject;
+import org.silex.runtime.domObject.TextDOMObject;
 import org.silex.runtime.nativeClass.NativeClass;
 import haxe.Log;
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.base.DOMObjectBase;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.base.DOMObjectBase;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;

@@ -9,9 +9,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.as3;
+package org.silex.runtime.domObject.as3;
 import flash.text.TextField;
-import org.silex.runtime.domobject.base.TextDOMObjectBase;
+import org.silex.runtime.domObject.base.TextDOMObjectBase;
 
 /**
  * This is the Text DOMObject implementation for Flash.

@@ -12,8 +12,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.resource.as3;
 
 import flash.display.Sprite;
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.TextDOMObject;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.TextDOMObject;
 import org.silex.runtime.resource.ResourceLoader;
 import org.silex.runtime.resource.ResourceData;
 

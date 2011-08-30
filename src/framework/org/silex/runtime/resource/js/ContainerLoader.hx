@@ -15,8 +15,8 @@ import haxe.Http;
 import haxe.Log;
 import js.Lib;
 import js.Dom.HtmlDom;
-import org.silex.runtime.domobject.ContainerDOMObject;
-import org.silex.runtime.domobject.DOMObject;
+import org.silex.runtime.domObject.ContainerDOMObject;
+import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.resource.ResourceLoader;
 import org.silex.runtime.resource.ResourceData;
 

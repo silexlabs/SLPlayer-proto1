@@ -9,14 +9,14 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.as3;
+package org.silex.runtime.domObject.as3;
 
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
-import org.silex.runtime.domobject.base.DOMObjectBase;
-import org.silex.runtime.domobject.Matrix;
-import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domObject.base.DOMObjectBase;
+import org.silex.runtime.domObject.Matrix;
+import org.silex.runtime.domObject.DOMObjectData;
 
 /**
  * This is the DOMObject implementation for FLASH AVM2. 

@@ -9,12 +9,12 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.base;
+package org.silex.runtime.domObject.base;
 
 import haxe.Log;
-import org.silex.runtime.domobject.Matrix;
-import org.silex.runtime.domobject.DOMObjectData;
-import org.silex.runtime.domobject.NativeDOMObject;
+import org.silex.runtime.domObject.Matrix;
+import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.domObject.NativeDOMObject;
 
 /**
  * This is a base class for runtime specific DOMObject. A DOMObject is an abstraction of the visual base element of a runtime.

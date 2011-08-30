@@ -17,8 +17,8 @@ import org.silex.core.block.Block;
 import org.silex.core.block.BlockData;
 import org.silex.runtime.nativeClass.NativeClass;
 import org.silex.runtime.nativeClass.NativeInstanceBase;
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.ContainerDOMObject;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.ContainerDOMObject;
 
 /**
  * The Publication class is the entry point of a Silex application. 

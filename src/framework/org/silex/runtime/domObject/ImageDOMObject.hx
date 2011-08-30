@@ -8,18 +8,18 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject;
+package org.silex.runtime.domObject;
 
 /**
  * Set the right runtime specific ImageDOMObject at compile-time
  */
 #if flash9
-typedef ImageDOMObject =  org.silex.runtime.domobject.as3.ImageDOMObject;
+typedef ImageDOMObject =  org.silex.runtime.domObject.as3.ImageDOMObject;
 
 #elseif js
-typedef ImageDOMObject =  org.silex.runtime.domobject.js.ImageDOMObject;
+typedef ImageDOMObject =  org.silex.runtime.domObject.js.ImageDOMObject;
 
 #elseif php
-typedef ImageDOMObject =  org.silex.runtime.domobject.php.ImageDOMObject;
+typedef ImageDOMObject =  org.silex.runtime.domObject.php.ImageDOMObject;
 
 #end

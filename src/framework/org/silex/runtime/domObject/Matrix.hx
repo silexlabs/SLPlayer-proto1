@@ -8,10 +8,10 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject;
+package org.silex.runtime.domObject;
 
 import haxe.Log;
-import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domObject.DOMObjectData;
 
 /**
  * This class is an implementation of a 3x3 matrix. It is meant to be

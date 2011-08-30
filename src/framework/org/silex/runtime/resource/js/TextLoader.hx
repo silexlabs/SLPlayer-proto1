@@ -13,8 +13,8 @@ package org.silex.runtime.resource.js;
 
 import haxe.Http;
 import js.Lib;
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.TextDOMObject;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.TextDOMObject;
 import org.silex.runtime.resource.ResourceLoader;
 import org.silex.runtime.resource.ResourceData;
 

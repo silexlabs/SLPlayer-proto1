@@ -8,15 +8,15 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject;
+package org.silex.runtime.domObject;
 
 /**
  * Set the right runtime specific GraphicDOMObject at compile-time
  */
 #if flash9
-typedef GraphicDOMObject =  org.silex.runtime.domobject.as3.GraphicDOMObject;
+typedef GraphicDOMObject =  org.silex.runtime.domObject.as3.GraphicDOMObject;
 
 #elseif js
-typedef GraphicDOMObject =  org.silex.runtime.domobject.js.GraphicDOMObject;
+typedef GraphicDOMObject =  org.silex.runtime.domObject.js.GraphicDOMObject;
 
 #end

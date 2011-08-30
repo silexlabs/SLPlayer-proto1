@@ -9,12 +9,12 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domobject.js;
+package org.silex.runtime.domObject.js;
 
 
 import haxe.Log;
-import org.silex.runtime.domobject.base.GraphicDOMObjectBase;
-import org.silex.runtime.domobject.DOMObjectData;
+import org.silex.runtime.domObject.base.GraphicDOMObjectBase;
+import org.silex.runtime.domObject.DOMObjectData;
 
 /**
  * This is the JavaScript implementation of the graphic DOMObject.
