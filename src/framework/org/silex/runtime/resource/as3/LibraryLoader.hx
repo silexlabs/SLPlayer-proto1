@@ -9,12 +9,12 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.as3;
+package org.silex.runtime.resource.as3;
 
 import flash.system.ApplicationDomain;
 import flash.system.LoaderContext;
 import haxe.Log;
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 
 import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
@@ -27,7 +27,7 @@ import flash.events.Event;
  * the Flash DOM
  * @author Yannick DOMINGUEZ
  */
-class LibraryLoader extends RessourceLoader
+class LibraryLoader extends ResourceLoader
 {
 	/**
 	 * The native flash library loader

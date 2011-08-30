@@ -9,14 +9,14 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.php;
+package org.silex.runtime.resource.php;
 
 import haxe.Http;
 import php.Web;
 import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.domobject.TextDOMObject;
-import org.silex.runtime.ressource.RessourceLoader;
-import org.silex.runtime.ressource.RessourceData;
+import org.silex.runtime.resource.ResourceLoader;
+import org.silex.runtime.resource.ResourceData;
 
 /**
  * This is the Text loader implementation for the PHP runtime. It is 
@@ -27,7 +27,7 @@ import org.silex.runtime.ressource.RessourceData;
  * @author	Raphael HARMEL
  * @date	2011-08-03
  */
-class TextLoader extends RessourceLoader
+class TextLoader extends ResourceLoader
 {
 	/**
 	 * class constructor

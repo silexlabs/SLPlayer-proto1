@@ -9,22 +9,22 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.php;
+package org.silex.runtime.resource.php;
 
 import haxe.Http;
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 import php.FileSystem;
 import php.Web;
 
 /**
- * Implementation of StringLoader for the PHP runtime, used to load ressources
+ * Implementation of StringLoader for the PHP runtime, used to load resources
  * such as ax XML or JSON files. It uses the default implementation, found in 
  * its parent class, the haxe.Http class acting as an abstraction layer
  * 
  * @author	Raphael HARMEL
  * @date	2011-08-03
  */
-class StringLoader extends RessourceLoader
+class StringLoader extends ResourceLoader
 {
 	public function new() 
 	{

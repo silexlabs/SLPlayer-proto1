@@ -9,13 +9,13 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource;
+package org.silex.runtime.resource;
 
 
  /**
-  * Stores the data relative to a ressource.
+  * Stores the data relative to a resource.
   */
-typedef RessourceData = 
+typedef ResourceData = 
 {
 	/**
 	 * Reference to the callback to execute once the file is loaded

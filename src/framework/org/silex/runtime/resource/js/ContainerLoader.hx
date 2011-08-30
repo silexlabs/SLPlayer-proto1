@@ -9,7 +9,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.js;
+package org.silex.runtime.resource.js;
 
 import haxe.Http;
 import haxe.Log;
@@ -17,8 +17,8 @@ import js.Lib;
 import js.Dom.HtmlDom;
 import org.silex.runtime.domobject.ContainerDOMObject;
 import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.ressource.RessourceLoader;
-import org.silex.runtime.ressource.RessourceData;
+import org.silex.runtime.resource.ResourceLoader;
+import org.silex.runtime.resource.ResourceData;
 
 /**
  * This is the Container loader implementation for the JavaScript runtime. It is used to 
@@ -27,7 +27,7 @@ import org.silex.runtime.ressource.RessourceData;
  * 
  * @author Yannick DOMINGUEZ
  */
-class ContainerLoader extends RessourceLoader
+class ContainerLoader extends ResourceLoader
 {
 	/**
 	 * class constructor

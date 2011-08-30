@@ -9,11 +9,11 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.php;
+package org.silex.runtime.resource.php;
 
 
 import php.Web;
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 
 /**
  * This is the implementation of the library loader for the PHP runtime. A library in PHP
@@ -22,7 +22,7 @@ import org.silex.runtime.ressource.RessourceLoader;
  * @author	Raphael HARMEL
  * @date	2011-08-03
  */
-class LibraryLoader extends RessourceLoader
+class LibraryLoader extends ResourceLoader
 {
 
 	/**

@@ -115,7 +115,7 @@ class Publication
 	 * 
 	 * @param	A reference to the native DOM object. Varies for each
 	 * runtime : in JS it is an HTML element, in Flash a Sprite,
-	 * in PHP a ressource
+	 * in PHP a resource
 	 */
 	public function render(nativeDOM:Dynamic, xmlFileName:String = null, xmlString:String = null)
 	{

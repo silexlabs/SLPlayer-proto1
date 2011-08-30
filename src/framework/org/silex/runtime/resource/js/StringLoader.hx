@@ -9,17 +9,17 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.js;
+package org.silex.runtime.resource.js;
 
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 
 /**
- * Implementation of StringLoader for the JavaScript runtime, used to load ressource
+ * Implementation of StringLoader for the JavaScript runtime, used to load resource
  * such as ax XML or JSON file using AJAX. It used the default implementation, found in 
  * it's parent class, the haxe.Http class acting as an abstraction layer
  * @author Yannick DOMINGUEZ
  */
-class StringLoader extends RessourceLoader
+class StringLoader extends ResourceLoader
 {
 	public function new() 
 	{

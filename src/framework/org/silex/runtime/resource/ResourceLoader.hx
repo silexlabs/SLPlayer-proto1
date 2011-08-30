@@ -9,7 +9,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource;
+package org.silex.runtime.resource;
 import haxe.Http;
 import haxe.Log;
 
@@ -18,7 +18,7 @@ import haxe.Log;
  * class which will be implemented for each file types.
  * @author Yannick DOMINGUEZ
  */
-class RessourceLoader 
+class ResourceLoader 
 {
 
 	/**
@@ -56,9 +56,9 @@ class RessourceLoader
 		this._onLoadCompleteCallback = onLoadComplete;
 		this._onLoadErrorCallback = onLoadError;
 		
-		//if the loaded ressource must not be cached,
+		//if the loaded resource must not be cached,
 		//add a random number at the end of the url to fool
-		//the browser into thinking it loads a new ressource
+		//the browser into thinking it loads a new resource
 		if (allowCache == false)
 		{
 			url = disableUrlCaching(url);

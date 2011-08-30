@@ -8,7 +8,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex_unit_tests.runtime.ressource;
+package org.silex_unit_tests.runtime.resource;
 
 
  #if flash9
@@ -27,13 +27,13 @@ import utest.Runner;
 import utest.ui.Report;
 
 
-import org.silex.runtime.ressource.RessourceLoaderManager;
+import org.silex.runtime.resource.ResourceLoaderManager;
 
 /**
- * Test the cross-platform ressource loading
+ * Test the cross-platform resource loading
  *@author Yannick DOMINGUEZ & Raphael HARMEL
  */
-class RessourceTests 
+class ResourceTests 
 {
 	public static function main()
 	{
@@ -48,7 +48,7 @@ class RessourceTests
 		#end
 		
 		var runner = new Runner();
-		runner.addCase(new RessourceTests());
+		runner.addCase(new ResourceTests());
 		Report.create(runner);
 		runner.run();
 		
@@ -69,7 +69,7 @@ class RessourceTests
 	public function testStringLoad()
 	{
 		var successCallback:String->Void = Assert.createEvent(onStringLoaded);
-		RessourceLoaderManager.loadString("testString.txt", successCallback, onStringLoadError);
+		ResourceLoaderManager.loadString("testString.txt", successCallback, onStringLoadError);
 	}
 	
 	/**
@@ -105,7 +105,7 @@ class RessourceTests
 		var containerUrl:String = "domObject.html";
 		#end
 		
-		RessourceLoaderManager.loadContainer(containerUrl, successCallback, onContainerLoadError);
+		ResourceLoaderManager.loadContainer(containerUrl, successCallback, onContainerLoadError);
 	}
 	
 	/**
@@ -141,11 +141,11 @@ class RessourceTests
 	{
 		var successCallback:Dynamic->Void = Assert.createEvent(onLibraryLoaded);
 		#if flash9
-		RessourceLoaderManager.loadLibrary("testLibrary.swf", successCallback, onLibraryError);
+		ResourceLoaderManager.loadLibrary("testLibrary.swf", successCallback, onLibraryError);
 		#elseif js
-		RessourceLoaderManager.loadLibrary("testLibrary.js", successCallback, onLibraryError);
+		ResourceLoaderManager.loadLibrary("testLibrary.js", successCallback, onLibraryError);
 		#elseif php
-		RessourceLoaderManager.loadLibrary("testLibrary.php", successCallback, onLibraryError);
+		ResourceLoaderManager.loadLibrary("testLibrary.php", successCallback, onLibraryError);
 		#end
 	}
 	
@@ -182,7 +182,7 @@ class RessourceTests
 	public function testLoadPicture()
 	{
 		var successCallback:Dynamic->Void = Assert.createEvent(onPictureLoaded);
-		RessourceLoaderManager.loadImage("testPicture.jpg", successCallback, onPictureLoadError);
+		ResourceLoaderManager.loadImage("testPicture.jpg", successCallback, onPictureLoadError);
 	}
 	
 	public function onPictureLoaded(domObject:Dynamic):Void
@@ -206,7 +206,7 @@ class RessourceTests
 	public function testPictureLoadError():Void
 	{
 		var errorCallback:Dynamic->Void = Assert.createEvent(onPictureLoadError);
-		RessourceLoaderManager.loadImage("falseURL.jpg", onPictureLoaded, errorCallback);
+		ResourceLoaderManager.loadImage("falseURL.jpg", onPictureLoaded, errorCallback);
 	}
 	
 	/**
@@ -225,7 +225,7 @@ class RessourceTests
 	public function testLoadNoCache()
 	{
 		var successCallback:Dynamic->Void = Assert.createEvent(onPictureNoCacheLoaded);
-		RessourceLoaderManager.loadImage("testPicture.jpg", successCallback, onPictureLoadError, false);
+		ResourceLoaderManager.loadImage("testPicture.jpg", successCallback, onPictureLoadError, false);
 	}
 	
 	private function onPictureNoCacheLoaded(domObject:Dynamic):Void
@@ -251,7 +251,7 @@ class RessourceTests
 	public function testLoadText()
 	{
 		var successCallback:Dynamic->Void = Assert.createEvent(onTextLoaded);
-		RessourceLoaderManager.loadText("htmlText.html", successCallback, onTextLoadError);
+		ResourceLoaderManager.loadText("htmlText.html", successCallback, onTextLoadError);
 	}
 	
 	/**

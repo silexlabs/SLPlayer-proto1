@@ -9,7 +9,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource;
+package org.silex.runtime.resource;
 
 import haxe.Log;
 import org.silex.runtime.domobject.ContainerDOMObject;
@@ -17,44 +17,44 @@ import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.domobject.ImageDOMObject;
 import org.silex.runtime.domobject.js.AnimationDOMObject;
 import org.silex.runtime.domobject.TextDOMObject;
-import org.silex.runtime.ressource.RessourceData;
+import org.silex.runtime.resource.ResourceData;
 
 #if flash9
-import org.silex.runtime.ressource.as3.StringLoader;
-import org.silex.runtime.ressource.as3.ImageLoader;
-import org.silex.runtime.ressource.as3.TextLoader;
-import org.silex.runtime.ressource.as3.ContainerLoader;
-import org.silex.runtime.ressource.as3.AnimationLoader;
-import org.silex.runtime.ressource.as3.LibraryLoader;
+import org.silex.runtime.resource.as3.StringLoader;
+import org.silex.runtime.resource.as3.ImageLoader;
+import org.silex.runtime.resource.as3.TextLoader;
+import org.silex.runtime.resource.as3.ContainerLoader;
+import org.silex.runtime.resource.as3.AnimationLoader;
+import org.silex.runtime.resource.as3.LibraryLoader;
 
 #elseif js
-import org.silex.runtime.ressource.js.StringLoader;
-import org.silex.runtime.ressource.js.ImageLoader;
-import org.silex.runtime.ressource.js.TextLoader;
-import org.silex.runtime.ressource.js.ContainerLoader;
-import org.silex.runtime.ressource.js.AnimationLoader;
-import org.silex.runtime.ressource.js.LibraryLoader;
+import org.silex.runtime.resource.js.StringLoader;
+import org.silex.runtime.resource.js.ImageLoader;
+import org.silex.runtime.resource.js.TextLoader;
+import org.silex.runtime.resource.js.ContainerLoader;
+import org.silex.runtime.resource.js.AnimationLoader;
+import org.silex.runtime.resource.js.LibraryLoader;
 
 #elseif php
-import org.silex.runtime.ressource.php.StringLoader;
-import org.silex.runtime.ressource.php.ImageLoader;
-import org.silex.runtime.ressource.php.TextLoader;
-import org.silex.runtime.ressource.php.ContainerLoader;
-import org.silex.runtime.ressource.php.AnimationLoader;
-import org.silex.runtime.ressource.php.LibraryLoader;
+import org.silex.runtime.resource.php.StringLoader;
+import org.silex.runtime.resource.php.ImageLoader;
+import org.silex.runtime.resource.php.TextLoader;
+import org.silex.runtime.resource.php.ContainerLoader;
+import org.silex.runtime.resource.php.AnimationLoader;
+import org.silex.runtime.resource.php.LibraryLoader;
 
 #end	
 
 /**
- * Manages the queue of files to load, and exposes method to load ressources of diferrent types. 
+ * Manages the queue of files to load, and exposes method to load resources of diferrent types. 
  * @author Yannick DOMINGUEZ
  */
-class RessourceLoaderManager 
+class ResourceLoaderManager 
 {	
 	/**
 	 * Queue of files to load, stored in the order where they must be loaded
 	 */
-	private static var _ressourceDataArray:Array<RessourceData>;
+	private static var _resourceDataArray:Array<ResourceData>;
 	
 	/**
 	 * Wheter a file is currently loading
@@ -74,7 +74,7 @@ class RessourceLoaderManager
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Create a RessourceData object and add to the list of files to load by calling addRessourceData
+	 * Create a ResourceData object and add to the list of files to load by calling addResourceData
 	 * @param	url the url of the file to load
 	 * @param	successCallback the callback which must be called once the file is successfully done loading
 	 * @param	errorCallback the callback which must be called if there was an error during loading
@@ -82,7 +82,7 @@ class RessourceLoaderManager
 	 */
 	public static function loadImage(url:String, successCallback:ImageDOMObject->Void, errorCallback:String->Void , allowCache:Bool = true):Void
 	{
-		var ressourceDataToAdd:RessourceData = {
+		var resourceDataToAdd:ResourceData = {
 			url:url,
 			onLoadComplete:successCallback,
 			onLoadError:errorCallback,
@@ -90,11 +90,11 @@ class RessourceLoaderManager
 			loadingType:image
 		};
 		
-		addRessourceData(ressourceDataToAdd);
+		addResourceData(resourceDataToAdd);
 	}
 	
 	/**
-	 * Create a RessourceData object and add to the list of files to load by calling addRessourceData
+	 * Create a ResourceData object and add to the list of files to load by calling addResourceData
 	 * @param	url the url of the file to load
 	 * @param	successCallback the callback which must be called once the file is successfully done loading
 	 * @param	errorCallback the callback which must be called if there was an error during loading
@@ -102,7 +102,7 @@ class RessourceLoaderManager
 	 */
 	public static function loadText(url:String, successCallback:TextDOMObject->Void, errorCallback:String->Void , allowCache:Bool = true):Void
 	{
-		var ressourceDataToAdd:RessourceData = {
+		var resourceDataToAdd:ResourceData = {
 			url:url,
 			onLoadComplete:successCallback,
 			onLoadError:errorCallback,
@@ -110,11 +110,11 @@ class RessourceLoaderManager
 			loadingType:text
 		};
 		
-		addRessourceData(ressourceDataToAdd);
+		addResourceData(resourceDataToAdd);
 	}
 	
 	/**
-	 * Create a RessourceData object and add to the list of files to load by calling addRessourceData
+	 * Create a ResourceData object and add to the list of files to load by calling addResourceData
 	 * @param	url the url of the file to load
 	 * @param	successCallback the callback which must be called once the file is successfully done loading
 	 * @param	errorCallback the callback which must be called if there was an error during loading
@@ -122,7 +122,7 @@ class RessourceLoaderManager
 	 */
 	public static function loadAnimation(url:String, successCallback:AnimationDOMObject->Void, errorCallback:String->Void , allowCache:Bool = true):Void
 	{
-		var ressourceDataToAdd:RessourceData = {
+		var resourceDataToAdd:ResourceData = {
 			url:url,
 			onLoadComplete:successCallback,
 			onLoadError:errorCallback,
@@ -130,11 +130,11 @@ class RessourceLoaderManager
 			loadingType:animation
 		};
 		
-		addRessourceData(ressourceDataToAdd);
+		addResourceData(resourceDataToAdd);
 	}
 	
 	/**
-	 * Create a RessourceData object and add to the list of files to load by calling addRessourceData
+	 * Create a ResourceData object and add to the list of files to load by calling addResourceData
 	 * @param	url the url of the file to load
 	 * @param	successCallback the callback which must be called once the file is successfully done loading
 	 * @param	errorCallback the callback which must be called if there was an error during loading
@@ -142,7 +142,7 @@ class RessourceLoaderManager
 	 */
 	public static function loadContainer(url:String, successCallback:ContainerDOMObject->Void, errorCallback:String->Void , allowCache:Bool = true):Void
 	{
-		var ressourceDataToAdd:RessourceData = {
+		var resourceDataToAdd:ResourceData = {
 			url:url,
 			onLoadComplete:successCallback,
 			onLoadError:errorCallback,
@@ -150,11 +150,11 @@ class RessourceLoaderManager
 			loadingType:container
 		};
 		
-		addRessourceData(ressourceDataToAdd);
+		addResourceData(resourceDataToAdd);
 	}
 	
 	/**
-	 * Create a RessourceData object and add to the list of files to load by calling addRessourceData
+	 * Create a ResourceData object and add to the list of files to load by calling addResourceData
 	 * @param	url the url of the file to load
 	 * @param	successCallback the callback which must be called once the file is successfully done loading
 	 * @param	errorCallback the callback which must be called if there was an error during loading
@@ -162,7 +162,7 @@ class RessourceLoaderManager
 	 */
 	public static function loadString(url:String, successCallback:String->Void, errorCallback:String->Void , allowCache:Bool = true):Void
 	{
-		var ressourceDataToAdd:RessourceData = {
+		var resourceDataToAdd:ResourceData = {
 			url:url,
 			onLoadComplete:successCallback,
 			onLoadError:errorCallback,
@@ -170,11 +170,11 @@ class RessourceLoaderManager
 			loadingType:data
 		};
 		
-		addRessourceData(ressourceDataToAdd);
+		addResourceData(resourceDataToAdd);
 	}
 	
 	/**
-	 * Create a RessourceData object and add to the list of files to load by calling addRessourceData
+	 * Create a ResourceData object and add to the list of files to load by calling addResourceData
 	 * @param	url the url of the file to load
 	 * @param	successCallback the callback which must be called once the file is successfully done loading
 	 * @param	errorCallback the callback which must be called if there was an error during loading
@@ -182,7 +182,7 @@ class RessourceLoaderManager
 	 */
 	public static function loadLibrary(url:String, successCallback:Dynamic->Void, errorCallback:String->Void , allowCache:Bool = true):Void
 	{
-		var ressourceDataToAdd:RessourceData = {
+		var resourceDataToAdd:ResourceData = {
 			url:url,
 			onLoadComplete:successCallback,
 			onLoadError:errorCallback,
@@ -190,7 +190,7 @@ class RessourceLoaderManager
 			loadingType:library
 		};
 		
-		addRessourceData(ressourceDataToAdd);
+		addResourceData(resourceDataToAdd);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -198,36 +198,36 @@ class RessourceLoaderManager
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * stores the RessourceData in ressourceDataArray. Call loadNextRessource if isLoading is false. 
-	 * @param ressourceData the new ressourceData to add
+	 * stores the ResourceData in resourceDataArray. Call loadNextResource if isLoading is false. 
+	 * @param resourceData the new resourceData to add
 	 */
-	private static function addRessourceData(ressourceData:RessourceData):Void
+	private static function addResourceData(resourceData:ResourceData):Void
 	{
 		//instantiate the array if first use
-		if (_ressourceDataArray == null)
+		if (_resourceDataArray == null)
 		{
-			_ressourceDataArray = new Array<RessourceData>();
+			_resourceDataArray = new Array<ResourceData>();
 		}
 		
-		_ressourceDataArray.push(ressourceData);
+		_resourceDataArray.push(resourceData);
 		
 		if (_isLoading == false)
 		{
-			loadNextRessource();
+			loadNextResource();
 		}
 	}
 	
 	/**
 	 *  Set isLoading to true or false depending on the content of filesArray.
-	 *	Retrieve the next RessourceData object.
-	 *	Create the corresponding RessourceLoader
-	 *	Actually start loading the ressource.
+	 *	Retrieve the next ResourceData object.
+	 *	Create the corresponding ResourceLoader
+	 *	Actually start loading the resource.
 	 */
-	private static function loadNextRessource():Void
+	private static function loadNextResource():Void
 	{
-		//if there are no more elements to load in the ressourceData array,
+		//if there are no more elements to load in the resourceData array,
 		//do nothing
-		if (_ressourceDataArray.length == 0)
+		if (_resourceDataArray.length == 0)
 		{
 			_isLoading = false;
 		}
@@ -236,60 +236,60 @@ class RessourceLoaderManager
 		{
 			_isLoading = true;
 			
-			var ressourceDataToLoad:RessourceData = _ressourceDataArray[0];
+			var resourceDataToLoad:ResourceData = _resourceDataArray[0];
 			
-			var ressourceLoader:RessourceLoader;
-			switch (ressourceDataToLoad.loadingType)
+			var resourceLoader:ResourceLoader;
+			switch (resourceDataToLoad.loadingType)
 			{
 				case data:
-				ressourceLoader = new StringLoader();
+				resourceLoader = new StringLoader();
 				
 				case image: 
-				ressourceLoader = new ImageLoader();
+				resourceLoader = new ImageLoader();
 				
 				case text:
-				ressourceLoader = new TextLoader();
+				resourceLoader = new TextLoader();
 				
 				case animation:
-				ressourceLoader = new AnimationLoader();
+				resourceLoader = new AnimationLoader();
 				
 				case container:
-				ressourceLoader = new ContainerLoader();
+				resourceLoader = new ContainerLoader();
 				
 				case library:
-				ressourceLoader = new LibraryLoader();
+				resourceLoader = new LibraryLoader();
 			}
 			
-			ressourceLoader.load(ressourceDataToLoad.url, onLoadComplete, onLoadError, ressourceDataToLoad.allowCache);
+			resourceLoader.load(resourceDataToLoad.url, onLoadComplete, onLoadError, resourceDataToLoad.allowCache);
 		}
 	}
 	
 	/**
-	 * Remove the 1st RessourceData from ressourceDataArray and call the success callback.
-	 * Then call loadNextRessource.
+	 * Remove the 1st ResourceData from resourceDataArray and call the success callback.
+	 * Then call loadNextResource.
 	 * @param	data the loaded file data
 	 */
 	private static function onLoadComplete(data:Dynamic):Void
 	{
-		var loadedRessourceData:RessourceData = _ressourceDataArray.shift();
+		var loadedResourceData:ResourceData = _resourceDataArray.shift();
 		
-		loadedRessourceData.onLoadComplete(data); 
+		loadedResourceData.onLoadComplete(data); 
 		
-		loadNextRessource();
+		loadNextResource();
 	}
 	
 	/**
-	 * Remove the 1st RessourceData from ressourceDataArray and call the error callback.
-	 * Then call loadNextRessource.
+	 * Remove the 1st ResourceData from resourceDataArray and call the error callback.
+	 * Then call loadNextResource.
 	 * @param	data the loading error data
 	 */
 	private static function onLoadError(data:Dynamic):Void
 	{
-		var errorRessourceData:RessourceData = _ressourceDataArray.shift();
+		var errorResourceData:ResourceData = _resourceDataArray.shift();
 		
-		errorRessourceData.onLoadError(data);
+		errorResourceData.onLoadError(data);
 		
-		loadNextRessource();
+		loadNextResource();
 	}
 	
 }

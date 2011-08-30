@@ -21,7 +21,7 @@ import haxe.Log;
 import org.silex.runtime.domobject.base.DOMObjectBase;
 import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.domobject.ImageDOMObject;
-import org.silex.runtime.ressource.RessourceLoaderManager;
+import org.silex.runtime.resource.ResourceLoaderManager;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
@@ -151,7 +151,7 @@ class GraphicDOMObjectTests
 	 */
 	public function testDrawBitmapRectangle()
 	{
-		RessourceLoaderManager.loadImage("../ressource/testPicture.jpg", onImageLoaded, function(msg:String) { } ); 
+		ResourceLoaderManager.loadImage("../resource/testPicture.jpg", onImageLoaded, function(msg:String) { } ); 
 		
 		Assert.equals(1, 1);
 	}
@@ -306,7 +306,7 @@ class GraphicDOMObjectTests
 	 */
 	public function testDrawBitmapRectangleStroke()
 	{
-		RessourceLoaderManager.loadImage("../ressource/testPicture.jpg", onStrokeImageLoaded, function(msg:String) { } ); 
+		ResourceLoaderManager.loadImage("../resource/testPicture.jpg", onStrokeImageLoaded, function(msg:String) { } ); 
 		Assert.equals(1, 1);
 	}
 	

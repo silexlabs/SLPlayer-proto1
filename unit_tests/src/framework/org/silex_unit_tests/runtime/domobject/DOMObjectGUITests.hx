@@ -21,7 +21,7 @@ import haxe.Log;
 import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.domobject.base.DOMObjectBase;
 
-import org.silex.runtime.ressource.RessourceLoaderManager;
+import org.silex.runtime.resource.ResourceLoaderManager;
 
 #if flash9
 import flash.display.Sprite;

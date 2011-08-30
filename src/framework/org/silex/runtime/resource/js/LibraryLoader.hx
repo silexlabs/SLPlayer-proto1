@@ -9,10 +9,10 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.js;
+package org.silex.runtime.resource.js;
 
 
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 import js.Dom.HtmlDom;
 import js.Lib;
 
@@ -21,7 +21,7 @@ import js.Lib;
  * is a .js file. This class is in charge of adding a script tag to the HTML DOM with the new script to add
  * @author Yannick DOMINGUEZ
  */
-class LibraryLoader extends RessourceLoader
+class LibraryLoader extends ResourceLoader
 {
 
 	/**

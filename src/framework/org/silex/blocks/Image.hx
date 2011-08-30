@@ -14,7 +14,7 @@ package org.silex.blocks;
 import haxe.Log;
 import org.silex.runtime.domobject.DOMObject;
 import haxe.Timer;
-import org.silex.runtime.ressource.RessourceLoaderManager;
+import org.silex.runtime.resource.ResourceLoaderManager;
 import org.silex.runtime.domobject.ImageDOMObject;
 
 /**
@@ -41,7 +41,7 @@ class Image
 		if (url != "" && url != null)
 		{
 			Log.trace("initDone - start loading asset");
-			RessourceLoaderManager.loadImage(url, _imageLoadedSuccess, _imageLoadedError);
+			ResourceLoaderManager.loadImage(url, _imageLoadedSuccess, _imageLoadedError);
 		}
 	}
 	/**

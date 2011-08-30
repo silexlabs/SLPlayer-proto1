@@ -9,15 +9,15 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.php;
+package org.silex.runtime.resource.php;
 
 import haxe.Http;
 import haxe.Log;
 import php.Web;
 import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.domobject.ImageDOMObject;
-import org.silex.runtime.ressource.RessourceLoader;
-import org.silex.runtime.ressource.RessourceData;
+import org.silex.runtime.resource.ResourceLoader;
+import org.silex.runtime.resource.ResourceData;
 
 /**
  * This is the Image loader implementation for the PHP runtime. It is used to 
@@ -28,7 +28,7 @@ import org.silex.runtime.ressource.RessourceData;
  * @author	Raphael HARMEL
  * @date	2011-08-03
  */
-class ImageLoader extends RessourceLoader
+class ImageLoader extends ResourceLoader
 {
 	/**
 	 * class constructor

@@ -9,9 +9,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.js;
+package org.silex.runtime.resource.js;
 
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 
 /**
  * This is the Animation loader implementation for the JavaScript runtime. It is used to 
@@ -21,7 +21,7 @@ import org.silex.runtime.ressource.RessourceLoader;
  * 
  * @author Yannick DOMINGUEZ
  */
-class AnimationLoader extends RessourceLoader
+class AnimationLoader extends ResourceLoader
 {
 	/**
 	 * class constructor

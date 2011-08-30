@@ -9,9 +9,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.ressource.php;
+package org.silex.runtime.resource.php;
 
-import org.silex.runtime.ressource.RessourceLoader;
+import org.silex.runtime.resource.ResourceLoader;
 
 /**
  * This is the Animation loader implementation for the PHP runtime. It can be used to 
@@ -22,7 +22,7 @@ import org.silex.runtime.ressource.RessourceLoader;
  * @author	Raphael HARMEL
  * @date	2011-08-03
  */
-class AnimationLoader extends RessourceLoader
+class AnimationLoader extends ResourceLoader
 {
 	/**
 	 * class constructor

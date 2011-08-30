@@ -14,7 +14,7 @@ package org.silex.core.block;
 import haxe.Log;
 import org.silex.runtime.domobject.DOMObject;
 import org.silex.runtime.nativeClass.NativeClass;
-import org.silex.runtime.ressource.RessourceLoaderManager;
+import org.silex.runtime.resource.ResourceLoaderManager;
 import org.silex.core.XmlUtils;
 
 /**
@@ -269,7 +269,7 @@ class BlockBuilder
 		_loadBlockDataSuccess = successCallback;
 		_loadBlockDataError = errorCallback;
 		
-		RessourceLoaderManager.loadString(_block.getFileUrl(), onBlockDataLoaded, onBlockDataLoadError);
+		ResourceLoaderManager.loadString(_block.getFileUrl(), onBlockDataLoaded, onBlockDataLoadError);
 	}
 	
 	/**
@@ -310,7 +310,7 @@ class BlockBuilder
 		_loadDOMObjectSuccess = successCallback;
 		_loadDOMObjectError = errorCallback;
 		
-		RessourceLoaderManager.loadContainer(skinUrl, onDOMObjectLoaded, onDOMObjectLoadError);
+		ResourceLoaderManager.loadContainer(skinUrl, onDOMObjectLoaded, onDOMObjectLoadError);
 	}
 	
 	/**

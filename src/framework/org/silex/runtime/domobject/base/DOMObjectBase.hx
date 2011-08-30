@@ -93,7 +93,7 @@ class DOMObjectBase
 	/**
 	 * A reference to the native DOM object. Varies for each
 	 * runtime : in JS it is an HTML element, in Flash a Sprite,
-	 * in PHP a ressource
+	 * in PHP a resource
 	 */
 	private var _referenceToNativeDOM:NativeDOMObject;
 	
@@ -245,7 +245,7 @@ class DOMObjectBase
 	
 	/**
 	 * Returns the reference to this DOMObject native DOM element
-	 * @return a Sprite in AS, an HTML element in JS, a ressource in PHP
+	 * @return a Sprite in AS, an HTML element in JS, a resource in PHP
 	 */
 	public function getReferenceToNativeDOM():Dynamic
 	{
