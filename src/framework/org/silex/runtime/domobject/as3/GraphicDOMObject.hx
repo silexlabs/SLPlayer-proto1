@@ -36,12 +36,20 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	private var _backGroundSprite:Sprite;
 	
 	/**
+	 * Cast the native DOM as a sprite to access the 
+	 * graphics object
+	 */
+	private var _typedReferenceToNativeDOM:Sprite;
+	
+	/**
 	 * class constructor. Init the background Sprite with
 	 * a default width and height
 	 */
 	public function new(referenceToNativeDOMObject:Dynamic) 
 	{
 		super(referenceToNativeDOMObject);
+		
+		_typedReferenceToNativeDOM = cast(referenceToNativeDOMObject);
 		
 		_backGroundSprite = new Sprite();
 		referenceToNativeDOMObject.addChild(_backGroundSprite);
@@ -103,7 +111,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	override public function endFill():Void
 	{
-		_referenceToNativeDOM.graphics.endFill();
+		_typedReferenceToNativeDOM.graphics.endFill();
 	}
 	
 	/**
@@ -112,7 +120,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	override public function clear():Void
 	{
-		_referenceToNativeDOM.graphics.clear();
+		_typedReferenceToNativeDOM.graphics.clear();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -125,24 +133,21 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	private function setFillStyle(fillStyle:FillStyleValue):Void
 	{
-		//cast the DOM object as a Sprite for compilation type check
-		var referenceToNativeSprite:Sprite = _referenceToNativeDOM;
-		
 		switch(fillStyle)
 		{
 			//if there must be no fill style (probably only a stroke style)
 			//start a transparent fill
 			case none:
-				referenceToNativeSprite.graphics.beginFill(0,0);
+				_typedReferenceToNativeDOM.graphics.beginFill(0,0);
 			
 			//for a fill style with one color, use the native beginFill method
 			case monochrome(colorStop):
-				referenceToNativeSprite.graphics.beginFill(colorStop.color, toNativeAlpha(colorStop.alpha));
+				_typedReferenceToNativeDOM.graphics.beginFill(colorStop.color, toNativeAlpha(colorStop.alpha));
 			
 			//for a gradient fill, use the beginGradientFill native method
 			case gradient(gradientStyle):
 				
-				referenceToNativeSprite.graphics.beginGradientFill(
+				_typedReferenceToNativeDOM.graphics.beginGradientFill(
 					getGradientType(gradientStyle.gradientType),
 					getGradientColors(gradientStyle.gradientStops),
 					getGradientAlphas(gradientStyle.gradientStops),
@@ -153,7 +158,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 			//for a bitmap fill, use the natvie beginBitmapFill method, using
 			//an ImageDOMObject as source for the bitmap data
 			case bitmap(imageDOMObject, repeat):
-				referenceToNativeSprite.graphics.beginBitmapFill(getBitmapData(imageDOMObject), null, repeat);
+				_typedReferenceToNativeDOM.graphics.beginBitmapFill(getBitmapData(imageDOMObject), null, repeat);
 		}	
 	}
 	
@@ -163,9 +168,6 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	private function setLineStyle(lineStyle:LineStyleValue):Void
 	{
-		//cast the DOM object as a Sprite for compilation type check
-		var referenceToNativeSprite:Sprite = _referenceToNativeDOM;
-		
 		switch(lineStyle)
 		{
 			//if there must be no line (probably just a fill instead), do nothing
@@ -175,7 +177,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 			//if there must be a one-color line, use the native lineStyle method
 			case monochrome(colorStop, lineStyleData):
 				//set the line style
-				referenceToNativeSprite.graphics.lineStyle(
+				_typedReferenceToNativeDOM.graphics.lineStyle(
 					lineStyleData.thickness,
 					colorStop.color,
 					toNativeAlpha(colorStop.alpha),
@@ -189,7 +191,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 			case gradient(gradientStyle, lineStyleData):
 				
 				//set first the line style so that the line is visible	
-				referenceToNativeSprite.graphics.lineStyle(
+				_typedReferenceToNativeDOM.graphics.lineStyle(
 					lineStyleData.thickness,
 					0,
 					1,
@@ -201,7 +203,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 					
 				
 
-				referenceToNativeSprite.graphics.lineGradientStyle(
+				_typedReferenceToNativeDOM.graphics.lineGradientStyle(
 					getGradientType(gradientStyle.gradientType),
 					getGradientColors(gradientStyle.gradientStops),
 					getGradientAlphas(gradientStyle.gradientStops), 
@@ -214,7 +216,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 			//setting the bitmap data on the line
 			case bitmap(imageDOMObject, lineStyleData, repeat):
 				//set first the line style so that the line is visible	
-				referenceToNativeSprite.graphics.lineStyle(
+				_typedReferenceToNativeDOM.graphics.lineStyle(
 					lineStyleData.thickness,
 					0,
 					1,
@@ -225,7 +227,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 					lineStyleData.miterLimit);
 				
 				//then set the bitmap data on it
-				referenceToNativeSprite.graphics.lineBitmapStyle(getBitmapData(imageDOMObject), new Matrix(), repeat);
+				_typedReferenceToNativeDOM.graphics.lineBitmapStyle(getBitmapData(imageDOMObject), new Matrix(), repeat);
 		}
 	}
 	
@@ -238,8 +240,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	override public function lineTo(x:Float, y:Float):Void
 	{
-		var referenceToNativeSprite:Sprite = _referenceToNativeDOM;
-		referenceToNativeSprite.graphics.lineTo(x, y);
+		_typedReferenceToNativeDOM.graphics.lineTo(x, y);
 	}
 	
 	/**
@@ -247,8 +248,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	override public function moveTo(x:Float, y:Float):Void
 	{
-		var referenceToNativeSprite:Sprite = _referenceToNativeDOM;
-		referenceToNativeSprite.graphics.moveTo(x, y);
+		_typedReferenceToNativeDOM.graphics.moveTo(x, y);
 	}
 	
 	/**
@@ -256,8 +256,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	override public function curveTo(controlX:Float, controlY:Float, x:Float, y:Float):Void
 	{
-		var referenceToNativeSprite:Sprite = _referenceToNativeDOM;
-		referenceToNativeSprite.graphics.curveTo(controlX, controlY, x, y);
+		_typedReferenceToNativeDOM.graphics.curveTo(controlX, controlY, x, y);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -356,13 +355,13 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	}
 	
 	/**
-	 * Get the bitmap data from an ImageDataObject
+	 * Get the bitmap data from an ImageDOMObject
 	 * @param	imageDOMObject contains a Sprite containing a bitmap
 	 * @return a bitmap data using the DOMObject sprite as it's source
 	 */
 	private function getBitmapData(imageDOMObject:DOMObject):BitmapData
 	{
-		var bitmapData:BitmapData = new BitmapData(imageDOMObject.getWidth(), imageDOMObject.getHeight(), true);
+		var bitmapData:BitmapData = new BitmapData(imageDOMObject.width, imageDOMObject.height, true);
 		bitmapData.draw(imageDOMObject.getReferenceToNativeDOM());
 		
 		return bitmapData;

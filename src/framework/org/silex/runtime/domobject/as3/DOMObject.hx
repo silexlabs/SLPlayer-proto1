@@ -113,9 +113,6 @@ class DOMObject extends DOMObjectBase
 	{
 		super.setMatrix(matrix);
 		
-		//type the native dom object
-		var nativeSprite:Sprite = this._referenceToNativeDOM;
-		
 		//get the data of the cross-platform matrix
 		var matrixData:MatrixData = matrix.getMatrixData();
 		
@@ -123,7 +120,7 @@ class DOMObject extends DOMObjectBase
 		var nativeTransformMatrix:flash.geom.Matrix  = new flash.geom.Matrix(matrixData.a, matrixData.b, matrixData.c, matrixData.d, matrixData.e, matrixData.f);
 		
 		//set the native matrix on the native sprite to refresh its display
-		nativeSprite.transform.matrix = nativeTransformMatrix;
+		this._referenceToNativeDOM.transform.matrix = nativeTransformMatrix;
 		
 		return this._matrix;
 	}

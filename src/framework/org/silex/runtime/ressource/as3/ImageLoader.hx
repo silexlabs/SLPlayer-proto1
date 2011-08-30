@@ -89,9 +89,11 @@ class ImageLoader extends RessourceLoader
 		_imageLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onImageLoadComplete);
 		_imageLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onImageLoadIOError);
 		
-		var imagerDOMObject:DOMObject = new ImageDOMObject(_imageLoader);
+		var imageDOMObject:DOMObject = new ImageDOMObject(_imageLoader);
+		imageDOMObject.width = Math.round(_imageLoader.content.width);
+		imageDOMObject.height = Math.round(_imageLoader.content.height);
 		
-		onLoadComplete(imagerDOMObject);
+		onLoadComplete(imageDOMObject);
 	}
 	
 	/**

@@ -14,7 +14,7 @@ package org.silex.runtime.domobject;
  * Set the right runtime specific NativeDOMObject at compile-time
  */
 #if flash9
-typedef NativeDOMObject =  flash.display.Sprite;
+typedef NativeDOMObject =  flash.display.DisplayObjectContainer;
 
 #elseif js
 import js.Dom;
