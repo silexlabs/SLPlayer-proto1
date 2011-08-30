@@ -25,6 +25,7 @@ class TextDOMObjectBase extends DOMObject
 	 * Stores the HTML text displaying by this DOMObject
 	 */
 	private var _text:String;
+	public var text(getText, setText):String;
 	
 	/**
 	 * class contructor
@@ -34,13 +35,30 @@ class TextDOMObjectBase extends DOMObject
 		super(referenceToNativeDOMObject);
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden hierarchy methods
+	// The addChild and removeChild method are not implemented for this 
+	// DOMObject, as it is a leaf DOMObject (can't have children)
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	override public function addChild(domObject:DOMObjectBase):Void
+	{
+		
+	}
+	
+	override public function removeChild(domObject:DOMObjectBase):Void
+	{
+		
+	}
+	
 	/**
 	 * Set the HTML text displayed by this component
 	 * @param	text a text formatted with HTML tags
 	 */
-	public function setText(text:String):Void
+	public function setText(text:String):String
 	{
 		this._text = text;
+		return this._text;
 	}
 	
 	/**

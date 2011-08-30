@@ -48,10 +48,11 @@ class TextDOMObject extends TextDOMObjectBase
 	 * string on the native text field
 	 * @param text the HTML text before conversion
 	 */
-	override public function setText(text:String):Void
+	override public function setText(text:String):String
 	{
 		super.setText(text);
 		_nativeTextField.htmlText = fromHTMLtoFLASHTML(text);
+		return text;
 	}
 	
 	/**

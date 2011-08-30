@@ -35,10 +35,11 @@ class TextDOMObject extends TextDOMObjectBase
 	 * HTML tag with the provided text
 	 * @param	text an HTML formatted text
 	 */
-	override public function setText(text:String):Void
+	override public function setText(text:String):String
 	{
 		super.setText(text);
 		this._referenceToNativeDOM.innerHTML = text;
+		return text;
 	}
 	
 }
