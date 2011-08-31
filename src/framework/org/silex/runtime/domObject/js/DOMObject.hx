@@ -24,18 +24,33 @@ import org.silex.runtime.geom.Matrix;
  */
 class DOMObject extends DOMObjectBase
 {
-
+	/////////////////////////////////
+	// CONSTRUTOR & INIT
+	/////////////////////////////////
+	
 	/**
 	 * Class constructor
 	 */
-	public function new(referenceToNativeDOM:Dynamic) 
+	public function new(referenceToNativeDOM:HtmlDom = null) 
 	{
 		super(referenceToNativeDOM);
-		
+	}
+	
+	/**
+	 * Set the domObject properties which can be retrieved
+	 * from the native HTML DOM element
+	 */
+	override private function init():Void
+	{
 		//all DOMObjects are positioned as absolute to prevent most
 		//of browsers inconsistencies regarding margin/padding. 
 		//Margin, padding , floating... concepts will be abstracted
-		referenceToNativeDOM.style.position = "absolute";
+		_referenceToNativeDOM.style.position = "absolute";
+		
+		this._width = Std.parseInt(_referenceToNativeDOM.style.width);
+		this._height = Std.parseInt(_referenceToNativeDOM.style.height);
+		this._x = Std.parseInt(_referenceToNativeDOM.style.left);
+		this._y = Std.parseInt(_referenceToNativeDOM.style.top);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
