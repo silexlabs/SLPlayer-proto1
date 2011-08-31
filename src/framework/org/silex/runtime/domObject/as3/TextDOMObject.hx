@@ -13,6 +13,7 @@ package org.silex.runtime.domObject.as3;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.text.TextField;
+import haxe.Log;
 import org.silex.runtime.domObject.base.TextDOMObjectBase;
 
 /**
