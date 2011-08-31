@@ -13,6 +13,7 @@ package org.silex.runtime.domObject.as3;
 
 import flash.display.DisplayObjectContainer;
 import flash.events.MouseEvent;
+import haxe.Log;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;

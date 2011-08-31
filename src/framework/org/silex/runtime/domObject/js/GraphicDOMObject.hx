@@ -57,13 +57,13 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	public function new(referenceToNativeDOMObject:HtmlDom = null) 
 	{
-		super(referenceToNativeDOMObject);
-		
 		//create a canvas if none is provided
 		if (referenceToNativeDOMObject == null)
 		{
 			this._referenceToNativeDOM = Lib.document.createElement("canvas");
 		}
+		
+		super(referenceToNativeDOMObject);
 		
 	}
 	

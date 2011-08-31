@@ -48,13 +48,14 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	public function new(referenceToNativeDOMObject:DisplayObjectContainer = null) 
 	{
-		super(referenceToNativeDOMObject);
-		
 		//add a canvas Sprite if none is provided
 		if (referenceToNativeDOMObject == null)
 		{
-			this._referenceToNativeDOM = new Sprite();
+			referenceToNativeDOMObject = new Sprite();
 		}
+		
+		super(referenceToNativeDOMObject);
+		
 		
 		_typedReferenceToNativeDOM = cast(referenceToNativeDOMObject);
 		
