@@ -1,0 +1,4 @@
+-cp ../../../src/framework/
+-main org.silex_unit_tests.core.XmlUtilsTests
+-lib utest
+-js ../../bin/core/XmlUtilsTestJS.js
