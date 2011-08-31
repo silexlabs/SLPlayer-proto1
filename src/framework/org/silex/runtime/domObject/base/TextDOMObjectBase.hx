@@ -30,7 +30,7 @@ class TextDOMObjectBase extends DOMObject
 	/**
 	 * class contructor
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic)
+	public function new(referenceToNativeDOMObject:Dynamic = null)
 	{
 		super(referenceToNativeDOMObject);
 	}

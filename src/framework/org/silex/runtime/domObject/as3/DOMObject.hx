@@ -28,7 +28,7 @@ class DOMObject extends DOMObjectBase
 	/**
 	 * Class constructor
 	 */
-	public function new(referenceToNativeDOM:Dynamic) 
+	public function new(referenceToNativeDOM:DisplayObjectContainer = null) 
 	{
 		super(referenceToNativeDOM);
 	}

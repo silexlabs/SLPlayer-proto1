@@ -13,6 +13,7 @@ package org.silex.runtime.domObject.as3;
 
 import flash.display.BitmapData;
 import flash.display.CapsStyle;
+import flash.display.DisplayObjectContainer;
 import flash.display.GradientType;
 import flash.display.JointStyle;
 import flash.display.LineScaleMode;
@@ -45,9 +46,15 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 * class constructor. Init the background Sprite with
 	 * a default width and height
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:DisplayObjectContainer = null) 
 	{
 		super(referenceToNativeDOMObject);
+		
+		//add a canvas Sprite if none is provided
+		if (referenceToNativeDOMObject == null)
+		{
+			this._referenceToNativeDOM = new Sprite();
+		}
 		
 		_typedReferenceToNativeDOM = cast(referenceToNativeDOMObject);
 		
