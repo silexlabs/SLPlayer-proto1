@@ -1,4 +1,5 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.core.block.BlockTests
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main core.block.BlockTests
 -lib utest
--swf9 ../../bin/core/block/blockTestAs3.swf
+-swf9 ../../../bin/core/block/blockTestAs3.swf

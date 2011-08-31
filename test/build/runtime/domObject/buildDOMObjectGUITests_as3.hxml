@@ -1,3 +1,4 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domObject.DOMObjectGUITests
--swf9 ../../bin/runtime/domObject/domObjectGUITestAs3.swf
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.domObject.DOMObjectGUITests
+-swf9 ../../../bin/runtime/domObject/domObjectGUITestAs3.swf

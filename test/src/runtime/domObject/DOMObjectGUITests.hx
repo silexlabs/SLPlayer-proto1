@@ -10,7 +10,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 
-package org.silex_unit_tests.runtime.domObject;
+package runtime.domObject;
 
 /**
  * Units tests for DOMObjects
@@ -22,6 +22,7 @@ import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 
 import org.silex.runtime.resource.ResourceLoaderManager;
+import org.silex.runtime.domObject.DOMObjectData;
 
 #if flash9
 import flash.display.Sprite;
@@ -104,7 +105,7 @@ class DOMObjectGUITests
 	
 	private function onDOMObjectPress(domObject:DOMObject):Void
 	{
-		domObject.setRotation(domObject.getRotation() + 10);
+		domObject.setRotation(domObject.getRotation() + 10, constant(center, middle) );
 		Log.trace(domObject.getRotation());
 		Log.trace("dom object press");
 	}

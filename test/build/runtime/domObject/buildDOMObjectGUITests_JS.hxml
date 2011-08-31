@@ -1,3 +1,4 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domObject.DOMObjectGUITests
--js ../../bin/runtime/domObject/domObjectGUITestJS.js
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.domObject.DOMObjectGUITests
+-js ../../../bin/runtime/domObject/domObjectGUITestJS.js

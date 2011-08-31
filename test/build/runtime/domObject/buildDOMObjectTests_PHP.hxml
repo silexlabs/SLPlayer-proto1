@@ -1,4 +1,5 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domobject.DOMObjectTests
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.domobject.DOMObjectTests
 -lib utest
--php ../../bin/runtime/domobject/domObjectTestPHP.php
+-php ../../../bin/runtime/domobject/domObjectTestPHP.php
