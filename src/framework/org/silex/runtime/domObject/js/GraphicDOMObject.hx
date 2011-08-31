@@ -11,8 +11,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.js;
 
-
-import haxe.Log;
+import js.Dom;
+import js.Lib;
 import org.silex.runtime.domObject.base.GraphicDOMObjectBase;
 import org.silex.runtime.domObject.DOMObjectData;
 
@@ -55,9 +55,16 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	/**
 	 * class constructor
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:HtmlDom = null) 
 	{
+		//create a canvas if none is provided
+		if (referenceToNativeDOMObject == null)
+		{
+			this._referenceToNativeDOM = Lib.document.createElement("canvas");
+		}
+		
 		super(referenceToNativeDOMObject);
+		
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

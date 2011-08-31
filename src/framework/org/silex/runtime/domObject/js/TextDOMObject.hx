@@ -10,6 +10,8 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.js;
+import js.Dom;
+import js.Lib;
 import org.silex.runtime.domObject.base.TextDOMObjectBase;
 
 /**
@@ -25,8 +27,14 @@ class TextDOMObject extends TextDOMObjectBase
 	/**
 	 * class constructor
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:HtmlDom = null) 
 	{
+		//create a generiv container if none is provided
+		if (referenceToNativeDOMObject == null)
+		{
+			this._referenceToNativeDOM = Lib.document.createElement("div");
+		}
+		
 		super(referenceToNativeDOMObject);
 	}
 	
