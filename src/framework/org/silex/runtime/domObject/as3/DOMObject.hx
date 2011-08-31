@@ -15,7 +15,7 @@ import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import org.silex.runtime.domObject.base.DOMObjectBase;
-import org.silex.runtime.domObject.Matrix;
+import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
 
 /**
