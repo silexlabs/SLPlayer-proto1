@@ -12,7 +12,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.domObject.as3;
 
 import flash.display.DisplayObjectContainer;
-import flash.display.Sprite;
 import flash.events.MouseEvent;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.geom.Matrix;
@@ -34,13 +33,25 @@ class DOMObject extends DOMObjectBase
 		super(referenceToNativeDOM);
 	}
 	
+	/**
+	 * Set the domObject properties which can be retrieved
+	 * from the native Display Object
+	 */
+	override private function init():Void
+	{	
+		this._width = Math.round(_referenceToNativeDOM.width);
+		this._height = Math.round(_referenceToNativeDOM.height);
+		this._x = Math.round(_referenceToNativeDOM.x);
+		this._y = Math.round(_referenceToNativeDOM.y);
+	}
+	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Overriden methods to manipulate the Flash DOM
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Adds a native Flash DOMObject (Sprite) to this DOMObject native DOMObject
-	 * @param	domObject the Sprite to add to this
+	 * Adds a native Flash DOMObject (DisplayObject) to this DOMObject native DOMObject
+	 * @param	domObject the DisplayObject to add to this
 	 */
 	override public function addChild(domObject:DOMObjectBase):Void
 	{
@@ -49,8 +60,8 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	/**
-	 * Removes a native Flash DOMObject (Sprite) from this DOMObject native DOMObject
-	 * @param	domObject the Sprite to remove from this
+	 * Removes a native Flash DOMObject (DisplayObject) from this DOMObject native DOMObject
+	 * @param	domObject the DisplayObject to remove from this
 	 */
 	override public function removeChild(domObject:DOMObjectBase):Void
 	{
@@ -63,8 +74,8 @@ class DOMObject extends DOMObjectBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Show or hide the native Sprite. 
-	 * @param	value true if the Sprite must be visible
+	 * Show or hide the native DisplayObject. 
+	 * @param	value true if the DisplayObject must be visible
 	 */
 	override public function setIsVisible(value:Bool):Bool
 	{
@@ -73,7 +84,7 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	/**
-	 * Return wether the native Sprite is visible.
+	 * Return wether the native DisplayObject is visible.
 	 */
 	override public function getIsVisible():Bool
 	{
@@ -81,7 +92,7 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	/**
-	 * Set the opacity of the Sprite
+	 * Set the opacity of the DisplayObject
 	 * @param	value from 0 (transparent) to 1 (opaque)
 	 */
 	override public function setAlpha(value:Float):Float
@@ -91,7 +102,7 @@ class DOMObject extends DOMObjectBase
 	}
 	
 	/**
-	 * return the opacity of the Sprite, 
+	 * return the opacity of the DisplayObject, 
 	 * from 0 to 1
 	 */ 
 	override public function getAlpha():Float
@@ -106,7 +117,7 @@ class DOMObject extends DOMObjectBase
 	/**
 	 * when the matrix is set, update also
 	 * the values of the native flash matrix of the
-	 * native Sprite
+	 * native DisplayObject
 	 * @param	matrix
 	 */
 	override public function setMatrix(matrix:Matrix):Matrix
@@ -119,7 +130,7 @@ class DOMObject extends DOMObjectBase
 		//create a native matrix with the cross-platform matrix data
 		var nativeTransformMatrix:flash.geom.Matrix  = new flash.geom.Matrix(matrixData.a, matrixData.b, matrixData.c, matrixData.d, matrixData.e, matrixData.f);
 		
-		//set the native matrix on the native sprite to refresh its display
+		//set the native matrix on the native DisplayObject to refresh its display
 		this._referenceToNativeDOM.transform.matrix = nativeTransformMatrix;
 		
 		return this._matrix;
@@ -130,7 +141,7 @@ class DOMObject extends DOMObjectBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Add event listeners for events on the native flash Sprite
+	 * Add event listeners for events on the native flash DisplayObject
 	 */
 	override private function setNativeListeners():Void
 	{
@@ -140,13 +151,13 @@ class DOMObject extends DOMObjectBase
 		this._referenceToNativeDOM.addEventListener(MouseEvent.ROLL_OUT, onNativeRollOut);
 		this._referenceToNativeDOM.addEventListener(MouseEvent.MOUSE_MOVE, onNativeMouseMove);
 		
-		//In As3, a Sprite must be double click enabled to dispatch double click event
+		//In As3, a DisplayObject must be double click enabled to dispatch double click event
 		this._referenceToNativeDOM.doubleClickEnabled = true;
 		this._referenceToNativeDOM.addEventListener(MouseEvent.DOUBLE_CLICK, onNativeDoubleClick);
 	}
 	
 	/**
-	 * Removes the event listeners on the native flash Sprite
+	 * Removes the event listeners on the native flash DisplayObject
 	 */
 	override private function unsetNativeListeners():Void
 	{
@@ -206,7 +217,7 @@ class DOMObject extends DOMObjectBase
 		}
 		
 		//retrieve the parent Display Object, and use it to set
-		//the new index on the current Sprite
+		//the new index on the current DisplayObject
 		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
 		parent.setChildIndex(this._referenceToNativeDOM, value);
 		
