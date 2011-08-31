@@ -22,7 +22,7 @@ import org.silex.runtime.domObject.DOMObject;
  */
 class AnimationDOMObjectBase extends DOMObject
 {
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:Dynamic = null) 
 	{
 		super(referenceToNativeDOMObject);
 	}

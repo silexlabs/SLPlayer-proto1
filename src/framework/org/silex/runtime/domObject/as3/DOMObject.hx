@@ -13,6 +13,7 @@ package org.silex.runtime.domObject.as3;
 
 import flash.display.DisplayObjectContainer;
 import flash.events.MouseEvent;
+import haxe.Log;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
@@ -28,7 +29,7 @@ class DOMObject extends DOMObjectBase
 	/**
 	 * Class constructor
 	 */
-	public function new(referenceToNativeDOM:Dynamic) 
+	public function new(referenceToNativeDOM:DisplayObjectContainer = null) 
 	{
 		super(referenceToNativeDOM);
 	}

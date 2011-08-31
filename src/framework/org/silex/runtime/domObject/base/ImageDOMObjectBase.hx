@@ -25,7 +25,7 @@ class ImageDOMObjectBase extends DOMObject
 	/**
 	 * class constructor
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:Dynamic = null) 
 	{
 		super(referenceToNativeDOMObject);
 	}

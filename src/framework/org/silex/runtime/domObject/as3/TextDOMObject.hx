@@ -10,6 +10,8 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.as3;
+import flash.display.DisplayObjectContainer;
+import flash.display.Sprite;
 import flash.text.TextField;
 import org.silex.runtime.domObject.base.TextDOMObjectBase;
 
@@ -34,8 +36,14 @@ class TextDOMObject extends TextDOMObjectBase
 	 * class constructor. Instantiate the native text field
 	 * and add it as a child of the native Sprite.
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:DisplayObjectContainer = null) 
 	{
+		//add a new DisplayObject if none is provided
+		if (referenceToNativeDOMObject == null)
+		{
+			referenceToNativeDOMObject = new Sprite();
+		}
+		
 		super(referenceToNativeDOMObject);
 		
 		_nativeTextField = new TextField();
