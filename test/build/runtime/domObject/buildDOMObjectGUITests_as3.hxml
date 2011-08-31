@@ -1,0 +1,4 @@
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.domObject.DOMObjectGUITests
+-swf9 ../../../bin/runtime/domObject/domObjectGUITestAs3.swf

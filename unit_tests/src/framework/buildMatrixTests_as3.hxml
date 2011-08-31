@@ -1,4 +1,0 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.runtime.domobject.MatrixTests
--lib utest
--swf9 ../../bin/runtime/domobject/matrixTestAs3.swf

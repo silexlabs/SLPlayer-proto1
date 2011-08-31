@@ -1,0 +1,5 @@
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main core.block.BlockTests
+-lib utest
+-swf9 ../../../bin/core/block/blockTestAs3.swf

@@ -1,0 +1,5 @@
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main core.block.BlockTests
+-lib utest
+-js ../../../bin/core/block/blockTestJS.js

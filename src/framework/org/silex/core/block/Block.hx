@@ -13,7 +13,7 @@ package org.silex.core.block;
 
 import haxe.Log;
 import org.silex.core.config.Config;
-import org.silex.runtime.domobject.DOMObject;
+import org.silex.runtime.domObject.DOMObject;
 import org.silex.core.block.BlockData;
 import org.silex.runtime.nativeClass.NativeClass;
 import org.silex.runtime.nativeClass.NativeInstanceBase;

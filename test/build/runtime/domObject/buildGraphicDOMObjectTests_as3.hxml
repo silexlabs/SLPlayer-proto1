@@ -1,0 +1,5 @@
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.domObject.GraphicDOMObjectTests
+-lib utest
+-swf9 ../../../bin/runtime/domObject/graphicDOMObjectTestAs3.swf
