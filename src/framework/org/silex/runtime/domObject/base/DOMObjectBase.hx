@@ -173,19 +173,39 @@ class DOMObjectBase
 	 */
 	public var zOrder(getZOrder, setZOrder):Int;
 	
+	/////////////////////////////////
+	// CONSTRUTOR & INIT
+	/////////////////////////////////
+	
 	/**
 	 * class constructor. Set the reference to the native DOMObject
 	 * and initialise it
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic) 
+	public function new(referenceToNativeDOMObject:Dynamic = null) 
 	{
-		this._referenceToNativeDOM = referenceToNativeDOMObject;
+		//store and init the dom object properties
+		//with the native dom object if it isn't null
+		if (referenceToNativeDOMObject != null)
+		{
+			this._referenceToNativeDOM = referenceToNativeDOMObject;
+			init();
+		}
 		
 		_children = new Array<DOMObjectBase>();
 		
 		_matrix = new Matrix();
 		
 		setNativeListeners();
+	}
+	
+	/**
+	 * Set the domObject properties which can be retrieved
+	 * from the referenceToNativeDom. Called each time
+	 * the native dom object is set
+	 */
+	private function init():Void
+	{
+		//abstract
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +254,7 @@ class DOMObjectBase
 		return this._parent;
 	}
 	
+	
 	/**
 	 * returns the children of this DOMObject
 	 * @return an array of DOMObject
@@ -244,8 +265,18 @@ class DOMObjectBase
 	}
 	
 	/**
+	 * set the reference to this DOMObject native DOM element
+	 * @return a DisplayObject in AS, an HTML element in JS, a resource in PHP
+	 */
+	public function setReferenceToNativeDOM(value:NativeDOMObject):Dynamic
+	{
+		this._referenceToNativeDOM = value;
+		init();
+	}
+	
+	/**
 	 * Returns the reference to this DOMObject native DOM element
-	 * @return a Sprite in AS, an HTML element in JS, a resource in PHP
+	 * @return a DisplayObject in AS, an HTML element in JS, a resource in PHP
 	 */
 	public function getReferenceToNativeDOM():Dynamic
 	{
