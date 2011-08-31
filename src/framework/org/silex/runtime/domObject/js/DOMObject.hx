@@ -15,6 +15,7 @@ import haxe.Log;
 import js.Dom;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.Matrix;
 
 /**
  * This is the DOMObject implementation for JavaScript. 

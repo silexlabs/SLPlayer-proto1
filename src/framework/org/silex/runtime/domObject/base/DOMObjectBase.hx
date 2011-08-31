@@ -12,7 +12,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.domObject.base;
 
 import haxe.Log;
-import org.silex.runtime.domObject.Matrix;
+import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
 import org.silex.runtime.domObject.NativeDOMObject;
 
