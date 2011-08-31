@@ -1,4 +1,0 @@
--cp ../../../src/framework/
--main org.silex_unit_tests.core.block.BlockBuilderTests
--lib utest
--js ../../bin/core/block/blockBuilderTestJS.js
