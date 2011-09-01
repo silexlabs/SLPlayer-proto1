@@ -13,6 +13,7 @@ package org.silex.runtime.domObject.as3;
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.text.TextField;
+import haxe.Log;
 import org.silex.runtime.domObject.base.TextDOMObjectBase;
 
 /**
@@ -48,6 +49,7 @@ class TextDOMObject extends TextDOMObjectBase
 		
 		_nativeTextField = new TextField();
 		_nativeTextField.wordWrap = true;
+		_nativeTextField.multiline = true;
 		referenceToNativeDOMObject.addChild(_nativeTextField);
 	}
 	
@@ -75,23 +77,25 @@ class TextDOMObject extends TextDOMObjectBase
 	}
 	
 	/**
-	 * override to set also the width of the native text
-	 * field to match the size of the DOMObject
+	 * override to set only the width of the native text
+	 * field. The container sprite must not be reseized,
+	 * else it scale the text
 	 */ 
 	override public function setWidth(value:Int):Int
 	{
-		super.setWidth(value);
+		this._width = value;
 		_nativeTextField.width = value;
 		return this._width;
 	}
 	
 	/**
-	 * override to set also the height of the native text
-	 * field to match the size of the DOMObject
+	 * override to set only the height of the native text
+	 * field. The container sprite must not be reseized,
+	 * else it scale the text
 	 */ 
 	override public function setHeight(value:Int):Int
 	{
-		super.setHeight(value);
+		this._height = value;
 		_nativeTextField.height = value;
 		return this._height;
 	}

@@ -47,10 +47,29 @@ class DOMObject extends DOMObjectBase
 		//Margin, padding , floating... concepts will be abstracted
 		_referenceToNativeDOM.style.position = "absolute";
 		
-		this._width = Std.parseInt(_referenceToNativeDOM.style.width);
-		this._height = Std.parseInt(_referenceToNativeDOM.style.height);
+		if (_referenceToNativeDOM.style.width != null)
+		{
+			this._width = Std.parseInt(_referenceToNativeDOM.style.width);
+		}
+		else
+		{
+			this._width = _referenceToNativeDOM.offsetWidth;
+		}
+		
+		if (_referenceToNativeDOM.style.height != null)
+		{
+			this._height = Std.parseInt(_referenceToNativeDOM.style.height);
+		}
+		else
+		{
+			this._height = _referenceToNativeDOM.offsetHeight;
+		}
+		
+		
+		this._height = _referenceToNativeDOM.offsetHeight;
 		this._x = Std.parseInt(_referenceToNativeDOM.style.left);
 		this._y = Std.parseInt(_referenceToNativeDOM.style.top);
+		
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

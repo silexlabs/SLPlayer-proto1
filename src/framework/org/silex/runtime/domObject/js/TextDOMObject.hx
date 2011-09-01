@@ -32,7 +32,7 @@ class TextDOMObject extends TextDOMObjectBase
 		//create a generiv container if none is provided
 		if (referenceToNativeDOMObject == null)
 		{
-			this._referenceToNativeDOM = Lib.document.createElement("div");
+			referenceToNativeDOMObject = Lib.document.createElement("div");
 		}
 		
 		super(referenceToNativeDOMObject);

@@ -187,6 +187,9 @@ class ResourceTests
 	
 	public function onPictureLoaded(domObject:Dynamic):Void
 	{
+		Assert.same(domObject.width, 65);
+		Assert.same(domObject.height, 65);
+		
 		DOMObjectBase.rootDOMObject.addChild(domObject);
 		#if flash9
 		domObject.setX(200);
