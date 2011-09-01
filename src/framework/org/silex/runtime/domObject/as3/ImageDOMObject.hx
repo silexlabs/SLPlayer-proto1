@@ -11,6 +11,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.as3;
 import flash.display.DisplayObjectContainer;
+import flash.display.Loader;
+import haxe.Log;
 import org.silex.runtime.domObject.base.ImageDOMObjectBase;
 
 /**

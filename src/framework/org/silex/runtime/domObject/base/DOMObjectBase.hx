@@ -476,8 +476,14 @@ class DOMObjectBase
 	 * @param	angle the rotation angle, in degree
 	 * @param	transformationOrigin the pivot point, represented as an enum value or as a point
 	 */
-	public function rotate(angle:Int, transformationOrigin:TransformationOriginValue):Void
+	public function rotate(angle:Int, transformationOrigin:TransformationOriginValue = null):Void
 	{
+		//default transformation center is top left
+		if (transformationOrigin == null)
+		{
+			transformationOrigin = constant(left, top);
+		}
+		
 		//use the matrix API, retrieve the pivot point
 		_matrix.rotate(angle, getTransformationOriginPoint(transformationOrigin));
 		//refresh the matrix to refresh the domObject display
@@ -490,7 +496,14 @@ class DOMObjectBase
 	 * @param	angle the target angle
 	 * @param	transformationOrigin the rotation center
 	 */
-	public function setRotation(angle:Int, transformationOrigin:TransformationOriginValue):Void {
+	public function setRotation(angle:Int, transformationOrigin:TransformationOriginValue = null):Void 
+	{
+		
+		//default transformation center is top left
+		if (transformationOrigin == null)
+		{
+			transformationOrigin = constant(left, top);
+		}
 		
 		_matrix.setRotation(angle, getTransformationOriginPoint(transformationOrigin));
 		setMatrix(this._matrix);
@@ -515,8 +528,14 @@ class DOMObjectBase
 	 * @param	scaleY the vertical scale factor
 	 * @param	transformationOrigin the scale center, represented as an enum value or as a point
 	 */
-	public function scale(scaleX:Float, scaleY:Float, transformationOrigin:TransformationOriginValue):Void
+	public function scale(scaleX:Float, scaleY:Float, transformationOrigin:TransformationOriginValue = null):Void
 	{
+		//default transformation center is top left
+		if (transformationOrigin == null)
+		{
+			transformationOrigin = constant(left, top);
+		}
+		
 		//use the matrix API, retrieve the scale center
 		_matrix.scale(scaleX, scaleY, getTransformationOriginPoint(transformationOrigin));
 		
@@ -529,8 +548,14 @@ class DOMObjectBase
 	 * @param	scaleX the target x scale
 	 * @param	transformationOrigin the scale center
 	 */
-	public function setScaleX(scaleX:Float, transformationOrigin:TransformationOriginValue):Void
+	public function setScaleX(scaleX:Float, transformationOrigin:TransformationOriginValue = null):Void
 	{
+		//default transformation center is top left
+		if (transformationOrigin == null)
+		{
+			transformationOrigin = constant(left, top);
+		}
+		
 		_matrix.setScaleX(scaleX, getTransformationOriginPoint(transformationOrigin));
 		setMatrix(this._matrix);
 	}
@@ -548,8 +573,14 @@ class DOMObjectBase
 	 * @param	scaleX the target y scale
 	 * @param	transformationOrigin the scale center
 	 */
-	public function setScaleY(scaleY:Float, transformationOrigin:TransformationOriginValue):Void
+	public function setScaleY(scaleY:Float, transformationOrigin:TransformationOriginValue = null):Void
 	{
+		//default transformation center is top left
+		if (transformationOrigin == null)
+		{
+			transformationOrigin = constant(left, top);
+		}
+		
 		_matrix.setScaleY(scaleY, getTransformationOriginPoint(transformationOrigin));
 		setMatrix(this._matrix);
 	}
@@ -573,8 +604,14 @@ class DOMObjectBase
 	 * @param	skewY the vertical skew factor
 	 * @param	transformationOrigin the skew center, represented as an enum value or as a point
 	 */
-	public function skew(skewX:Float, skewY:Float, transformationOrigin:TransformationOriginValue):Void
+	public function skew(skewX:Float, skewY:Float, transformationOrigin:TransformationOriginValue = null):Void
 	{
+		//default transformation center is top left
+		if (transformationOrigin == null)
+		{
+			transformationOrigin = constant(left, top);
+		}
+		
 		//use the matrix API, retrieve the skew center
 		_matrix.skew(skewX, skewY, getTransformationOriginPoint(transformationOrigin));
 		
