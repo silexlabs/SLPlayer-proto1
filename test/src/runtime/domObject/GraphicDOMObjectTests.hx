@@ -138,7 +138,7 @@ class GraphicDOMObjectTests
 		
 		graphicDOMObject.beginFill(fillStyle, lineStyle);
 		
-		graphicDOMObject.drawRect(0, 0, 150, 100, cornerRadiuses);
+		graphicDOMObject.drawRect(20, 40, 50, 30, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
 		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
@@ -184,7 +184,7 @@ class GraphicDOMObjectTests
 		
 		graphicDOMObject.beginFill(fillStyle, lineStyle);
 		
-		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
+		graphicDOMObject.drawRect(20, 5, 65, 45, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
 		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);

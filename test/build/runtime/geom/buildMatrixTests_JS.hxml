@@ -1,5 +1,5 @@
 -cp ../../../../src/framework/
 -cp ../../../src/
--main runtime.domObject.MatrixTests
+-main runtime.geom.MatrixTests
 -lib utest
--js ../../../bin/runtime/domObject/matrixTestJS.js
+-js ../../../bin/runtime/geom/matrixTestJS.js

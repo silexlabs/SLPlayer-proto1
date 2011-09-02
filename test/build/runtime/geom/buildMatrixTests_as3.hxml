@@ -1,5 +1,5 @@
 -cp ../../../../src/framework/
 -cp ../../../src/
--main runtime.domObject.MatrixTests
+-main runtime.geom.MatrixTests
 -lib utest
--swf9 ../../../bin/runtime/domObject/matrixTestAs3.swf
+-swf9 ../../../bin/runtime/geom/matrixTestAs3.swf
