@@ -17,6 +17,7 @@ import haxe.Log;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
 
 /**
  * This is the DOMObject implementation for FLASH AVM2. 

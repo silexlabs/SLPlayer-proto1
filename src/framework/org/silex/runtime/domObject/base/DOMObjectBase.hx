@@ -14,6 +14,7 @@ package org.silex.runtime.domObject.base;
 import haxe.Log;
 import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.domObject.NativeDOMObject;
 
 /**
