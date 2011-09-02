@@ -66,13 +66,13 @@ class GraphicDOMObjectBase extends DOMObject
 	/**
 	 * Starts a  fill used when drawing a shape with subsequent calls to lineTo,
 	 * moveTo or curveTo. The fill remain in effect until endFill  
-	 * is called. Clears the current fill.
+	 * is called. 
 	 * @param	fillStyle the data used to draw the fill
 	 * @param	lineStyle the data used to draw the fill stroke/line
 	 */
 	public function beginFill(fillStyle:FillStyleValue, lineStyle:LineStyleValue):Void
 	{
-		clear();
+		//abstract;
 	}
 	
 	/**
@@ -108,22 +108,22 @@ class GraphicDOMObjectBase extends DOMObject
 	 */
 	public function drawRect(x:Int, y:Int, width:Int, height:Int, cornerRadiuses:CornerRadiusData):Void
 	{
-		moveTo(cornerRadiuses.tlCornerRadius, 0);
-		lineTo(width - cornerRadiuses.trCornerRadius , 0);
+		moveTo(cornerRadiuses.tlCornerRadius + x, y);
+		lineTo(width - cornerRadiuses.trCornerRadius + x, y);
 	
 	
-		curveTo(width, 0, width , cornerRadiuses.trCornerRadius  );
+		curveTo(width + x, y, width + x , cornerRadiuses.trCornerRadius + y  );
 		
-		lineTo(width , cornerRadiuses.trCornerRadius );
-		lineTo(width , height - cornerRadiuses.brCornerRadius);
-		curveTo(width , height , width - cornerRadiuses.brCornerRadius , height );
-		lineTo(width - cornerRadiuses.brCornerRadius , height );
-		lineTo(cornerRadiuses.blCornerRadius , height );
-		curveTo(0, height , 0, height - cornerRadiuses.blCornerRadius );
-		lineTo(0, height - cornerRadiuses.blCornerRadius );
-		lineTo(0, cornerRadiuses.tlCornerRadius );
-		curveTo(0,0, cornerRadiuses.tlCornerRadius , 0);
-		lineTo(cornerRadiuses.tlCornerRadius , 0);
+		lineTo(width + x , cornerRadiuses.trCornerRadius + y );
+		lineTo(width + x , height - cornerRadiuses.brCornerRadius + y);
+		curveTo(width + x, height + y , width - cornerRadiuses.brCornerRadius + x , height + y );
+		lineTo(width - cornerRadiuses.brCornerRadius + x , height + y );
+		lineTo(cornerRadiuses.blCornerRadius + x , height + y );
+		curveTo(x, height + y , x, height - cornerRadiuses.blCornerRadius  +y );
+		lineTo(x, height - cornerRadiuses.blCornerRadius + y );
+		lineTo(x, cornerRadiuses.tlCornerRadius + y );
+		curveTo(x,y, cornerRadiuses.tlCornerRadius + x , y);
+		lineTo(cornerRadiuses.tlCornerRadius + x , y);
 	}
 	
 	/**

@@ -166,7 +166,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 			//for a bitmap fill, use the natvie beginBitmapFill method, using
 			//an ImageDOMObject as source for the bitmap data
 			case bitmap(imageDOMObject, repeat):
-				_typedReferenceToNativeDOM.graphics.beginBitmapFill(getBitmapData(imageDOMObject), null, repeat);
+				_typedReferenceToNativeDOM.graphics.beginBitmapFill(getBitmapData(imageDOMObject), new Matrix(), repeat);
 		}	
 	}
 	
