@@ -1,5 +1,0 @@
--cp ../../../../src/framework/
--cp ../../../src/
--main runtime.domObject.MatrixTests
--lib utest
--js ../../../bin/runtime/domObject/matrixTestJS.js

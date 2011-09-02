@@ -1,5 +1,0 @@
--cp ../../../../src/framework/
--cp ../../../src/
--main runtime.domObject.MatrixTests
--lib utest
--swf9 ../../../bin/runtime/domObject/matrixTestAs3.swf
