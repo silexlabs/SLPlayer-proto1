@@ -541,7 +541,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	private function getBitmapData(imageDOMObject:DOMObject):BitmapData
 	{
-		var bitmapData:BitmapData = new BitmapData(imageDOMObject.width, imageDOMObject.height, true);
+		var bitmapData:BitmapData = new BitmapData(imageDOMObject.width, imageDOMObject.height, true, 0x00FFFFFF);
 		bitmapData.draw(imageDOMObject.getReferenceToNativeDOM());
 		
 		return bitmapData;
