@@ -11,26 +11,26 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.keyboard.as3;
 
 import flash.events.KeyboardEvent;
-import org.silex.runtime.domObject.NativeDOMObject;
+import flash.Lib;
+import haxe.Log;
 import org.silex.runtime.keyboard.KeyboardBase;
 import org.silex.runtime.keyboard.KeyboardData;
 
 /**
  * This is the flash AVM2 implementation of the keyboard abstraction.
- * Set listeners on native flash keyboard event on the provided native
- * element and call their stored callbacks.
+ * Set listeners on native flash keyboard event and call the corresponding
+ * callback
  * 
  * @author Yannick DOMINGUEZ
  */
 class Keyboard extends KeyboardBase
 {
 	/**
-	 * class constructor. Set keyboard listener on the native
-	 * element
+	 * class constructor. Set native keyboard listeners
 	 */
-	public function new(nativeElement:NativeDOMObject) 
+	public function new() 
 	{
-		super(nativeElement);
+		super();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -41,19 +41,22 @@ class Keyboard extends KeyboardBase
 	/**
 	 * Set the listeners for flash keyboard event
 	 */
-	override private function setNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
+	override private function setNativeKeyboardListeners():Void
 	{
-		nativeElement.addEventListener(KeyboardEvent.KEY_DOWN, onNativeKeyDown);
-		nativeElement.addEventListener(KeyboardEvent.KEY_UP, onNativeKeyUp);
+		//in flash keyboard event are listened from the stage to receive global 
+		//keyboard event. We might evolve this features with focus management
+		//eventually
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, onNativeKeyDown);
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onNativeKeyUp);
 	}
 	
 	/**
 	 * removes the listeners for flash keyboard event
 	 */
-	override private function unsetNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
+	override private function unsetNativeKeyboardListeners():Void
 	{
-		nativeElement.addEventListener(KeyboardEvent.KEY_DOWN, onNativeKeyDown);
-		nativeElement.addEventListener(KeyboardEvent.KEY_UP, onNativeKeyUp);
+		Lib.current.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onNativeKeyDown);
+		Lib.current.stage.removeEventListener(KeyboardEvent.KEY_UP, onNativeKeyUp);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

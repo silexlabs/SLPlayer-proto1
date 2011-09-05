@@ -10,6 +10,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.keyboard;
 
+import haxe.Log;
 import org.silex.runtime.domObject.NativeDOMObject;
 import org.silex.runtime.keyboard.KeyboardData;
 
@@ -44,11 +45,11 @@ class KeyboardBase
 	
 	/**
 	 * class constructor. Set the native
-	 * keyboard listeners on the provided native element
+	 * keyboard listeners 
 	 */
-	public function new(nativeElement:NativeDOMObject) 
+	public function new() 
 	{
-		setNativeKeyboardListeners(nativeElement);
+		setNativeKeyboardListeners();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +60,7 @@ class KeyboardBase
 	/**
 	 * Set the listeners for native keyboard event
 	 */
-	private function setNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
+	private function setNativeKeyboardListeners():Void
 	{
 		//abstract
 	}
@@ -67,7 +68,7 @@ class KeyboardBase
 	/**
 	 * remove the listeners for native keyboard event
 	 */
-	private function unsetNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
+	private function unsetNativeKeyboardListeners():Void
 	{
 		//abstract
 	}

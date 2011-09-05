@@ -219,9 +219,8 @@ class DOMObjectBase
 		//initialise the transformation matrix of this dom object
 		_matrix = new Matrix();
 		
-		//initialise the keyboard listener of this dom object with
-		//a reference to the native element
-		_keyboard = new Keyboard(this._referenceToNativeDOM);
+		//initialise the keyboard listener of this dom object 
+		_keyboard = new Keyboard();
 		
 		setNativeListeners();
 	}

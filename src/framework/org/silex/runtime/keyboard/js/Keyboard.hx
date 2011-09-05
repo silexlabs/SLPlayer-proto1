@@ -10,26 +10,26 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.keyboard.js;
 
-import org.silex.runtime.domObject.NativeDOMObject;
+import haxe.Log;
+import js.Lib;
 import org.silex.runtime.keyboard.KeyboardBase;
 import org.silex.runtime.keyboard.KeyboardData;
 
 /**
  * This is the JavaScript implementation of the keyboard abstraction.
- * Set listeners on native javascript keyboard event on the provided native
- * element and call their stored callbacks.
+ * Set listeners on native javascript keyboard event and call the
+ * corresponding callbacks
  * 
  * @author Yannick DOMINGUEZ
  */
 class Keyboard extends KeyboardBase
 {
 	/**
-	 * class constructor. Set keyboard listener on the native
-	 * element
+	 * class constructor. Set keyboard listeners
 	 */
-	public function new(nativeElement:NativeDOMObject) 
+	public function new() 
 	{
-		super(nativeElement);
+		super();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -40,19 +40,22 @@ class Keyboard extends KeyboardBase
 	/**
 	 * Set the listeners for JavaScript keyboard event
 	 */
-	override private function setNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
+	override private function setNativeKeyboardListeners():Void
 	{
-		nativeElement.onkeydown = onNativeKeyDown;
-		nativeElement.onkeyup = onNativeKeyUp;
+		//add listener on the Document to receive global keyboard events
+		//eventually might be applied at element level to add focus
+		//management with keyboard
+		untyped Lib.document.addEventListener("keydown", onNativeKeyDown);
+		untyped Lib.document.addEventListener("keyup", onNativeKeyUp);
 	}
 	
 	/**
 	 * removes the listeners for JavaScript keyboard event
 	 */
-	override private function unsetNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
+	override private function unsetNativeKeyboardListeners():Void
 	{
-		nativeElement.onkeydown = null;
-		nativeElement.onkeyup = null;
+		untyped Lib.document.removeEventListener("keydown", onNativeKeyDown);
+		untyped Lib.document.removeEventListener("keyup", onNativeKeyUp);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -67,8 +70,8 @@ class Keyboard extends KeyboardBase
 	override private function getKeyData(event:Dynamic):Key
 	{
 		var key:Key = {
-			value : getKeyValue(event.keycode),
-			code : event.keycode,
+			value : getKeyValue(event.keyCode),
+			code : event.keyCode,
 			ascii : event.charCode,
 			altKey : event.altKey ,
 			controlKey : event.ctrlKey,
