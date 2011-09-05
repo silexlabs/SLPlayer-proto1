@@ -13,6 +13,8 @@ package org.silex.runtime.domObject.base;
 
 import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
+import org.silex.runtime.domObject.ImageDOMObject;
 
 /**
  * The graphic DOMObject is used as a canvas to draw bitmap graphics programmatically. 
@@ -160,6 +162,45 @@ class GraphicDOMObjectBase extends DOMObject
 		ax = xCenter + Math.cos(angle)*xRadius;
 		ay = yCenter + Math.sin(angle)*yRadius;
 		curveTo(rx, ry, ax, ay);
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// High level pixel manipulation method
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Draw a bitmap extracted from an image dom object into the native graphic dom object. Alpha is conserved
+	 * for transparent bitmap
+	 * @param	source the source image dom object containing the bitmap data
+	 * @param	destinationPoint represent the top left point of the drawn image on the native graphic
+	 * dom object. for instance a 0,0 point will draw the image in the top left corner of the graphic
+	 * dom object. Takes 0,0 by default
+	 * @param	sourceRect defines the zone from the source dom object that must be copied onto the 
+	 * native graphic dom object. Takes the whole image by default
+	 */
+	public function drawImage(source:ImageDOMObject, destinationPoint:Point = null, sourceRect:Rectangle = null)
+	{
+		//init destination point and sourceRect if null
+		
+		if (destinationPoint == null)
+		{
+			destinationPoint = {
+				x:0.0,
+				y:0.0
+			};
+		}
+		
+		if (sourceRect == null)
+		{
+			var width:Float = source.width;
+			var height:Float = source.height;
+			sourceRect = {
+				x:0.0,
+				y:0.0,
+				width:width,
+				height:height
+			};
 		}
 	}
 	
