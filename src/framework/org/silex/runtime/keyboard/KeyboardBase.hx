@@ -129,12 +129,81 @@ class KeyboardBase
 				
 			case 66:
 				keyboardKeyValue = b;
+				
+			case 67:
+				keyboardKeyValue = c;
+				
+			case 68:
+				keyboardKeyValue = d;		
+				
+			case 69:
+				keyboardKeyValue = e;
+				
+			case 70:
+				keyboardKeyValue = f;
+				
+			case 71:
+				keyboardKeyValue = g;
+				
+			case 72:
+				keyboardKeyValue = h;
+				
+			case 73:
+				keyboardKeyValue = i;
+			
+			case 74:
+				keyboardKeyValue = j;
+				
+			case 75:
+				keyboardKeyValue = k;
+				
+			case 76:
+				keyboardKeyValue = l;
+				
+			case 77:
+				keyboardKeyValue = m;
+				
+			case 78:
+				keyboardKeyValue = n;
+				
+			case 79:
+				keyboardKeyValue = o;
+				
+			case 80:
+				keyboardKeyValue = p;
+				
+			case 81:
+				keyboardKeyValue = q;
+				
+			case 82:
+				keyboardKeyValue = r;
+				
+			case 83:
+				keyboardKeyValue = s;
+			
+			case 84:
+				keyboardKeyValue = t;
+			
+			case 85:
+				keyboardKeyValue = u;
+				
+			case 86:
+				keyboardKeyValue = v;
+				
+			case 87:
+				keyboardKeyValue = w;
+				
+			case 88:
+				keyboardKeyValue = x;
+				
+			case 89:
+				keyboardKeyValue = y;
+				
+			case 90:
+				keyboardKeyValue = z;
 			
 			case 8:
 				keyboardKeyValue = backSpace;
-			
-			case 67:
-				keyboardKeyValue = c;
 				
 			case 20:
 				keyboardKeyValue = capsLock;
@@ -142,8 +211,7 @@ class KeyboardBase
 			case 17:
 				keyboardKeyValue = control;
 				
-			case 68:
-				keyboardKeyValue = d;
+
 				
 			case 46:
 				keyboardKeyValue = delete;
@@ -153,6 +221,135 @@ class KeyboardBase
 				
 			case 35:
 				keyboardKeyValue = end;
+			
+			case 13:
+				keyboardKeyValue = enter;
+				
+			case 27:
+				keyboardKeyValue = escape;
+			
+			case 112:
+				keyboardKeyValue = F1;
+			
+			case 121:
+				keyboardKeyValue = F10;
+				
+			case 122:
+				keyboardKeyValue = F11;
+				
+			case 123:
+				keyboardKeyValue = F12;
+				
+			case 124:
+				keyboardKeyValue = F13;
+			
+			case 125:
+				keyboardKeyValue = F14;
+				
+			case 126:
+				keyboardKeyValue = F15;
+				
+			case 113:
+				keyboardKeyValue = F2;
+				
+			case 114:
+				keyboardKeyValue = F3;
+				
+			case 115:
+				keyboardKeyValue = F4;
+				
+			case 116:
+				keyboardKeyValue = F5;
+				
+			case 117:
+				keyboardKeyValue = F6;
+				
+			case 118:
+				keyboardKeyValue = F7;
+				
+			case 119:
+				keyboardKeyValue = F8;
+				
+			case 120:
+				keyboardKeyValue = F9;
+			
+			case 36:
+				keyboardKeyValue = home;
+				
+			case 45:
+				keyboardKeyValue = insert;
+				
+			case 37:
+				keyboardKeyValue = left;
+				
+			case 96:
+				keyboardKeyValue = numpad0;
+				
+			case 97:
+				keyboardKeyValue = numpad1;
+				
+			case 98:
+				keyboardKeyValue = numpad2;
+			
+			case 99:
+				keyboardKeyValue = numpad3;
+				
+			case 100:
+				keyboardKeyValue = numpad4;
+				
+			case 101:
+				keyboardKeyValue = numpad5;
+				
+			case 102:
+				keyboardKeyValue = numpad6;
+			
+			case 103:
+				keyboardKeyValue = numpad7;
+			
+			case 104:
+				keyboardKeyValue = numpad8;
+				
+			case 105:
+				keyboardKeyValue = numpad9;
+				
+			case 107:
+				keyboardKeyValue = numpadAdd;
+			
+			case 108:
+				keyboardKeyValue = numpadEnter;
+			
+			case 110:
+				keyboardKeyValue = numpadDecimal;
+			
+			case 111:
+				keyboardKeyValue = numpadDivide;
+				
+			case 106:
+				keyboardKeyValue = numpadMultiply;
+				
+			case 109:
+				keyboardKeyValue = numpadSubstract;
+				
+			case 34:
+				keyboardKeyValue = pageDown;
+			
+			case 33:
+				keyboardKeyValue = pageUp;
+				
+			case 39:
+				keyboardKeyValue = right;
+				
+			case 16:
+				keyboardKeyValue = shift;
+			
+			case 32:
+				keyboardKeyValue = space;
+				
+			case 9:
+				keyboardKeyValue = tab;
+				
+			case 38:
+				keyboardKeyValue = up;
 				
 			default:
 				keyboardKeyValue = unknown;

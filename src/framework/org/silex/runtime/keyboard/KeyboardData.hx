@@ -92,6 +92,7 @@ enum KeyboardKeyValue {
 	down;
 	end;
 	escape;
+	enter;
 	F1;
 	F2;
 	F3;
