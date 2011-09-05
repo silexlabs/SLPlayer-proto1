@@ -20,11 +20,10 @@ import flash.display.JointStyle;
 import flash.display.LineScaleMode;
 import flash.display.Sprite;
 import flash.geom.Matrix;
-import flash.geom.Point;
-import flash.geom.Rectangle;
 import flash.Lib;
 import haxe.Log;
 import org.silex.runtime.domObject.base.GraphicDOMObjectBase;
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.domObject.DOMObjectData;
 
 /**
@@ -354,6 +353,51 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 				//then set the bitmap data on it
 				_typedReferenceToNativeDOM.graphics.lineBitmapStyle(getBitmapData(imageDOMObject), new Matrix(), repeat);
 		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden High level pixel manipulation method
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Draw a bitmap extracted from an image dom object into the bitmap display object.
+	 */
+	override public function drawImage(source:ImageDOMObject, destinationPoint:Point = null, sourceRect:Rectangle = null):Void
+	{	
+		//init destination point and sourceRect if null
+		
+		if (destinationPoint == null)
+		{
+			destinationPoint = {
+				x:0.0,
+				y:0.0
+			};
+		}
+		
+		if (sourceRect == null)
+		{
+			var width:Float = source.width;
+			var height:Float = source.height;
+			sourceRect = {
+				x:0.0,
+				y:0.0,
+				width:width,
+				height:height
+			};
+		}
+		
+		
+		//get the image dom object bitmap data and current bitmap data
+		var sourceBitmapData:BitmapData = getBitmapData(source);
+		var currentBitmapData:BitmapData = _bitmapDrawing.bitmapData;
+		
+		//convert the abstract rectangle and point into flash natives one
+		var nativeSourceRect:flash.geom.Rectangle = new flash.geom.Rectangle(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height);
+		var nativeDestinationPoint:flash.geom.Point = new flash.geom.Point(destinationPoint.x, destinationPoint.y);
+		
+		//draw the image dom object bitmap data onto the current bitmap data
+		currentBitmapData.copyPixels(sourceBitmapData, nativeSourceRect, nativeDestinationPoint, null, null, true);
+
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

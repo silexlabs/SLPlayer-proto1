@@ -108,8 +108,19 @@ class GraphicDOMObjectBase extends DOMObject
 	 * @param	height the height of the rectangle
 	 * @param	cornerRadiuses the corner radiuses values of the rectangle
 	 */
-	public function drawRect(x:Int, y:Int, width:Int, height:Int, cornerRadiuses:CornerRadiusData):Void
+	public function drawRect(x:Int, y:Int, width:Int, height:Int, cornerRadiuses:CornerRadiusData = null):Void
 	{
+		//init corner radius if null
+		if (cornerRadiuses == null)
+		{
+			cornerRadiuses = {
+				tlCornerRadius:0,
+				trCornerRadius:0,
+				blCornerRadius:0,
+				brCornerRadius:0
+			};
+		}
+		
 		moveTo(cornerRadiuses.tlCornerRadius + x, y);
 		lineTo(width - cornerRadiuses.trCornerRadius + x, y);
 	
@@ -179,29 +190,9 @@ class GraphicDOMObjectBase extends DOMObject
 	 * @param	sourceRect defines the zone from the source dom object that must be copied onto the 
 	 * native graphic dom object. Takes the whole image by default
 	 */
-	public function drawImage(source:ImageDOMObject, destinationPoint:Point = null, sourceRect:Rectangle = null)
+	public function drawImage(source:ImageDOMObject, destinationPoint:Point = null, sourceRect:Rectangle = null):Void
 	{
-		//init destination point and sourceRect if null
-		
-		if (destinationPoint == null)
-		{
-			destinationPoint = {
-				x:0.0,
-				y:0.0
-			};
-		}
-		
-		if (sourceRect == null)
-		{
-			var width:Float = source.width;
-			var height:Float = source.height;
-			sourceRect = {
-				x:0.0,
-				y:0.0,
-				width:width,
-				height:height
-			};
-		}
+		//abstract
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
