@@ -20,7 +20,7 @@ import haxe.Log;
 
 import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.base.DOMObjectBase;
-
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.resource.ResourceLoaderManager;
 import org.silex.runtime.domObject.DOMObjectData;
 

@@ -15,6 +15,7 @@ import js.Dom;
 import js.Lib;
 import org.silex.runtime.domObject.base.GraphicDOMObjectBase;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
 
 /**
  * This is the JavaScript implementation of the graphic DOMObject.
@@ -104,9 +105,20 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 * @param	fillStyle
 	 * @param	lineStyle
 	 */
-	override public function beginFill(fillStyle:FillStyleValue, lineStyle:LineStyleValue):Void
+	override public function beginFill(fillStyle:FillStyleValue = null, lineStyle:LineStyleValue = null):Void
 	{
 		super.beginFill(fillStyle, lineStyle);
+		
+		//init fill and line style if null
+		if (fillStyle == null)
+		{
+			fillStyle = FillStyleValue.none;
+		}
+		
+		if (lineStyle == null)
+		{
+			lineStyle = LineStyleValue.none;
+		}
 		
 		//set fill style
 		setFillStyle(fillStyle);
@@ -207,6 +219,56 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 				initLineStyle(lineStyleData);
 				canvasContext.strokeStyle = getCanvasPattern(imageDOMObject, repeat);
 		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden High level pixel manipulation method
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Draw a bitmap extracted from an image dom object into the canvas.
+	 */
+	override public function drawImage(source:ImageDOMObject, destinationPoint:Point = null, sourceRect:Rectangle = null):Void
+	{
+		//init destination point and sourceRect if null
+		
+		if (destinationPoint == null)
+		{
+			destinationPoint = {
+				x:0.0,
+				y:0.0
+			};
+		}
+		
+		if (sourceRect == null)
+		{
+			var width:Float = source.width;
+
+			var height:Float = source.height;
+
+			sourceRect = {
+				x:0.0,
+				y:0.0,
+				width:width,
+				height:height
+			};
+		}
+		
+		var canvasContext:Dynamic = getContext();
+		
+		//draw the image with the Canvas API
+	
+		canvasContext.drawImage(
+			source.getReferenceToNativeDOM(),
+			sourceRect.x,
+			sourceRect.y,
+			sourceRect.width,
+			sourceRect.height,
+			destinationPoint.x,
+			destinationPoint.y,
+			sourceRect.width,
+			sourceRect.height);
+
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
