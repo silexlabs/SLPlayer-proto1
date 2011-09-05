@@ -10,18 +10,18 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.keyboard;
 
-import org.silex.runtime.KeyboardData;
+import org.silex.runtime.domObject.NativeDOMObject;
+import org.silex.runtime.keyboard.KeyboardData;
 
 /**
  * This package is made to offer a simple API for keyboard interactions.
  *
  * We choose not to use a singleton pattern or static class and found
- * a simple way for exposing the keyboard state and for calling a custom callback function:
+ * a simple way for exposing the keyboard state and for calling a custom callback function.
  * 
  * The class is to be instantiated, and then you can set the instance attributes 
  * onKeyDown and onKeyUp to your callbacks. These callbacks will receive a Key
- * object with the key code as a parameter, and it is supposed to use the instance
- * you have created in order to retrieve the keyboard state.
+ * object with the key code and modifier key state as a parameter.
  * 
  * This is a base abstract class, implemented for each runtime
  * 
@@ -44,11 +44,11 @@ class KeyboardBase
 	
 	/**
 	 * class constructor. Set the native
-	 * keyboard listeners
+	 * keyboard listeners on the provided native element
 	 */
-	public function new() 
+	public function new(nativeElement:NativeDOMObject) 
 	{
-		setNativeKeyboardListeners();
+		setNativeKeyboardListeners(nativeElement);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -57,17 +57,17 @@ class KeyboardBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Set the listener for native keyboard event
+	 * Set the listeners for native keyboard event
 	 */
-	private function setNativeKeyboardListeners():Void
+	private function setNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
 	{
 		//abstract
 	}
 	
 	/**
-	 * Set the listener for native keyboard event
+	 * remove the listeners for native keyboard event
 	 */
-	private function unsetNativeKeyboardListeners():Void
+	private function unsetNativeKeyboardListeners(nativeElement:NativeDOMObject):Void
 	{
 		//abstract
 	}
@@ -80,7 +80,7 @@ class KeyboardBase
 	{
 		if (onKeyDown != null)
 		{
-			onKeyDown(getKeyData());
+			onKeyDown(getKeyData(event));
 		}
 	}
 	
@@ -97,6 +97,10 @@ class KeyboardBase
 		}
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Private key utils methods
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Returns the key that triggered the keyboard event
 	 * @param	event the native key up or down event
@@ -104,42 +108,55 @@ class KeyboardBase
 	 */
 	private function getKeyData(event:Dynamic):Key
 	{
-		//abstract
+		return null;
 	}
 	
-	/////////////////////////////////
-	// KEYBOARD STATE METHOD
-	// Retrieve the keyboard key states
-	// implemented by ihheriting class
-	/////////////////////////////////
-	
-	public function isMAJDown():Bool
+	/**
+	 * Return a key enum value from a key code
+	 * @param	keyCode the target key code
+	 * @return a key enum value. Default to "unknown" if the
+	 * key isn't listed in the enum values
+	 */
+	private function getKeyValue(keyCode:Int):KeyboardKeyValue
 	{
-		//abstract
-	}
-	
-	public function isCTRLDown():Bool
-	{
-		//abstract
-	}
-	
-	public function isALTDown():Bool
-	{
-		//abstract
-	}
-	
-	public function isCMDDown():Bool
-	{
-		//abstract
-	}
-	
-	public function isCapsLockDown():Bool
-	{
-		//abstract
-	}
-	
-	public function isNumLockDown():Bool
-	{
-		//abstract
+		var keyboardKeyValue:KeyboardKeyValue = unknown;
+		
+		switch (keyCode)
+		{
+			case 65:
+				keyboardKeyValue = a;
+				
+			case 66:
+				keyboardKeyValue = b;
+			
+			case 8:
+				keyboardKeyValue = backSpace;
+			
+			case 67:
+				keyboardKeyValue = c;
+				
+			case 20:
+				keyboardKeyValue = capsLock;
+				
+			case 17:
+				keyboardKeyValue = control;
+				
+			case 68:
+				keyboardKeyValue = d;
+				
+			case 46:
+				keyboardKeyValue = delete;
+				
+			case 40:
+				keyboardKeyValue = down;
+				
+			case 35:
+				keyboardKeyValue = end;
+				
+			default:
+				keyboardKeyValue = unknown;
+		}
+		
+		return keyboardKeyValue;
 	}
 }

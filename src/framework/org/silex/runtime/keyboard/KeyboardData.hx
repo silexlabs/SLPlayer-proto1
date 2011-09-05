@@ -16,22 +16,53 @@ package org.silex.runtime.keyboard;
  */
 
 /**
- * Represents a keyboard key 
+ * Represents a keyboard key on a up/down event
+ * and the state of the modifier keys then
  */ 
 typedef Key = {
+	
+	/**
+	 * an enum value of the key or unknown if 
+	 * unlisted key
+	 */
 	var value:KeyboardKeyValue;
-	var code:UInt;
-	var ascii:UInt;
+	
+	/**
+	 * the key code
+	 */
+	var code:Int;
+	
+	/**
+	 * the key ascii code
+	 */
+	var ascii:Int;
+	
+	/**
+	 * wether alt is pressed
+	 */
+	var altKey:Bool;
+	
+	/**
+	 * wether ctrl is pressed
+	 */
+	var controlKey:Bool;
+	
+	/**
+	 * wether shift is pressed
+	 */
+	var shiftKey:Bool;
 }
 
 /**
- * Lists all the keyboard's keys
+ * Lists all the keyboard's keys. Default to "unknow" for
+ * non listed keys
  */
 enum KeyboardKeyValue {
+	unknown;
 	a;
 	b;
 	c;
-	c;
+	d;
 	e;
 	f;
 	g;
@@ -54,27 +85,13 @@ enum KeyboardKeyValue {
 	x;
 	y;
 	z;
-	alternate;
-	audio;
-	back;
-	backQuote;
-	backSlash;
 	backSpace;
-	blue;
 	capsLock;
-	channelDown;
-	channelUp;
-	comma;
-	command;
 	control;
 	delete;
 	down;
-	dvr;
 	end;
-	enter;
-	equal;
 	escape;
-	exit;
 	F1;
 	F2;
 	F3;
@@ -90,21 +107,31 @@ enum KeyboardKeyValue {
 	F13;
 	F14;
 	F15;
-	fastForward;
-	green;
-	guide;
-	help;
 	home;
-	info;
-	input;
 	insert;
-	keyNameBegin;
-	keyNameBreak;
-	keyNameClearDisplay;
-	keyNameClearLine;
-	keyNameDelete;
-	keyNameDeleteChar;
-	keyNameDeleteLine;
-	keyNameDownArrow;
-	
+	left;
+	numpad0;
+	numpad1;
+	numpad2;
+	numpad3;
+	numpad4;
+	numpad5;
+	numpad6;
+	numpad7;
+	numpad8;
+	numpad9;
+	numpadAdd;
+	numpadSpecial;
+	numpadDecimal;
+	numpadDivide;
+	numpadEnter;
+	numpadMultiply;
+	numpadSubstract;
+	pageDown;
+	pageUp;
+	right;
+	shift;
+	space;
+	tab;
+	up;
 }
