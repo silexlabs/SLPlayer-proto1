@@ -105,9 +105,20 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 * @param	fillStyle
 	 * @param	lineStyle
 	 */
-	override public function beginFill(fillStyle:FillStyleValue, lineStyle:LineStyleValue):Void
+	override public function beginFill(fillStyle:FillStyleValue = null, lineStyle:LineStyleValue = null):Void
 	{
 		super.beginFill(fillStyle, lineStyle);
+		
+		//init fill and line style if null
+		if (fillStyle == null)
+		{
+			fillStyle = FillStyleValue.none;
+		}
+		
+		if (lineStyle == null)
+		{
+			lineStyle = LineStyleValue.none;
+		}
 		
 		//set fill style
 		setFillStyle(fillStyle);

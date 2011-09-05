@@ -69,10 +69,10 @@ class GraphicDOMObjectBase extends DOMObject
 	 * Starts a  fill used when drawing a shape with subsequent calls to lineTo,
 	 * moveTo or curveTo. The fill remain in effect until endFill  
 	 * is called. 
-	 * @param	fillStyle the data used to draw the fill
-	 * @param	lineStyle the data used to draw the fill stroke/line
+	 * @param	fillStyle the data used to draw the fill. Default to none
+	 * @param	lineStyle the data used to draw the fill stroke/line. Default to none
 	 */
-	public function beginFill(fillStyle:FillStyleValue, lineStyle:LineStyleValue):Void
+	public function beginFill(fillStyle:FillStyleValue = null, lineStyle:LineStyleValue = null):Void
 	{
 		//abstract;
 	}
