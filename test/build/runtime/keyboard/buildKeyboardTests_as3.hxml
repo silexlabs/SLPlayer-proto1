@@ -1,0 +1,5 @@
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.keyboard.KeyboardTests
+-swf9 ../../../bin/runtime/keyboard/keyboardTestAs3.swf
+-lib utest

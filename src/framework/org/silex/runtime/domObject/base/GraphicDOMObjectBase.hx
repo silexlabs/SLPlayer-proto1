@@ -13,6 +13,8 @@ package org.silex.runtime.domObject.base;
 
 import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
+import org.silex.runtime.domObject.ImageDOMObject;
 
 /**
  * The graphic DOMObject is used as a canvas to draw bitmap graphics programmatically. 
@@ -66,13 +68,13 @@ class GraphicDOMObjectBase extends DOMObject
 	/**
 	 * Starts a  fill used when drawing a shape with subsequent calls to lineTo,
 	 * moveTo or curveTo. The fill remain in effect until endFill  
-	 * is called. Clears the current fill.
-	 * @param	fillStyle the data used to draw the fill
-	 * @param	lineStyle the data used to draw the fill stroke/line
+	 * is called. 
+	 * @param	fillStyle the data used to draw the fill. Default to none
+	 * @param	lineStyle the data used to draw the fill stroke/line. Default to none
 	 */
-	public function beginFill(fillStyle:FillStyleValue, lineStyle:LineStyleValue):Void
+	public function beginFill(fillStyle:FillStyleValue = null, lineStyle:LineStyleValue = null):Void
 	{
-		clear();
+		//abstract;
 	}
 	
 	/**
@@ -106,24 +108,35 @@ class GraphicDOMObjectBase extends DOMObject
 	 * @param	height the height of the rectangle
 	 * @param	cornerRadiuses the corner radiuses values of the rectangle
 	 */
-	public function drawRect(x:Int, y:Int, width:Int, height:Int, cornerRadiuses:CornerRadiusData):Void
+	public function drawRect(x:Int, y:Int, width:Int, height:Int, cornerRadiuses:CornerRadiusData = null):Void
 	{
-		moveTo(cornerRadiuses.tlCornerRadius, 0);
-		lineTo(width - cornerRadiuses.trCornerRadius , 0);
-	
-	
-		curveTo(width, 0, width , cornerRadiuses.trCornerRadius  );
+		//init corner radius if null
+		if (cornerRadiuses == null)
+		{
+			cornerRadiuses = {
+				tlCornerRadius:0,
+				trCornerRadius:0,
+				blCornerRadius:0,
+				brCornerRadius:0
+			};
+		}
 		
-		lineTo(width , cornerRadiuses.trCornerRadius );
-		lineTo(width , height - cornerRadiuses.brCornerRadius);
-		curveTo(width , height , width - cornerRadiuses.brCornerRadius , height );
-		lineTo(width - cornerRadiuses.brCornerRadius , height );
-		lineTo(cornerRadiuses.blCornerRadius , height );
-		curveTo(0, height , 0, height - cornerRadiuses.blCornerRadius );
-		lineTo(0, height - cornerRadiuses.blCornerRadius );
-		lineTo(0, cornerRadiuses.tlCornerRadius );
-		curveTo(0,0, cornerRadiuses.tlCornerRadius , 0);
-		lineTo(cornerRadiuses.tlCornerRadius , 0);
+		moveTo(cornerRadiuses.tlCornerRadius + x, y);
+		lineTo(width - cornerRadiuses.trCornerRadius + x, y);
+	
+	
+		curveTo(width + x, y, width + x , cornerRadiuses.trCornerRadius + y  );
+		
+		lineTo(width + x , cornerRadiuses.trCornerRadius + y );
+		lineTo(width + x , height - cornerRadiuses.brCornerRadius + y);
+		curveTo(width + x, height + y , width - cornerRadiuses.brCornerRadius + x , height + y );
+		lineTo(width - cornerRadiuses.brCornerRadius + x , height + y );
+		lineTo(cornerRadiuses.blCornerRadius + x , height + y );
+		curveTo(x, height + y , x, height - cornerRadiuses.blCornerRadius  +y );
+		lineTo(x, height - cornerRadiuses.blCornerRadius + y );
+		lineTo(x, cornerRadiuses.tlCornerRadius + y );
+		curveTo(x,y, cornerRadiuses.tlCornerRadius + x , y);
+		lineTo(cornerRadiuses.tlCornerRadius + x , y);
 	}
 	
 	/**
@@ -161,6 +174,25 @@ class GraphicDOMObjectBase extends DOMObject
 		ay = yCenter + Math.sin(angle)*yRadius;
 		curveTo(rx, ry, ax, ay);
 		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// High level pixel manipulation method
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Draw a bitmap extracted from an image dom object into the native graphic dom object. Alpha is conserved
+	 * for transparent bitmap
+	 * @param	source the source image dom object containing the bitmap data
+	 * @param	destinationPoint represent the top left point of the drawn image on the native graphic
+	 * dom object. for instance a 0,0 point will draw the image in the top left corner of the graphic
+	 * dom object. Takes 0,0 by default
+	 * @param	sourceRect defines the zone from the source dom object that must be copied onto the 
+	 * native graphic dom object. Takes the whole image by default
+	 */
+	public function drawImage(source:ImageDOMObject, destinationPoint:Point = null, sourceRect:Rectangle = null):Void
+	{
+		//abstract
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

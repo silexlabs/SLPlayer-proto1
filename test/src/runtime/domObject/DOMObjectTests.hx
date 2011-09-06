@@ -23,7 +23,7 @@ package runtime.domObject;
 import haxe.Log;
 import org.silex.runtime.domObject.ContainerDOMObject;
 import org.silex.runtime.domObject.TextDOMObject;
-
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 

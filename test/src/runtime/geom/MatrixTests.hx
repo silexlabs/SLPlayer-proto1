@@ -10,7 +10,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 
-package runtime.domObject;
+package runtime.geom;
 
 /**
  * Units tests for DOMObjects transformation matrix
@@ -21,6 +21,7 @@ import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.GraphicDOMObject;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;

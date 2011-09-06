@@ -46,6 +46,7 @@ class GraphicDOMObjectTests
 		var runner = new Runner();
 		runner.addCase(new GraphicDOMObjectTests());
 		Report.create(runner, NeverShowSuccessResults, NeverShowHeader);
+		//Report.create(runner);
 		runner.run();
 	}
 	
@@ -81,7 +82,7 @@ class GraphicDOMObjectTests
 		var cornerRadiuses:CornerRadiusData = {
 			tlCornerRadius:10,
 			trCornerRadius:0,
-			blCornerRadius:20,
+			blCornerRadius:60,
 			brCornerRadius:0
 		}
 		
@@ -138,7 +139,7 @@ class GraphicDOMObjectTests
 		
 		graphicDOMObject.beginFill(fillStyle, lineStyle);
 		
-		graphicDOMObject.drawRect(0, 0, 150, 100, cornerRadiuses);
+		graphicDOMObject.drawRect(20, 40, 50, 30, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
 		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
@@ -184,7 +185,7 @@ class GraphicDOMObjectTests
 		
 		graphicDOMObject.beginFill(fillStyle, lineStyle);
 		
-		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
+		graphicDOMObject.drawRect(20, 5, 65, 45, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
 		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
@@ -258,8 +259,8 @@ class GraphicDOMObjectTests
 		
 		graphicDOMObject.setWidth(100);
 		graphicDOMObject.setHeight(100);
-		graphicDOMObject.setX(0);
-		graphicDOMObject.setY(100);
+		graphicDOMObject.setX(20);
+		graphicDOMObject.setY(60);
 		
 		var cornerRadiuses:CornerRadiusData = {
 			tlCornerRadius:0,
@@ -287,7 +288,7 @@ class GraphicDOMObjectTests
 		}
 		var lineStyle:LineStyleValue = LineStyleValue.gradient(gradientStyle, lineStyleData);
 		
-		var fillStyle:FillStyleValue = none;
+		var fillStyle:FillStyleValue = monochrome({color:Std.parseInt("0xFFF000"), alpha:50});
 		
 		
 		
@@ -298,6 +299,7 @@ class GraphicDOMObjectTests
 		
 		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
 		
+		graphicDOMObject.zOrder = 5;
 		Assert.equals(1, 1);
 	}
 	
@@ -427,7 +429,7 @@ class GraphicDOMObjectTests
 		
 		graphicDOMObject.setWidth(100);
 		graphicDOMObject.setHeight(100);
-		graphicDOMObject.setX(150);
+		graphicDOMObject.setX(50);
 		graphicDOMObject.setY(100);
 		
 		var cornerRadiuses:CornerRadiusData = {
@@ -465,9 +467,36 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawEllipse(0, 0, 100, 100);
 		graphicDOMObject.endFill();
 		
+		
+		
 		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
 		
+		
+		
 		Assert.equals(1, 1);
+	}
+	
+	/**
+	 * draw a bitmap rectangular stroke
+	 */
+	public function testDrawImage()
+	{
+		ResourceLoaderManager.loadImage("../resource/testPicture.jpg", onDrawImageLoaded, function(msg:String) { } ); 
+		Assert.equals(1, 1);
+	}
+	
+	public function onDrawImageLoaded(imageDOMObject:ImageDOMObject):Void
+	{
+		var graphicDOMObject:GraphicDOMObject = new GraphicDOMObject();
+		graphicDOMObject.x = 500;
+		graphicDOMObject.width = 100;
+		graphicDOMObject.height = 100;
+		graphicDOMObject.y = 200;
+		graphicDOMObject.drawImage(imageDOMObject, { x:0.0, y:0.0 }, { x:0.0, y:0.0, width:65.0, height:65.0 } );
+		graphicDOMObject.drawImage(imageDOMObject, { x:10.0, y:15.0 }, { x:5.0, y:5.0, width:50.0, height:50.0 } );
+		graphicDOMObject.drawImage(imageDOMObject, {x:70.0, y:15.0}, {x:10.0,y:5.0,width:50.0,height:50.0});
+		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		
 	}
 	
 	/**

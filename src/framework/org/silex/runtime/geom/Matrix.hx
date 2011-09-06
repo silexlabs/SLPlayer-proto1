@@ -11,7 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.geom;
 
 import haxe.Log;
-import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
 
 /**
  * This class is an implementation of a 3x3 matrix. It is meant to be

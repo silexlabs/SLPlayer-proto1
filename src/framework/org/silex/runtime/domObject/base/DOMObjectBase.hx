@@ -14,7 +14,10 @@ package org.silex.runtime.domObject.base;
 import haxe.Log;
 import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.domObject.NativeDOMObject;
+import org.silex.runtime.keyboard.Keyboard;
+import org.silex.runtime.keyboard.KeyboardData;
 
 /**
  * This is a base class for runtime specific DOMObject. A DOMObject is an abstraction of the visual base element of a runtime.
@@ -85,6 +88,26 @@ class DOMObjectBase
 	 * TO DO
 	 */
 	public var onFocusOut:Void->Void;
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Keyboard attributes and callback
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * An instance of the cross-platform keyboard class, used to listen
+	 * to key dow and up event
+	 */
+	private var _keyboard:Keyboard;
+	
+	/**
+	 * The callback called on key down through the keyboard instance
+	 */
+	public var onKeyDown(getOnKeyDown, setOnKeyDown):Key->Void;
+	
+	/**
+	 * The callback called on key up through the keyboard instance
+	 */
+	public var onKeyUp(getOnKeyUp, setOnKeyUp):Key->Void;
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Private attributes
@@ -193,7 +216,11 @@ class DOMObjectBase
 		
 		_children = new Array<DOMObjectBase>();
 		
+		//initialise the transformation matrix of this dom object
 		_matrix = new Matrix();
+		
+		//initialise the keyboard listener of this dom object 
+		_keyboard = new Keyboard();
 		
 		setNativeListeners();
 	}
@@ -617,6 +644,33 @@ class DOMObjectBase
 		
 		//refresh the matrix to refresh the domObject display
 		setMatrix(this._matrix);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// KEYBOARD SETTER/GETTER
+	// Proxies setting/getting properties from the keyboard listener instance
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public function setOnKeyDown(value:Key->Void):Key->Void
+	{
+		_keyboard.onKeyDown = value;
+		return value;
+	}
+	
+	public function getOnKeyDown():Key->Void
+	{
+		return _keyboard.onKeyDown;
+	}
+	
+	public function setOnKeyUp(value:Key->Void):Key->Void
+	{
+		_keyboard.onKeyUp = value;
+		return value;
+	}
+	
+	public function getOnKeyUp():Key->Void
+	{
+		return _keyboard.onKeyUp;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
