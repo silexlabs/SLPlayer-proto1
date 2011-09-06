@@ -1,5 +1,4 @@
-/*
-This file is part of Silex - see http://projects.silexlabs.org/?/silex
+/*This file is part of Silex - see http://projects.silexlabs.org/?/silex
 
 Silex is © 2010-2011 Silex Labs and is released under the GPL License:
 
@@ -9,22 +8,36 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domObject.base;
-import org.silex.runtime.domObject.DOMObject;
+package org.silex.runtime.nativeReference.base;
+
+import org.silex.runtime.nativeReference.NativeReferenceData;
 import org.silex.runtime.nativeReference.NativeReference;
 
 /**
- * This DOMObject is in charge of displaying animation such
- * as a .swf file in Flash or a .svg file in HTML
- * 
- * TO DO
+ * This is a base class for the native reference
+ * creator implementation. It creates a native element
+ * and returns a reference to it
  * 
  * @author Yannick DOMINGUEZ
  */
-class AnimationDOMObjectBase extends DOMObject
+class NativeReferenceCreatorBase
 {
-	public function new(nativeReference:NativeReference = null) 
+
+	/**
+	 * class constructor
+	 */
+	public function new() 
 	{
-		super(nativeReference);
+		
 	}
+	
+	/**
+	 * Instantiate a native element and returns a reference to it. Implemented in inheriting classes
+	 * @param	nativeReferenceType the type of element to create (graphic, text...)
+	 */
+	public function createNativeReference(nativeReferenceType:NativeReferenceTypeValue):NativeReference
+	{
+		return null;
+	}
+	
 }

@@ -13,7 +13,7 @@ package org.silex.runtime.keyboard.as3;
 import flash.events.KeyboardEvent;
 import flash.Lib;
 import haxe.Log;
-import org.silex.runtime.keyboard.KeyboardBase;
+import org.silex.runtime.keyboard.base.KeyboardBase;
 import org.silex.runtime.keyboard.KeyboardData;
 
 /**

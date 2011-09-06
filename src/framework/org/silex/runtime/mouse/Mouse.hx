@@ -8,19 +8,15 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domObject;
+package org.silex.runtime.mouse;
 
 /**
- * Set the right runtime specific NativeDOMObject at compile-time
+ * Set the right runtime specific mouse manager at compile-time
  */
 #if flash9
-typedef NativeDOMObject =  flash.display.DisplayObjectContainer;
+typedef Mouse =  org.silex.runtime.mouse.as3.Mouse;
 
 #elseif js
-import js.Dom;
-typedef NativeDOMObject =  js.HtmlDom;
-
-#elseif php
-typedef NativeDOMObject =  Xml;
+typedef Mouse =  org.silex.runtime.mouse.js.Mouse;
 
 #end

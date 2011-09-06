@@ -88,7 +88,7 @@ class Publication
 		for (idx in _instancesArray.length)
 		{
 			// path of the root native dom for this publication
-			var pathOfRootNativeDom:String = DOMObject.getPath(_instancesArray[idx].rootDOMObject._referenceToNativeDOM);
+			var pathOfRootNativeDom:String = DOMObject.getPath(_instancesArray[idx].rootDOMObject._nativeReference);
 			// is it the one?
 			if(pathOfNativeDOM.indexOf(pathOfRootNativeDom))
 			{

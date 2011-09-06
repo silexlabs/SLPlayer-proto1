@@ -12,7 +12,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.nativeClass.js;
 
 import js.Lib;
-import org.silex.runtime.nativeClass.NativeInstanceBase;
+import org.silex.runtime.nativeClass.base.NativeInstanceBase;
 
 /**
  * This is the implementation of the native class instance proxy for JavaScript. It implemenents

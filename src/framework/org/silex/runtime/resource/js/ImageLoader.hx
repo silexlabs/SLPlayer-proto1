@@ -57,10 +57,10 @@ class ImageLoader extends ResourceLoader
 		var onLoadErrorDelegate:String->Void = onLoadError;
 		
 		//listens to image load complete and load error
-		domObject.getReferenceToNativeDOM().onload = function() { onLoadCompleteDelegate(domObject); };
-		domObject.getReferenceToNativeDOM().onerror = function() { onLoadErrorDelegate("couldn't load picture"); };
+		untyped domObject.nativeReference.onload = function() { onLoadCompleteDelegate(domObject); };
+		untyped domObject.nativeReference.onerror = function() { onLoadErrorDelegate("couldn't load picture"); };
 		
 		// set it's source to start the loading of the picture
-		domObject.getReferenceToNativeDOM().setAttribute("src", url);
+		domObject.nativeReference.setAttribute("src", url);
 	}
 }

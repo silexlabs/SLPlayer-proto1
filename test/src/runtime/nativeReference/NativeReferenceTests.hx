@@ -1,5 +1,4 @@
-/*
-This file is part of Silex - see http://projects.silexlabs.org/?/silex
+/*This file is part of Silex - see http://projects.silexlabs.org/?/silex
 
 Silex is © 2010-2011 Silex Labs and is released under the GPL License:
 
@@ -9,22 +8,32 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domObject.base;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.nativeReference.NativeReference;
+package runtime.nativeReference;
+
+
+import haxe.Log;
+import utest.Assert;
+import utest.Runner;
+import utest.ui.Report;
+import org.silex.runtime.nativeReference.NativeReferenceManager;
+
 
 /**
- * This DOMObject is in charge of displaying animation such
- * as a .swf file in Flash or a .svg file in HTML
- * 
- * TO DO
- * 
- * @author Yannick DOMINGUEZ
+ * Test the cross-platform native reference manager 
+ *@author Yannick DOMINGUEZ
  */
-class AnimationDOMObjectBase extends DOMObject
+class NativeReferenceTests 
 {
-	public function new(nativeReference:NativeReference = null) 
+	public static function main()
 	{
-		super(nativeReference);
+		var runner = new Runner();
+		runner.addCase(new NativeReferenceTests());
+		Report.create(runner);
+		runner.run();
+	}
+	
+	public function new() 
+	{
+		
 	}
 }

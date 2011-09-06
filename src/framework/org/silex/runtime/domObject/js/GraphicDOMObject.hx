@@ -76,24 +76,24 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	
 	override public function setWidth(value:Int):Int
 	{
-		untyped this._referenceToNativeDOM.width = value;
+		untyped this._nativeReference.width = value;
 		return value;
 	}
 	
 	override public function getWidth():Int 
 	{
-		return untyped Std.parseInt(this._referenceToNativeDOM.width);
+		return untyped Std.parseInt(this._nativeReference.width);
 	}
 	
 	override public function setHeight(value:Int):Int 
 	{
-		untyped this._referenceToNativeDOM.height = value;
+		untyped this._nativeReference.height = value;
 		return value;
 	}
 	
 	override public function getHeight():Int 
 	{
-		return untyped Std.parseInt(this._referenceToNativeDOM.height);
+		return untyped Std.parseInt(this._nativeReference.height);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +259,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 		//draw the image with the Canvas API
 	
 		canvasContext.drawImage(
-			source.getReferenceToNativeDOM(),
+			source.nativeReference,
 			sourceRect.x,
 			sourceRect.y,
 			sourceRect.width,
@@ -441,7 +441,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 	 */
 	private function getContext():Dynamic
 	{
-		return untyped _referenceToNativeDOM.getContext("2d");
+		return untyped _nativeReference.getContext("2d");
 	}
 	
 	/**
@@ -469,7 +469,7 @@ class GraphicDOMObject extends GraphicDOMObjectBase
 		}
 		
 		//create the canvas pattern with the native image DOM element
-		return canvasContext.createPattern(imageDOMObject.getReferenceToNativeDOM(), repeatValue);
+		return canvasContext.createPattern(imageDOMObject.nativeReference, repeatValue);
 	}
 	
 	/**

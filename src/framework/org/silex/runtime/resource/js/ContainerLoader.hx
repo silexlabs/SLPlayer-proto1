@@ -49,7 +49,7 @@ class ContainerLoader extends ResourceLoader
 	override private function onLoadComplete(data:Dynamic):Void
 	{
 		var domObject:ContainerDOMObject = new ContainerDOMObject(Lib.document.createElement("div"));
-		domObject.getReferenceToNativeDOM().innerHTML = data;
+		domObject.nativeReference.innerHTML = data;
 		_onLoadCompleteCallback(domObject);
 	}
 }
