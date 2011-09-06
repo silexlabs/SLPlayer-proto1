@@ -11,13 +11,14 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.base;
 
-import haxe.Log;
 import org.silex.runtime.geom.Matrix;
 import org.silex.runtime.domObject.DOMObjectData;
 import org.silex.runtime.geom.GeomData;
-import org.silex.runtime.domObject.NativeDOMObject;
 import org.silex.runtime.keyboard.Keyboard;
 import org.silex.runtime.keyboard.KeyboardData;
+import org.silex.runtime.mouse.Mouse;
+import org.silex.runtime.mouse.MouseData;
+import org.silex.runtime.nativeReference.NativeReference;
 
 /**
  * This is a base class for runtime specific DOMObject. A DOMObject is an abstraction of the visual base element of a runtime.
@@ -42,36 +43,6 @@ class DOMObjectBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * The callback called on press of the DOMObject
-	 */
-	public var onPress:Void->Void;
-	
-	/**
-	 * The callback called when the DOMObject is double-clicked
-	 */
-	public var onDoubleClick:Void->Void;
-	
-	/**
-	 * The callback called on release of the DOMObject
-	 */
-	public var onRelease:Void->Void;
-	
-	/**
-	 * The callback called on rollover of the DOMObject
-	 */
-	public var onRollOver:Void->Void;
-	
-	/**
-	 * The callback called on rollout of the DOMObject
-	 */
-	public var onRollOut:Void->Void;
-	
-	/**
-	 * The callback called when the mouse moves over the DOMObject
-	 */
-	public var onMouseMove:Void->Void;
-	
-	/**
 	 * The callback called when there is a mouse wheel event over the DOMObject
 	 * TO DO
 	 */
@@ -88,6 +59,46 @@ class DOMObjectBase
 	 * TO DO
 	 */
 	public var onFocusOut:Void->Void;
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Mouse attributes and callback
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * An instance of the cross-platform mouse class, used to listen
+	 * to native mouse events
+	 */
+	private var _mouse:Mouse;
+	
+	/**
+	 * The callback called on mouse down through the mouse instance
+	 */
+	public var onMouseDown(getOnMouseDown, setOnMouseDown):MouseEventData->Void;
+	
+	/**
+	 * The callback called on mouse up through the mouse instance
+	 */
+	public var onMouseUp(getOnMouseUp, setOnMouseUp):MouseEventData->Void;
+	
+	/**
+	 * The callback called when the mouse over this dom object
+	 */
+	public var onMouseOver(getOnMouseOver, setOnMouseOver):MouseEventData->Void;
+	
+	/**
+	 * The callback called on mouse out of this dom object
+	 */
+	public var onMouseOut(getOnMouseOut, setOnMouseOut):MouseEventData->Void;
+	
+	/**
+	 * The callback called when the mouse move over this dom object
+	 */
+	public var onMouseMove(getOnMouseMove, setOnMouseMove):MouseEventData->Void;
+	
+	/**
+	 * The callback called when this dom object is double-clicked
+	 */
+	public var onMouseDoubleClick(getOnMouseDoubleClick, setOnMouseDoubleClick):MouseEventData->Void;
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Keyboard attributes and callback
@@ -118,7 +129,8 @@ class DOMObjectBase
 	 * runtime : in JS it is an HTML element, in Flash a Sprite,
 	 * in PHP a resource
 	 */
-	private var _referenceToNativeDOM:NativeDOMObject;
+	private var _nativeReference:NativeReference;
+	public var nativeReference(getNativeReference, setNativeReference):NativeReference;
 	
 	/**
 	 * a reference to the parent of this DOMObject
@@ -201,16 +213,16 @@ class DOMObjectBase
 	/////////////////////////////////
 	
 	/**
-	 * class constructor. Set the reference to the native DOMObject
+	 * class constructor. Set the native reference to the native DOMObject
 	 * and initialise it
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic = null) 
+	public function new(nativeReference:Dynamic = null) 
 	{
 		//store and init the dom object properties
-		//with the native dom object if it isn't null
-		if (referenceToNativeDOMObject != null)
+		//with the native reference if it isn't null
+		if (nativeReference != null)
 		{
-			this._referenceToNativeDOM = referenceToNativeDOMObject;
+			this._nativeReference = nativeReference;
 			init();
 		}
 		
@@ -222,7 +234,10 @@ class DOMObjectBase
 		//initialise the keyboard listener of this dom object 
 		_keyboard = new Keyboard();
 		
-		setNativeListeners();
+		//initialise the mouse listeners on this dom object by 
+		//listening to the current native reference
+		_mouse = new Mouse(this._nativeReference);
+		
 	}
 	
 	/**
@@ -295,19 +310,20 @@ class DOMObjectBase
 	 * set the reference to this DOMObject native DOM element
 	 * @return a DisplayObject in AS, an HTML element in JS, a resource in PHP
 	 */
-	public function setReferenceToNativeDOM(value:NativeDOMObject):Dynamic
+	public function setNativeReference(value:NativeReference):NativeReference
 	{
-		this._referenceToNativeDOM = value;
+		this._nativeReference = value;
 		init();
+		return value;
 	}
 	
 	/**
 	 * Returns the reference to this DOMObject native DOM element
 	 * @return a DisplayObject in AS, an HTML element in JS, a resource in PHP
 	 */
-	public function getReferenceToNativeDOM():Dynamic
+	public function getNativeReference():NativeReference
 	{
-		return _referenceToNativeDOM;
+		return this._nativeReference;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -647,6 +663,77 @@ class DOMObjectBase
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// MOUSE SETTER/GETTER
+	// Proxies setting/getting properties from the mouse listener instance
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public function setOnMouseDown(value:MouseEventData->Void):MouseEventData->Void
+	{
+		_mouse.onMouseDown = value;
+		return value;
+	}
+	
+	public function getOnMouseDown():MouseEventData->Void
+	{
+		return _mouse.onMouseDown;
+	}
+	
+	public function setOnMouseUp(value:MouseEventData->Void):MouseEventData->Void
+	{
+		_mouse.onMouseUp = value;
+		return value;
+	}
+	
+	public function getOnMouseUp():MouseEventData->Void
+	{
+		return _mouse.onMouseUp;
+	}
+	
+	public function setOnMouseOver(value:MouseEventData->Void):MouseEventData->Void
+	{
+		_mouse.onMouseOver = value;
+		return value;
+	}
+	
+	public function getOnMouseOver():MouseEventData->Void
+	{
+		return _mouse.onMouseOver;
+	}
+	
+	public function setOnMouseOut(value:MouseEventData->Void):MouseEventData->Void
+	{
+		_mouse.onMouseOut = value;
+		return value;
+	}
+	
+	public function getOnMouseOut():MouseEventData->Void
+	{
+		return _mouse.onMouseOut;
+	}
+	
+	public function setOnMouseMove(value:MouseEventData->Void):MouseEventData->Void
+	{
+		_mouse.onMouseMove = value;
+		return value;
+	}
+	
+	public function getOnMouseMove():MouseEventData->Void
+	{
+		return _mouse.onMouseMove;
+	}
+	
+	public function setOnMouseDoubleClick(value:MouseEventData->Void):MouseEventData->Void
+	{
+		_mouse.onMouseDoubleClick = value;
+		return value;
+	}
+	
+	public function getOnMouseDoubleClick():MouseEventData->Void
+	{
+		return _mouse.onMouseDoubleClick;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
 	// KEYBOARD SETTER/GETTER
 	// Proxies setting/getting properties from the keyboard listener instance
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -685,7 +772,7 @@ class DOMObjectBase
 	 */
 	public function setAttribute(propertyName:String, propertyValue:Dynamic):Void
 	{
-		Reflect.setField(this._referenceToNativeDOM, propertyName, propertyValue);
+		Reflect.setField(this._nativeReference, propertyName, propertyValue);
 	}
 	
 	/**
@@ -695,100 +782,7 @@ class DOMObjectBase
 	 */
 	public function getAttribute(propertyName:String):Dynamic
 	{
-		return Reflect.field(this._referenceToNativeDOM, propertyName);
-	}
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	// EVENTS
-	// Private native event handler method
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * Listens for events on the native referenceToDOMObject
-	 */
-	private function setNativeListeners():Void
-	{
-		//abstract
-	}
-	
-	/**
-	 * Removes the native listeners on referenceToDOMObject
-	 */
-	private function unsetNativeListeners():Void
-	{
-		//abstract
-	}
-	
-	/**
-	 * Calls the onPress callback
-	 * @param	event the native press event
-	 */
-	private function onNativePress(event:Dynamic):Void
-	{
-		if (onPress != null)
-		{
-			onPress();
-		}
-	}
-	
-	/**
-	 * Calls the onDoubleClick callback
-	 * @param	event the native double click event
-	 */
-	private function onNativeDoubleClick(event:Dynamic):Void
-	{
-		if (onDoubleClick != null)
-		{
-			onDoubleClick();
-		}
-	}
-	
-	/**
-	 * Calls the onRelease callback
-	 * @param	event the native release event
-	 */
-	private function onNativeRelease(event:Dynamic):Void
-	{
-		if (onRelease != null)
-		{
-			onRelease();
-		}
-	}
-	
-	/**
-	 * Calls the onRollover callback
-	 * @param	event the native rollover event
-	 */
-	private function onNativeRollOver(event:Dynamic):Void
-	{
-		if (onRollOver != null)
-		{
-			onRollOver();
-		}
-	}
-	
-	/**
-	 * Calls the onRollout callback
-	 * @param	event the native rollout event
-	 */
-	private function onNativeRollOut(event:Dynamic):Void
-	{
-		if (onRollOut != null)
-		{
-			onRollOut();
-		}
-	}
-	
-	/**
-	 * Calls the onMouseMove callback
-	 * @param	event the native mousemove event
-	 */
-	private function onNativeMouseMove(event:Dynamic):Void
-	{
-		if (onMouseMove != null)
-		{
-			onMouseMove();
-		}
+		return Reflect.field(this._nativeReference, propertyName);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

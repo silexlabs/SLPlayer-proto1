@@ -41,8 +41,8 @@ class TextDOMObject extends TextDOMObjectBase
 	{
 		// sets the text of the DOMObject
 		super.setText(text);
-		// adds a child Xml PCData node containing the text to _referenceToNativeDOM
-		this._referenceToNativeDOM.addChild(Xml.createPCData(text));
+		// adds a child Xml PCData node containing the text to _nativeReference
+		this._nativeReference.addChild(Xml.createPCData(text));
 	}
 	
 }

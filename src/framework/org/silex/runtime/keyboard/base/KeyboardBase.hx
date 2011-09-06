@@ -11,7 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.keyboard.base;
 
 import haxe.Log;
-import org.silex.runtime.domObject.NativeDOMObject;
+import org.silex.runtime.nativeReference.NativeReference;
 import org.silex.runtime.keyboard.KeyboardData;
 
 /**

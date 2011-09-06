@@ -15,6 +15,7 @@ import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.DOMObjectData;
 import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.domObject.ImageDOMObject;
+import org.silex.runtime.nativeReference.NativeReference;
 
 /**
  * The graphic DOMObject is used as a canvas to draw bitmap graphics programmatically. 
@@ -35,9 +36,9 @@ class GraphicDOMObjectBase extends DOMObject
 	/**
 	 * class constructor
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic = null) 
+	public function new(nativeReference:NativeReference = null) 
 	{
-		super(referenceToNativeDOMObject);
+		super(nativeReference);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

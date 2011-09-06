@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.base;
 import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.nativeReference.NativeReference;
 
 /**
  * This DOMObject is in charge of displaying animation such
@@ -22,8 +23,8 @@ import org.silex.runtime.domObject.DOMObject;
  */
 class AnimationDOMObjectBase extends DOMObject
 {
-	public function new(referenceToNativeDOMObject:Dynamic = null) 
+	public function new(nativeReference:NativeReference = null) 
 	{
-		super(referenceToNativeDOMObject);
+		super(nativeReference);
 	}
 }

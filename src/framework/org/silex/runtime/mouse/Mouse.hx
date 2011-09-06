@@ -14,9 +14,9 @@ package org.silex.runtime.mouse;
  * Set the right runtime specific mouse manager at compile-time
  */
 #if flash9
-typedef Keyboard =  org.silex.runtime.mouse.as3.Mouse;
+typedef Mouse =  org.silex.runtime.mouse.as3.Mouse;
 
 #elseif js
-typedef Keyboard =  org.silex.runtime.mouse.js.Mouse;
+typedef Mouse =  org.silex.runtime.mouse.js.Mouse;
 
 #end

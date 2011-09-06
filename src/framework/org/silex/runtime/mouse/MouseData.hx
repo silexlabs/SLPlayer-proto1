@@ -10,7 +10,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.mouse;
 
-import org.silex.runtime.domObject.ImageDOMObject;
+import org.silex.runtime.domObject.DOMObject;
 
 /**
  * This file contains mouse related structures
@@ -54,7 +54,7 @@ enum MouseCursorValue {
 	 * uses a custom bitmap cursor set with
 	 * an image dom object
 	 */
-	custom(imageDOMObject:ImageDOMObject);
+	custom(imageDOMObject:DOMObject);
 	
 	/**
 	 * Let the browser manage the mouse cursor
