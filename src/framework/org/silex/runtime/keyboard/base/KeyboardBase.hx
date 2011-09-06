@@ -8,7 +8,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.keyboard;
+package org.silex.runtime.keyboard.base;
 
 import haxe.Log;
 import org.silex.runtime.domObject.NativeDOMObject;

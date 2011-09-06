@@ -12,7 +12,7 @@ package org.silex.runtime.keyboard.js;
 
 import haxe.Log;
 import js.Lib;
-import org.silex.runtime.keyboard.KeyboardBase;
+import org.silex.runtime.keyboard.base.KeyboardBase;
 import org.silex.runtime.keyboard.KeyboardData;
 
 /**
