@@ -41,10 +41,10 @@ class DOMObject extends DOMObjectBase
 	 */
 	override private function init():Void
 	{	
-		this._width = Math.round(_referenceToNativeDOM.width);
-		this._height = Math.round(_referenceToNativeDOM.height);
-		this._x = Math.round(_referenceToNativeDOM.x);
-		this._y = Math.round(_referenceToNativeDOM.y);
+		this._width = Math.round(_nativeReference.width);
+		this._height = Math.round(_nativeReference.height);
+		this._x = Math.round(_nativeReference.x);
+		this._y = Math.round(_nativeReference.y);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ class DOMObject extends DOMObjectBase
 	override public function addChild(domObject:DOMObjectBase):Void
 	{
 		super.addChild(domObject);
-		this._referenceToNativeDOM.addChild(domObject.getReferenceToNativeDOM());
+		this._nativeReference.addChild(domObject.nativeReference);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ class DOMObject extends DOMObjectBase
 	override public function removeChild(domObject:DOMObjectBase):Void
 	{
 		super.removeChild(domObject);
-		this._referenceToNativeDOM.removeChild(domObject.getReferenceToNativeDOM());
+		this._nativeReference.removeChild(domObject.nativeReference);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ class DOMObject extends DOMObjectBase
 	 */
 	override public function setIsVisible(value:Bool):Bool
 	{
-		this._referenceToNativeDOM.visible = value;
+		this._nativeReference.visible = value;
 		return value;
 	}
 	
@@ -90,7 +90,7 @@ class DOMObject extends DOMObjectBase
 	 */
 	override public function getIsVisible():Bool
 	{
-		return this._referenceToNativeDOM.visible;
+		return this._nativeReference.visible;
 	}
 	
 	/**
@@ -99,7 +99,7 @@ class DOMObject extends DOMObjectBase
 	 */
 	override public function setAlpha(value:Float):Float
 	{
-		this._referenceToNativeDOM.alpha = value;
+		this._nativeReference.alpha = value;
 		return value;
 	}
 	
@@ -109,7 +109,7 @@ class DOMObject extends DOMObjectBase
 	 */ 
 	override public function getAlpha():Float
 	{
-		return this._referenceToNativeDOM.alpha;
+		return this._nativeReference.alpha;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -133,42 +133,9 @@ class DOMObject extends DOMObjectBase
 		var nativeTransformMatrix:flash.geom.Matrix  = new flash.geom.Matrix(matrixData.a, matrixData.b, matrixData.c, matrixData.d, matrixData.e, matrixData.f);
 		
 		//set the native matrix on the native DisplayObject to refresh its display
-		this._referenceToNativeDOM.transform.matrix = nativeTransformMatrix;
+		this._nativeReference.transform.matrix = nativeTransformMatrix;
 		
 		return this._matrix;
-	}
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	// Overriden event handler methods, to transmit Flash specific events
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * Add event listeners for events on the native flash DisplayObject
-	 */
-	override private function setNativeListeners():Void
-	{
-		this._referenceToNativeDOM.addEventListener(MouseEvent.MOUSE_DOWN, onNativePress);
-		this._referenceToNativeDOM.addEventListener(MouseEvent.MOUSE_UP, onNativeRelease);
-		this._referenceToNativeDOM.addEventListener(MouseEvent.ROLL_OVER, onNativeRollOver);
-		this._referenceToNativeDOM.addEventListener(MouseEvent.ROLL_OUT, onNativeRollOut);
-		this._referenceToNativeDOM.addEventListener(MouseEvent.MOUSE_MOVE, onNativeMouseMove);
-		
-		//In As3, a DisplayObject must be double click enabled to dispatch double click event
-		this._referenceToNativeDOM.doubleClickEnabled = true;
-		this._referenceToNativeDOM.addEventListener(MouseEvent.DOUBLE_CLICK, onNativeDoubleClick);
-	}
-	
-	/**
-	 * Removes the event listeners on the native flash DisplayObject
-	 */
-	override private function unsetNativeListeners():Void
-	{
-		this._referenceToNativeDOM.removeEventListener(MouseEvent.MOUSE_DOWN, onNativePress);
-		this._referenceToNativeDOM.removeEventListener(MouseEvent.MOUSE_UP, onNativeRelease);
-		this._referenceToNativeDOM.removeEventListener(MouseEvent.ROLL_OVER, onNativeRollOver);
-		this._referenceToNativeDOM.removeEventListener(MouseEvent.ROLL_OUT, onNativeRollOut);
-		this._referenceToNativeDOM.removeEventListener(MouseEvent.MOUSE_MOVE, onNativeMouseMove);
-		this._referenceToNativeDOM.removeEventListener(MouseEvent.DOUBLE_CLICK, onNativeDoubleClick);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -179,28 +146,28 @@ class DOMObject extends DOMObjectBase
 	override public function setX(value:Int):Int 
 	{
 		super.setX(value);
-		this._referenceToNativeDOM.x = value;
+		this._nativeReference.x = value;
 		return this._x;
 	}
 	
 	override public function setY(value:Int):Int 
 	{
 		super.setY(value);
-		this._referenceToNativeDOM.y = value;
+		this._nativeReference.y = value;
 		return this._y;
 	}
 	
 	override public function setWidth(value:Int):Int
 	{
 		super.setWidth(value);
-		this._referenceToNativeDOM.width = value;
+		this._nativeReference.width = value;
 		return this._width;
 	}
 	
 	override public function setHeight(value:Int):Int 
 	{
 		super.setHeight(value);
-		this._referenceToNativeDOM.height = value;
+		this._nativeReference.height = value;
 		return this._height;
 	}
 	
@@ -220,8 +187,8 @@ class DOMObject extends DOMObjectBase
 		
 		//retrieve the parent Display Object, and use it to set
 		//the new index on the current DisplayObject
-		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
-		parent.setChildIndex(this._referenceToNativeDOM, value);
+		var parent:DisplayObjectContainer = this._nativeReference.parent;
+		parent.setChildIndex(this._nativeReference, value);
 		
 		return value;
 	}
@@ -230,8 +197,8 @@ class DOMObject extends DOMObjectBase
 	{
 		//retrieve the parent Display object, and use it to retrieve the current
 		//child index
-		var parent:DisplayObjectContainer = this._referenceToNativeDOM.parent;
-		return parent.getChildIndex(this._referenceToNativeDOM);
+		var parent:DisplayObjectContainer = this._nativeReference.parent;
+		return parent.getChildIndex(this._nativeReference);
 	}
 	
 }

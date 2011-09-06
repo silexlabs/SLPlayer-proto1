@@ -12,7 +12,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.nativeClass.as3;
 
 import haxe.Log;
-import org.silex.runtime.nativeClass.NativeInstanceBase;
+import org.silex.runtime.nativeClass.base.NativeInstanceBase;
 
 /**
  * This is the implementation of the native instance proxy for Flash. It implemenents

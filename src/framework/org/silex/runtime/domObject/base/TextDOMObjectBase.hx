@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.domObject.base;
 import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.nativeReference.NativeReference;
 
 /**
  * This is a DOMObject in charge of displaying an 
@@ -30,9 +31,9 @@ class TextDOMObjectBase extends DOMObject
 	/**
 	 * class contructor
 	 */
-	public function new(referenceToNativeDOMObject:Dynamic = null)
+	public function new(nativeReference:NativeReference = null)
 	{
-		super(referenceToNativeDOMObject);
+		super(nativeReference);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

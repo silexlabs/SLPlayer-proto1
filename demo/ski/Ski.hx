@@ -2,8 +2,12 @@
 // GM2D.com haxe code for simple game.
 // I am placing this code, and associated "tiles.png" in the public domain.
 
-// Since we are dealing with flash version 9, the general graphics
-//  classes are in the "flash.display" package.
+/**
+ * All the imported classes uses the cross-platform SL Cocktail library
+ * and don't require conditionnal compilation to work in both flash9
+ * and JS
+ */
+
 
 import haxe.FastList;
 import haxe.Log;
@@ -23,7 +27,7 @@ import org.silex.runtime.geom.GeomData;
  The Blob class (BLitter OBject) is a rectangle of pixels that can be
   quickyly and easily copied to the screen.  Perhaps a better name would
   be Sprite, but that would be too confusing.
- The main purpose of this class is to do a "copyPixels", and it just gathers
+  The main purpose of this class is to copy the pixels, and it just gathers
   the required data together to make this very easy.
 */
 class Blob
@@ -62,7 +66,8 @@ class Blob
       mPoint.x = inX-mHotX;
       mPoint.y = inY - mHotY;
 	  
-
+	  //use the drawImage method of the GraphicDOMObject
+	  //to copy pixels onto a surface
 	  mArena.drawImage(mBits, mPoint, mRect);
    }
 }
@@ -74,12 +79,9 @@ enum SkiState { FirstRun; Playing; Dead; }
 typedef TreeRow = Array<Float>;
 
 // This is our main class, and in this case, it contains the whole game.
-// It extends the standard flash "Sprite" class, which allows child objects
-//  and events.  No need for a MovieClip, because we are not using the flash
-//  timelining code.
 class Ski
 {
-   // Using "copyPixels" we draw into this bitmap...
+   // Using "drawImage" we draw into this abstract graphic object
    var mArena:GraphicDOMObject;
 
    // What to do on an update...
@@ -97,9 +99,9 @@ class Ski
    // Time of last step - for calculating time deltas...
    var mLastStep:Float;
 
-   // We increate game speed by increasing steps-per-second.
-   // Note that this is independent of the flash frame rate, since we can
-   //  do multiple steps per flash redraw.
+   // We increase game speed by increasing steps-per-second.
+   // The game updates are done with a Timer since there is no equivalent
+   // to the flash timeline in JavaScript
    var mStepsPerSecond:Float;
 
    // An array of trees to ski past.  Other arrangements are possible,
@@ -118,11 +120,13 @@ class Ski
    // Current session
    var mTopScore:Float;
    // GUI items
+   // Use the SL Cocktail cross-platform
+   // text implementation
    var mScoreText:TextDOMObject;
    var mTopScoreText:TextDOMObject;
 
 
-   // All the graphics are provided in the input image (BitmapData).
+   // Loads the input bitmap
    function new()
    {
       ResourceLoaderManager.loadImage("tiles.png", this.init, initError);
@@ -133,29 +137,27 @@ class Ski
 	   
    }
    
+   /**
+    * Called once the "tiles" bitmap is loaded. It is stored in an 
+	* abstract "ImageDOMobject" which can be used in both Flash and JavaScript
+    */
    function init(inBitmap:ImageDOMObject):Void
    {
-	//   inBitmap.width = 54;
-	//  inBitmap.height = 64;
-      // Haxe does not automatically add the main class to the stage (it adds
-      //  a "boot" object to the stage, which becomes "flash.Lib.current").
-      //  In order to see anything, this class must be on the stage, so we
-      //  add ourselves as child to the haxe boot class.  Subsequent objects
-      //  (eg, the TextFields) get added to ourselves.
+	  //init the key state array
       mKeyDown = [];
 
-      // These two lines of code are the key to the "copyPixels" method of
-      //  flash game creation.
-      // First, an offscreen buffer (BitmapData) is created to hold all the graphics.
-      // Then an instance of this is placed on the stage.  We can then simply change
-      //  the offscreen buffer and have the changes visible.  This does not necessarily
-      //  have to be the same size as the game, but in this case it is.
+      //the abstract gaphic dom object is instantiated and
+	  //its dimensions are set. It will be used as a cross-platform
+	  //drawing surface
       mArena = new GraphicDOMObject();
 	  mArena.width = 640;
 	  mArena.height = 480;
+	  
+	  //it is attached to the root dom object, the higher object
+	  //in the DOM tree
       DOMObjectBase.rootDOMObject.addChild(mArena);
 
-      // Create or Blobs (aka sprites) as subrects of the input images.
+      // Create Blobs as subrects of the input images.
       // The rectanges were calculated when the image was created.  If there were
       //  many more Blobs, some external data file would be a better way of
       //  getting the rectangles.
@@ -164,23 +166,13 @@ class Ski
       mPlayerDown = new Blob(mArena,inBitmap,70,12,26,46);
       mPlayerRight = new Blob(mArena,inBitmap,148,16,26,40);
 
-	  //mTree.draw(300, 300);
-
-	  //Log.trace(mPoint);
-	  
-      // I have chosen to add the event listeners to stage rather then
-      //  other display objects.  Since there are no objects that will take
-      //  keyboard focus, all the key events will go to the stage.
-      // It is best to have a single OnEnter and do all the updates from there,
-      //  so it may as well be on the stage.
-     //Lib.current.addEventListener(KeyboardEvent.KEY_DOWN, OnKeyDown );
-     // Lib.current.addEventListener(KeyboardEvent.KEY_UP, OnKeyUp );
-	 
-      //Lib.current.addEventListener(Event.ENTER_FRAME, OnEnter);
-
+		
+	 //the timer that will set the update rate of the state	
 	 var timer:Timer = new Timer(25);
+	 //it calls the OnEnter method each 25ms
 	 timer.run = OnEnter;
 	  
+	 //add cross-platform keyboard event call-backs
 	 mArena.onKeyDown = OnKeyDown;
 	 mArena.onKeyUp = OnKeyUp;
 	 
@@ -205,32 +197,20 @@ class Ski
       }
 
 
-      // The "GUI" consists of two TextFields overlapping the arena.
-      // These do not use "copyPixels", but take advantage of some of the
-      //  other benefits provided by flash display list model.
-      // In a "real" game, you should use a custom embedded font, rather than
-      //  some crappy default.
+      // The "GUI" consists of two cross-platform text objects overlapping the arena.
+	  //Formatting is not yet implemented in SL Cocktail but the text will be displayed using
+	  //the runtime default style
       mScoreText = new TextDOMObject();
       mScoreText.x = 10;
       mScoreText.y = 10;
-      //var format:TextFormat = new TextFormat();
-      //format.font = "Arial";
-      //format.bold = true;
-      //format.color = 0xffffff;
-      //format.size = 20;
-      //mScoreText.defaultTextFormat = format;
-      //mScoreText.text = "Score:0";
-      //mScoreText.width = 640;
-      //mScoreText.filters = [ new  GlowFilter(0x0000ff, 1.0, 3, 3, 3, 3, false, false) ];
-       DOMObjectBase.rootDOMObject.addChild(mScoreText);
+
+      DOMObjectBase.rootDOMObject.addChild(mScoreText);
 
       mTopScoreText = new TextDOMObject();
       mTopScoreText.x = 100;
       mTopScoreText.y = 10;
-     // format.color = 0xffffff;
-     // mTopScoreText.defaultTextFormat = format;
-    //  mTopScoreText.filters = [ new  GlowFilter(0xff0000, 1.0, 3, 3, 3, 3, false, false) ];
-       DOMObjectBase.rootDOMObject.addChild(mTopScoreText);
+	  
+      DOMObjectBase.rootDOMObject.addChild(mTopScoreText);
 
       // Just something small to aspire too...
       mTopScore = 0;
@@ -251,9 +231,6 @@ class Ski
          mTopScore = inScore;
          var s = Std.int(mTopScore * 0.1);
          mTopScoreText.text = "TopScore:" + s + "0";
-        // var w = mTopScoreText.textWidth;
-        // mTopScoreText.width = w + 20;
-       //  mTopScoreText.x = 620 - w;
       }
    }
 
@@ -278,6 +255,7 @@ class Ski
          // Other things could be done here, eg acceleration or a "one button"
          //  mode where you either go left-or-right, but not down.
          // Also, mouse support could be added here.
+		 // Keyboard key codes are hard-coded here (37 for left arrow, 39 for the right one)
          var dx = mKeyDown[ 37 ] ? -1 :
                   mKeyDown[ 39 ] ? 1 : 0;
          // This effectively defines the angle you go at when you turn
@@ -314,14 +292,16 @@ class Ski
    // inExtra is not used in this example, because scrolling seems smooth enough.
    function Render(inExtra:Float)
    {
-      // Offset all the object to keep th apparent position on the player
+      // Offset all the object to keep the apparent position on the player
       //  the same.  This creates a "virtual viewport" for rendering.
       var scroll_y = mPlayerY - 60;
 	  
-      // The "copyPixels" method works by clearing the buffer and then drawing
-      //  the bitmaps into the offscreen buffer.
+      //this method clears the bitmap data of the cross-platform 
+	  //graphic dom object
 	  mArena.clear();
 	  
+	  //here we draw a rectangle with a monochrome fill 
+	  //using the graphic dom object drawing API
 	  var fill:FillStyleValue = monochrome( { color:0xe0e0ff, alpha:100 } );
 	  var line:LineStyleValue = LineStyleValue.none;
 	  
@@ -329,6 +309,8 @@ class Ski
 	  mArena.drawRect(0, 0, 640, 480);
 	  mArena.endFill();
 	  
+	  //check which skiers must be drawn based on the 
+	  //down keys on the keyboard
       var blob = mKeyDown[ 37 ] ? mPlayerLeft :
                  mKeyDown[ 39 ] ? mPlayerRight :
                                              mPlayerDown;
@@ -356,6 +338,7 @@ class Ski
       // Update the gui message.
       if (mState==SkiState.FirstRun)
       {
+		 //update the text on the cross-platform text object
          mScoreText.text = "Press any key to start";
       }
       else if (mState==SkiState.Playing)
@@ -376,6 +359,8 @@ class Ski
 
 
    // Respond to a key-down event.
+   // Send a cross-platform key structure
+   // containing keyboard state data
    function OnKeyDown(key:Key)
    {
       // When a key is held down, multiple KeyDown events are generated.
@@ -386,6 +371,8 @@ class Ski
          //  use the transition event...
          if (mState == SkiState.FirstRun)
             mState = SkiState.Playing;
+			
+		//key code 32 is the SPACE bar	
          else if (mState == SkiState.Dead && key.code == 32)
          {
             Reset();
@@ -403,9 +390,9 @@ class Ski
       mKeyDown[key.code] = false;
    }
 
-   // This function gets called once per flash frame.
-   // This will be approximately the rate specified in the swf, but usually a
-   //  bit slower.  For accurate timing, we will not rely on flash to call us
+   // This function gets called once each 25ms by the Haxe timer (see init method).
+   // This will be approximately the rate specified in the timer, but usually a
+   //  bit slower.  For accurate timing, we will not rely on the timer to call us
    //  consistently, but we will do our own timing.
    function OnEnter()
    {
@@ -420,32 +407,17 @@ class Ski
       for(i in 0...steps)
          Update();
 
-      // This helps flash efficiently update the bitmap, batching the changes
-     // mArena.lock();
-
       // fractional_step is something we don't use, but it could be used to do some
       //  dead-reckoning in the render code to smooth out the display.
       Render(fractional_step);
 
-      // This completes the batching
-      //mArena.unlock();
    }
 
-
-   
    // Haxe will always look for a static function called "main".
    static public function main()
    {
-      // There are a number of ways to get bitmap data into flash.
-      // In this case, we're loading it from a file that is placed next to the
-      //  game swf.  Other ways will be described later.
-      // Since the downloding of the bitmap from a remote location may take some
-      //  time, flash uses an asynchronous api to delivier the data.
-      //  This means that the request is sent and the data only becomes valid when
-      //  the callback is called.  A loading screen would be appropriate here, but
-      //  that's beond the scope of this example, as is appropriate error checking.
-
-      // Create the request object...
+		
+	  //create the root DOM Object of the game
 	  
 	  #if flash9
 		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
@@ -455,6 +427,8 @@ class Ski
 		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
 		#end
 	  
+		
+	//instantiate the game	
 	  new Ski();
 	 
    }

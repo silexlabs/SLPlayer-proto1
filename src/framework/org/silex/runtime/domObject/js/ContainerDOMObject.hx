@@ -46,10 +46,10 @@ class ContainerDOMObject extends ContainerDOMObjectBase
 		//and replace the current node, as the nodeName attribute is read only
 		
 		//store the inner html of the current node, to set it later on the new node
-		var currentNativeDOMContent:Dynamic = this._referenceToNativeDOM.innerHTML;
+		var currentNativeDOMContent:Dynamic = this._nativeReference.innerHTML;
 		
 		//store all the attributes of the current node to set them on the new node
-		 var currentNativeDOMAttributes:Array<Dynamic> = untyped this._referenceToNativeDOM.attributes;
+		 var currentNativeDOMAttributes:Array<Dynamic> = untyped this._nativeReference.attributes;
 		
 		//create a new node with the right node name
 		var newReferenceToNativeDOM:Dynamic = Lib.document.createElement(semantic);
@@ -64,10 +64,10 @@ class ContainerDOMObject extends ContainerDOMObjectBase
 		}
 		
 		//replace the current node with the new node
-		this._referenceToNativeDOM.parentNode.replaceChild(newReferenceToNativeDOM, _referenceToNativeDOM);
+		this._nativeReference.parentNode.replaceChild(newReferenceToNativeDOM, _nativeReference);
 		
 		//store a reference to the new node
-		this._referenceToNativeDOM = newReferenceToNativeDOM;
+		this._nativeReference = newReferenceToNativeDOM;
 	}
 	
 }

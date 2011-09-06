@@ -46,7 +46,7 @@ class TextDOMObject extends TextDOMObjectBase
 	override public function setText(text:String):String
 	{
 		super.setText(text);
-		this._referenceToNativeDOM.innerHTML = text;
+		this._nativeReference.innerHTML = text;
 		return text;
 	}
 	

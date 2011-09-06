@@ -42,6 +42,6 @@ class ContainerDOMObject extends ContainerDOMObjectBase
 		super.setSemantic(semantic);
 		
 		//TODO
-		//trace(this._referenceToNativeDOM);
+		//trace(this._nativeReference);
 	}
 }

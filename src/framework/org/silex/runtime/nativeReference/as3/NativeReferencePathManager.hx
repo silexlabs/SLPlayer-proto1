@@ -1,5 +1,4 @@
-/*
-This file is part of Silex - see http://projects.silexlabs.org/?/silex
+/*This file is part of Silex - see http://projects.silexlabs.org/?/silex
 
 Silex is © 2010-2011 Silex Labs and is released under the GPL License:
 
@@ -9,22 +8,34 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domObject.base;
-import org.silex.runtime.domObject.DOMObject;
+package org.silex.runtime.nativeReference.as3;
+
+import flash.Lib;
+import org.silex.runtime.nativeReference.base.NativeReferencePathManagerBase;
 import org.silex.runtime.nativeReference.NativeReference;
 
 /**
- * This DOMObject is in charge of displaying animation such
- * as a .swf file in Flash or a .svg file in HTML
- * 
- * TO DO
+ * This is the flash AVM2 implementation for the path manager. 
+ * It returns the flash Stage
  * 
  * @author Yannick DOMINGUEZ
  */
-class AnimationDOMObjectBase extends DOMObject
+class NativeReferencePathManager extends NativeReferencePathManagerBase
 {
-	public function new(nativeReference:NativeReference = null) 
+	/**
+	 * class contructor
+	 */
+	public function new() 
 	{
-		super(nativeReference);
+		super();
 	}
+	
+	/**
+	 * Returns a reference to the Flash Stage
+	 */
+	override public function getRoot():NativeReference
+	{
+		return Lib.current;
+	}
+	
 }

@@ -1,5 +1,4 @@
-/*
-This file is part of Silex - see http://projects.silexlabs.org/?/silex
+/*This file is part of Silex - see http://projects.silexlabs.org/?/silex
 
 Silex is © 2010-2011 Silex Labs and is released under the GPL License:
 
@@ -9,22 +8,19 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.domObject.base;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.nativeReference.NativeReference;
+package org.silex.runtime.nativeReference;
 
 /**
- * This DOMObject is in charge of displaying animation such
- * as a .swf file in Flash or a .svg file in HTML
- * 
- * TO DO
- * 
- * @author Yannick DOMINGUEZ
+ * Set the right runtime specific NativeElement at compile-time
  */
-class AnimationDOMObjectBase extends DOMObject
-{
-	public function new(nativeReference:NativeReference = null) 
-	{
-		super(nativeReference);
-	}
-}
+#if flash9
+typedef NativeReference =  flash.display.DisplayObjectContainer;
+
+#elseif js
+import js.Dom;
+typedef NativeReference =  js.HtmlDom;
+
+#elseif php
+typedef NativeReference =  Xml;
+
+#end
