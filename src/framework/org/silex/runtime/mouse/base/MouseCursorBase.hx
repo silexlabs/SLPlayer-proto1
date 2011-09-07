@@ -10,6 +10,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.mouse.base;
 
+import org.silex.runtime.domObject.ImageDOMObject;
 import org.silex.runtime.mouse.MouseData;
 
 /**
@@ -36,12 +37,31 @@ class MouseCursorBase
 		_nativeMouseCursor = auto;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Mouse cursor SETTER/GETTER
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Set the mouse cursor display. Actual implementation is in the subclasses
 	 */
 	public function setNativeMouseCursor(value:MouseCursorValue):MouseCursorValue
 	{
 		_nativeMouseCursor = value;
+		
+		switch (value)
+		{
+			//if the cursor is a bitmap, calls
+			//a dedicated method with the imageDOMObject
+			//to be used as cursor
+			case custom(imageDOMObject):
+				var typedImageDOMObject:ImageDOMObject = cast(imageDOMObject);
+				setBitmapCursor(typedImageDOMObject);
+			
+			//for native OS cursor, use a generic method	
+			default:
+				setNativeOSCursor(value);	
+		}
+		
 		return _nativeMouseCursor;
 	}
 	
@@ -51,6 +71,26 @@ class MouseCursorBase
 	public function getNativeMouseCursor():MouseCursorValue
 	{
 		return _nativeMouseCursor;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Private mouse cursor methods
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Set a bitmap as mouse cursor using native API
+	 */
+	private function setBitmapCursor(imageDOMObject:ImageDOMObject):Void
+	{
+		//abstract
+	}
+	
+	/**
+	 * Set an OS native cursor
+	 */ 
+	private function setNativeOSCursor(value:MouseCursorValue):Void 
+	{
+		//abstract
 	}
 	
 }

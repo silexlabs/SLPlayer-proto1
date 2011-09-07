@@ -26,6 +26,9 @@ import org.silex.runtime.mouse.MouseData;
  * The skin of the mouse cursor can be set with a custom
  * bitmap or a native OS mouse cursor.
  * 
+ * If the cursor is set to a custom bitmap, its dimensions
+ * should be at most 32x32, else it will be cropped
+ * 
  * @author Yannick DOMINGUEZ
  */
 class MouseCursorManager 

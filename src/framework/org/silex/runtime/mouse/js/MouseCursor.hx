@@ -10,6 +10,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.mouse.js;
 
+import org.silex.runtime.domObject.ImageDOMObject;
 import org.silex.runtime.mouse.base.MouseCursorBase;
 import org.silex.runtime.mouse.MouseData;
 
@@ -30,12 +31,24 @@ class MouseCursor extends MouseCursorBase
 		super();
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden private mouse cursor methods
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
-	 * Set the mouse cursor display. Actual implementation is in the subclasses
+	 * Set a bitmap as mouse cursor using CSS styling via JavaScript
 	 */
-	override public function setNativeMouseCursor(value:MouseCursorValue):MouseCursorValue
+	override private function setBitmapCursor(imageDOMObject:ImageDOMObject):Void
 	{
-		super.setNativeMouseCursor(value);
+		//abstract
+	}
+	
+	/**
+	 * Set an OS native cursor using CSS styling via JavaScript
+	 */ 
+	override private function setNativeOSCursor(value:MouseCursorValue):Void 
+	{
+		//abstract
 	}
 	
 }
