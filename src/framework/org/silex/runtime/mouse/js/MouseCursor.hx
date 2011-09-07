@@ -10,8 +10,10 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.mouse.js;
 
+import js.Lib;
 import org.silex.runtime.domObject.ImageDOMObject;
 import org.silex.runtime.mouse.base.MouseCursorBase;
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.mouse.MouseData;
 
 /**
@@ -23,6 +25,23 @@ import org.silex.runtime.mouse.MouseData;
  */
 class MouseCursor extends MouseCursorBase
 {
+	/**
+	 * CSS style for no mouse cursor
+	 */
+	private static inline var MOUSE_CURSOR_STYLE_NONE:String = "none";
+	
+	/**
+	 * CSS style for hand with pointed finger cursor
+	 */
+	private static inline var MOUSE_CURSOR_STYLE_POINTER:String = "pointer";
+	
+	/**
+	 * CSS style for auto cursor (browser managed)
+	 */
+	private static inline var MOUSE_CURSOR_STYLE_AUTO:String = "auto";
+	
+	
+	
 	/**
 	 * class constructor
 	 */
@@ -38,17 +57,59 @@ class MouseCursor extends MouseCursorBase
 	/**
 	 * Set a bitmap as mouse cursor using CSS styling via JavaScript
 	 */
-	override private function setBitmapCursor(imageDOMObject:ImageDOMObject):Void
+	override private function setBitmapCursor(imageDOMObject:ImageDOMObject, hotSpot:Point):Void
 	{
-		//abstract
+		var cursorURL:String = untyped imageDOMObject.nativeReference.url;
+		
+		//init the hotSpot if null
+		//to the top left of the cursor
+		if (hotSpot == null)
+		{
+			hotSpot = { x:0.0, y:0.0 };
+		}
+		
+		setCursorStyle("url('" + cursorURL + "') " + hotSpot.x +" " + hotSpot.y);
+	}
+	
+	/**
+	 * Hides the mouse cursor using CSS styling via JavaScript
+	 */
+	override private function hideCursor():Void
+	{
+		setCursorStyle(MOUSE_CURSOR_STYLE_NONE);
+	}
+	
+	/**
+	 * Set the default cursor using CSS styling via JavaScript
+	 */
+	override private function setDefaultCursor():Void
+	{
+		setCursorStyle(MOUSE_CURSOR_STYLE_AUTO);
 	}
 	
 	/**
 	 * Set an OS native cursor using CSS styling via JavaScript
 	 */ 
-	override private function setNativeOSCursor(value:MouseCursorValue):Void 
+	override private function setNativeOSCursor(value:NativeOSMouseCursorValue):Void 
 	{
-		//abstract
+		switch (value)
+		{
+			case hand: 
+				setCursorStyle(MOUSE_CURSOR_STYLE_POINTER);
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Private utils method
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Set the cursor style on the document's body
+	 * @param	style the CSS formatted style
+	 */
+	private function setCursorStyle(style:String):Void
+	{
+		Lib.document.body.style.cursor = style;
 	}
 	
 }

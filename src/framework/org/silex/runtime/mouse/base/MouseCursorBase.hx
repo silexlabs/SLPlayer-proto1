@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.mouse.base;
 
 import org.silex.runtime.domObject.ImageDOMObject;
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.mouse.MouseData;
 
 /**
@@ -53,13 +54,21 @@ class MouseCursorBase
 			//if the cursor is a bitmap, calls
 			//a dedicated method with the imageDOMObject
 			//to be used as cursor
-			case custom(imageDOMObject):
+			case custom(imageDOMObject, hotSpot):
 				var typedImageDOMObject:ImageDOMObject = cast(imageDOMObject);
-				setBitmapCursor(typedImageDOMObject);
+				setBitmapCursor(typedImageDOMObject, hotSpot);
 			
-			//for native OS cursor, use a generic method	
-			default:
-				setNativeOSCursor(value);	
+			//let the browser manage the cursor	
+			case auto:
+				setDefaultCursor();
+			
+			//hide the cursor
+			case none:
+				hideCursor();
+				
+			//set a native OS mouse cursor	
+			case native(nativeOSMouseCursor):
+				setNativeOSCursor(nativeOSMouseCursor);
 		}
 		
 		return _nativeMouseCursor;
@@ -78,9 +87,26 @@ class MouseCursorBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Set a bitmap as mouse cursor using native API
+	 * Set a bitmap as mouse cursor using native API. The hotSpot is the registration
+	 * point of the mouse cursor
 	 */
-	private function setBitmapCursor(imageDOMObject:ImageDOMObject):Void
+	private function setBitmapCursor(imageDOMObject:ImageDOMObject, hotSpot:Point):Void
+	{
+		//abstract
+	}
+	
+	/**
+	 * Hides the mouse cursor using native API
+	 */
+	private function hideCursor():Void
+	{
+		//abstract
+	}
+	
+	/**
+	 * Set the default cursor using native API
+	 */
+	private function setDefaultCursor():Void
 	{
 		//abstract
 	}
@@ -88,7 +114,7 @@ class MouseCursorBase
 	/**
 	 * Set an OS native cursor
 	 */ 
-	private function setNativeOSCursor(value:MouseCursorValue):Void 
+	private function setNativeOSCursor(value:NativeOSMouseCursorValue):Void 
 	{
 		//abstract
 	}

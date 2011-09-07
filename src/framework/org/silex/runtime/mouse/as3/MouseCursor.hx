@@ -10,8 +10,13 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.mouse.as3;
 
+import flash.display.BitmapData;
+import flash.ui.MouseCursorData;
+import flash.ui.Mouse;
+import flash.Vector;
 import org.silex.runtime.domObject.ImageDOMObject;
 import org.silex.runtime.mouse.base.MouseCursorBase;
+import org.silex.runtime.geom.GeomData;
 import org.silex.runtime.mouse.MouseData;
 
 /**
@@ -39,17 +44,60 @@ class MouseCursor extends MouseCursorBase
 	/**
 	 * Set a bitmap as mouse cursor using flash mouse API
 	 */
-	override private function setBitmapCursor(imageDOMObject:ImageDOMObject):Void
+	override private function setBitmapCursor(imageDOMObject:ImageDOMObject, hotSpot:Point):Void
 	{
-		//abstract
+		//init the hotSpot if null
+		//to the top left of the cursor
+		if (hotSpot == null)
+		{
+			hotSpot = { x:0.0, y:0.0 };
+		}
+		
+		//draw the image dom object onto a 32x32 transparent bitmap data
+		var mouseCursorBitmapData:BitmapData = new BitmapData(32, 32, true, 0x00FFFFFF);
+		mouseCursorBitmapData.draw(imageDOMObject.nativeReference);
+		
+		//set the flash mouse cursor data with the drawn bitmap data
+		//and the cursor hot spot
+		var mouseCursorData:MouseCursorData = new MouseCursorData();
+		mouseCursorData.data = new Vector<BitmapData>(1, true);
+		mouseCursorData.data[0] = mouseCursorBitmapData;
+		mouseCursorData.hotSpot = new flash.geom.Point(hotSpot.x, hotSpot.y);
+		
+		//generate a random ID for the new cursor
+		var randomID:String = Std.string(Math.round(Math.random() * 1000));
+		
+		//register the cursor and set it
+		Mouse.registerCursor(randomID, mouseCursorData);
+		Mouse.cursor = randomID;
+	}
+	
+	/**
+	 * Hides the mouse cursor using flash mouse API
+	 */
+	override private function hideCursor():Void
+	{
+		Mouse.hide();
+	}
+	
+	/**
+	 * Set the default cursor using flash mouse API
+	 */
+	override private function setDefaultCursor():Void
+	{
+		Mouse.cursor = flash.ui.MouseCursor.AUTO;
 	}
 	
 	/**
 	 * Set an OS native cursor using flash mouse API
 	 */ 
-	override private function setNativeOSCursor(value:MouseCursorValue):Void 
+	override private function setNativeOSCursor(value:NativeOSMouseCursorValue):Void 
 	{
-		//abstract
+		switch value
+		{
+			case hand:
+				Mouse.cursor = flash.ui.MouseCursor.HAND;
+		}
 	}
 	
 }
