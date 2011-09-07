@@ -29,27 +29,81 @@ import utest.ui.common.HeaderDisplayMode;
 import org.silex.runtime.domObject.DOMObjectData;
 import org.silex.runtime.domObject.GraphicDOMObject;
 import org.silex.runtime.mouse.Mouse;
+import org.silex.runtime.nativeReference.NativeReferenceManager;
+import org.silex.runtime.nativeReference.NativeReferenceData;
+import org.silex.runtime.mouse.MouseData;
 
 class MouseTests 
 {
 	
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
-		
 		new MouseTests();
-		
 	}
 	
 	public function new() 
 	{
 		
+		var stageDOMObject:DOMObject = new DOMObject(NativeReferenceManager.getRoot());
+		
+		var graphicDOMObject:GraphicDOMObject = new GraphicDOMObject(NativeReferenceManager.createNativeReference(graphic));
+		
+		graphicDOMObject.width = 200;
+		graphicDOMObject.height = 200;
+		graphicDOMObject.x = 50;
+		graphicDOMObject.y = 50;
+		
+		graphicDOMObject.beginFill(monochrome( { color:0x00FF00, alpha:100 } ), LineStyleValue.none);
+		graphicDOMObject.drawRect(0, 0, 200, 200);
+		graphicDOMObject.endFill();
+		
+		stageDOMObject.addChild(graphicDOMObject);
+	
+		graphicDOMObject.onMouseDown = onDOMObjectPress;
+		
+		graphicDOMObject.onMouseUp = onDOMObjectRelease;
+		
+		graphicDOMObject.onMouseOver = onDOMObjectRollOver;
+		
+		graphicDOMObject.onMouseOut = onDOMObjectRollOut;
+
+		graphicDOMObject.onMouseMove = onDOMObjectMouseMove;
+		
+		graphicDOMObject.onMouseDoubleClick = onDOMObjectDoubleClick;
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	// DOMObject mouse events callbacks
+	////////////////////////////////////////////////////////////////////////////////////
+	
+	private function onDOMObjectPress(mouseEventData:MouseEventData):Void
+	{
+		Log.trace("mouse down");
+	}
+	
+	private function onDOMObjectDoubleClick(mouseEventData:MouseEventData):Void
+	{
+		Log.trace("mouse double click");
+	}
+	
+	private function onDOMObjectRelease(mouseEventData:MouseEventData):Void
+	{
+		Log.trace("mouse release");
+	}
+	
+	private function onDOMObjectRollOver(mouseEventData:MouseEventData):Void
+	{
+		Log.trace("mouse roll over");
+	}
+	
+	private function onDOMObjectRollOut(mouseEventData:MouseEventData):Void
+	{
+		Log.trace("mouse roll out");
+	}
+	
+	private function onDOMObjectMouseMove(mouseEventData:MouseEventData):Void
+	{
+		Log.trace("mouse move");
 	}
 	
 }
