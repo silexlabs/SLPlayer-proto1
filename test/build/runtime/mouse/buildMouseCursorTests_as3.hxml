@@ -1,0 +1,5 @@
+-cp ../../../../src/framework/
+-cp ../../../src/
+-main runtime.mouse.MouseCursorTests
+-swf9 ../../../bin/runtime/mouse/mouseCursorTestAs3.swf
+-lib utest
