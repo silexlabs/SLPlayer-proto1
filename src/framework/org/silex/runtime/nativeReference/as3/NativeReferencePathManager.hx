@@ -35,7 +35,7 @@ class NativeReferencePathManager extends NativeReferencePathManagerBase
 	 */
 	override public function getRoot():NativeReference
 	{
-		return Lib.current;
+		return Lib.current.stage;
 	}
 	
 }

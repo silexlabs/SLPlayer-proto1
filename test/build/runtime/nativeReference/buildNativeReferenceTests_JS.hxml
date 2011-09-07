@@ -2,4 +2,4 @@
 -cp ../../../src/
 -main runtime.nativeReference.NativeReferenceTests
 -lib utest
--js ../../../bin/runtime/nativeReference/nativeReferenceJS.js
+-js ../../../bin/runtime/nativeReference/nativeReferenceTestJS.js

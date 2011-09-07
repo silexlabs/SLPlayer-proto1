@@ -1,4 +1,0 @@
--cp ../../../../src/framework/
--cp ../../../src/
--main runtime.domObject.DOMObjectGUITests
--js ../../../bin/runtime/domObject/domObjectGUITestJS.js

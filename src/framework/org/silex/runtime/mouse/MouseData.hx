@@ -11,6 +11,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.runtime.mouse;
 
 import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.geom.GeomData;
 
 /**
  * This file contains mouse related structures
@@ -52,9 +53,10 @@ typedef MousePosition = {
 enum MouseCursorValue {
 	/**
 	 * uses a custom bitmap cursor set with
-	 * an image dom object
+	 * an image dom object. The hotSpot is the registration
+	 * point of the cursor.
 	 */
-	custom(imageDOMObject:DOMObject);
+	custom(imageDOMObject:DOMObject, hotSpot:Point);
 	
 	/**
 	 * Let the browser manage the mouse cursor
@@ -65,4 +67,17 @@ enum MouseCursorValue {
 	 * Hides the mouse cursor
 	 */
 	none;
+	
+	/**
+	 * Use a native OS mouse cursor
+	 */
+	native(nativeOSMouseCursorValue:NativeOSMouseCursorValue);
+}
+
+/**
+ * Lists all the available native
+ * OS mouse cursor
+ */
+enum NativeOSMouseCursorValue {
+	hand;
 }

@@ -12,10 +12,12 @@ package runtime.nativeReference;
 
 
 import haxe.Log;
+import org.silex.runtime.nativeReference.NativeReference;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
 import org.silex.runtime.nativeReference.NativeReferenceManager;
+import org.silex.runtime.nativeReference.NativeReferenceData;
 
 
 /**
@@ -35,5 +37,24 @@ class NativeReferenceTests
 	public function new() 
 	{
 		
+	}
+	
+	public function testNativeReference()
+	{
+		var domRoot:NativeReference = NativeReferenceManager.getRoot();
+		
+		#if flash9
+		Assert.is(domRoot, flash.display.Stage);
+		#elseif js
+		Assert.same(domRoot.nodeName, "BODY");
+		#end
+		
+		var nativeGraphicReference:NativeReference = NativeReferenceManager.createNativeReference(graphic);
+		
+		#if flash9
+		Assert.is(nativeGraphicReference, flash.display.Sprite);
+		#elseif js
+		Assert.same(nativeGraphicReference.nodeName, "CANVAS");
+		#end
 	}
 }
