@@ -38,7 +38,7 @@ import org.silex.runtime.nativeReference.NativeReference;
  * 
  * @author Yannick DOMINGUEZ
  */
-class NativeElementManager 
+class NativeReferenceManager 
 {
 	/**
 	 * A reference to the runtime specific implementation of the class
