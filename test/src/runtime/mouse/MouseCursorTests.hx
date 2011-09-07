@@ -21,6 +21,7 @@ import haxe.Log;
 import org.silex.runtime.domObject.base.DOMObjectBase;
 import org.silex.runtime.domObject.DOMObject;
 import org.silex.runtime.domObject.ImageDOMObject;
+import org.silex.runtime.nativeReference.NativeReferenceManager;
 import org.silex.runtime.resource.ResourceLoaderManager;
 import utest.Assert;
 import utest.Runner;
@@ -29,19 +30,14 @@ import utest.ui.common.HeaderDisplayMode;
 import org.silex.runtime.domObject.DOMObjectData;
 import org.silex.runtime.domObject.GraphicDOMObject;
 import org.silex.runtime.mouse.MouseCursorManager;
+import org.silex.runtime.mouse.MouseData;
+import org.silex.runtime.nativeReference.NativeReferenceData;
 
 class MouseCursorTests 
 {
 	
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
 		
 		new MouseCursorTests();
 		
@@ -49,7 +45,67 @@ class MouseCursorTests
 	
 	public function new() 
 	{
+		var stageDOMObject:DOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
+		var domObject1:GraphicDOMObject = getGraphicDOMObject(0xFF0000);
+		var domObject2:GraphicDOMObject = getGraphicDOMObject(0x00FF00);
+		var domObject3:GraphicDOMObject = getGraphicDOMObject(0x0000FF);
+		var domObject4:GraphicDOMObject = getGraphicDOMObject(0x000000);
+		
+		stageDOMObject.addChild(domObject1);
+		stageDOMObject.addChild(domObject2);
+		stageDOMObject.addChild(domObject3);
+		stageDOMObject.addChild(domObject4);
+		
+		domObject2.x = 150;
+		domObject3.x = 250;
+		domObject4.x = 350;
+		
+		domObject1.onMouseDown = onPointerPress;
+		domObject2.onMouseDown = onBitmapPress;
+		domObject3.onMouseDown = onHidePress;
+		domObject4.onMouseDown = onAutoPress;
+	}
+	
+	private function getGraphicDOMObject(color:Int):GraphicDOMObject
+	{
+		var graphicDOMObject:GraphicDOMObject = new GraphicDOMObject(NativeReferenceManager.createNativeReference(graphic));
+		
+		graphicDOMObject.width = 50;
+		graphicDOMObject.height = 50;
+		graphicDOMObject.x = 50;
+		graphicDOMObject.y = 50;
+		
+		graphicDOMObject.beginFill(monochrome( { color:color, alpha:100 } ), LineStyleValue.none);
+		graphicDOMObject.drawRect(0, 0, 50, 50);
+		graphicDOMObject.endFill();
+		
+		return graphicDOMObject;
+	}
+	
+	private function onPointerPress(mouseEventData:MouseEventData):Void
+	{
+		MouseCursorManager.setMouseCursor(native(hand));
+	}
+	
+	private function onBitmapPress(mouseEventData:MouseEventData):Void
+	{
+		ResourceLoaderManager.loadImage("testPointer.png", onCursorLoaded, function(err:String){});
+	}
+	
+	private function onCursorLoaded(imageDOMObject:ImageDOMObject):Void
+	{
+		MouseCursorManager.setMouseCursor(custom(imageDOMObject, { x:0.0, y:0.0 } ));
+	}
+	
+	private function onHidePress(mouseEventData:MouseEventData):Void
+	{
+		MouseCursorManager.setMouseCursor(MouseCursorValue.none);
+	}
+	
+	private function onAutoPress(mouseEventData:MouseEventData):Void
+	{
+		MouseCursorManager.setMouseCursor(auto);
 	}
 	
 }

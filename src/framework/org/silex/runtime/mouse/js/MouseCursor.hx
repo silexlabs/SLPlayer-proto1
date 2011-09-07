@@ -10,6 +10,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package org.silex.runtime.mouse.js;
 
+import haxe.Log;
 import js.Lib;
 import org.silex.runtime.domObject.ImageDOMObject;
 import org.silex.runtime.mouse.base.MouseCursorBase;
@@ -40,8 +41,6 @@ class MouseCursor extends MouseCursorBase
 	 */
 	private static inline var MOUSE_CURSOR_STYLE_AUTO:String = "auto";
 	
-	
-	
 	/**
 	 * class constructor
 	 */
@@ -59,7 +58,7 @@ class MouseCursor extends MouseCursorBase
 	 */
 	override private function setBitmapCursor(imageDOMObject:ImageDOMObject, hotSpot:Point):Void
 	{
-		var cursorURL:String = untyped imageDOMObject.nativeReference.url;
+		var cursorURL:String = untyped imageDOMObject.nativeReference.src;
 		
 		//init the hotSpot if null
 		//to the top left of the cursor
@@ -68,7 +67,7 @@ class MouseCursor extends MouseCursorBase
 			hotSpot = { x:0.0, y:0.0 };
 		}
 		
-		setCursorStyle("url('" + cursorURL + "') " + hotSpot.x +" " + hotSpot.y);
+		setCursorStyle("url(" + cursorURL + ") " + hotSpot.x +" " + hotSpot.y+", auto");
 	}
 	
 	/**

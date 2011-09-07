@@ -67,9 +67,14 @@ class MouseCursor extends MouseCursorBase
 		//generate a random ID for the new cursor
 		var randomID:String = Std.string(Math.round(Math.random() * 1000));
 		
+		
+		
 		//register the cursor and set it
 		Mouse.registerCursor(randomID, mouseCursorData);
 		Mouse.cursor = randomID;
+		
+		//show the cursor if it was previously hidden
+		Mouse.show();
 	}
 	
 	/**
@@ -85,6 +90,8 @@ class MouseCursor extends MouseCursorBase
 	 */
 	override private function setDefaultCursor():Void
 	{
+		//show the cursor if it was previously hidden
+		Mouse.show();
 		Mouse.cursor = flash.ui.MouseCursor.AUTO;
 	}
 	
@@ -93,6 +100,9 @@ class MouseCursor extends MouseCursorBase
 	 */ 
 	override private function setNativeOSCursor(value:NativeOSMouseCursorValue):Void 
 	{
+		//show the cursor if it was previously hidden
+		Mouse.show();
+		
 		switch value
 		{
 			case hand:
