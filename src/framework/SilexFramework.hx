@@ -13,16 +13,20 @@ import org.silex.core.config.Config;
 import org.silex.core.block.Block;
 import org.silex.core.block.BlockBuilder;
 import org.silex.blocks.Image;
-import org.silex.runtime.domobject.DOMObject;
-import org.silex.runtime.domobject.ContainerDOMObject;
-import org.silex.runtime.domobject.AnimationDOMObject;
-import org.silex.runtime.domobject.GraphicDOMObject;
-import org.silex.runtime.domobject.ImageDOMObject;
-import org.silex.runtime.domobject.Matrix;
-import org.silex.runtime.domobject.TextDOMObject;
-import org.silex.runtime.ressource.RessourceLoader;
-import org.silex.runtime.ressource.RessourceLoaderManager;
+import org.silex.runtime.domObject.DOMObject;
+import org.silex.runtime.domObject.ContainerDOMObject;
+import org.silex.runtime.domObject.AnimationDOMObject;
+import org.silex.runtime.domObject.GraphicDOMObject;
+import org.silex.runtime.domObject.ImageDOMObject;
+import org.silex.runtime.geom.Matrix;
+import org.silex.runtime.domObject.TextDOMObject;
+import org.silex.runtime.resource.ResourceLoader;
+import org.silex.runtime.resource.ResourceLoaderManager;
 import org.silex.runtime.nativeClass.NativeClass;
+import org.silex.runtime.nativeReference.NativeReference;
+import org.silex.runtime.nativeReference.NativeReferenceManager;
+import org.silex.runtime.mouse.Mouse;
+import org.silex.runtime.keyboard.Keyboard;
 
 /**
  * this class is used to compile all the framework classes
