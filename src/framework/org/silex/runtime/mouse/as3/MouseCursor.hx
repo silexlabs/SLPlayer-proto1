@@ -8,49 +8,34 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
-package org.silex.runtime.mouse.base;
+package org.silex.runtime.mouse.as3;
 
+import org.silex.runtime.mouse.base.MouseCursorBase;
 import org.silex.runtime.mouse.MouseData;
 
 /**
- * This is the base class for mouse cursor abstration.
+ * This is the flash AVM2 implementation of the mouse cursor
  * 
  * It exposes method to set and get the mouse cursor
  * 
  * @author Yannick DOMINGUEZ
  */
-class MouseCursorBase 
+class MouseCursor extends MouseCursorBase
 {
 	/**
-	 * Stores the current state of the mouse cursor
-	 */
-	private var _nativeMouseCursor:MouseCursorValue;
-	public var nativeMouseCursor(getNativeMouseCursor, setNativeMouseCursor):MouseCursorValue;
-	
-	/**
-	 * class constructor. Set the default
-	 * mouse cursor value
+	 * class constructor
 	 */
 	public function new() 
 	{
-		_nativeMouseCursor = auto;
+		super();
 	}
 	
 	/**
 	 * Set the mouse cursor display. Actual implementation is in the subclasses
 	 */
-	public function setNativeMouseCursor(value:MouseCursorValue):MouseCursorValue
+	override public function setNativeMouseCursor(value:MouseCursorValue):MouseCursorValue
 	{
-		_nativeMouseCursor = value;
-		return _nativeMouseCursor;
-	}
-	
-	/**
-	 * get the current mouse display
-	 */
-	public function getNativeMouseCursor():MouseCursorValue
-	{
-		return _nativeMouseCursor;
+		super.setNativeMouseCursor(value);
 	}
 	
 }
