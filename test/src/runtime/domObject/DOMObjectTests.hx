@@ -35,6 +35,8 @@ import utest.ui.Report;
 
 import org.cocktail.resource.ResourceLoaderManager;
 
+import org.cocktail.nativeReference.NativeReferenceManager;
+
 #if flash9
 import flash.display.Sprite;
 import flash.Lib;
@@ -47,17 +49,11 @@ import js.Lib;
 class DOMObjectTests 
 {
 	
+	private static var rootDOMObject:DOMObject;
+	
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#elseif php
-		DOMObjectBase.rootDOMObject = new DOMObject(Xml.createElement('body'));
-		#end
+		rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
 		var runner = new Runner();
 		runner.addCase(new DOMObjectTests());
@@ -85,7 +81,7 @@ class DOMObjectTests
 		var parentDOMObject:DOMObject = new DOMObject(spriteParentDOMObject);
 		
 		//add the native Sprite to the Flash Stage
-		Lib.current.addChild(parentDOMObject.getReferenceToNativeDOM());
+		Lib.current.addChild(parentDOMObject.nativeReference);
 		
 		var spriteChildDOMObject:Sprite = new Sprite();
 		spriteChildDOMObject.graphics.beginFill(0xFF0000, 1);
@@ -100,7 +96,7 @@ class DOMObjectTests
 		parentDOMObject.addChild(childDOMObject);
 		
 		//compare the names to verify that the children's parent is the parent DOMObject
-		Assert.same(childDOMObject.getParent().getReferenceToNativeDOM().name, parentDOMObject.getReferenceToNativeDOM().name);
+		Assert.same(childDOMObject.getParent().nativeReference.name, parentDOMObject.nativeReference.name);
 		
 		//test getting each of the properties of the child DOMObject
 		Assert.equals(childDOMObject.getWidth(), 100);
@@ -115,7 +111,7 @@ class DOMObjectTests
 		
 		//remove the child and parent DOMObjects from the display list
 		parentDOMObject.removeChild(childDOMObject);
-		Lib.current.removeChild(parentDOMObject.getReferenceToNativeDOM());
+		Lib.current.removeChild(parentDOMObject.nativeReference);
 		
 		//check that the parent is now null
 		Assert.same(childDOMObject.getParent(), null);
@@ -139,7 +135,7 @@ class DOMObjectTests
 		var parentDOMObject:DOMObject = new DOMObject(divParentDOMObject);
 		
 		//attach the div to the document body
-		DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+		rootDOMObject.addChild(parentDOMObject);
 		
 
 		
@@ -194,7 +190,7 @@ class DOMObjectTests
 		var parentDOMObject:DOMObject = new DOMObject(divParentDOMObject);
 		
 		//attach the div to the document body
-		DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+		rootDOMObject.addChild(parentDOMObject);
 
 		//create a new child div
 		var divChildDOMObject:Xml = Xml.createElement("div");
@@ -267,7 +263,7 @@ class DOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		graphicDOMObject.setIsVisible(false);
 		Assert.equals(graphicDOMObject.getIsVisible(), false);
@@ -294,7 +290,7 @@ class DOMObjectTests
 		var parentDOMObject:DOMObject = new DOMObject(spriteParentDOMObject);
 		
 		//add the native Sprite to the Flash Stage
-		DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+		rootDOMObject.addChild(parentDOMObject);
 		
 		var spriteChildDOMObject1:Sprite = new Sprite();
 		spriteChildDOMObject1.graphics.beginFill(0xFF0000, 1);
@@ -330,7 +326,7 @@ class DOMObjectTests
 		//parentDOMObject.setHeight(100);
 		
 		//attach the div to the document body
-		DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+		rootDOMObject.addChild(parentDOMObject);
 		
 		//create a new div
 		var divChildDOMObject1:HtmlDom = js.Lib.document.createElement("div");
@@ -369,7 +365,7 @@ class DOMObjectTests
 		//parentDOMObject.setHeight(100);
 		
 		//attach the div to the document body
-		DOMObjectBase.rootDOMObject.addChild(parentDOMObject);
+		rootDOMObject.addChild(parentDOMObject);
 		
 		//create a new div
 		var divChildDOMObject1:Xml = Xml.createElement("div");
@@ -440,7 +436,7 @@ class DOMObjectTests
 		var domObject:ContainerDOMObject = new ContainerDOMObject(Xml.createElement('div'));
 		#end
 		
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		
 		domObject.setSemantic("nav");
 		
@@ -460,7 +456,7 @@ class DOMObjectTests
 		var domObject:TextDOMObject = new TextDOMObject(Xml.createElement('div'));
 		#end
 		
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		
 		domObject.setText("<h1>test html text</h1>");
 		

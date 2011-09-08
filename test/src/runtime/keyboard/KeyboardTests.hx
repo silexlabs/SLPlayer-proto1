@@ -21,6 +21,7 @@ import haxe.Log;
 import org.cocktail.domObject.base.DOMObjectBase;
 import org.cocktail.domObject.DOMObject;
 import org.cocktail.domObject.ImageDOMObject;
+import org.cocktail.nativeReference.NativeReferenceManager;
 import org.cocktail.resource.ResourceLoaderManager;
 import utest.Assert;
 import utest.Runner;
@@ -33,16 +34,12 @@ import org.cocktail.domObject.GraphicDOMObject;
 
 class KeyboardTests 
 {
+	private static var rootDOMObject:DOMObject;
 	
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
+		
+		rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
 		new KeyboardTests();
 		
@@ -68,7 +65,7 @@ class KeyboardTests
 		graphicDOMObject.endFill();
 		
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		graphicDOMObject.onKeyDown = onKeyDown;
 		graphicDOMObject.onKeyUp = onKeyUp;

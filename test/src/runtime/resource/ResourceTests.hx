@@ -16,7 +16,9 @@ import flash.display.Loader;
 import flash.Lib;
 import flash.system.ApplicationDomain;
 
+
 #end
+import org.cocktail.nativeReference.NativeReferenceManager;
 import org.cocktail.domObject.TextDOMObject;
 import org.cocktail.nativeClass.NativeClass;
 import haxe.Log;
@@ -35,17 +37,14 @@ import org.cocktail.resource.ResourceLoaderManager;
  */
 class ResourceTests 
 {
+	
+	private static var rootDOMObject:DOMObject;
+	
 	public static function main()
 	{
+	
 		
-		
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		DOMObjectBase.rootDOMObject = new DOMObject(js.Lib.document.body);
-		#elseif php
-		DOMObjectBase.rootDOMObject = new DOMObject(Xml.createElement('body'));
-		#end
+		rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
 		var runner = new Runner();
 		runner.addCase(new ResourceTests());
@@ -54,7 +53,7 @@ class ResourceTests
 		
 		#if php
 		// display rootDOMObject filled with all tested elements
-		untyped __call__('print_r', '<html>' + DOMObjectBase.rootDOMObject.getReferenceToNativeDOM() + '</html>');
+		untyped __call__('print_r', '<html>' + rootDOMObject.getReferenceToNativeDOM() + '</html>');
 		#end
 	}
 	
@@ -114,7 +113,7 @@ class ResourceTests
 	 */
 	private function onContainerLoaded(domObject:Dynamic):Void
 	{
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		#if flash9
 		Assert.is(domObject.getReferenceToNativeDOM(), Loader);
 		#elseif js
@@ -190,7 +189,7 @@ class ResourceTests
 		Assert.same(domObject.width, 65);
 		Assert.same(domObject.height, 65);
 		
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		#if flash9
 		domObject.setX(200);
 		Assert.is(domObject.getReferenceToNativeDOM(), Loader);
@@ -233,7 +232,7 @@ class ResourceTests
 	
 	private function onPictureNoCacheLoaded(domObject:Dynamic):Void
 	{
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		#if flash9
 		Assert.is(domObject.getReferenceToNativeDOM(), Loader);
 		#elseif js
@@ -263,7 +262,7 @@ class ResourceTests
 	 */
 	private function onTextLoaded(domObject:TextDOMObject)
 	{
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		Assert.equals(domObject.getText(), "<h1>This is an HTML text test</h1><p>paragraph</p><h2><b>second header</b></h2>");
 		#if flash9
 		domObject.setY(200);

@@ -22,22 +22,19 @@ import org.cocktail.domObject.DOMObject;
 import org.cocktail.domObject.GraphicDOMObject;
 import org.cocktail.domObject.DOMObjectData;
 import org.cocktail.geom.GeomData;
+import org.cocktail.nativeReference.NativeReferenceManager;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
 
 class MatrixTests 
 {
+	private static var rootDOMObject:DOMObject;
 	
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
+
+		rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
 		var runner = new Runner();
 		runner.addCase(new MatrixTests());
@@ -80,7 +77,7 @@ class MatrixTests
 		domObject.drawRect(0, 0, 200, 100, { tlCornerRadius:0, trCornerRadius:0, blCornerRadius:0, brCornerRadius:0 } );
 		domObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(domObject);
+		rootDOMObject.addChild(domObject);
 		
 		//test rotations at angles of each of a circle quarter
 		

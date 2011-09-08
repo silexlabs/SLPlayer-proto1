@@ -21,6 +21,7 @@ import haxe.Log;
 import org.cocktail.domObject.base.DOMObjectBase;
 import org.cocktail.domObject.DOMObject;
 import org.cocktail.domObject.ImageDOMObject;
+import org.cocktail.nativeReference.NativeReferenceManager;
 import org.cocktail.resource.ResourceLoaderManager;
 import utest.Assert;
 import utest.Runner;
@@ -32,16 +33,12 @@ import org.cocktail.domObject.DOMObjectData;
 
 class GraphicDOMObjectTests 
 {
+	private static var rootDOMObject:DOMObject;
 	
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
+		
+		rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
 		var runner = new Runner();
 		runner.addCase(new GraphicDOMObjectTests());
@@ -90,7 +87,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		Assert.equals(1, 1);
 	}
@@ -142,7 +139,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(20, 40, 50, 30, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		Assert.equals(1, 1);
 	}
@@ -188,7 +185,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(20, 5, 65, 45, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		
 	}
@@ -239,7 +236,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		Assert.equals(1, 1);
 	}
@@ -297,7 +294,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		graphicDOMObject.zOrder = 5;
 		Assert.equals(1, 1);
@@ -350,7 +347,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 100, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 	}
 	
 	/**
@@ -409,7 +406,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.lineTo(0, 0);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		Assert.equals(1, 1);
 	}
@@ -469,7 +466,7 @@ class GraphicDOMObjectTests
 		
 		
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		
 		
@@ -495,7 +492,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawImage(imageDOMObject, { x:0.0, y:0.0 }, { x:0.0, y:0.0, width:65.0, height:65.0 } );
 		graphicDOMObject.drawImage(imageDOMObject, { x:10.0, y:15.0 }, { x:5.0, y:5.0, width:50.0, height:50.0 } );
 		graphicDOMObject.drawImage(imageDOMObject, {x:70.0, y:15.0}, {x:10.0,y:5.0,width:50.0,height:50.0});
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 	}
 	
@@ -547,7 +544,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 150, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		Assert.equals(1, 1);
 	}
@@ -599,7 +596,7 @@ class GraphicDOMObjectTests
 		graphicDOMObject.drawRect(0, 0, 150, 100, cornerRadiuses);
 		graphicDOMObject.endFill();
 		
-		DOMObjectBase.rootDOMObject.addChild(graphicDOMObject);
+		rootDOMObject.addChild(graphicDOMObject);
 		
 		Assert.equals(1, 1);
 	}
