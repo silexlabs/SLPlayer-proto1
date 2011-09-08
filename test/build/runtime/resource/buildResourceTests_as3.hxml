@@ -1,5 +1,0 @@
--cp ../../../../src/framework/
--cp ../../../src/
--main runtime.resource.ResourceTests
--lib utest
--swf9 ../../../bin/runtime/resource/resourceTestAs3.swf 

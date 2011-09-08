@@ -1,5 +1,0 @@
--cp ../../../src/framework/
--cp ../../src/
--main core.XmlUtilsTests
--lib utest
--swf9 ../../bin/core/XmlUtilsTestAs3.swf

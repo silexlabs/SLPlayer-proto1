@@ -1,7 +1,0 @@
-#build file
--cp ./
--main SilexFramework
--swf9 ../../bin/libs/silex/as3/SilexFramework.swf
-#-cmd svn export bin bin_export
---no-traces
-#-debug

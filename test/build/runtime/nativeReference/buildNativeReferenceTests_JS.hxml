@@ -1,5 +1,0 @@
--cp ../../../../src/framework/
--cp ../../../src/
--main runtime.nativeReference.NativeReferenceTests
--lib utest
--js ../../../bin/runtime/nativeReference/nativeReferenceTestJS.js
