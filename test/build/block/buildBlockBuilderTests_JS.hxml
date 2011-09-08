@@ -1,0 +1,5 @@
+-cp ../../../src/
+-cp ../../src/
+-main block.BlockBuilderTests
+-lib utest
+-js ../../bin/block/blockBuilderTestJS.js

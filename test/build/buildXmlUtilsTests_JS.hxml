@@ -1,0 +1,5 @@
+-cp ../../src/
+-cp ../src/
+-main XmlUtilsTests
+-lib utest
+-js ../bin/XmlUtilsTestJS.js

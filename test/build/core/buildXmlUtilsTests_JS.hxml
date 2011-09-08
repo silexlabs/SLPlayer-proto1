@@ -1,5 +1,0 @@
--cp ../../../src/framework/
--cp ../../src/
--main core.XmlUtilsTests
--lib utest
--js ../../bin/core/XmlUtilsTestJS.js

@@ -1,6 +1,0 @@
-#build file
--cp ./
--main SilexFramework
--js ../../bin/libs/silex/js/SilexFramework.js
---no-traces
-#-debug
