@@ -12,12 +12,12 @@ package runtime.nativeReference;
 
 
 import haxe.Log;
-import org.silex.runtime.nativeReference.NativeReference;
+import org.cocktail.nativeReference.NativeReference;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
-import org.silex.runtime.nativeReference.NativeReferenceManager;
-import org.silex.runtime.nativeReference.NativeReferenceData;
+import org.cocktail.nativeReference.NativeReferenceManager;
+import org.cocktail.nativeReference.NativeReferenceData;
 
 
 /**

@@ -21,19 +21,19 @@ package runtime.domObject;
  */
 
 import haxe.Log;
-import org.silex.runtime.domObject.ContainerDOMObject;
-import org.silex.runtime.domObject.TextDOMObject;
-import org.silex.runtime.geom.GeomData;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.domObject.base.DOMObjectBase;
+import org.cocktail.domObject.ContainerDOMObject;
+import org.cocktail.domObject.TextDOMObject;
+import org.cocktail.geom.GeomData;
+import org.cocktail.domObject.DOMObject;
+import org.cocktail.domObject.base.DOMObjectBase;
 
-import org.silex.runtime.domObject.GraphicDOMObject;
-import org.silex.runtime.domObject.DOMObjectData;
+import org.cocktail.domObject.GraphicDOMObject;
+import org.cocktail.domObject.DOMObjectData;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
 
-import org.silex.runtime.resource.ResourceLoaderManager;
+import org.cocktail.resource.ResourceLoaderManager;
 
 #if flash9
 import flash.display.Sprite;

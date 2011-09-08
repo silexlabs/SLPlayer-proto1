@@ -17,17 +17,17 @@ import flash.Lib;
 import flash.system.ApplicationDomain;
 
 #end
-import org.silex.runtime.domObject.TextDOMObject;
-import org.silex.runtime.nativeClass.NativeClass;
+import org.cocktail.domObject.TextDOMObject;
+import org.cocktail.nativeClass.NativeClass;
 import haxe.Log;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.domObject.base.DOMObjectBase;
+import org.cocktail.domObject.DOMObject;
+import org.cocktail.domObject.base.DOMObjectBase;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
 
 
-import org.silex.runtime.resource.ResourceLoaderManager;
+import org.cocktail.resource.ResourceLoaderManager;
 
 /**
  * Test the cross-platform resource loading

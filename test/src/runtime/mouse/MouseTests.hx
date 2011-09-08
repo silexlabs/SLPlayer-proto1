@@ -18,20 +18,20 @@ package runtime.mouse;
  */
 
 import haxe.Log;
-import org.silex.runtime.domObject.base.DOMObjectBase;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.domObject.ImageDOMObject;
-import org.silex.runtime.resource.ResourceLoaderManager;
+import org.cocktail.domObject.base.DOMObjectBase;
+import org.cocktail.domObject.DOMObject;
+import org.cocktail.domObject.ImageDOMObject;
+import org.cocktail.resource.ResourceLoaderManager;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
 import utest.ui.common.HeaderDisplayMode;
-import org.silex.runtime.domObject.DOMObjectData;
-import org.silex.runtime.domObject.GraphicDOMObject;
-import org.silex.runtime.mouse.Mouse;
-import org.silex.runtime.nativeReference.NativeReferenceManager;
-import org.silex.runtime.nativeReference.NativeReferenceData;
-import org.silex.runtime.mouse.MouseData;
+import org.cocktail.domObject.DOMObjectData;
+import org.cocktail.domObject.GraphicDOMObject;
+import org.cocktail.mouse.Mouse;
+import org.cocktail.nativeReference.NativeReferenceManager;
+import org.cocktail.nativeReference.NativeReferenceData;
+import org.cocktail.mouse.MouseData;
 
 class MouseTests 
 {

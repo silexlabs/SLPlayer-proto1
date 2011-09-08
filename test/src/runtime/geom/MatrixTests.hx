@@ -17,11 +17,11 @@ package runtime.geom;
  * @author Yannick DOMINGUEZ
  */
 import haxe.Log;
-import org.silex.runtime.domObject.base.DOMObjectBase;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.domObject.GraphicDOMObject;
-import org.silex.runtime.domObject.DOMObjectData;
-import org.silex.runtime.geom.GeomData;
+import org.cocktail.domObject.base.DOMObjectBase;
+import org.cocktail.domObject.DOMObject;
+import org.cocktail.domObject.GraphicDOMObject;
+import org.cocktail.domObject.DOMObjectData;
+import org.cocktail.geom.GeomData;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;

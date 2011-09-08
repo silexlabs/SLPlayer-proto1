@@ -12,7 +12,7 @@ package runtime.nativeClass;
 
 
 import haxe.Log;
-import org.silex.runtime.nativeClass.NativeClass;
+import org.cocktail.nativeClass.NativeClass;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
