@@ -12,16 +12,15 @@
 import haxe.FastList;
 import haxe.Log;
 import haxe.Timer;
-import org.cocktail.resource.ResourceLoaderManager;
-import org.cocktail.domObject.ImageDOMObject;
-import org.cocktail.domObject.GraphicDOMObject;
-import org.cocktail.domObject.DOMObjectData;
-import org.cocktail.domObject.TextDOMObject;
-import org.cocktail.domObject.DOMObject;
-import org.cocktail.keyboard.KeyboardData;
-import org.cocktail.nativeReference.NativeReferenceManager;
-
-import org.cocktail.geom.GeomData;
+import cocktail.resource.ResourceLoaderManager;
+import cocktail.domObject.ImageDOMObject;
+import cocktail.domObject.GraphicDOMObject;
+import cocktail.domObject.DOMObjectData;
+import cocktail.domObject.TextDOMObject;
+import cocktail.domObject.DOMObject;
+import cocktail.keyboard.KeyboardData;
+import cocktail.nativeReference.NativeReferenceManager;
+import cocktail.geom.GeomData;
 
 /*
  The Blob class (BLitter OBject) is a rectangle of pixels that can be

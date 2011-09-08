@@ -2,11 +2,13 @@ package ;
 
 import haxe.Log;
 import haxe.Timer;
-import org.silex.runtime.domObject.GraphicDOMObject;
-import org.silex.runtime.domObject.TextDOMObject;
-import org.silex.runtime.domObject.base.DOMObjectBase;
-import org.silex.runtime.domObject.DOMObjectData;
-import org.silex.runtime.domObject.DOMObject;
+import cocktail.domObject.GraphicDOMObject;
+import cocktail.domObject.TextDOMObject;
+import cocktail.domObject.base.DOMObjectBase;
+import cocktail.domObject.DOMObjectData;
+import cocktail.geom.GeomData;
+import cocktail.domObject.DOMObject;
+import cocktail.nativeReference.NativeReferenceManager;
 
 /**
  * Display an "analogue" and numeric clock updated each seconds
@@ -29,18 +31,14 @@ class Clock
 	 */
 	private var _clockDisplay:TextDOMObject;
 	
+	private static var rootDOMObject:DOMObject;
+	
 	/**
-	 * init the rrot dom object of the publication for each runtime
+	 * init the root dom object of the publication 
 	 */
 	public static function main()
 	{
-		#if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
+		rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 		
 		//ibnstantiate the clock class
 		var cl:Clock = new Clock();
@@ -62,9 +60,9 @@ class Clock
 		_clockDisplay.width = 300;
 		_clockDisplay.height = 300;
 		
-		DOMObjectBase.rootDOMObject.addChild(_clockBackground);
-		DOMObjectBase.rootDOMObject.addChild(_clockSeconds);
-		DOMObjectBase.rootDOMObject.addChild(_clockDisplay);
+		rootDOMObject.addChild(_clockBackground);
+		rootDOMObject.addChild(_clockSeconds);
+		rootDOMObject.addChild(_clockDisplay);
 		
 		
 		Timer.delay(updateTime, 1000);
