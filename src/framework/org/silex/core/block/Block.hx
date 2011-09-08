@@ -13,10 +13,10 @@ package org.silex.core.block;
 
 import haxe.Log;
 import org.silex.core.config.Config;
-import org.silex.runtime.domObject.DOMObject;
+import org.cocktail.domObject.DOMObject;
 import org.silex.core.block.BlockData;
-import org.silex.runtime.nativeClass.NativeClass;
-import org.silex.runtime.nativeClass.NativeInstanceBase;
+import org.cocktail.nativeClass.NativeClass;
+import org.cocktail.nativeClass.base.NativeInstanceBase;
 
 /**
  * A publication in Silex is constituted of blocks.

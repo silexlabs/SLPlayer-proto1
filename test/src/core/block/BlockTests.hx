@@ -15,7 +15,7 @@ package core.block;
 import haxe.Log;
 import org.silex.core.block.Block;
 import org.silex.core.block.BlockData;
-import org.silex.runtime.domObject.DOMObject;
+import org.cocktail.domObject.DOMObject;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;

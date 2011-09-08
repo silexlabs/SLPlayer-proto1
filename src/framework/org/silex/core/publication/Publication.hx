@@ -15,10 +15,10 @@ import haxe.Log;
 import org.silex.core.config.Config;
 import org.silex.core.block.Block;
 import org.silex.core.block.BlockData;
-import org.silex.runtime.nativeClass.NativeClass;
-import org.silex.runtime.nativeClass.NativeInstanceBase;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.domObject.ContainerDOMObject;
+import org.cocktail.nativeClass.NativeClass;
+import org.cocktail.nativeClass.NativeInstanceBase;
+import org.cocktail.domObject.DOMObject;
+import org.cocktail.domObject.ContainerDOMObject;
 
 /**
  * The Publication class is the entry point of a Silex application. 

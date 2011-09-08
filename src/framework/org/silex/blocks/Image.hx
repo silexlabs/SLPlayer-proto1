@@ -12,10 +12,10 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package org.silex.blocks;
 
 import haxe.Log;
-import org.silex.runtime.domObject.DOMObject;
+import org.cocktail.domObject.DOMObject;
 import haxe.Timer;
-import org.silex.runtime.resource.ResourceLoaderManager;
-import org.silex.runtime.domObject.ImageDOMObject;
+import org.cocktail.resource.ResourceLoaderManager;
+import org.cocktail.domObject.ImageDOMObject;
 
 /**
  * This class is instanciated by the BlockBuilder class, when the corresponding tag is found in the block's BlockData::className attribute
