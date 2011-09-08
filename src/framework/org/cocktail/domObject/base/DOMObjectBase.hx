@@ -30,14 +30,6 @@ import org.cocktail.nativeReference.NativeReference;
 class DOMObjectBase 
 {
 	
-	/**
-	 * root dom object of the publication
-	 * TO DO : remove it, it belongs to Publication and
-	 * must not be static as multiple publication may run 
-	 * at the same time. Only left for now to allow compilation
-	 */
-	public static var rootDOMObject:DOMObjectBase;
-	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Event callbacks, cross-platform callbacks for runtime specific events
 	//////////////////////////////////////////////////////////////////////////////////////////
