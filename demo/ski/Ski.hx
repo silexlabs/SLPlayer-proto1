@@ -12,16 +12,16 @@
 import haxe.FastList;
 import haxe.Log;
 import haxe.Timer;
-import org.silex.runtime.resource.ResourceLoaderManager;
-import org.silex.runtime.domObject.ImageDOMObject;
-import org.silex.runtime.domObject.GraphicDOMObject;
-import org.silex.runtime.domObject.DOMObjectData;
-import org.silex.runtime.domObject.TextDOMObject;
-import org.silex.runtime.domObject.base.DOMObjectBase;
-import org.silex.runtime.domObject.DOMObject;
-import org.silex.runtime.keyboard.KeyboardData;
+import org.cocktail.resource.ResourceLoaderManager;
+import org.cocktail.domObject.ImageDOMObject;
+import org.cocktail.domObject.GraphicDOMObject;
+import org.cocktail.domObject.DOMObjectData;
+import org.cocktail.domObject.TextDOMObject;
+import org.cocktail.domObject.DOMObject;
+import org.cocktail.keyboard.KeyboardData;
+import org.cocktail.nativeReference.NativeReferenceManager;
 
-import org.silex.runtime.geom.GeomData;
+import org.cocktail.geom.GeomData;
 
 /*
  The Blob class (BLitter OBject) is a rectangle of pixels that can be
@@ -155,7 +155,7 @@ class Ski
 	  
 	  //it is attached to the root dom object, the higher object
 	  //in the DOM tree
-      DOMObjectBase.rootDOMObject.addChild(mArena);
+      rootDOMObject.addChild(mArena);
 
       // Create Blobs as subrects of the input images.
       // The rectanges were calculated when the image was created.  If there were
@@ -204,13 +204,13 @@ class Ski
       mScoreText.x = 10;
       mScoreText.y = 10;
 
-      DOMObjectBase.rootDOMObject.addChild(mScoreText);
+      rootDOMObject.addChild(mScoreText);
 
       mTopScoreText = new TextDOMObject();
       mTopScoreText.x = 100;
       mTopScoreText.y = 10;
 	  
-      DOMObjectBase.rootDOMObject.addChild(mTopScoreText);
+      rootDOMObject.addChild(mTopScoreText);
 
       // Just something small to aspire too...
       mTopScore = 0;
@@ -412,20 +412,16 @@ class Ski
       Render(fractional_step);
 
    }
-
+   
+   private static var rootDOMObject:DOMObject;
+   
    // Haxe will always look for a static function called "main".
    static public function main()
    {
 		
 	  //create the root DOM Object of the game
-	  
-	  #if flash9
-		DOMObjectBase.rootDOMObject = new DOMObject(flash.Lib.current);
-		#elseif js
-		var rootDiv:Dynamic = js.Lib.document.createElement("div");
-		js.Lib.document.body.appendChild(rootDiv);
-		DOMObjectBase.rootDOMObject = new DOMObject(rootDiv);
-		#end
+	  //the getRoot method returns the root of the current runtime (Stage for flash, body for js)
+	  rootDOMObject = new DOMObject(NativeReferenceManager.getRoot());
 	  
 		
 	//instantiate the game	
