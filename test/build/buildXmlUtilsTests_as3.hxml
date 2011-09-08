@@ -1,0 +1,5 @@
+-cp ../../src/
+-cp ../src/
+-main XmlUtilsTests
+-lib utest
+-swf9 ../bin/XmlUtilsTestAs3.swf
