@@ -1,5 +1,0 @@
--cp ../../../../src/framework/
--cp ../../../src/
--main runtime.keyboard.KeyboardTests
--js ../../../bin/runtime/keyboard/keyboardTestJS.js
--lib utest
