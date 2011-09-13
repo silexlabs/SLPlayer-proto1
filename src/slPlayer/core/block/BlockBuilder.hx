@@ -13,7 +13,8 @@ package slPlayer.core.block;
 
 import haxe.Log;
 import cocktail.domElement.DOMElement;
-import cocktail.nativeClass.NativeClass;
+import cocktail.classInstance.ClassInstance;
+import cocktail.nativeInstance.NativeInstanceManager;
 import cocktail.resource.ResourceLoaderManager;
 import slPlayer.core.XmlUtils;
 
@@ -22,10 +23,10 @@ import slPlayer.core.XmlUtils;
  * a block. It is in charge of : 
  * - loading the data of a block from an external file
  * - deserialising this data to set the block's data and instantiate/init
- *   it's children
+ *   its children
  * - load a block's DOMElement
  * - instantiate a block's native class instance
- * - push the block's properties into it's class instance
+ * - push the block's properties into its class instance
  *   or DOMElement
  * 
  * @author Yannick DOMINGUEZ
@@ -75,7 +76,7 @@ class BlockBuilder
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * The block's BlockData structure is created right after it's serialised data has been loaded
+	 * The block's BlockData structure is created right after its serialised data has been loaded
 	 * (as an XML, JSON...). The default serialised format is XML. While building the BlockData, all of
 	 * the children of the block are created recursively and initialised with the data available in the
 	 * parent's loaded data. The children are all initialised with at least enough data to load/instantiate
@@ -114,7 +115,7 @@ class BlockBuilder
 		{
 			for (child in children.elements())
 			{
-				//instantiate the block and set it's class attributes
+				//instantiate the block and set its class attributes
 				//retrieved from the XML
 				var block:Block = new Block(child.get("fileUrl"));
 				block.setIsAutoOpen(child.get('isAutoOpen') == 'true');
@@ -274,7 +275,7 @@ class BlockBuilder
 	
 	/**
 	 * when the block's data has been loaded, deserialise it and
-	 * set it on the block, thus setting it's data and creating it's
+	 * set it on the block, thus setting its data and creating its
 	 * children, then call the success callback
 	 * @param	data the block's data string, might be XML, JSON...
 	 */
@@ -339,14 +340,12 @@ class BlockBuilder
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Instantiate the native class for this block with the block's class name, coming
+	 * Instantiate the class instance for this block with the block's class name, coming
 	 * from the BlockData structure,
 	 */
-	public function createNativeClassInstance():Void
+	public function createClassInstance():Void
 	{
-		Log.trace("native inst");
-		_block.setNativeClassInstance(NativeClass.getNativeInstanceByClassName(_block.getBlockData().className));
-		
+		_block.classInstance = NativeInstanceManager.getClassInstanceByClassName(_block.blockData.className);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -360,20 +359,20 @@ class BlockBuilder
 	public function setBlockAttributes():Void
 	{
 		//set the properties on the controller class
-		if (_block.getNativeClassInstance() != null)
+		if (_block.classInstance != null)
 		{
-			for (propertyName in _block.getBlockData().properties.keys())
+			for (propertyName in _block.blockData.properties.keys())
 			{
-				_block.getNativeClassInstance().setField(propertyName, _block.getBlockData().properties.get(propertyName));
+				_block.classInstance.setField(propertyName, _block.blockData.properties.get(propertyName));
 			}
 		}
 		
 		//if it doesn't exist, set it on the domElement (skin)
-		else if (_block.getDOMElement() != null)
+		else if (_block.domElement != null)
 		{
-			for (propertyName in _block.getBlockData().properties.keys())
+			for (propertyName in _block.blockData.properties.keys())
 			{
-				_block.getDOMElement().setAttribute(propertyName, _block.getBlockData().properties.get(propertyName));
+				_block.domElement.setAttribute(propertyName, _block.blockData.properties.get(propertyName));
 			}
 		}
 	}
