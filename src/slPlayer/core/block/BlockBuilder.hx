@@ -12,21 +12,23 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package slPlayer.core.block;
 
 import haxe.Log;
-import cocktail.domObject.DOMObject;
-import cocktail.nativeClass.NativeClass;
+import cocktail.domElement.DOMElement;
+import cocktail.classInstance.ClassInstance;
+import cocktail.nativeInstance.NativeInstanceManager;
 import cocktail.resource.ResourceLoaderManager;
 import slPlayer.core.XmlUtils;
+import slPlayer.core.style.StyleManager;
 
 /**
  * This class exposes method used to build/init
  * a block. It is in charge of : 
  * - loading the data of a block from an external file
  * - deserialising this data to set the block's data and instantiate/init
- *   it's children
- * - load a block's DOMObject
+ *   its children
+ * - load a block's DOMElement
  * - instantiate a block's native class instance
- * - push the block's properties into it's class instance
- *   or DOMObject
+ * - push the block's properties into its class instance
+ *   or DOMElement
  * 
  * @author Yannick DOMINGUEZ
  * @author Raphael HARMEL
@@ -51,15 +53,15 @@ class BlockBuilder
 	private var _loadBlockDataError:String->Void;
 
 	/**
-	 * Called when the DOMObject was successfully loaded
+	 * Called when the DOMElement was successfully loaded
 	 */
-	private var _loadDOMObjectSuccess:BlockBuilder->Void;
+	private var _loadDOMElementSuccess:BlockBuilder->Void;
 	
 	/**
 	 * Called when there was an error while loading
-	 * the DOMObject
+	 * the DOMElement
 	 */
-	private var _loadDOMObjectError:String->Void;
+	private var _loadDOMElementError:String->Void;
 	
 	/**
 	 * class constructor. Store the block that will
@@ -75,11 +77,11 @@ class BlockBuilder
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * The block's BlockData structure is created right after it's serialised data has been loaded
+	 * The block's BlockData structure is created right after its serialised data has been loaded
 	 * (as an XML, JSON...). The default serialised format is XML. While building the BlockData, all of
 	 * the children of the block are created recursively and initialised with the data available in the
 	 * parent's loaded data. The children are all initialised with at least enough data to load/instantiate
-	 * their own data (separate data file if they have, domObject (skin) if they have one, controller class name)
+	 * their own data (separate data file if they have, domElement (skin) if they have one, controller class name)
 	 */
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +116,7 @@ class BlockBuilder
 		{
 			for (child in children.elements())
 			{
-				//instantiate the block and set it's class attributes
+				//instantiate the block and set its class attributes
 				//retrieved from the XML
 				var block:Block = new Block(child.get("fileUrl"));
 				block.setIsAutoOpen(child.get('isAutoOpen') == 'true');
@@ -144,6 +146,7 @@ class BlockBuilder
 			phpSkinURL : null,
 			properties : new Hash<Dynamic>(),
 			metaData : new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		var blockXml:Xml = xml;
@@ -233,7 +236,14 @@ class BlockBuilder
 				case 'metaData':
 				for (metaData in childXml.elements())
 				{
-					blockData.metaData.set(metaData.nodeName, Std.parseInt(metaData.firstChild().toString()));
+					blockData.metaData.set(metaData.nodeName, metaData.firstChild().toString());
+				}
+				
+				// get styles
+				case 'styles':
+				for (style in childXml.elements())
+				{
+					blockData.styles.set(style.nodeName, style.firstChild().toString());
 				}
 			}
 		}
@@ -250,7 +260,7 @@ class BlockBuilder
 	 * for instance if the current block's data string was loaded with the parent's block
 	 * data string (they share the same XML, JSON... file), then the first step : "loading
 	 * the block data" is skipped. A step can also be skipped if unneccessary. for instance
-	 * the step 2, loading the DOMObject (skin), is skipped for a block with no skin.
+	 * the step 2, loading the DOMElement (skin), is skipped for a block with no skin.
 	 * When all steps have been successfuly accomplished, the block is ready to be opened.
 	 */
 	 
@@ -274,7 +284,7 @@ class BlockBuilder
 	
 	/**
 	 * when the block's data has been loaded, deserialise it and
-	 * set it on the block, thus setting it's data and creating it's
+	 * set it on the block, thus setting its data and creating its
 	 * children, then call the success callback
 	 * @param	data the block's data string, might be XML, JSON...
 	 */
@@ -295,33 +305,33 @@ class BlockBuilder
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// step 2 - loading the DOMObject
+	// step 2 - loading the DOMElement
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Starts the loading of the block's DOMObject (skin) with the provided skinUrl containing the 
+	 * Starts the loading of the block's DOMElement (skin) with the provided skinUrl containing the 
 	 * URL of the file to load
 	 * @param skinUrl the url of the skin to load (might be a .swf, .jpg, .html... depending on the runtime)
 	 * @param successCallback
 	 * @param errorCallback
 	 */
-	public function loadDOMObject(skinUrl:String, successCallback:BlockBuilder->Void, errorCallback:String->Void):Void
+	public function loadDOMElement(skinUrl:String, successCallback:BlockBuilder->Void, errorCallback:String->Void):Void
 	{
-		_loadDOMObjectSuccess = successCallback;
-		_loadDOMObjectError = errorCallback;
+		_loadDOMElementSuccess = successCallback;
+		_loadDOMElementError = errorCallback;
 		
-		ResourceLoaderManager.loadContainer(skinUrl, onDOMObjectLoaded, onDOMObjectLoadError);
+		ResourceLoaderManager.loadContainer(skinUrl, onDOMElementLoaded, onDOMElementLoadError);
 	}
 	
 	/**
-	 * When the domObject has been loaded, set it on the block
+	 * When the domElement has been loaded, set it on the block
 	 * then call the success callback
-	 * @param	domObject the loaded DOMObject
+	 * @param	domElement the loaded DOMElement
 	 */
-	private function onDOMObjectLoaded(domObject:DOMObject):Void
+	private function onDOMElementLoaded(domElement:DOMElement):Void
 	{
-		_block.setDOMObject(domObject);
-		_loadDOMObjectSuccess(this);
+		_block.setDOMElement(domElement);
+		_loadDOMElementSuccess(this);
 	}
 	
 	/**
@@ -329,9 +339,9 @@ class BlockBuilder
 	 * with the error message
 	 * @param	errorMessage the returned error message
 	 */
-	private function onDOMObjectLoadError(errorMessage:String):Void
+	private function onDOMElementLoadError(errorMessage:String):Void
 	{
-		_loadDOMObjectError(errorMessage);
+		_loadDOMElementError(errorMessage);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -339,12 +349,21 @@ class BlockBuilder
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Instantiate the native class for this block with the block's class name, coming
+	 * Instantiate the class instance for this block with the block's class name, coming
 	 * from the BlockData structure,
 	 */
-	public function createNativeClassInstance():Void
+	public function createClassInstance():Void
 	{
-		_block.setNativeClassInstance(NativeClass.getNativeInstanceByClassName(_block.getBlockData().className));
+		_block.classInstance = NativeInstanceManager.getClassInstanceByClassName(_block.blockData.className);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public function createStyleManager():Void
+	{
+		_block.styleManager = new StyleManager();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -358,21 +377,33 @@ class BlockBuilder
 	public function setBlockAttributes():Void
 	{
 		//set the properties on the controller class
-		if (_block.getNativeClassInstance() != null)
+		if (_block.classInstance != null)
 		{
-			for (propertyName in _block.getBlockData().properties.keys())
+			for (propertyName in _block.blockData.properties.keys())
 			{
-				_block.getNativeClassInstance().setField(propertyName, _block.getBlockData().properties.get(propertyName));
+				_block.classInstance.setField(propertyName, _block.blockData.properties.get(propertyName));
 			}
 		}
 		
-		//if it doesn't exist, set it on the domObject (skin)
-		else if (_block.getDOMObject() != null)
+		//if it doesn't exist, set it on the domElement (skin)
+		else if (_block.domElement != null)
 		{
-			for (propertyName in _block.getBlockData().properties.keys())
+			for (propertyName in _block.blockData.properties.keys())
 			{
-				_block.getDOMObject().setAttribute(propertyName, _block.getBlockData().properties.get(propertyName));
+				_block.domElement.setAttribute(propertyName, _block.blockData.properties.get(propertyName));
 			}
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public function setBlockStyles():Void
+	{
+		for (styleName in _block.blockData.styles.keys())
+		{
+			Reflect.setField(_block.styleManager, styleName, _block.blockData.styles.get(styleName));
 		}
 	}
 }

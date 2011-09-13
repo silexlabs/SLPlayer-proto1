@@ -52,9 +52,14 @@ typedef BlockData =
 	
 	/**
 	 * The meta data of the block, which are available for the controller class and for the skin,
-	 * through a call to Block.getBlock(this);
+	 * retrieved through the Block;
 	 */
 	var metaData:Hash<Dynamic>;
+	
+	/**
+	 * The styles of the block's skin, which are available for the style manager.
+	 */
+	var styles:Hash<Dynamic>;
 }
 
 /**

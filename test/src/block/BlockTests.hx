@@ -15,7 +15,7 @@ package block;
 import haxe.Log;
 import slPlayer.core.block.Block;
 import slPlayer.core.block.BlockData;
-import cocktail.domObject.DOMObject;
+import cocktail.domElement.DOMElement;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
@@ -73,10 +73,10 @@ class BlockTests
 		var refToDOM:Dynamic = js.Lib.document.body;	
 		#end
 		
-		//create parent block and set it's domObject
+		//create parent block and set it's domElement
 		var parentBlock:Block = new Block("");
-		var parentBlockDOMObject:DOMObject = new DOMObject(refToDOM);
-		parentBlock.setDOMObject(parentBlockDOMObject);
+		var parentBlockDOMElement:DOMElement = new DOMElement(refToDOM);
+		parentBlock.setDOMElement(parentBlockDOMElement);
 		
 		#if flash9
 		var childRefToDOM:Dynamic = new flash.display.Sprite();		
@@ -84,25 +84,25 @@ class BlockTests
 		var childRefToDOM:Dynamic = js.Lib.document.createElement("div");	
 		#end
 		
-		//create child block and set it's domObject
+		//create child block and set it's domElement
 		var childBlock:Block = new Block("");
-		var childBlockDOMObject:DOMObject = new DOMObject(childRefToDOM);
-		childBlock.setDOMObject(childBlockDOMObject);
+		var childBlockDOMElement:DOMElement = new DOMElement(childRefToDOM);
+		childBlock.setDOMElement(childBlockDOMElement);
 		
 		//add child to parent's display list
-		parentBlock.addToDisplayList(childBlock.getDOMObject());
+		parentBlock.addToDisplayList(childBlock.getDOMElement());
 		
 		//test it has indeed been added
-		Assert.equals(parentBlock.getDOMObject().getChildren()[0], childBlock.getDOMObject());
+		Assert.equals(parentBlock.getDOMElement().getChildren()[0], childBlock.getDOMElement());
 		
 		//remove it
-		parentBlock.removeFromDisplayList(childBlock.getDOMObject());
+		parentBlock.removeFromDisplayList(childBlock.getDOMElement());
 		
 		//test it was removed
-		Assert.equals(parentBlock.getDOMObject().getChildren().length, 0);
+		Assert.equals(parentBlock.getDOMElement().getChildren().length, 0);
 		
-		//test the case where a DOMObject is added to the display list
-		//of a non visual block. The DOMObject is supposed to be attached to
+		//test the case where a DOMElement is added to the display list
+		//of a non visual block. The DOMElement is supposed to be attached to
 		//the non visual block's parent display list
 		
 		//create the non-visual block and add it as a child of
@@ -110,17 +110,17 @@ class BlockTests
 		var nonVisualBlock:Block = new Block("");
 		parentBlock.addChild(nonVisualBlock);
 		
-		//add a DOMObject to the non-visual block
-		nonVisualBlock.addToDisplayList(childBlock.getDOMObject());
+		//add a DOMElement to the non-visual block
+		nonVisualBlock.addToDisplayList(childBlock.getDOMElement());
 		
 		//check that it was added to the parent's display list
-		Assert.equals(parentBlock.getDOMObject().getChildren()[0], childBlock.getDOMObject());
+		Assert.equals(parentBlock.getDOMElement().getChildren()[0], childBlock.getDOMElement());
 		
-		//removes the DOMObject from the non-visual block
-		nonVisualBlock.removeFromDisplayList(childBlock.getDOMObject());
+		//removes the DOMElement from the non-visual block
+		nonVisualBlock.removeFromDisplayList(childBlock.getDOMElement());
 		
 		//check that it was removed from the parent's display list
-		Assert.equals(parentBlock.getDOMObject().getChildren().length, 0);
+		Assert.equals(parentBlock.getDOMElement().getChildren().length, 0);
 	}
 	
 	/////////////////////////////////////////////////////////////////////
@@ -138,13 +138,14 @@ class BlockTests
 		//set up it's block data so that it doesn't need
 		//to load anymore data
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -198,13 +199,14 @@ class BlockTests
 		properties.set("testArrayProperty", [1,"value"]);
 		
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:properties,
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -223,16 +225,16 @@ class BlockTests
 	public function onBlockOpenSuccess2(openedBlock:Block):Void
 	{
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testStringProperty"), "testStringValue");
+		Assert.equals(openedBlock.classInstance.getField("testStringProperty"), "testStringValue");
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testBoolProperty"), true);
+		Assert.equals(openedBlock.classInstance.getField("testBoolProperty"), true);
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testIntProperty"), 1);
+		Assert.equals(openedBlock.classInstance.getField("testIntProperty"), 1);
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testFloatProperty"), 1.2);
+		Assert.equals(openedBlock.classInstance.getField("testFloatProperty"), 1.2);
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testArrayProperty")[0], 1);
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testArrayProperty")[1], "value");
+		Assert.equals(openedBlock.classInstance.getField("testArrayProperty")[0], 1);
+		Assert.equals(openedBlock.classInstance.getField("testArrayProperty")[1], "value");
 		
 	}
 	
@@ -252,13 +254,14 @@ class BlockTests
 		
 		
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -269,18 +272,19 @@ class BlockTests
 		var refToDOM:Dynamic = js.Lib.document.body;	
 		#end
 		
-		var parentDOMObject:DOMObject = new DOMObject(refToDOM);
+		var parentDOMElement:DOMElement = new DOMElement(refToDOM);
 		
 		var childBlock:Block = new Block("");
 		
 		var childBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		childBlock.setBlockData(childBlockData);

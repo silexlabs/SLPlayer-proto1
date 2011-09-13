@@ -12,7 +12,7 @@ package cocktail.mouse.js;
 
 import haxe.Log;
 import js.Lib;
-import cocktail.domObject.ImageDOMObject;
+import cocktail.domElement.ImageDOMElement;
 import cocktail.mouse.base.MouseCursorBase;
 import cocktail.geom.GeomData;
 import cocktail.mouse.MouseData;
@@ -37,6 +37,11 @@ class MouseCursor extends MouseCursorBase
 	private static inline var MOUSE_CURSOR_STYLE_POINTER:String = "pointer";
 	
 	/**
+	 * CSS style for i-beam
+	 */
+	private static inline var MOUSE_CURSOR_STYLE_TEXT:String = "text";
+	
+	/**
 	 * CSS style for auto cursor (browser managed)
 	 */
 	private static inline var MOUSE_CURSOR_STYLE_AUTO:String = "auto";
@@ -56,9 +61,9 @@ class MouseCursor extends MouseCursorBase
 	/**
 	 * Set a bitmap as mouse cursor using CSS styling via JavaScript
 	 */
-	override private function setBitmapCursor(imageDOMObject:ImageDOMObject, hotSpot:Point):Void
+	override private function setBitmapCursor(imageDOMElement:ImageDOMElement, hotSpot:Point):Void
 	{
-		var cursorURL:String = untyped imageDOMObject.nativeReference.src;
+		var cursorURL:String = untyped imageDOMElement.nativeElement.src;
 		
 		//init the hotSpot if null
 		//to the top left of the cursor
@@ -93,8 +98,11 @@ class MouseCursor extends MouseCursorBase
 	{
 		switch (value)
 		{
-			case hand: 
+			case pointer: 
 				setCursorStyle(MOUSE_CURSOR_STYLE_POINTER);
+				
+			case text:
+				setCursorStyle(MOUSE_CURSOR_STYLE_TEXT);
 		}
 	}
 	
