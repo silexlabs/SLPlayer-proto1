@@ -138,13 +138,14 @@ class BlockTests
 		//set up it's block data so that it doesn't need
 		//to load anymore data
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -198,13 +199,14 @@ class BlockTests
 		properties.set("testArrayProperty", [1,"value"]);
 		
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:properties,
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -223,16 +225,16 @@ class BlockTests
 	public function onBlockOpenSuccess2(openedBlock:Block):Void
 	{
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testStringProperty"), "testStringValue");
+		Assert.equals(openedBlock.classInstance.getField("testStringProperty"), "testStringValue");
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testBoolProperty"), true);
+		Assert.equals(openedBlock.classInstance.getField("testBoolProperty"), true);
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testIntProperty"), 1);
+		Assert.equals(openedBlock.classInstance.getField("testIntProperty"), 1);
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testFloatProperty"), 1.2);
+		Assert.equals(openedBlock.classInstance.getField("testFloatProperty"), 1.2);
 		
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testArrayProperty")[0], 1);
-		Assert.equals(openedBlock.getNativeClassInstance().getField("testArrayProperty")[1], "value");
+		Assert.equals(openedBlock.classInstance.getField("testArrayProperty")[0], 1);
+		Assert.equals(openedBlock.classInstance.getField("testArrayProperty")[1], "value");
 		
 	}
 	
@@ -252,13 +254,14 @@ class BlockTests
 		
 		
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -274,13 +277,14 @@ class BlockTests
 		var childBlock:Block = new Block("");
 		
 		var childBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:new Hash<Dynamic>(),
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		childBlock.setBlockData(childBlockData);

@@ -145,6 +145,7 @@ class BlockBuilder
 			phpSkinURL : null,
 			properties : new Hash<Dynamic>(),
 			metaData : new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		var blockXml:Xml = xml;
@@ -234,7 +235,14 @@ class BlockBuilder
 				case 'metaData':
 				for (metaData in childXml.elements())
 				{
-					blockData.metaData.set(metaData.nodeName, Std.parseInt(metaData.firstChild().toString()));
+					blockData.metaData.set(metaData.nodeName, metaData.firstChild().toString());
+				}
+				
+				// get styles
+				case 'styles':
+				for (style in childXml.elements())
+				{
+					blockData.styles.set(style.nodeName, style.firstChild().toString());
 				}
 			}
 		}

@@ -174,7 +174,8 @@ class Block
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:null,
-			metaData:null
+			metaData:null,
+			styles:null
 		};
 		
 		_children = new Array<Block>();

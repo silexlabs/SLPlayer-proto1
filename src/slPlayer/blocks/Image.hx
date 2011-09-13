@@ -16,6 +16,8 @@ import cocktail.domElement.DOMElement;
 import haxe.Timer;
 import cocktail.resource.ResourceLoaderManager;
 import cocktail.domElement.ImageDOMElement;
+import slPlayer.core.block.Block;
+import slPlayer.core.publication.Publication;
 
 /**
  * This class is instanciated by the BlockBuilder class, when the corresponding tag is found in the block's BlockData::className attribute
@@ -37,31 +39,25 @@ class Image
 	 */
 	public function initDone():Void
 	{
-		Log.trace("initDone - YES "+url+" - "+x);
 		if (url != "" && url != null)
 		{
-			Log.trace("initDone - start loading asset");
 			ResourceLoaderManager.loadImage(url, _imageLoadedSuccess, _imageLoadedError);
 		}
 	}
-	/**
-	 * desired position for the DOMElement
-	 */
-	public var x:Float;
+	
 	/**
 	 * URL for the image
 	 */
 	public var url:String;
-	/**
-	 * DOMElement instance which contains the loaded asset
-	 */
-	private var _domElement:DOMElement;
+	
 	/**
 	 * callback for the image loading
 	 */ 
 	private function _imageLoadedSuccess(imageDOMElement:ImageDOMElement):Void
 	{
-		Log.trace("_imageLoadedSuccess "+imageDOMElement);
+		var publication:Publication = Publication.getPublicationByNativeInstance(this);
+		var block:Block = publication.getBlockByNativeInstance(this);
+		block.addToDisplayList(imageDOMElement);
 	}
 	/**
 	 * callback for the image loading
