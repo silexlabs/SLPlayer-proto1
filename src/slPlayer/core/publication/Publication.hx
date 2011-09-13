@@ -12,17 +12,21 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package slPlayer.core.publication;
 
 import cocktail.domElement.DOMElement;
-import cocktail.nativeClass.NativeInstance;
-import cocktail.nativeReference.NativeReference;
+import cocktail.classInstance.ClassInstance;
+import cocktail.nativeElement.NativeElement;
+import cocktail.nativeElement.NativeElementManager;
+import cocktail.nativeElement.NativeElementData;
+import cocktail.nativeInstance.NativeInstance;
 import haxe.Log;
 import slPlayer.core.block.Block;
 import slPlayer.core.config.Config;
 import cocktail.domElement.ContainerDOMElement;
+import slPlayer.core.block.BlockBuilder;
 
 /**
- * The Publication class is the entry point of a Silex application. 
+ * The Publication class is the entry point of an SLPlayer. 
  * The boot loader, in AS, js or php will load the library and then 
- * start the publication loading process by calling the Publication::start method. 
+ * start the publication loading process by calling the Publication::render method. 
  * This is the placeholder for the root Block object and the Config object
  * 
  * @author lexa
@@ -33,13 +37,12 @@ class Publication
 	/**
 	 * array of the publications created in this runtime
 	 */
-	private static var _instancesArray:Array<Publication>;
-	/**
-	 * A reference to the DOMElement at the top of 
-	 * the DOM
-	 */
-	public var rootDOMElement:DOMElement;
+	private static var _publications:Array<Publication>;
 	
+	/**
+	 * A reference to the root block, on top of the
+	 * publication hierarchy
+	 */
 	public var rootBlock:Block;
 
 	/**
@@ -51,6 +54,7 @@ class Publication
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// class methods
 	/////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * creates the publication with the given config/settings
 	 * do not create a publication with new
@@ -64,33 +68,177 @@ class Publication
 		// store the configuration
 		publication.config = config;
 		
-		// init the instance array
-		if (_instancesArray == null) _instancesArray = new Array();
+		// init the publications array
+		if (_publications == null) _publications = new Array();
 
 		// store the instance
-		_instancesArray.push(publication);
+		_publications.push(publication);
 		
 		// return the new publication
 		return publication;
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Publication retrival methods.
+	// Used to retrieve a publication with a publication element
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
-	 * retrieve the publicaiton which contains a given native dom object or native class
+	 * Retrieve a publication using a ClassInstance belonging to the publication
 	 */
-	public static function getPublication(blockOrNativeElementOrDOMElementOrNativeInstance:Dynamic):Publication
+	public static function getPublicationByClassInstance(classInstance:ClassInstance):Publication
 	{
-		var publicationIdx:Int = _instancesArray.length;
-			for (i in 0...publicationIdx)
-			{
-				var block:Block = doGetBlock(_instancesArray[publicationIdx].rootBlock, blockOrNativeElementOrDOMElementOrNativeInstance);
-				if (block != null)
-				{
-					return _instancesArray[publicationIdx] ;
-				}
-			}
+		//call the method atually retrieving the publiation with the method checking
+		//for each block if it owns the provided classInstance
+		return doGetPublication(classInstance, isClassInstanceOfBlock);
+	}
+	
+	/**
+	 * Retrieve a publication using a Block belonging to the publication
+	 */
+	public static function getPublicationByBlock(block:Block):Publication
+	{
+		return doGetPublication(block, isSameBlock);
+	}
+	
+	/**
+	 * Retrieve a publication using a NativeInstance belonging to the publication
+	 */
+	public static function getPublicationByNativeInstance(nativeInstance:NativeInstance):Publication
+	{
+		return doGetPublication(nativeInstance, isNativeInstanceOfBlock);
+	}
+	
+	/**
+	 * Retrieve a publication using a DOMElement belonging to the publication
+	 */
+	public static function getPublicationByDOMElement(domElement:DOMElement):Publication
+	{
+		return doGetPublication(domElement, isDOMElementOfBlock);
+	}
+	
+	/**
+	 * Retrieve a publication using a NativeElement belonging to the publication
+	 */
+	public static function getPublicationByNativeElement(nativeElement:NativeElement):Publication
+	{
+		return doGetPublication(nativeElement, isNativeElementOfBlock);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Private retrival methods.
+	// Retrieve a publication or block using the given element
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Takes an element (block, nativeInstance...) and a isOwnerMethod used to check if the given element
+	 * belongs to a block. For each publication, check if the given element belongs to one of its block
+	 * and if it does, then return the publication
+	 * @param	element might be a NativeInstance, a ClassInstance, a Block, a DOMElement or a NativeElement 
+	 * @param	isOwnerMethod takes a block and an element as argument and returns wether the element belong to
+	 * the block or is the same block if the given element is a block
+	 * @return the publication which contains the provided element
+	 */
+	private static function doGetPublication(element:Dynamic, isOwnerMethod:Block -> Dynamic -> Bool):Publication
+	{
+		//for each publiation
+		for (i in 0..._publications.length)
+		{
+			//check if a block of this publication owns the given element
+			//starts looking in all of the publication's block by providing the root block
+			var block:Block = doGetBlock(_publications[i].rootBlock, element, isOwnerMethod);
 			
+			//if it does (meaning a block is returned)
+			//then return the current publication
+			if (block != null)
+			{
+				return _publications[i];
+			}
+		}
+		
+		//at this point, the given element
+		//does not belong to any publication
 		return null;	
 	}
 	
+	/**
+	 * Returns the block containing the provided element. Parse all of the provided block
+	 * children recursively until it finds a matching block. Check if the contains the provided
+	 * argument with the provided isOwnerMethod
+	 * @param	block check if the element beloongs to this block and if not, call this method with
+	 * this block children until a match is found
+	 * @param	element might be a NativeInstance, a ClassInstance, a Block, a DOMElement or a NativeElement 
+	 * @param	isOwnerMethod takes a block and an element as argument and returns wether the element belong to
+	 * the block or is the same block if the given element is a block
+	 * @return the block owning the provided element
+	 */
+	private static function doGetBlock(block:Block, element:Dynamic, isOwnerMethod:Block -> Dynamic -> Bool):Block
+	{
+		//first check if the provided block contains
+		//the element
+		if (isOwnerMethod(block, element) == true)
+		{
+			return block;
+		}
+		//if it doesn't check its children by calling this 
+		//method recursively until a match is found
+		else
+		{
+			for (i in 0...block.children.length)
+			{
+				return doGetBlock(block.children[i], element, isOwnerMethod);
+			}
+		}
+		
+		//at this point no children from the first provided
+		//block contains the element
+		return null;
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Private isOwner methods
+	// For each type of element, returns wether a block owns it
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * check if the tested block is the same as the given block
+	 */
+	private static function isSameBlock(block:Block, testedBlock:Block):Bool
+	{
+		return block == testedBlock;
+	}
+	
+	/**
+	 * check if the class instance belongs to the given block
+	 */
+	private static function isClassInstanceOfBlock(block:Block, classInstance:ClassInstance):Bool
+	{
+		return block.classInstance == classInstance;
+	}
+	
+	/**
+	 * check if the DOMElement belongs to the given block
+	 */
+	private static function isDOMElementOfBlock(block:Block, domElement:DOMElement):Bool
+	{
+		return block.domElement == domElement;
+	}
+	
+	/**
+	 * check if the NativeInstance belongs to the given block
+	 */
+	private static function isNativeInstanceOfBlock(block:Block, nativeInstance:NativeInstance):Bool
+	{
+		return block.classInstance.nativeInstance == nativeInstance;
+	}
+	
+	/**
+	 * check if the NativeElement belongs to the given block
+	 */
+	private static function isNativeElementOfBlock(block:Block, nativeElement:NativeElement):Bool
+	{
+		return block.domElement.nativeElement == nativeElement;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// instance methods
@@ -102,96 +250,81 @@ class Publication
 	private function new(){}
 	
 	/**
-	 * reder the publication, create and open the first block
+	 * render the publication, create and open the first block
 	 * 
 	 * @param	A reference to the native DOM object. Varies for each
 	 * runtime : in JS it is an HTML element, in Flash a Sprite,
 	 * in PHP a resource
 	 */
-	public function render(nativeDOM:Dynamic, xmlFileName:String = null, xmlString:String = null)
+	public function render(nativeElement:NativeElement = null, xmlFileName:String = null, xmlString:String = null)
 	{
+		if (nativeElement == null)
+		{
+			nativeElement = NativeElementManager.getRoot();
+		}
+		
 		// create the root DOMElement and attach it to the js dom
-		var domElement = new ContainerDOMElement();
+		var domElement = new ContainerDOMElement(nativeElement);
 	
 		// create the root Block, which data are in test.xml
-		var block = new slPlayer.core.block.Block(xmlFileName);
+		var block = new Block(xmlFileName);
 		
-		rootBlock = block;
+		this.rootBlock = block;
 		
-		block.setDOMElement(domElement);
+		block.domElement = domElement;
 		
 		// initialize the block with its data
 		if (xmlString != null)
 		{
 			// buid the block with the XML data
-			//BlockBuilder.deserializeBlockData(block, xmlString);
-			//onLoadBlockDataSuccess();
+			BlockBuilder.deserializeBlockData(block, xmlString);
+			block.open(function(block) { }, function(error) { } );
 		}
 		else
 		{
 			// start loading the first block
-			//var blockBuilder = new slPlayer.core.block.BlockBuilder(block);
-			//blockBuilder.loadBlockData(onLoadBlockDataSuccess, onLoadBlockDataError);
+			block.open(function(block) { }, function(error) { } );
 		}
 	}
 	
-	public function getBlock(nativeInstanceOrDOM:Dynamic):Block
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Block retrival methods.
+	// Used to retrieve a block with a block element
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Retrieve a block using a ClassInstance belonging to the block
+	 */
+	public function getBlockByClassInstance(classInstance:ClassInstance):Block
 	{
-		return doGetBlock(this.rootBlock, nativeInstanceOrDOM);
+		//call the method atually retrieving the block with the method checking
+		//for each block, starting from the root block of this publication
+		//if it owns the provided classInstance
+		return doGetBlock(this.rootBlock, classInstance, isClassInstanceOfBlock);
 	}
 	
-	private static function doGetBlock(block:Block, nativeInstanceOrDOM:Dynamic, compareMethod:Block -> dynamic -> Bool):Block
+	/**
+	 * Retrieve a block using a NativeInstance belonging to the block
+	 */
+	public function getBlockByNativeInstance(nativeInstance:NativeInstance):Block
 	{
-		if (compareMethod(block, nativeInstanceOrDOM) == true)
-		{
-			return block;
-		}
-		else
-		{
-			for (i in 0...block.children.length)
-			{
-				return doGetBlock(block.children[i], nativeInstanceOrDOM);
-			}
-		}
-		
-		return null;
+		return doGetBlock(this.rootBlock, nativeInstance, isNativeInstanceOfBlock);
 	}
 	
-	private static function isNativeReferenceInBlock(block:Block, nativeReference:NativeReference):Bool
+	/**
+	 * Retrieve a block using a DOMElement belonging to the block
+	 */
+	public function getBlockByDOMElement(domElement:DOMElement):Block
 	{
-		
+		return doGetBlock(this.rootBlock, domElement, isDOMElementOfBlock);
 	}
 	
-	private static function isDOMElementInBlock(block:Block, domElement:DOMElement):Bool
+	/**
+	 * Retrieve a block using a NativeElement belonging to the block
+	 */
+	public function getBlockByNativeElement(nativeElement:NativeElement):Block
 	{
-		
+		return doGetBlock(this.rootBlock, nativeElement, isNativeElementOfBlock);
 	}
 	
-	private static function find(block:Block, value:Dynamic):Bool
-	{
-		var ret:Bool = false;
-		
-		if (Std.is(value, NativeInstance))
-		{
-			ret =  block.nativeClassInstance == value;
-		}
-		else if (Std.is(value, cocktail.nativeReference.NativeReference))
-		{
-			ret =  block.domElement.nativeReference == value;
-		}
-		else if (Std.is(value, DOMElement))
-		{
-			ret =  block.domElement == value;
-		}
-		else if (Std.is(value, Block))
-		{
-			ret =  block == value;
-		}
-		else
-		{
-			ret =  false;
-		}
-		
-		return ret;
-	}
 }
