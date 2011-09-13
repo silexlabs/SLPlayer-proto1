@@ -13,9 +13,10 @@ package slPlayer.core.block;
 
 import haxe.Log;
 import slPlayer.core.config.Config;
-import cocktail.domObject.DOMObject;
+import cocktail.domElement.DOMElement;
 import slPlayer.core.block.BlockData;
 import cocktail.nativeClass.NativeClass;
+import cocktail.nativeClass.NativeInstance;
 import cocktail.nativeClass.base.NativeInstanceBase;
 
 /**
@@ -28,29 +29,29 @@ import cocktail.nativeClass.base.NativeInstanceBase;
  * root block.
  * 
  * A block is linked to the native DOM (might be Flash DOM, HTML DOM...)
- * through it's DOMObject (an abstraction of a native DOMObject,
- * might be a MovieClip/Sprite or a Div for instance). The DOMObject
- * is the skin of the Block. A block can have no DOMObject in which
+ * through it's DOMElement (an abstraction of a native DOMElement,
+ * might be a MovieClip/Sprite or a Div for instance). The DOMElement
+ * is the skin of the Block. A block can have no DOMElement in which
  * case it is non-visual.
  * 
  * A block has a nativeClassInstance. This is the controller class
  * of the block. It is an abstraction wrapping a class instantiated
  * in a specific runtime (ActionScript, JavaScript...).
  * This class is loaded at runtime either in a library, loaded at
- * publication startup, or it can be contained in a loaded DOMObject (skin).
+ * publication startup, or it can be contained in a loaded DOMElement (skin).
  * 
- * A block can have a DOMObject and no nativeClassInstance (the controller class 
- * is then assumed to be in the DOMObject), it can have only
+ * A block can have a DOMElement and no nativeClassInstance (the controller class 
+ * is then assumed to be in the DOMElement), it can have only
  * a nativeClassInstance or it can have both but it can't have neither.
  * 
  * A block's 'model' is represented by it's properties and metadata, stored
  * in the BlockData structure. They are loaded at runtime from an external
  * file representing the block (might be XML, JSON...). The loaded properties
- * are pushed into the nativeClassInstance or into the DOMObject (skin) when
+ * are pushed into the nativeClassInstance or into the DOMElement (skin) when
  * the block is initialised.
  * 
  * A block is initialised with an instance of BlockBuilder, in charge of 
- * loading/instantiating it's data file, DOMObject (skin) and native class.
+ * loading/instantiating it's data file, DOMElement (skin) and native class.
  * 
  * A block is initialised when it is opened in most case, it will be displayed
  * (attach to the native display list) once loaded. It may also be preloaded,
@@ -73,21 +74,22 @@ class Block
 	 * the data of the block (skinUrls, properties, metadata...)
 	 */
 	private var _blockData:BlockData;
+	public var blockData(getBlockData, setBlockData):BlockData;
 	
 	/**
 	 * A reference to the visual object of the DOM where 
 	 * the children blocks are displayed. 
 	 * When the block data contains an URL for the skin, 
-	 * the domObject is initialized with the skin asset 
+	 * the domElement is initialized with the skin asset 
 	 * before it is filled with children.
 	 * This is the skin of the component.
 	 * It is loaded and automatically added to the
-	 * domObject of the parent block.
+	 * domElement of the parent block.
 	 * The skin URL is provided in the block's descriptor,
 	 * and may be different based on the target.
 	 */
-	private var _domObject:DOMObject;
-	public var domObject(getDOMObject, setDOMObject):DOMObject;
+	private var _domElement:DOMElement;
+	public var domElement(getDOMElement, setDOMElement):DOMElement;
 	
 	/**
 	 * This attribute is set to an instance of the class whose name is in the block's descriptor.
@@ -198,9 +200,9 @@ class Block
 	 */
 	public function close():Void
 	{
-		if (this._domObject != null)
+		if (this._domElement != null)
 		{
-			this._parent.removeFromDisplayList(this._domObject);
+			this._parent.removeFromDisplayList(this._domElement);
 		}
 		
 		this._nativeClassInstance = null;
@@ -241,36 +243,36 @@ class Block
 	}
 
 	/**
-	 * Add the block's DOMObject to this block DOMObjects. If
-	 * this block has no DOMObject, add it to it's parent DOMObject
-	 * @param	blockDOMObject the domObject to add
+	 * Add the block's DOMElement to this block DOMElements. If
+	 * this block has no DOMElement, add it to it's parent DOMElement
+	 * @param	blockDOMElement the domElement to add
 	 */
-	public function addToDisplayList(blockDOMObject:DOMObject):Void
+	public function addToDisplayList(blockDOMElement:DOMElement):Void
 	{
-		if (this._domObject != null)
+		if (this._domElement != null)
 		{
-			this._domObject.addChild(blockDOMObject);
+			this._domElement.addChild(blockDOMElement);
 		}
 		else
 		{
-			this._parent.addToDisplayList(blockDOMObject);
+			this._parent.addToDisplayList(blockDOMElement);
 		}
 	}
 	
 	/**
-	 * Remove the block's DOMObject from this block DOMObjects. If
-	 * this block has no DOMObject, remove it from it's parent DOMObject
-	 * @param	blockDOMObject the domObject to remove
+	 * Remove the block's DOMElement from this block DOMElements. If
+	 * this block has no DOMElement, remove it from it's parent DOMElement
+	 * @param	blockDOMElement the domElement to remove
 	 */
-	public function removeFromDisplayList(blockDOMObject:DOMObject):Void
+	public function removeFromDisplayList(blockDOMElement:DOMElement):Void
 	{
-		if (this._domObject != null)
+		if (this._domElement != null)
 		{
-			this._domObject.removeChild(blockDOMObject);
+			this._domElement.removeChild(blockDOMElement);
 		}
 		else
 		{
-			this._parent.removeFromDisplayList(blockDOMObject);
+			this._parent.removeFromDisplayList(blockDOMElement);
 		}
 	}
 	
@@ -288,24 +290,28 @@ class Block
 	 */
 	private function doOpen(blockBuilder:BlockBuilder):Void
 	{
+		Log.trace("do open");
+		Log.trace(this._blockData);
 		//if the block data has no properties yet, it
 		//means that it's data have not been loaded yet
 		if (this._blockData.properties == null)
 		{
+			Log.trace("load block data");
 			blockBuilder.loadBlockData(onBlockDataLoaded, onBlockDataLoadError);
 		}
 		
-		//if the domObject (skin) is null although a skin url is defined
+		//if the domElement (skin) is null although a skin url is defined
 		//for this block, then it's not loaded yet
-		else if (this._domObject == null && getSkinUrl() != null)
+		else if (this._domElement == null && getSkinUrl() != null)
 		{
-			blockBuilder.loadDOMObject(getSkinUrl(), onDOMObjectLoaded, onDOMObjectLoadError);
+			blockBuilder.loadDOMElement(getSkinUrl(), onDOMElementLoaded, onDOMElementLoadError);
 		}
 		
 		//if the class instance is null although a class name is defined for this block,
 		//then it has not yet been instantiated
 		else if (this._nativeClassInstance == null && this._blockData.className != null)
 		{
+			Log.trace("create native instance");
 			blockBuilder.createNativeClassInstance();
 			doOpen(blockBuilder);
 		}
@@ -321,10 +327,10 @@ class Block
 			if (this._parent != null)
 			{
 				//only add to display list if this block has
-				//a DOMObject (skin)
-				if (this._domObject != null)
+				//a DOMElement (skin)
+				if (this._domElement != null)
 				{
-					this._parent.addToDisplayList(this._domObject);
+					this._parent.addToDisplayList(this._domElement);
 				}
 			}
 		
@@ -423,10 +429,10 @@ class Block
 	}
 	
 	/**
-	 * When the block's DOMObject has been loaded, resume the opening of the block
-	 * @param	blockBuilder the blockBuilder which loaded this block's DOMObject
+	 * When the block's DOMElement has been loaded, resume the opening of the block
+	 * @param	blockBuilder the blockBuilder which loaded this block's DOMElement
 	 */
-	private function onDOMObjectLoaded(blockBuilder:BlockBuilder):Void
+	private function onDOMElementLoaded(blockBuilder:BlockBuilder):Void
 	{
 		//call this method to go to the next
 		//initialisation step
@@ -452,7 +458,7 @@ class Block
 	 * callback with the errorMessage
 	 * @param	errorMessage
 	 */
-	private function onDOMObjectLoadError(errorMessage:String):Void
+	private function onDOMElementLoadError(errorMessage:String):Void
 	{
 		_openBlockErrorCallback(errorMessage);
 	}
@@ -565,15 +571,15 @@ class Block
 		return this._blockData;
 	}
 	
-	public function setDOMObject(value:DOMObject):DOMObject
+	public function setDOMElement(value:DOMElement):DOMElement
 	{
-		_domObject = value;
-		return this._domObject;
+		_domElement = value;
+		return this._domElement;
 	}
 	
-	public function getDOMObject():DOMObject
+	public function getDOMElement():DOMElement
 	{
-		return this._domObject;
+		return this._domElement;
 	}
 	
 	public function setNativeClassInstance(nativeClassInstance:NativeInstance):NativeInstance

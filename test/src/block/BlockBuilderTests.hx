@@ -108,7 +108,7 @@ class BlockBuilderTests
 				</CustomControllerClass>
 				<!-- this block data is in a separate XML file -->
 				<Group isAutoOpen="true" fileUrl="contents/mysite1/layer023.xml" />
-				<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->
+				<!-- here is a skinnable block, for which a domElement containing assets is loaded before the controller class is instanciated -->
 				<SkinnableBlock nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
 					<blockData>
 						<descriptorUID>SkinnableBlockDescriptor</descriptorUID>
@@ -420,7 +420,7 @@ class BlockBuilderTests
 				</CustomControllerClass>
 				<!-- this block data is in a separate XML file -->
 				<Group isAutoOpen="true" hasSeparateFile="true" fileUrl="contents/mysite1/layer023.xml" />
-				<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->
+				<!-- here is a skinnable block, for which a domElement containing assets is loaded before the controller class is instanciated -->
 				<SkinableBlock nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
 					<!-- URLs of the skin, depending on the target runtime -->
 					<domRoot>maindiv.containerdiv</domRoot>

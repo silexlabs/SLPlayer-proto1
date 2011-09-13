@@ -12,14 +12,14 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 package slPlayer.blocks;
 
 import haxe.Log;
-import cocktail.domObject.DOMObject;
+import cocktail.domElement.DOMElement;
 import haxe.Timer;
 import cocktail.resource.ResourceLoaderManager;
-import cocktail.domObject.ImageDOMObject;
+import cocktail.domElement.ImageDOMElement;
 
 /**
  * This class is instanciated by the BlockBuilder class, when the corresponding tag is found in the block's BlockData::className attribute
- * It is in charge of loading an image into an ImageDOMObject and set it as the Block::domObject property
+ * It is in charge of loading an image into an ImageDOMElement and set it as the Block::domElement property
  * @author a.hoyau [at] silexlabs.org
  */
 class Image
@@ -45,7 +45,7 @@ class Image
 		}
 	}
 	/**
-	 * desired position for the DOMObject
+	 * desired position for the DOMElement
 	 */
 	public var x:Float;
 	/**
@@ -53,16 +53,15 @@ class Image
 	 */
 	public var url:String;
 	/**
-	 * DOMObject instance which contains the loaded asset
+	 * DOMElement instance which contains the loaded asset
 	 */
-	private var _domObject:DOMObject;
+	private var _domElement:DOMElement;
 	/**
 	 * callback for the image loading
 	 */ 
-	private function _imageLoadedSuccess(imageDOMObject:ImageDOMObject):Void
+	private function _imageLoadedSuccess(imageDOMElement:ImageDOMElement):Void
 	{
-		Log.trace("_imageLoadedSuccess "+imageDOMObject);
-		
+		Log.trace("_imageLoadedSuccess "+imageDOMElement);
 	}
 	/**
 	 * callback for the image loading

@@ -11,14 +11,13 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package slPlayer.core.publication;
 
+import cocktail.domElement.DOMElement;
+import cocktail.nativeClass.NativeInstance;
+import cocktail.nativeReference.NativeReference;
 import haxe.Log;
-import slPlayer.core.config.Config;
 import slPlayer.core.block.Block;
-import slPlayer.core.block.BlockData;
-import cocktail.nativeClass.NativeClass;
-import cocktail.nativeClass.NativeInstanceBase;
-import cocktail.domObject.DOMObject;
-import cocktail.domObject.ContainerDOMObject;
+import slPlayer.core.config.Config;
+import cocktail.domElement.ContainerDOMElement;
 
 /**
  * The Publication class is the entry point of a Silex application. 
@@ -34,12 +33,14 @@ class Publication
 	/**
 	 * array of the publications created in this runtime
 	 */
-	private var _instancesArray:Array<Publication>;
+	private static var _instancesArray:Array<Publication>;
 	/**
-	 * A reference to the DOMObject at the top of 
+	 * A reference to the DOMElement at the top of 
 	 * the DOM
 	 */
-	public var rootDOMObject:DOMObjectBase;
+	public var rootDOMElement:DOMElement;
+	
+	public var rootBlock:Block;
 
 	/**
 	 * A reference to the Config for this publication
@@ -75,31 +76,21 @@ class Publication
 	/**
 	 * retrieve the publicaiton which contains a given native dom object or native class
 	 */
-	public static function getPublication(nativeClassOrDOM:Dynamic):Publication
+	public static function getPublication(blockOrNativeElementOrDOMElementOrNativeInstance:Dynamic):Publication
 	{
-		// result publication object
-		var publication:Publication;
-		
-		// path of the given native dom
-		var pathOfNativeDOM:String = DOMObject.getPath(nativeClassOrDOM);
-		
-		// loop on the publications to check which one the native dom is in
-		var idx:Int;
-		for (idx in _instancesArray.length)
-		{
-			// path of the root native dom for this publication
-			var pathOfRootNativeDom:String = DOMObject.getPath(_instancesArray[idx].rootDOMObject._nativeReference);
-			// is it the one?
-			if(pathOfNativeDOM.indexOf(pathOfRootNativeDom))
+		var publicationIdx:Int = _instancesArray.length;
+			for (i in 0...publicationIdx)
 			{
-				// yes it is
-				return _instancesArray[idx];
+				var block:Block = doGetBlock(_instancesArray[publicationIdx].rootBlock, blockOrNativeElementOrDOMElementOrNativeInstance);
+				if (block != null)
+				{
+					return _instancesArray[publicationIdx] ;
+				}
 			}
-		}
-		
-		// return the new publication
-		return null;
+			
+		return null;	
 	}
+	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// instance methods
@@ -119,25 +110,88 @@ class Publication
 	 */
 	public function render(nativeDOM:Dynamic, xmlFileName:String = null, xmlString:String = null)
 	{
-		// create the root DOMObject and attach it to the js dom
-		var domObject = new ContainerDOMObject();
+		// create the root DOMElement and attach it to the js dom
+		var domElement = new ContainerDOMElement();
 	
 		// create the root Block, which data are in test.xml
 		var block = new slPlayer.core.block.Block(xmlFileName);
-		block.setDOMObject(domObject);
+		
+		rootBlock = block;
+		
+		block.setDOMElement(domElement);
 		
 		// initialize the block with its data
 		if (xmlString != null)
 		{
 			// buid the block with the XML data
-			deserializeBlockData(block, xmlString);
-			onLoadBlockDataSuccess();
+			//BlockBuilder.deserializeBlockData(block, xmlString);
+			//onLoadBlockDataSuccess();
 		}
 		else
 		{
 			// start loading the first block
-			var blockBuilder = new slPlayer.core.block.BlockBuilder(block);
-			blockBuilder.loadBlockData(onLoadBlockDataSuccess, onLoadBlockDataError);
+			//var blockBuilder = new slPlayer.core.block.BlockBuilder(block);
+			//blockBuilder.loadBlockData(onLoadBlockDataSuccess, onLoadBlockDataError);
 		}
+	}
+	
+	public function getBlock(nativeInstanceOrDOM:Dynamic):Block
+	{
+		return doGetBlock(this.rootBlock, nativeInstanceOrDOM);
+	}
+	
+	private static function doGetBlock(block:Block, nativeInstanceOrDOM:Dynamic, compareMethod:Block -> dynamic -> Bool):Block
+	{
+		if (compareMethod(block, nativeInstanceOrDOM) == true)
+		{
+			return block;
+		}
+		else
+		{
+			for (i in 0...block.children.length)
+			{
+				return doGetBlock(block.children[i], nativeInstanceOrDOM);
+			}
+		}
+		
+		return null;
+	}
+	
+	private static function isNativeReferenceInBlock(block:Block, nativeReference:NativeReference):Bool
+	{
+		
+	}
+	
+	private static function isDOMElementInBlock(block:Block, domElement:DOMElement):Bool
+	{
+		
+	}
+	
+	private static function find(block:Block, value:Dynamic):Bool
+	{
+		var ret:Bool = false;
+		
+		if (Std.is(value, NativeInstance))
+		{
+			ret =  block.nativeClassInstance == value;
+		}
+		else if (Std.is(value, cocktail.nativeReference.NativeReference))
+		{
+			ret =  block.domElement.nativeReference == value;
+		}
+		else if (Std.is(value, DOMElement))
+		{
+			ret =  block.domElement == value;
+		}
+		else if (Std.is(value, Block))
+		{
+			ret =  block == value;
+		}
+		else
+		{
+			ret =  false;
+		}
+		
+		return ret;
 	}
 }
