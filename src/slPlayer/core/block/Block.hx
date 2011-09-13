@@ -165,6 +165,18 @@ class Block
 	{
 		this._fileUrl = fileUrl;
 		this._state = closed;
+		
+		//init the block's data
+		this._blockData = {
+			className:null,
+			descriptorUID:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
+			properties:null,
+			metaData:null
+		};
+		
 		_children = new Array<Block>();
 	}
 	
@@ -290,13 +302,10 @@ class Block
 	 */
 	private function doOpen(blockBuilder:BlockBuilder):Void
 	{
-		Log.trace("do open");
-		Log.trace(this._blockData);
 		//if the block data has no properties yet, it
 		//means that its data have not been loaded yet
 		if (this._blockData.properties == null)
 		{
-			Log.trace("load block data");
 			blockBuilder.loadBlockData(onBlockDataLoaded, onBlockDataLoadError);
 		}
 		
@@ -311,7 +320,6 @@ class Block
 		//then it has not yet been instantiated
 		else if (this._classInstance == null && this._blockData.className != null)
 		{
-			Log.trace("create native instance");
 			blockBuilder.createClassInstance();
 			doOpen(blockBuilder);
 		}
@@ -353,7 +361,6 @@ class Block
 		//check that there is at least one child on this block
 		if (this._children.length > 0)
 		{
-			
 			//if the current children is "auto open", open it
 			if (_children[_openChildrenIndex].getIsAutoOpen() == true)
 			{
