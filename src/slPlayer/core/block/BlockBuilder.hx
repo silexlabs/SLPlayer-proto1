@@ -17,6 +17,7 @@ import cocktail.classInstance.ClassInstance;
 import cocktail.nativeInstance.NativeInstanceManager;
 import cocktail.resource.ResourceLoaderManager;
 import slPlayer.core.XmlUtils;
+import slPlayer.core.style.StyleManager;
 
 /**
  * This class exposes method used to build/init
@@ -357,6 +358,15 @@ class BlockBuilder
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public function createStyleManager():Void
+	{
+		_block.styleManager = new StyleManager();
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
 	// step 4 - Pushing the properties
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -382,6 +392,18 @@ class BlockBuilder
 			{
 				_block.domElement.setAttribute(propertyName, _block.blockData.properties.get(propertyName));
 			}
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public function setBlockStyles():Void
+	{
+		for (styleName in _block.blockData.styles.keys())
+		{
+			Reflect.setField(_block.styleManager, styleName, _block.blockData.styles.get(styleName));
 		}
 	}
 }

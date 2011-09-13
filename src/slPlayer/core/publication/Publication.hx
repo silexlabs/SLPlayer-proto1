@@ -22,6 +22,7 @@ import slPlayer.core.block.Block;
 import slPlayer.core.config.Config;
 import cocktail.domElement.ContainerDOMElement;
 import slPlayer.core.block.BlockBuilder;
+import slPlayer.core.style.StyleManager;
 
 /**
  * The Publication class is the entry point of an SLPlayer. 
@@ -123,6 +124,14 @@ class Publication
 	public static function getPublicationByNativeElement(nativeElement:NativeElement):Publication
 	{
 		return doGetPublication(nativeElement, isNativeElementOfBlock);
+	}
+	
+	/**
+	 * Retrieve a publication using a StyleManager belonging to the publication
+	 */
+	public static function getPublicationByStyleManager(styleManager:StyleManager):Publication
+	{
+		return doGetPublication(styleManager, isStyleManagerOfBlock);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,6 +248,14 @@ class Publication
 	{
 		return block.domElement.nativeElement == nativeElement;
 	}
+	
+	/**
+	 * check if the StyleManager belongs to the given block
+	 */
+	private static function isStyleManagerOfBlock(block:Block, styleManager:StyleManager):Bool
+	{
+		return block.styleManager == styleManager;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// instance methods
@@ -293,7 +310,7 @@ class Publication
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Retrieve a block using a ClassInstance belonging to the block
+	 * Retrieve a block using the ClassInstance belonging to the block
 	 */
 	public function getBlockByClassInstance(classInstance:ClassInstance):Block
 	{
@@ -304,7 +321,7 @@ class Publication
 	}
 	
 	/**
-	 * Retrieve a block using a NativeInstance belonging to the block
+	 * Retrieve a block using the NativeInstance belonging to the block
 	 */
 	public function getBlockByNativeInstance(nativeInstance:NativeInstance):Block
 	{
@@ -312,7 +329,7 @@ class Publication
 	}
 	
 	/**
-	 * Retrieve a block using a DOMElement belonging to the block
+	 * Retrieve a block using the DOMElement belonging to the block
 	 */
 	public function getBlockByDOMElement(domElement:DOMElement):Block
 	{
@@ -320,11 +337,19 @@ class Publication
 	}
 	
 	/**
-	 * Retrieve a block using a NativeElement belonging to the block
+	 * Retrieve a block using the NativeElement belonging to the block
 	 */
 	public function getBlockByNativeElement(nativeElement:NativeElement):Block
 	{
 		return doGetBlock(this.rootBlock, nativeElement, isNativeElementOfBlock);
+	}
+	
+	/**
+	 * Retrieve a block using the StyleManager belonging to the block
+	 */
+	public function getBlockByStyleManager(styleManager:StyleManager):Block
+	{
+		return doGetBlock(this.rootBlock, styleManager, isStyleManagerOfBlock);
 	}
 	
 }

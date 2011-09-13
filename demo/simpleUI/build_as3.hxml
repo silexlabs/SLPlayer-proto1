@@ -1,0 +1,3 @@
+-swf SimpleUI.swf
+-cp ../../src/
+-main SimpleUI

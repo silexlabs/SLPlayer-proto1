@@ -17,6 +17,7 @@ import cocktail.domElement.DOMElement;
 import slPlayer.core.block.BlockData;
 import cocktail.classInstance.ClassInstance;
 import cocktail.nativeInstance.NativeInstanceManager;
+import slPlayer.core.style.StyleManager;
 
 /**
  * A publication in SLPlayer is constituted of blocks.
@@ -98,6 +99,9 @@ class Block
 	 */
 	private var _classInstance:ClassInstance;
 	public var classInstance(getClassInstance, setClassInstance):ClassInstance;
+	
+	private var _styleManager:StyleManager;
+	public var styleManager(getStyleManager, setStyleManager):StyleManager;
 	
 	/**
 	 * The url of the file containing the data of the block (XML, JSON...).
@@ -264,6 +268,7 @@ class Block
 	{
 		if (this._domElement != null)
 		{
+			Log.trace("add child to display list");
 			this._domElement.addChild(blockDOMElement);
 		}
 		else
@@ -325,11 +330,18 @@ class Block
 			doOpen(blockBuilder);
 		}
 		
+		else if (this._styleManager == null && this._blockData.styles != null)
+		{
+			blockBuilder.createStyleManager();
+			doOpen(blockBuilder);
+		}
+		
 		//at this point, the block is loaded and ready, push the properties
 		//in the block, then open the block's children
 		else
 		{
 			blockBuilder.setBlockAttributes();
+			blockBuilder.setBlockStyles();
 			
 			//if this block has a parent (only the root block doesn't have one)
 			//this block add himself to its parent display list once opened
@@ -599,5 +611,16 @@ class Block
 	public function getClassInstance():ClassInstance
 	{
 		return this._classInstance;
+	}
+	
+	public function setStyleManager(value:StyleManager):StyleManager
+	{
+		this._styleManager = value;
+		return value;
+	}
+	
+	public function getStyleManager():StyleManager
+	{
+		return this._styleManager;
 	}
 }

@@ -11,6 +11,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package slPlayer.blocks;
 
+import cocktail.nativeElement.NativeElementManager;
+import cocktail.nativeElement.NativeElementData;
 import haxe.Log;
 import cocktail.domElement.DOMElement;
 import haxe.Timer;
@@ -41,7 +43,12 @@ class Image
 	{
 		if (url != "" && url != null)
 		{
-			ResourceLoaderManager.loadImage(url, _imageLoadedSuccess, _imageLoadedError);
+			var imageDOMElement:ImageDOMElement = new ImageDOMElement(NativeElementManager.createNativeElement(image));
+			var publication:Publication = Publication.getPublicationByNativeInstance(this);
+			var block:Block = publication.getBlockByNativeInstance(this);
+			block.domElement = imageDOMElement;
+			
+			ResourceLoaderManager.loadImage(url, _imageLoadedSuccess, _imageLoadedError, imageDOMElement);
 		}
 	}
 	
@@ -57,7 +64,8 @@ class Image
 	{
 		var publication:Publication = Publication.getPublicationByNativeInstance(this);
 		var block:Block = publication.getBlockByNativeInstance(this);
-		block.addToDisplayList(imageDOMElement);
+		block.parent.addToDisplayList(imageDOMElement);
+		Log.trace("_imageLoadedSuccess "+imageDOMElement);
 	}
 	/**
 	 * callback for the image loading
