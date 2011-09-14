@@ -13,54 +13,56 @@ package slPlayer.core.block;
 
 import haxe.Log;
 import slPlayer.core.config.Config;
-import cocktail.domObject.DOMObject;
+import cocktail.domElement.DOMElement;
 import slPlayer.core.block.BlockData;
-import cocktail.nativeClass.NativeClass;
-import cocktail.nativeClass.base.NativeInstanceBase;
+import cocktail.classInstance.ClassInstance;
+import cocktail.nativeInstance.NativeInstanceManager;
+import slPlayer.core.style.StyleManager;
 
 /**
- * A publication in Silex is constituted of blocks.
+ * A publication in SLPlayer is constituted of blocks.
  * The blocks represent the publication structure, 
- * each block can have children and his aware of it's
+ * each block can have children and his aware of its
  * parent. All publications contain at least one block
  * which is called the root block, all the other block
  * being children to variying degree of this
  * root block.
  * 
  * A block is linked to the native DOM (might be Flash DOM, HTML DOM...)
- * through it's DOMObject (an abstraction of a native DOMObject,
- * might be a MovieClip/Sprite or a Div for instance). The DOMObject
- * is the skin of the Block. A block can have no DOMObject in which
+ * through its DOMElement (an abstraction of a native DOMElement,
+ * might be a MovieClip/Sprite or a Div for instance). The DOMElement
+ * is the skin of the Block. It is part of the Cocktail cross-platform
+ * library. A block can have no DOMElement in which
  * case it is non-visual.
  * 
- * A block has a nativeClassInstance. This is the controller class
- * of the block. It is an abstraction wrapping a class instantiated
+ * A block has a ClassInstance. This is the controller class
+ * of the block. It is an abstraction wrapping a native class instantiated
  * in a specific runtime (ActionScript, JavaScript...).
  * This class is loaded at runtime either in a library, loaded at
- * publication startup, or it can be contained in a loaded DOMObject (skin).
+ * publication startup, or it can be contained in a loaded DOMElement (skin).
  * 
- * A block can have a DOMObject and no nativeClassInstance (the controller class 
- * is then assumed to be in the DOMObject), it can have only
- * a nativeClassInstance or it can have both but it can't have neither.
+ * A block can have a DOMElement and no ClassInstance (the controller class 
+ * is then assumed to be in the DOMElement), it can have only
+ * a ClassInstance or it can have both but it can't have neither.
  * 
- * A block's 'model' is represented by it's properties and metadata, stored
+ * A block's 'model' is represented by its properties and metadata, stored
  * in the BlockData structure. They are loaded at runtime from an external
  * file representing the block (might be XML, JSON...). The loaded properties
- * are pushed into the nativeClassInstance or into the DOMObject (skin) when
+ * are pushed into the ClassInstance or into the DOMElement (skin) when
  * the block is initialised.
  * 
  * A block is initialised with an instance of BlockBuilder, in charge of 
- * loading/instantiating it's data file, DOMObject (skin) and native class.
+ * loading/instantiating its data file, DOMElement (skin) and ClassInstance.
  * 
  * A block is initialised when it is opened in most case, it will be displayed
  * (attach to the native display list) once loaded. It may also be preloaded,
- * for instance a block whose data file is shared with it's parent won't need
- * to load an external text file. When a block opens, it also
- * opens all of it's children whose "isAutoOpen" attribute is true. If a block
- * is transversal (if it's isTransversal attribute is true), if a block deeper
- * in the hierarchy than this block is opened, this block opens or remains open
- * even if the opened block is not one of it's direct children or in it's children "lineage"
- * (it's children of children of children...).
+ * for instance a block whose data file is shared with its parent won't need
+ * to load an external data file. When a block opens, it also
+ * opens all of its children whose "isAutoOpen" attribute is true. If a block
+ * is transversal (if its isTransversal attribute is true), if a block deeper
+ * in the hierarchy than this block is opened, this block opens or remains opened
+ * even if the opened block is not one of its direct children or in its children "lineage"
+ * (its children of children of children...).
  * 
  * @author Yannick DOMINGUEZ
  */
@@ -73,29 +75,33 @@ class Block
 	 * the data of the block (skinUrls, properties, metadata...)
 	 */
 	private var _blockData:BlockData;
+	public var blockData(getBlockData, setBlockData):BlockData;
 	
 	/**
 	 * A reference to the visual object of the DOM where 
 	 * the children blocks are displayed. 
 	 * When the block data contains an URL for the skin, 
-	 * the domObject is initialized with the skin asset 
+	 * the domElement is initialized with the skin asset 
 	 * before it is filled with children.
-	 * This is the skin of the component.
+	 * This is the skin of the block.
 	 * It is loaded and automatically added to the
-	 * domObject of the parent block.
-	 * The skin URL is provided in the block's descriptor,
+	 * domElement of the parent block.
+	 * The skin URL is provided in the block's data,
 	 * and may be different based on the target.
 	 */
-	private var _domObject:DOMObject;
-	public var domObject(getDOMObject, setDOMObject):DOMObject;
+	private var _domElement:DOMElement;
+	public var domElement(getDOMElement, setDOMElement):DOMElement;
 	
 	/**
-	 * This attribute is set to an instance of the class whose name is in the block's descriptor.
+	 * This attribute is set to an instance of the class whose name is in the block's data.
 	 * The class is supposed to be loaded with the plugins at application start, but it can also be contained in the skin.
 	 * This is the controller of the block, the block's properties and metadata will be pushed into it.
 	 */
-	private var _nativeClassInstance:NativeInstance;
-	public var nativeClassInstance(getNativeClassInstance, setNativeClassInstance):NativeInstance;
+	private var _classInstance:ClassInstance;
+	public var classInstance(getClassInstance, setClassInstance):ClassInstance;
+	
+	private var _styleManager:StyleManager;
+	public var styleManager(getStyleManager, setStyleManager):StyleManager;
 	
 	/**
 	 * The url of the file containing the data of the block (XML, JSON...).
@@ -143,7 +149,7 @@ class Block
 	private var _openChildrenIndex:Int;
 	
 	/**
-	 * Called when this block and all of it's children which
+	 * Called when this block and all of its children which
 	 * must be opened are opened. Return the opened block
 	 */
 	private var _openBlockSuccessCallback:Block->Void;
@@ -159,10 +165,23 @@ class Block
 	 * is the URL of the file containing the block's data.
 	 * Init the children array
 	 */ 
-	public function new(fileUrl:String) 
+	public function new(fileUrl:String = null) 
 	{
 		this._fileUrl = fileUrl;
 		this._state = closed;
+		
+		//init the block's data
+		this._blockData = {
+			className:null,
+			descriptorUID:null,
+			jsSkinURL:null,
+			as3SkinURL:null,
+			phpSkinURL:null,
+			properties:null,
+			metaData:null,
+			styles:null
+		};
+		
 		_children = new Array<Block>();
 	}
 	
@@ -172,7 +191,7 @@ class Block
 	
 	/**
 	 * Starts a block opening. To be opened a block must first be initialised
-	 * (all of it's data must have been loaded already). Stores the success and error
+	 * (all of its data must have been loaded already). Stores the success and error
 	 * callback.
 	 * @param	successCallback
 	 * @param	errorCallback
@@ -183,7 +202,7 @@ class Block
 		
 		_openBlockErrorCallback = errorCallback;
 		
-		//while it's data are not ready, the block is loading
+		//while its data are not ready, the block is loading
 		this._state = loading;
 		
 		//start opening the block with a blockBuilder instance
@@ -193,17 +212,17 @@ class Block
 	}
 	
 	/**
-	 * The block removes himself from the display list of it's parent, destroy the
-	 * native class instance, then close all of it's children
+	 * The block removes himself from the display list of its parent, destroy the
+	 * native class instance, then close all of its children
 	 */
 	public function close():Void
 	{
-		if (this._domObject != null)
+		if (this._domElement != null)
 		{
-			this._parent.removeFromDisplayList(this._domObject);
+			this._parent.removeFromDisplayList(this._domElement);
 		}
 		
-		this._nativeClassInstance = null;
+		this._classInstance = null;
 		
 		for (i in 0..._children.length)
 		{
@@ -231,7 +250,7 @@ class Block
 	
 	/**
 	 * Remove the block from the children array and
-	 * from the display list. Reset it's parent
+	 * from the display list. Reset its parent
 	 * @param	block the block to remove from the children
 	 */
 	public function removeChild(block:Block):Void
@@ -241,72 +260,79 @@ class Block
 	}
 
 	/**
-	 * Add the block's DOMObject to this block DOMObjects. If
-	 * this block has no DOMObject, add it to it's parent DOMObject
-	 * @param	blockDOMObject the domObject to add
+	 * Add the block's DOMElement to this block DOMElements. If
+	 * this block has no DOMElement, add it to its parent DOMElement
+	 * @param	blockDOMElement the domElement to add
 	 */
-	public function addToDisplayList(blockDOMObject:DOMObject):Void
+	public function addToDisplayList(blockDOMElement:DOMElement):Void
 	{
-		if (this._domObject != null)
+		if (this._domElement != null)
 		{
-			this._domObject.addChild(blockDOMObject);
+			Log.trace("add child to display list");
+			this._domElement.addChild(blockDOMElement);
 		}
 		else
 		{
-			this._parent.addToDisplayList(blockDOMObject);
+			this._parent.addToDisplayList(blockDOMElement);
 		}
 	}
 	
 	/**
-	 * Remove the block's DOMObject from this block DOMObjects. If
-	 * this block has no DOMObject, remove it from it's parent DOMObject
-	 * @param	blockDOMObject the domObject to remove
+	 * Remove the block's DOMElement from this block DOMElements. If
+	 * this block has no DOMElement, remove it from its parent DOMElement
+	 * @param	blockDOMElement the domElement to remove
 	 */
-	public function removeFromDisplayList(blockDOMObject:DOMObject):Void
+	public function removeFromDisplayList(blockDOMElement:DOMElement):Void
 	{
-		if (this._domObject != null)
+		if (this._domElement != null)
 		{
-			this._domObject.removeChild(blockDOMObject);
+			this._domElement.removeChild(blockDOMElement);
 		}
 		else
 		{
-			this._parent.removeFromDisplayList(blockDOMObject);
+			this._parent.removeFromDisplayList(blockDOMElement);
 		}
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
-	// private methods to open a block and it's children
+	// private methods to open a block and its children
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * Called first when the block must be opened and then each time an
 	 * initialisation step is successfuly complete if the block wasn't already
 	 * ready. Once each condition of this method are met, the block is open
-	 * and the opening of it's children start
+	 * and the opening of its children start
 	 * @param blockBuilder the blockBuilder instance used to
 	 * build this block
 	 */
 	private function doOpen(blockBuilder:BlockBuilder):Void
 	{
 		//if the block data has no properties yet, it
-		//means that it's data have not been loaded yet
+		//means that its data have not been loaded yet
 		if (this._blockData.properties == null)
 		{
 			blockBuilder.loadBlockData(onBlockDataLoaded, onBlockDataLoadError);
 		}
 		
-		//if the domObject (skin) is null although a skin url is defined
-		//for this block, then it's not loaded yet
-		else if (this._domObject == null && getSkinUrl() != null)
+		//if the domElement (skin) is null although a skin url is defined
+		//for this block, then its not loaded yet
+		else if (this._domElement == null && getSkinUrl() != null)
 		{
-			blockBuilder.loadDOMObject(getSkinUrl(), onDOMObjectLoaded, onDOMObjectLoadError);
+			blockBuilder.loadDOMElement(getSkinUrl(), onDOMElementLoaded, onDOMElementLoadError);
 		}
 		
 		//if the class instance is null although a class name is defined for this block,
 		//then it has not yet been instantiated
-		else if (this._nativeClassInstance == null && this._blockData.className != null)
+		else if (this._classInstance == null && this._blockData.className != null)
 		{
-			blockBuilder.createNativeClassInstance();
+			blockBuilder.createClassInstance();
+			doOpen(blockBuilder);
+		}
+		
+		else if (this._styleManager == null && this._blockData.styles != null)
+		{
+			blockBuilder.createStyleManager();
 			doOpen(blockBuilder);
 		}
 		
@@ -315,16 +341,17 @@ class Block
 		else
 		{
 			blockBuilder.setBlockAttributes();
+			blockBuilder.setBlockStyles();
 			
 			//if this block has a parent (only the root block doesn't have one)
-			//this block add himself to it's parent display list once opened
+			//this block add himself to its parent display list once opened
 			if (this._parent != null)
 			{
 				//only add to display list if this block has
-				//a DOMObject (skin)
-				if (this._domObject != null)
+				//a DOMElement (skin)
+				if (this._domElement != null)
 				{
-					this._parent.addToDisplayList(this._domObject);
+					this._parent.addToDisplayList(this._domElement);
 				}
 			}
 		
@@ -347,7 +374,6 @@ class Block
 		//check that there is at least one child on this block
 		if (this._children.length > 0)
 		{
-			
 			//if the current children is "auto open", open it
 			if (_children[_openChildrenIndex].getIsAutoOpen() == true)
 			{
@@ -423,10 +449,10 @@ class Block
 	}
 	
 	/**
-	 * When the block's DOMObject has been loaded, resume the opening of the block
-	 * @param	blockBuilder the blockBuilder which loaded this block's DOMObject
+	 * When the block's DOMElement has been loaded, resume the opening of the block
+	 * @param	blockBuilder the blockBuilder which loaded this block's DOMElement
 	 */
-	private function onDOMObjectLoaded(blockBuilder:BlockBuilder):Void
+	private function onDOMElementLoaded(blockBuilder:BlockBuilder):Void
 	{
 		//call this method to go to the next
 		//initialisation step
@@ -452,7 +478,7 @@ class Block
 	 * callback with the errorMessage
 	 * @param	errorMessage
 	 */
-	private function onDOMObjectLoadError(errorMessage:String):Void
+	private function onDOMElementLoadError(errorMessage:String):Void
 	{
 		_openBlockErrorCallback(errorMessage);
 	}
@@ -565,25 +591,36 @@ class Block
 		return this._blockData;
 	}
 	
-	public function setDOMObject(value:DOMObject):DOMObject
+	public function setDOMElement(value:DOMElement):DOMElement
 	{
-		_domObject = value;
-		return this._domObject;
+		_domElement = value;
+		return this._domElement;
 	}
 	
-	public function getDOMObject():DOMObject
+	public function getDOMElement():DOMElement
 	{
-		return this._domObject;
+		return this._domElement;
 	}
 	
-	public function setNativeClassInstance(nativeClassInstance:NativeInstance):NativeInstance
+	public function setClassInstance(value:ClassInstance):ClassInstance
 	{
-		this._nativeClassInstance = nativeClassInstance;
-		return this._nativeClassInstance;
+		this._classInstance = value;
+		return this._classInstance;
 	}
 	
-	public function getNativeClassInstance():NativeInstance
+	public function getClassInstance():ClassInstance
 	{
-		return this._nativeClassInstance;
+		return this._classInstance;
+	}
+	
+	public function setStyleManager(value:StyleManager):StyleManager
+	{
+		this._styleManager = value;
+		return value;
+	}
+	
+	public function getStyleManager():StyleManager
+	{
+		return this._styleManager;
 	}
 }

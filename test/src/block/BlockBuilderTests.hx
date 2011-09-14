@@ -108,7 +108,7 @@ class BlockBuilderTests
 				</CustomControllerClass>
 				<!-- this block data is in a separate XML file -->
 				<Group isAutoOpen="true" fileUrl="contents/mysite1/layer023.xml" />
-				<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->
+				<!-- here is a skinnable block, for which a domElement containing assets is loaded before the controller class is instanciated -->
 				<SkinnableBlock nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
 					<blockData>
 						<descriptorUID>SkinnableBlockDescriptor</descriptorUID>
@@ -420,7 +420,7 @@ class BlockBuilderTests
 				</CustomControllerClass>
 				<!-- this block data is in a separate XML file -->
 				<Group isAutoOpen="true" hasSeparateFile="true" fileUrl="contents/mysite1/layer023.xml" />
-				<!-- here is a skinnable block, for which a domObject containing assets is loaded before the controller class is instanciated -->
+				<!-- here is a skinnable block, for which a domElement containing assets is loaded before the controller class is instanciated -->
 				<SkinableBlock nameSpace="com.mycompany.silexcomponents" isAutoOpen="false">
 					<!-- URLs of the skin, depending on the target runtime -->
 					<domRoot>maindiv.containerdiv</domRoot>
@@ -479,13 +479,14 @@ class BlockBuilderTests
 		
 		//set up the block data
 		var parentBlockBlockData:BlockData = {
-			className:"slPlayer_unit_tests.core.block.TestNativeClass",
+			className:"block.TestNativeClass",
 			descriptorUID:null,
 			jsSkinURL:null,
 			as3SkinURL:null,
 			phpSkinURL:null,
 			properties:properties,
-			metaData:new Hash<Dynamic>()
+			metaData:new Hash<Dynamic>(),
+			styles:new Hash<Dynamic>()
 		};
 		
 		parentBlock.setBlockData(parentBlockBlockData);
@@ -493,21 +494,21 @@ class BlockBuilderTests
 		var blockBuilder:BlockBuilder = new BlockBuilder(parentBlock);
 		
 		//build the block class and attributes
-		blockBuilder.createNativeClassInstance();
+		blockBuilder.createClassInstance();
 		
 		blockBuilder.setBlockAttributes();
 		
 		//test that attributes matches
-		Assert.equals(parentBlock.getNativeClassInstance().getField("testStringProperty"), "testStringValue");
+		Assert.equals(parentBlock.classInstance.getField("testStringProperty"), "testStringValue");
 		
-		Assert.equals(parentBlock.getNativeClassInstance().getField("testBoolProperty"), true);
+		Assert.equals(parentBlock.classInstance.getField("testBoolProperty"), true);
 		
-		Assert.equals(parentBlock.getNativeClassInstance().getField("testIntProperty"), 1);
+		Assert.equals(parentBlock.classInstance.getField("testIntProperty"), 1);
 		
-		Assert.equals(parentBlock.getNativeClassInstance().getField("testFloatProperty"), 1.2);
+		Assert.equals(parentBlock.classInstance.getField("testFloatProperty"), 1.2);
 		
-		Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[0], 1);
-		Assert.equals(parentBlock.getNativeClassInstance().getField("testArrayProperty")[1], "value");
+		Assert.equals(parentBlock.classInstance.getField("testArrayProperty")[0], 1);
+		Assert.equals(parentBlock.classInstance.getField("testArrayProperty")[1], "value");
 	}
 }
 
