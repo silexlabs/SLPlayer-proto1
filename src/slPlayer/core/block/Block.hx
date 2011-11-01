@@ -14,10 +14,12 @@ package slPlayer.core.block;
 import haxe.Log;
 import slPlayer.core.config.Config;
 import cocktail.domElement.DOMElement;
+import cocktail.domElement.ContainerDOMElement;
 import slPlayer.core.block.BlockData;
 import cocktail.classInstance.ClassInstance;
 import cocktail.nativeInstance.NativeInstanceManager;
 import slPlayer.core.style.StyleManager;
+
 
 /**
  * A publication in SLPlayer is constituted of blocks.
@@ -167,11 +169,11 @@ class Block
 	 */ 
 	public function new(fileUrl:String = null) 
 	{
-		this._fileUrl = fileUrl;
-		this._state = closed;
+		_fileUrl = fileUrl;
+		_state = closed;
 		
 		//init the block's data
-		this._blockData = {
+		_blockData = {
 			className:null,
 			descriptorUID:null,
 			jsSkinURL:null,
@@ -203,7 +205,7 @@ class Block
 		_openBlockErrorCallback = errorCallback;
 		
 		//while its data are not ready, the block is loading
-		this._state = loading;
+		_state = loading;
 		
 		//start opening the block with a blockBuilder instance
 		//which will instantiate/load the data of the block as needed
@@ -217,12 +219,12 @@ class Block
 	 */
 	public function close():Void
 	{
-		if (this._domElement != null)
+		if (_domElement != null)
 		{
-			this._parent.removeFromDisplayList(this._domElement);
+			_parent.removeFromDisplayList(_domElement);
 		}
 		
-		this._classInstance = null;
+		_classInstance = null;
 		
 		for (i in 0..._children.length)
 		{
@@ -230,7 +232,7 @@ class Block
 		}
 		
 		//set the closed state
-		this._state = closed;
+		_state = closed;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -266,14 +268,24 @@ class Block
 	 */
 	public function addToDisplayList(blockDOMElement:DOMElement):Void
 	{
-		if (this._domElement != null)
+		// check if the dom element is a container
+		// TO DO: containers should implement an interface
+		// isContainer should be a block property
+		if (_domElement != null && Std.is(_domElement, ContainerDOMElement))
 		{
 			Log.trace("add child to display list");
-			this._domElement.addChild(blockDOMElement);
+			cast(_domElement, ContainerDOMElement).addChild(blockDOMElement);
 		}
 		else
 		{
-			this._parent.addToDisplayList(blockDOMElement);
+			if (_parent != null)
+			{
+				_parent.addToDisplayList(blockDOMElement);
+			}
+			else
+			{
+				throw "SLPlayer Error: there is no parent and no dom element to which I can attach the given child dom element";
+			}
 		}
 	}
 	
@@ -284,13 +296,23 @@ class Block
 	 */
 	public function removeFromDisplayList(blockDOMElement:DOMElement):Void
 	{
-		if (this._domElement != null)
+		// check if the dom element is a container
+		// TO DO: containers should implement an interface
+		// isContainer should be a block property
+		if (_domElement != null && Std.is(_domElement, ContainerDOMElement))
 		{
-			this._domElement.removeChild(blockDOMElement);
+			cast(_domElement, ContainerDOMElement).removeChild(blockDOMElement);
 		}
 		else
 		{
-			this._parent.removeFromDisplayList(blockDOMElement);
+			if (_parent != null)
+			{
+				_parent.removeFromDisplayList(blockDOMElement);
+			}
+			else
+			{
+				throw "SLPlayer Error: there is no parent and no dom element from which I can remove the given child dom element";
+			}
 		}
 	}
 	
@@ -310,27 +332,28 @@ class Block
 	{
 		//if the block data has no properties yet, it
 		//means that its data have not been loaded yet
-		if (this._blockData.properties == null)
+		if (_blockData.properties == null)
 		{
+			Log.trace("open loadBlockData");
 			blockBuilder.loadBlockData(onBlockDataLoaded, onBlockDataLoadError);
 		}
 		
 		//if the domElement (skin) is null although a skin url is defined
 		//for this block, then its not loaded yet
-		else if (this._domElement == null && getSkinUrl() != null)
+		else if (_domElement == null && getSkinUrl() != null)
 		{
 			blockBuilder.loadDOMElement(getSkinUrl(), onDOMElementLoaded, onDOMElementLoadError);
 		}
 		
 		//if the class instance is null although a class name is defined for this block,
 		//then it has not yet been instantiated
-		else if (this._classInstance == null && this._blockData.className != null)
+		else if (_classInstance == null && _blockData.className != null)
 		{
 			blockBuilder.createClassInstance();
 			doOpen(blockBuilder);
 		}
 		
-		else if (this._styleManager == null && this._blockData.styles != null)
+		else if (_styleManager == null && _blockData.styles != null)
 		{
 			blockBuilder.createStyleManager();
 			doOpen(blockBuilder);
@@ -345,13 +368,13 @@ class Block
 			
 			//if this block has a parent (only the root block doesn't have one)
 			//this block add himself to its parent display list once opened
-			if (this._parent != null)
+			if (_parent != null)
 			{
 				//only add to display list if this block has
 				//a DOMElement (skin)
-				if (this._domElement != null)
+				if (_domElement != null)
 				{
-					this._parent.addToDisplayList(this._domElement);
+					_parent.addToDisplayList(_domElement);
 				}
 			}
 		
@@ -370,10 +393,10 @@ class Block
 	 */
 	private function openChildren():Void
 	{
-		
 		//check that there is at least one child on this block
-		if (this._children.length > 0)
+		if (_children.length > 0)
 		{
+			Log.trace("openChildren " + _children.length);
 			//if the current children is "auto open", open it
 			if (_children[_openChildrenIndex].getIsAutoOpen() == true)
 			{
@@ -429,7 +452,7 @@ class Block
 	 */
 	private function onAllChildOpened():Void
 	{
-		this._state = opened;
+		_state = opened;
 		_openBlockSuccessCallback(this);
 	}
 	
@@ -510,13 +533,13 @@ class Block
 		switch (Config.getConfigData().runtime)
 		{
 			case js:
-			skinUrl =  this._blockData.jsSkinURL;
+			skinUrl =  _blockData.jsSkinURL;
 			
 			case as3:
-			skinUrl =  this._blockData.as3SkinURL;
+			skinUrl =  _blockData.as3SkinURL;
 			
 			case php:
-			skinUrl = this._blockData.phpSkinURL;
+			skinUrl = _blockData.phpSkinURL;
 		}
 		
 		return skinUrl;
@@ -528,99 +551,99 @@ class Block
 	
 	public function getFileUrl():String
 	{
-		return this._fileUrl;
+		return _fileUrl;
 	}
 	
 	public function setFileUrl(value:String):String
 	{
-		this._fileUrl = value;
-		return this._fileUrl;
+		_fileUrl = value;
+		return _fileUrl;
 	}
 	
 	public function getChildren():Array<Block>
 	{
-		return this._children;
+		return _children;
 	}
 	
 	public function getParent():Block
 	{
-		return this._parent;
+		return _parent;
 	}
 	
 	public function getState():BlockStateValue
 	{
-		return this._state;
+		return _state;
 	}
 	
 	public function setParent(value:Block):Block
 	{
-		this._parent = value;
-		return this._parent;
+		_parent = value;
+		return _parent;
 	}
 	
 	public function setIsAutoOpen(value:Bool):Bool
 	{
-		this._isAutoOpen = value;
-		return this._isAutoOpen;
+		_isAutoOpen = value;
+		return _isAutoOpen;
 	}
 	
 	public function getIsAutoOpen():Bool
 	{
-		return this._isAutoOpen;
+		return _isAutoOpen;
 	}
 	
 	public function setIsTransversal(value:Bool):Bool
 	{
-		this._isTransversal = value;
-		return this._isTransversal;
+		_isTransversal = value;
+		return _isTransversal;
 	}
 	
 	public function getIsTransversal():Bool
 	{
-		return this._isTransversal;
+		return _isTransversal;
 	}
 	
 	public function setBlockData(value:BlockData):BlockData
 	{
 		_blockData = value;
-		return this._blockData;
+		return _blockData;
 	}
 	
 	public function getBlockData():BlockData
 	{
-		return this._blockData;
+		return _blockData;
 	}
 	
 	public function setDOMElement(value:DOMElement):DOMElement
 	{
 		_domElement = value;
-		return this._domElement;
+		return _domElement;
 	}
 	
 	public function getDOMElement():DOMElement
 	{
-		return this._domElement;
+		return _domElement;
 	}
 	
 	public function setClassInstance(value:ClassInstance):ClassInstance
 	{
-		this._classInstance = value;
-		return this._classInstance;
+		_classInstance = value;
+		return _classInstance;
 	}
 	
 	public function getClassInstance():ClassInstance
 	{
-		return this._classInstance;
+		return _classInstance;
 	}
 	
 	public function setStyleManager(value:StyleManager):StyleManager
 	{
-		this._styleManager = value;
+		_styleManager = value;
 		return value;
 	}
 	
 	public function getStyleManager():StyleManager
 	{
-		return this._styleManager;
+		return _styleManager;
 	}
 }

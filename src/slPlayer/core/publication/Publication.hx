@@ -191,11 +191,12 @@ class Publication
 		}
 		//if it doesn't check its children by calling this 
 		//method recursively until a match is found
-		else
+		for (i in 0...block.children.length)
 		{
-			for (i in 0...block.children.length)
+			var foundBlock:Block = doGetBlock(block.children[i], element, isOwnerMethod);
+			if (foundBlock != null)
 			{
-				return doGetBlock(block.children[i], element, isOwnerMethod);
+				return foundBlock;
 			}
 		}
 		
@@ -269,9 +270,12 @@ class Publication
 	/**
 	 * render the publication, create and open the first block
 	 * 
-	 * @param	A reference to the native DOM object. Varies for each
-	 * runtime : in JS it is an HTML element, in Flash a Sprite,
-	 * in PHP a resource
+	 * @param	nativeElement	A reference to the native DOM object
+	 *			optional, the default is the root native element if ommited
+	 * @param	xmlFileName		URL of the xml file containing the data 
+	 * 			optional, default behavior is to not load any data
+	 * @param	xmlString		serialized data to use as the first block's data
+	 * 			optional, default is "no data"
 	 */
 	public function render(nativeElement:NativeElement = null, xmlFileName:String = null, xmlString:String = null)
 	{
@@ -295,14 +299,27 @@ class Publication
 		{
 			// buid the block with the XML data
 			BlockBuilder.deserializeBlockData(block, xmlString);
-			block.open(function(block) { }, function(error) { } );
 		}
-		else
-		{
-			// start loading the first block
-			block.open(function(block) { }, function(error) { } );
-		}
+
+		// start loading the first block
+		block.open(firstBlockLoadedSuccessCallback, firstBlockLoadedErrorCallback);
 	}
+	/**
+	 * The first block was opened successfully
+	 */
+	function firstBlockLoadedSuccessCallback(block:Block) 
+	{
+		trace("The first block was opened successfully");
+	} 
+	/**
+	 * An error occured while opening the first block
+	 */
+	function firstBlockLoadedErrorCallback(error:String) 
+	{
+		// to do: handle error
+		throw "SLPlayer error: An error occured while opening the first block - " + error;
+	} 
+	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Block retrival methods.

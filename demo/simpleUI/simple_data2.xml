@@ -1,0 +1,62 @@
+<StandardBlock>
+	<blockData>
+			<properties>
+			</properties>
+			<metaData>
+			</metaData>
+	</blockData>
+	<children>
+		<StandardBlock isAutoOpen="true">
+			<children>
+				<Image isAutoOpen="true">
+					<blockData>
+						<properties>
+							<url>testPicture.jpg</url>
+							<rotation>0</rotation>
+						</properties>
+						<styles>
+							<left>200</left>
+							<top>200</top>
+							<width>100</width>
+							<height>300</height>
+						</styles>
+						<metaData>
+						</metaData>
+					</blockData>
+				</Image>
+				<Image isAutoOpen="true">
+					<blockData>
+						<properties>
+							<url>testPicture2.jpg</url>
+							<rotation>45</rotation>
+						</properties>
+						<styles>
+							<left>300</left>
+							<top>200</top>
+							<width>100</width>
+							<height>300</height>
+						</styles>
+						<metaData>
+						</metaData>
+					</blockData>
+				</Image>
+				<Image isAutoOpen="true">
+					<blockData>
+						<properties>
+							<url>testPicture3.jpg</url>
+							<rotation>90</rotation>
+						</properties>
+						<styles>
+							<left>400</left>
+							<top>200</top>
+							<width>100</width>
+							<height>300</height>
+						</styles>
+						<metaData>
+						</metaData>
+					</blockData>
+				</Image>
+			</children>
+		</StandardBlock>
+	</children>
+</StandardBlock>

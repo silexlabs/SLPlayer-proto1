@@ -390,7 +390,7 @@ class BlockBuilder
 		{
 			for (propertyName in _block.blockData.properties.keys())
 			{
-				_block.domElement.setAttribute(propertyName, _block.blockData.properties.get(propertyName));
+				_block.domElement.setField(propertyName, _block.blockData.properties.get(propertyName));
 			}
 		}
 	}

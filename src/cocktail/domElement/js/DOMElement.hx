@@ -14,7 +14,7 @@ package cocktail.domElement.js;
 import cocktail.nativeElement.NativeElement;
 import haxe.Log;
 import js.Dom;
-import cocktail.domElement.base.DOMElementBase;
+import cocktail.domElement.abstract.AbstractDOMElement;
 import cocktail.domElement.DOMElementData;
 import cocktail.geom.Matrix;
 import cocktail.geom.GeomData;
@@ -24,7 +24,7 @@ import cocktail.geom.GeomData;
  * It manipulates the native HTML DOM
  * @author Yannick DOMINGUEZ
  */
-class DOMElement extends DOMElementBase
+class DOMElement extends AbstractDOMElement
 {
 	/////////////////////////////////
 	// CONSTRUTOR & INIT
@@ -49,6 +49,7 @@ class DOMElement extends DOMElementBase
 		//all DOMElements are positioned as absolute to prevent most
 		//of browsers inconsistencies regarding margin/padding. 
 		//Margin, padding , floating... concepts will be abstracted
+		
 		_nativeElement.style.position = "absolute";
 		
 		if (_nativeElement.style.width != null)
@@ -72,33 +73,6 @@ class DOMElement extends DOMElementBase
 		this._x = Std.parseInt(_nativeElement.style.left);
 		this._y = Std.parseInt(_nativeElement.style.top);
 		
-	}
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	// Overriden methods to manipulate the HTML DOM
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * Adds a native HTML DOMElement (an html element) to this DOMElement native DOMElement
-	 * @param	domElement the html element to add to this
-	 */
-	override public function addChild(domElement:DOMElementBase):Void
-	{
-		super.addChild(domElement);
-		this._nativeElement.appendChild(domElement.nativeElement);
-		
-		//intialise z-order on the DOMElement, as it is null by default in JavaScript
-		domElement.nativeElement.style.zIndex = _children.length - 1;
-	}
-	
-	/**
-	 * Removes a native HTML DOMElement (an html element) from this DOMElement native DOMElement
-	 * @param	domElement the html element to remove from this
-	 */
-	override public function removeChild(domElement:DOMElementBase):Void
-	{
-		super.removeChild(domElement);
-		this._nativeElement.removeChild(domElement.nativeElement);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -228,6 +202,7 @@ class DOMElement extends DOMElementBase
 	override public function setX(value:Int):Int 
 	{
 		super.setX(value);
+		
 		this._nativeElement.style.left = value + "px";
 		return this._x;
 	}
@@ -259,25 +234,25 @@ class DOMElement extends DOMElementBase
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * When setting the z-order on an HTML element,
+	 * When setting the z-index on an HTML element,
 	 * all the siblings z-indexes must be updated. If they
 	 * are superior or equal to the z-index set on the current element,
 	 * they are incremented
 	 * @param	value the z index to set
 	 */
-	override public function setZOrder(value:Int):Int 
+	override public function setZIndex(value:Int):Int 
 	{
 		//if the z-index is outside of the children range, 
 		//set it as the last z-index of the range
-		if (value > _parent.getChildren().length - 1)
+		if (value > _parent.children.length - 1)
 		{
-			value = _parent.getChildren().length - 1;
+			value = _parent.children.length - 1;
 		}
 		
 		var nativeParent:HtmlDom = this._nativeElement.parentNode;
 		var numChildren:Int = nativeParent.childNodes.length;
 		
-		var oldIndex:Int = getZOrder();
+		var oldIndex:Int = this.zIndex;
 		var newIndex:Int = value;
 		
 		//check all the siblings of the current native DOM element,
@@ -325,7 +300,7 @@ class DOMElement extends DOMElementBase
 		return value;
 	}
 	
-	override public function getZOrder():Int 
+	override public function getZIndex():Int 
 	{
 		return this._nativeElement.style.zIndex;
 	}

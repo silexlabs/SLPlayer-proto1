@@ -14,7 +14,7 @@ package cocktail.domElement.js;
 import cocktail.nativeElement.NativeElement;
 import js.Dom;
 import js.Lib;
-import cocktail.domElement.base.GraphicDOMElementBase;
+import cocktail.domElement.abstract.AbstractGraphicDOMElement;
 import cocktail.domElement.DOMElementData;
 import cocktail.geom.GeomData;
 
@@ -23,7 +23,7 @@ import cocktail.geom.GeomData;
  * It draws shape programatically onto a native Canvas object
  * @author Yannick DOMINGUEZ
  */
-class GraphicDOMElement extends GraphicDOMElementBase
+class GraphicDOMElement extends AbstractGraphicDOMElement
 {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +71,15 @@ class GraphicDOMElement extends GraphicDOMElementBase
 	
 	override public function setWidth(value:Int):Int
 	{
+		//when changing the width or height of a Canvas,
+		//its content is erased, 
+		var canvasContext:Dynamic = getContext();
+		//so we first save it
+		var imageData:Dynamic = canvasContext.getImageData(0, 0, this.width, this.height);
+		//set the new width
 		untyped this._nativeElement.width = value;
+		//then put back the pixel data
+		canvasContext.putImageData(imageData, 0,0);
 		return value;
 	}
 	
@@ -82,7 +90,11 @@ class GraphicDOMElement extends GraphicDOMElementBase
 	
 	override public function setHeight(value:Int):Int 
 	{
+		//same as width, save the pixel data and put it back
+		var canvasContext:Dynamic = getContext();
+		var imageData:Dynamic = canvasContext.getImageData(0,0, this.width, this.height);
 		untyped this._nativeElement.height = value;
+		canvasContext.putImageData(imageData, 0,0);
 		return value;
 	}
 	

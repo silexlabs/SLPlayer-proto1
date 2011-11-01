@@ -15,7 +15,7 @@ import cocktail.nativeElement.NativeElement;
 import flash.display.DisplayObjectContainer;
 import flash.events.MouseEvent;
 import haxe.Log;
-import cocktail.domElement.base.DOMElementBase;
+import cocktail.domElement.abstract.AbstractDOMElement;
 import cocktail.geom.Matrix;
 import cocktail.domElement.DOMElementData;
 import cocktail.geom.GeomData;
@@ -25,7 +25,7 @@ import cocktail.geom.GeomData;
  * It manipulates the native Flash DOM
  * @author Yannick DOMINGUEZ
  */
-class DOMElement extends DOMElementBase
+class DOMElement extends AbstractDOMElement
 {
 
 	/**
@@ -47,30 +47,6 @@ class DOMElement extends DOMElementBase
 		this._height = Math.round(_nativeElement.height);
 		this._x = Math.round(_nativeElement.x);
 		this._y = Math.round(_nativeElement.y);
-	}
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	// Overriden methods to manipulate the Flash DOM
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	/**
-	 * Adds a native Flash DOMElement (DisplayObject) to this DOMElement native DOMElement
-	 * @param	domElement the DisplayObject to add to this
-	 */
-	override public function addChild(domElement:DOMElementBase):Void
-	{
-		super.addChild(domElement);
-		this._nativeElement.addChild(domElement.nativeElement);
-	}
-	
-	/**
-	 * Removes a native Flash DOMElement (DisplayObject) from this DOMElement native DOMElement
-	 * @param	domElement the DisplayObject to remove from this
-	 */
-	override public function removeChild(domElement:DOMElementBase):Void
-	{
-		super.removeChild(domElement);
-		this._nativeElement.removeChild(domElement.nativeElement);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -160,11 +136,8 @@ class DOMElement extends DOMElementBase
 	
 	override public function setX(value:Int):Int 
 	{
-		Log.trace("set x");
 		super.setX(value);
-		Log.trace(this._nativeElement);
 		this._nativeElement.x = value;
-		Log.trace("set x 3 ");
 		return this._x;
 	}
 	
@@ -191,16 +164,16 @@ class DOMElement extends DOMElementBase
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	// Z-INDEX SETTER/GETTER
-	// Setter/Getter to manipulate a native DOMElement z order in the publication
+	// Setter/Getter to manipulate a native DOMElement z-index in the publication
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	override public function setZOrder(value:Int):Int
+	override public function setZIndex(value:Int):Int
 	{
 		//if the value is outside of the children range, set it to the 
 		//last children range
-		if (value > _parent.getChildren().length - 1)
+		if (value > _parent.children.length - 1)
 		{
-			value = _parent.getChildren().length - 1;
+			value = _parent.children.length - 1;
 		}
 		
 		//retrieve the parent Display Object, and use it to set
@@ -211,7 +184,7 @@ class DOMElement extends DOMElementBase
 		return value;
 	}
 	
-	override public function getZOrder():Int 
+	override public function getZIndex():Int 
 	{
 		//retrieve the parent Display object, and use it to retrieve the current
 		//child index

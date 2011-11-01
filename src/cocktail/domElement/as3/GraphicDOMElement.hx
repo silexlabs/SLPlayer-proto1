@@ -24,7 +24,7 @@ import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.Lib;
 import haxe.Log;
-import cocktail.domElement.base.GraphicDOMElementBase;
+import cocktail.domElement.abstract.AbstractGraphicDOMElement;
 import cocktail.geom.GeomData;
 import cocktail.domElement.DOMElementData;
 
@@ -36,7 +36,7 @@ import cocktail.domElement.DOMElementData;
  * 
  * @author Yannick DOMINGUEZ
  */
-class GraphicDOMElement extends GraphicDOMElementBase
+class GraphicDOMElement extends AbstractGraphicDOMElement
 {
 	/**
 	 * A transparent clip used to give a width and height
@@ -72,9 +72,7 @@ class GraphicDOMElement extends GraphicDOMElementBase
 		_backGroundSprite = new Sprite();
 		this._nativeElement.addChild(_backGroundSprite);
 
-		this._width = 100;
-		this._height = 100;
-		setUpBackgroundSprite(_backGroundSprite, 100, 100);
+		setUpBackgroundSprite(_backGroundSprite, this._width, this._height);
 		
 		//init the bitmap display object and attach it to the display list
 		_bitmapDrawing = new Bitmap(new BitmapData(100, 100, true, 0x00FFFFFF));
