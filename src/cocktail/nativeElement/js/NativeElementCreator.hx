@@ -10,10 +10,11 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package cocktail.nativeElement.js;
 
+import cocktail.domElement.TextNode;
 import js.Lib;
 import cocktail.nativeElement.NativeElementData;
 import cocktail.nativeElement.NativeElement;
-import cocktail.nativeElement.base.NativeElementCreatorBase;
+import cocktail.nativeElement.abstract.AbstractNativeElementCreator;
 
 /**
  * This is the Javascript implementation of the native element
@@ -22,7 +23,7 @@ import cocktail.nativeElement.base.NativeElementCreatorBase;
  * 
  * @author Yannick DOMINGUEZ
  */
-class NativeElementCreator extends NativeElementCreatorBase
+class NativeElementCreator extends AbstractNativeElementCreator
 {
 
 	/**
@@ -54,9 +55,17 @@ class NativeElementCreator extends NativeElementCreatorBase
 				
 			case graphic:
 				nativeElement = Lib.document.createElement("canvas");
+				
+			case custom(name):
+				nativeElement = Lib.document.createElement(name);
 		}
 		
 		return nativeElement;
+	}
+	
+	override public function createNativeTextNode(text:String):TextNode
+	{
+		return Lib.document.createTextNode(text);
 	}
 	
 }

@@ -16,6 +16,7 @@ import haxe.Log;
 import slPlayer.core.block.Block;
 import slPlayer.core.block.BlockData;
 import cocktail.domElement.DOMElement;
+import cocktail.domElement.ContainerDOMElement;
 import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
@@ -52,13 +53,13 @@ class BlockTests
 		parentBlock.addChild(childBlock);
 		
 		//check that it has a become a child of the first block
-		Assert.equals(parentBlock.getChildren()[0], childBlock);
+		Assert.equals(parentBlock.children[0], childBlock);
 		
 		//remove it
 		parentBlock.removeChild(childBlock);
 		
 		//check that the parent no longer have children
-		Assert.equals(parentBlock.getChildren().length, 0);
+		Assert.equals(parentBlock.children.length, 0);
 	}
 	
 	/**
@@ -75,7 +76,7 @@ class BlockTests
 		
 		//create parent block and set it's domElement
 		var parentBlock:Block = new Block("");
-		var parentBlockDOMElement:DOMElement = new DOMElement(refToDOM);
+		var parentBlockDOMElement:DOMElement = new ContainerDOMElement(refToDOM);
 		parentBlock.setDOMElement(parentBlockDOMElement);
 		
 		#if flash9
@@ -86,20 +87,23 @@ class BlockTests
 		
 		//create child block and set it's domElement
 		var childBlock:Block = new Block("");
-		var childBlockDOMElement:DOMElement = new DOMElement(childRefToDOM);
+		var childBlockDOMElement:DOMElement = new ContainerDOMElement(childRefToDOM);
 		childBlock.setDOMElement(childBlockDOMElement);
+		
+		// test set/getDOMElement
+		Assert.equals(childBlockDOMElement, childBlock.getDOMElement());
 		
 		//add child to parent's display list
 		parentBlock.addToDisplayList(childBlock.getDOMElement());
-		
+
 		//test it has indeed been added
-		Assert.equals(parentBlock.getDOMElement().getChildren()[0], childBlock.getDOMElement());
+		Assert.equals(cast(parentBlock.getDOMElement(), ContainerDOMElement).children[0].children, childBlock.getDOMElement());
 		
 		//remove it
 		parentBlock.removeFromDisplayList(childBlock.getDOMElement());
 		
 		//test it was removed
-		Assert.equals(parentBlock.getDOMElement().getChildren().length, 0);
+		Assert.equals(cast(parentBlock.getDOMElement(), ContainerDOMElement).children.length, 0);
 		
 		//test the case where a DOMElement is added to the display list
 		//of a non visual block. The DOMElement is supposed to be attached to
@@ -114,13 +118,13 @@ class BlockTests
 		nonVisualBlock.addToDisplayList(childBlock.getDOMElement());
 		
 		//check that it was added to the parent's display list
-		Assert.equals(parentBlock.getDOMElement().getChildren()[0], childBlock.getDOMElement());
+		Assert.equals(cast(parentBlock.getDOMElement(), ContainerDOMElement).children[0].children, childBlock.getDOMElement());
 		
 		//removes the DOMElement from the non-visual block
 		nonVisualBlock.removeFromDisplayList(childBlock.getDOMElement());
 		
 		//check that it was removed from the parent's display list
-		Assert.equals(parentBlock.getDOMElement().getChildren().length, 0);
+		Assert.equals(cast(parentBlock.getDOMElement(), ContainerDOMElement).children.length, 0);
 	}
 	
 	/////////////////////////////////////////////////////////////////////
@@ -306,12 +310,12 @@ class BlockTests
 	public function onBlockOpenSuccess3(openedBlock:Block):Void
 	{
 		//test children was opened
-		Assert.equals(openedBlock.getChildren()[0].getState(), opened);
+		Assert.equals(openedBlock.children[0].getState(), opened);
 		
 		openedBlock.close();
 		
 		//test children was closed
-		Assert.equals(openedBlock.getChildren()[0].getState(), closed);
+		Assert.equals(openedBlock.children[0].getState(), closed);
 		
 	}
 	

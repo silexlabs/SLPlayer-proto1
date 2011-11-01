@@ -18,10 +18,16 @@ import cocktail.nativeElement.as3.NativeElementPathManager;
 #elseif js
 import cocktail.nativeElement.js.NativeElementCreator;
 import cocktail.nativeElement.js.NativeElementPathManager;
+
+#elseif doc
+class NativeElementCreator extends cocktail.nativeElement.abstract.AbstractNativeElementCreator { }
+class NativeElementPathManager extends cocktail.nativeElement.abstract.AbstractNativeElementPathManager { }
+
 #end
 
 import cocktail.nativeElement.NativeElementData;
 import cocktail.nativeElement.NativeElement;
+import cocktail.domElement.TextNode;
 
 /**
  * this class abstract and manages the interaction with a
@@ -88,5 +94,16 @@ class NativeElementManager
 		}
 		
 		return _nativeElementCreator.createNativeElement(nativeElementType);
+	}
+	
+	public static function createNativeTextNode(text:String):TextNode
+	{
+		//instantiate the reference creator if first use
+		if (_nativeElementCreator == null)
+		{
+			_nativeElementCreator = new NativeElementCreator();
+		}
+		
+		return _nativeElementCreator.createNativeTextNode(text);
 	}
 }

@@ -10,10 +10,14 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package cocktail.domElement.js;
+import cocktail.domElement.abstract.AbstractDOMElement;
+import cocktail.domElement.TextNode;
 import cocktail.nativeElement.NativeElement;
+import cocktail.nativeElement.NativeElementManager;
+import cocktail.nativeElement.NativeElementData;
 import js.Lib;
 import js.Dom;
-import cocktail.domElement.base.ContainerDOMElementBase;
+import cocktail.domElement.abstract.AbstractContainerDOMElement;
 
 /**
  * This is the JavaScript implementation of the container DOMElement.
@@ -24,7 +28,7 @@ import cocktail.domElement.base.ContainerDOMElementBase;
  * 
  * @author Yannick DOMINGUEZ
  */
-class ContainerDOMElement extends ContainerDOMElementBase
+class ContainerDOMElement extends AbstractContainerDOMElement
 {
 	/**
 	 * class constructor
@@ -34,12 +38,66 @@ class ContainerDOMElement extends ContainerDOMElementBase
 		super(nativeElement);
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// DOM
+	// Overriden Public method to manipulate the DOM
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Overriden to attach the native HTML element to the HTML DOM and
+	 * to set the CSS z-index of the newly attached children
+	 * @param	domElement the html element to add to this container
+	 */
+	override public function addChild(domElement:DOMElement):Void
+	{
+		super.addChild(domElement);
+		this._nativeElement.appendChild(domElement.nativeElement);
+		//intialise z-index on the DOMElement, as it is null by default in JavaScript
+		domElement.nativeElement.style.zIndex = _children.length - 1;
+	}
+	
+	/**
+	 * Overriden to remove the native HTML element from
+	 * the HTML DOM
+	 * @param domElement the html element to remove from this container
+	 */
+	override public function removeChild(domElement:DOMElement):Void
+	{
+		super.removeChild(domElement);
+		this._nativeElement.removeChild(domElement.nativeElement);
+	}
+	
+	/**
+	 * Overriden to append the text node to the HTML element of this container
+	 * @param	text the text node to append
+	 */
+	override public function addText(text:TextNode):Void
+	{
+		super.addText(text);
+		this.nativeElement.appendChild(text);
+	}
+	
+	/**
+	 * Overriden to remove the text node from the HTML element of this
+	 * container
+	 * @param	text the text node to remove
+	 */
+	override public function removeText(text:TextNode):Void
+	{
+		super.removeText(text);
+		this._nativeElement.removeChild(text);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Overriden Semantic method
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Set the semantic of this DOMElement and set it as the node name
 	 * of the root tag of the native DOMElement (which is an HTML tag)
 	 * @param	semantic the new node name
 	 */
-	override public function setSemantic(semantic:String):Void
+	override public function setSemantic(semantic:String):String
 	{
 		super.setSemantic(semantic);
 		
@@ -47,28 +105,30 @@ class ContainerDOMElement extends ContainerDOMElementBase
 		//and replace the current node, as the nodeName attribute is read only
 		
 		//store the inner html of the current node, to set it later on the new node
-		var currentNativeDOMContent:Dynamic = this._nativeElement.innerHTML;
+		var currentNativeElementContent:Dynamic = this._nativeElement.innerHTML;
 		
 		//store all the attributes of the current node to set them on the new node
-		 var currentNativeDOMAttributes:Array<Dynamic> = untyped this._nativeElement.attributes;
+		 var currentNativeElementAttributes:Array<Dynamic> = untyped this._nativeElement.attributes;
 		
 		//create a new node with the right node name
-		var newReferenceToNativeDOM:Dynamic = Lib.document.createElement(semantic);
+		var newNativeElement:NativeElement = NativeElementManager.createNativeElement(custom(semantic));
 		
 		//set it's inner html to the current node inner html
-		newReferenceToNativeDOM.innerHTML = currentNativeDOMContent;
+		newNativeElement.innerHTML = currentNativeElementContent;
 		
 		//paste all the attributes of the current node on the new node
-		for (i in 0...currentNativeDOMAttributes.length)
+		for (i in 0...currentNativeElementAttributes.length)
 		{
-			newReferenceToNativeDOM.setAttribute(currentNativeDOMAttributes[i].nodeName, currentNativeDOMAttributes[i].nodeValue);
+			newNativeElement.setAttribute(currentNativeElementAttributes[i].nodeName, currentNativeElementAttributes[i].nodeValue);
 		}
 		
 		//replace the current node with the new node
-		this._nativeElement.parentNode.replaceChild(newReferenceToNativeDOM, _nativeElement);
+		this._nativeElement.parentNode.replaceChild(newNativeElement, _nativeElement);
 		
 		//store a reference to the new node
-		this._nativeElement = newReferenceToNativeDOM;
+		this._nativeElement = newNativeElement;
+		
+		return semantic;
 	}
 	
 }
