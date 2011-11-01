@@ -58,10 +58,20 @@ class Image
 	public var url:String;
 	
 	/**
+	 * rotation of the image
+	 */
+	public var rotation:Int;
+	public var x:Int;
+	
+	/**
 	 * callback for the image loading
 	 */ 
 	private function _imageLoadedSuccess(imageDOMElement:ImageDOMElement):Void
 	{
+		imageDOMElement.rotation = rotation;
+		imageDOMElement.x = x;
+		
+		
 		var publication:Publication = Publication.getPublicationByNativeInstance(this);
 		var block:Block = publication.getBlockByNativeInstance(this);
 		block.parent.addToDisplayList(imageDOMElement);

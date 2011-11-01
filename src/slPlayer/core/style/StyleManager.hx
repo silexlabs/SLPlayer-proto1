@@ -33,8 +33,8 @@ class StyleManager
 		var block:Block = publication.getBlockByStyleManager(this);
 		var domElement:DOMElement = block.domElement;
 		
-		Log.trace(domElement);
-		Log.trace(this.left);
+//		Log.trace(domElement);
+//		Log.trace(this.left);
 		
 		if (this.left != null)
 		{

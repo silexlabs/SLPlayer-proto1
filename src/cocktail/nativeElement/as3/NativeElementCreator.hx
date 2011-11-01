@@ -10,12 +10,16 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 */
 package cocktail.nativeElement.as3;
 
+import cocktail.domElement.TextNode;
 import flash.display.DisplayObjectContainer;
 import flash.display.Loader;
 import flash.display.Sprite;
 import cocktail.nativeElement.NativeElementData;
 import cocktail.nativeElement.NativeElement;
-import cocktail.nativeElement.base.NativeElementCreatorBase;
+import cocktail.nativeElement.abstract.AbstractNativeElementCreator;
+import flash.text.engine.ElementFormat;
+import flash.text.engine.TextBaseline;
+import flash.text.engine.TextElement;
 
 /**
  * This is the flash AVM2 implementation of the native element
@@ -24,7 +28,7 @@ import cocktail.nativeElement.base.NativeElementCreatorBase;
  * 
  * @author Yannick DOMINGUEZ
  */
-class NativeElementCreator extends NativeElementCreatorBase
+class NativeElementCreator extends AbstractNativeElementCreator
 {
 
 	/**
@@ -56,6 +60,11 @@ class NativeElementCreator extends NativeElementCreatorBase
 		}
 		
 		return nativeElement;
+	}
+	
+	override public function createNativeTextNode(text:String):TextNode
+	{
+		return new TextElement(text, new ElementFormat());
 	}
 	
 }

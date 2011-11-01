@@ -13,7 +13,7 @@ package cocktail.domElement.php;
 
 
 //import js.Dom;
-import cocktail.domElement.base.DOMElementBase;
+import cocktail.domElement.abstract.AbstractDOMElement;
 
 /**
  * This is the DOMElement implementation for PHP. 
@@ -22,7 +22,7 @@ import cocktail.domElement.base.DOMElementBase;
  * @author	Raphael HARMEL
  * @date	2011-08-03
  */
-class DOMElement extends DOMElementBase
+class DOMElement extends AbstractDOMElement
 {
 
 	/**
@@ -41,7 +41,7 @@ class DOMElement extends DOMElementBase
 	 * Adds a native HTML DOMElement (an html element) to this DOMElement native DOMElement
 	 * @param	domElement the html element to add to this
 	 */
-	override public function addChild(domElement:DOMElementBase):Void
+	override public function addChild(domElement:AbstractDOMElement):Void
 	{
 		super.addChild(domElement);
 		this._nativeElement.addChild(domElement.getReferenceToNativeDOM());
@@ -51,7 +51,7 @@ class DOMElement extends DOMElementBase
 	 * Removes a native HTML DOMElement (an html element) from this DOMElement native DOMElement
 	 * @param	domElement the html element to remove from this
 	 */
-	/*override public function removeChild(domElement:DOMElementBase):Void
+	/*override public function removeChild(domElement:AbstractDOMElement):Void
 	{
 		super.removeChild(domElement);
 		this._nativeElement.removeChild(domElement.getReferenceToNativeDOM());
@@ -62,7 +62,7 @@ class DOMElement extends DOMElementBase
 	 * @param	propertyName the name of the field value to return
 	 * @return might be any type
 	 */
-	override public function getAttribute(propertyName:String):Dynamic
+	override public function getField(propertyName:String):Dynamic
 	{
 		//return Reflect.field(this._nativeElement, propertyName);
 		return this._nativeElement.get(propertyName);
@@ -146,12 +146,12 @@ class DOMElement extends DOMElementBase
 	 * they are incremented
 	 * @param	value the z index to set
 	 */
-	override public function setZOrder(value:Int) 
+	override public function setZIndex(value:Int) 
 	{
 		// TODO
 	}
 	
-	override public function getZOrder():Int 
+	override public function getZIndex():Int 
 	{
 		// TODO
 		return 0;

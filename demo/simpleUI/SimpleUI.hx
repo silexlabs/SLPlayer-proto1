@@ -10,8 +10,8 @@ import slPlayer.core.config.Config;
 import slPlayer.core.publication.Publication;
 
 /**
- * ...
  * @author Yannick DOMINGUEZ
+ * @author lexa
  */
 
 class SimpleUI 
@@ -25,7 +25,7 @@ class SimpleUI
 	public function new() 
 	{
 		var publication:Publication = Publication.createPublication(new Config());
-		publication.render(null, "index.xml");
+		publication.render(null, "simple_data.xml");
 	}
 	
 	private function onBlockOpened(block:Block):Void

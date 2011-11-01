@@ -13,6 +13,11 @@ package slPlayer.blocks;
 import haxe.Log;
 
 
+/**
+ * This class is instanciated by the BlockBuilder class, when the corresponding tag is found in the block's BlockData::className attribute
+ * It is the 1st block of a publication, containing all other blocks
+ * @author a.hoyau [at] silexlabs.org
+ */
 class StandardBlock
 {
 	/**
